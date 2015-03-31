@@ -1,6 +1,7 @@
 package jumpingalien.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import jumpingalien.util.*;
 import jumpingalien.model.GameObject;
@@ -53,7 +54,7 @@ public class Mazub extends GameObject {
 	 * 			| new.getLastMove() = 0
 	 */
 	public Mazub(double x, double y, Sprite[] images) {
-		super(x,y,images);
+		super(x, y, images);
 		assert(images.length >= 10 && images.length%2 == 0);
 		
 		setVxmax(3);
@@ -71,9 +72,9 @@ public class Mazub extends GameObject {
 	 * 			| result = ((-vxmax <= vx && vx <= -vxi) || (vx == 0) || (vxi <= vx && vx <= vxmax))
 	 */
 	public boolean isValidVx(double vx) {
-		return ((-vxmax <= vx && vx <= -vxi)
+		return ((-getVxmax() <= vx && vx <= -getVxi())
 				|| (vx == 0)
-				|| (vxi <= vx && vx <= vxmax));
+				|| (getVxi() <= vx && vx <= getVxmax()));
 	}
 
 	
@@ -86,8 +87,6 @@ public class Mazub extends GameObject {
 	}
 
 	private final double vxi = 1;
-	
-	
 	
 	/**
 	 * Gets the vertical velocity of this Mazub.
@@ -528,15 +527,15 @@ public class Mazub extends GameObject {
 		}
 		
 		for(double timestep = getTimesstep(); timestep <= dt; timestep += timestep) {
-			Object [][] collisions = getWorld().collisionDetect(this);
-			if ((collisions[0][0] == null) && (collisions[0][1] == null) && (getVx() < 0)
-				|| (collisions[1][0] == null) && (collisions[1][1] == null) && (getVx() > 0)) 
+			ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this);
+			if ((collisions.get(0).get(0) == null) && (collisions.get(0).get(1) == null) && (getVx() < 0)
+				|| (collisions.get(1).get(0) == null) && (collisions.get(1).get(1) == null) && (getVx() > 0)) 
 					advanceX(timestep);	
 			
 			setVx(advanceVx(timestep));
 			
-			if ((collisions[2][0] == null) && (collisions[2][1] == null) && (getVy() > 0)
-				|| (collisions[3][0] == null) && (collisions[3][1] == null) && (getVx() < 0)) 
+			if ((collisions.get(2).get(0) == null) && (collisions.get(2).get(1) == null) && (getVy() > 0)
+				|| (collisions.get(3).get(0) == null) && (collisions.get(3).get(1) == null) && (getVx() < 0)) 
 				advanceY(timestep);
 			
 			setVy(advanceVy(timestep));
@@ -613,9 +612,9 @@ public class Mazub extends GameObject {
 				/helpparameter;
 	}
 	
-	protected void collisionhandle(Object[][] collisions){
+	protected void collisionhandle(ArrayList<ArrayList<ArrayList<Object>>> collisions){
 		for(int i = 0; i <= 4; i++){
-			ArrayList collision_objects = (ArrayList) collisions[i][0];
+			ArrayList<Object> collision_objects = collisions.get(i).get(0);
 			for(int j = 0; j < collision_objects.size(); j ++){
 				if(collision_objects.get(j).getClass().toString() ==  "Shark")
 					collisionhandleshark((Shark) collision_objects.get(j));
@@ -717,7 +716,7 @@ public class Mazub extends GameObject {
 		}
 		
 		double newvx = getVx() + getAx()*dt;
-		newvx = Math.max(-vxmax, Math.min(vxmax, newvx));
+		newvx = Math.max(-getVxmax(), Math.min(getVxmax(), newvx));
 		
 		return newvx;
 	}
@@ -929,11 +928,11 @@ public class Mazub extends GameObject {
 	public void startMove(String direction){
 		assert(direction == "left" || direction == "right");
 		if (direction == "left"){
-			if (vx <= 0)
+			if (getVx() <= 0)
 				setVx(-vxi);
 			setAx(-axi);
 		} else {
-			if (vx >= 0)
+			if (getVx() >= 0)
 				setVx(vxi);
 			setAx(axi);
 		}

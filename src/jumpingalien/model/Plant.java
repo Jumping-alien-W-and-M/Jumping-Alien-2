@@ -2,7 +2,7 @@ package jumpingalien.model;
 
 import be.kuleuven.cs.som.annotate.Basic;
 
-public class Plant {
+public class Plant extends GameObject {
 	
 	/**
 	 * Gets this plants x-position.
