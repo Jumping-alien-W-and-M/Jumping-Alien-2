@@ -54,164 +54,11 @@ public class Mazub extends GameObject {
 	 * 			| new.getLastMove() = 0
 	 */
 	public Mazub(double x, double y, Sprite[] images) {
-		super(x, y, images);
 		assert(images.length >= 10 && images.length%2 == 0);
 		
+		super(x, y, images);
 		setVxmax(3);
-		
 		setLastMove(0);
-	}
-	
-	/**
-	 * Gets the vertical velocity of this Mazub.
-	 */
-	@Basic
-	public double getVy() {
-		return this.vy;
-	}
-	
-	/**
-	 * Sets the vertical velocity of this Mazub.
-	 * 
-	 * @param vy
-	 * 			This Mazub's new vertical velocity in meters per second (1m = 100 pixels),
-	 * 			which has to be smaller than or equal to 8 meters per second.
-	 * @post	This Mazub's new vertical velocity will be equal to the given vy, unless it's larger than 8 meters per second,
-	 * 			in which case the new vertical velocity will be equal to 8 meters per second.
-	 * 			| if (vy <= 8)
-	 * 			| 	then new.getVy() = vy
-	 *			| else
-	 *			|	then new.getVy() = 8
-	 *
-	 */
-	@Override
-	protected void setVy(double vy) {
-		if (vy <= 8) {
-			this.vy = vy;
-		} else {
-			this.vy = 8;
-		}
-	}
-	
-
-	
-	/**
-	 * Gets the horizontal acceleration of this Mazub.
-	 */
-	@Basic
-	public double getAx() {
-		return this.ax;
-	}
-	
-	/**
-	 * Sets the horizontal acceleration of this Mazub to ax.
-	 * 
-	 * @param ax
-	 * 			The new horizontal acceleration of this Mazub.
-	 * @post	If ax is a valid horizontal acceleration,
-	 * 			then the horizontal acceleration will be set to ax.
-	 * 			| if (isVAlidAx(ax))
-	 * 			|	then new.getAx() = ax
-	 * @post	If ax is  not a valid horizontal acceleration,
-	 * 			then the horizontal acceleration will be set to 0.
-	 * 			| if (!isValidAx(ax))
-	 * 			|	then new.getAx() = 0
-	 */
-	protected void setAx(double ax) {
-		if (isValidAx(ax))
-			this.ax = ax;		
-		else 
-			this.ax = 0;		
-	}
-	
-	/**
-	 * Checks if ax is a valid horizontal acceleration.
-	 * 
-	 * @param ax
-	 * 			The value to be checked.
-	 * @result
-	 * 			True if and only if ax is equal to 0 or (min) axi.
-	 * 			| result = ((ax == 0) || (ax == axi) || (ax = -axi))
-	 */
-	public boolean isValidAx(double ax) {
-		return ((ax == 0) || (ax == axi) || (ax == -axi));
-	}
-	
-	private double ax;
-	
-	/**
-	 * Gets the horizontal initial acceleration
-	 */
-	@Basic @Immutable
-	protected double getAxi() {
-		return Mazub.axi;
-	}
-	
-	private final static double axi = 0.9;
-	
-	/**
-	 * Gets the vertical acceleration of this Mazub.
-	 */
-	@Basic
-	public double getAy() {
-		return this.ay;
-	}
-	
-	/**
-	 * Sets the vertical acceleration of this Mazub to ay.
-	 * 
-	 * @param ay
-	 * 			The new vertical acceleration of this Mazub.
-	 * @post	If ay is a valid vertical acceleration,
-	 * 			then the vertical acceleration will be set to ay.
-	 * 			| if (isVAlidAy(ay)
-	 * 			|	then new.getAy() = ay
-	 * @post	If ay is  not a valid vertical acceleration,
-	 * 			then the vertical acceleration will be set to 0.
-	 * 			| if (!isValidAy(ay))
-	 * 			|	then new.getAy() = 0
-	 */
-	protected void setAy(double ay) {
-		if (isValidAy(ay))
-			this.ay = ay;		
-		else 
-			this.ay = 0;		
-	}
-	
-	/**
-	 * Checks if ay is a valid vertical acceleration.
-	 * 
-	 * @param ay
-	 * 			the value to be checked
-	 * @result	True if and only if ay is equal to 0 or -10.
-	 * 			| result = ((ay == 0) || (ay == -10))
-	 */
-	public boolean isValidAy(double ay) {
-		return ((ay == 0) || (ay == -10));
-	}
-	
-	private double ay;
-	
-	/**
-	 * Gets this Mazub's width.
-	 * 
-	 * @return	The current width in pixels of this Mazub.
-	 * 			| result = getCurrentSprite().getWidth()
-	 */
-	@Basic
-	public int getWidth() {
-		return getCurrentSprite().getWidth();
-	}
-	
-	/**
-	 * Gets this Mazub's height.
-	 * 
-	 * @return	The current height in pixels of this Mazub.
-	 * 			| result = getCurrentSprite().getHeight()
-	 */
-	@Basic
-	public int getHeight() {
-		return getCurrentSprite().getHeight();
 	}
 	
 	/**
@@ -610,207 +457,6 @@ public class Mazub extends GameObject {
 	}
 	
 	/**
-	 * Returns the new x-position after a given time has passed.
-	 * 
-	 * @param dt
-	 * 			The amount of seconds to be advanced.
-	 * @return	The new x-position after dt time has passed.
-	 * 			| max_s = maxAdvanceX(dt)
-	 * 			| actual_s = maxAdvanceX(dt)
-	 * 			| result = getXWithinBounds(getX() + (int) Math.round(Math.min(max_s, actual_s)))
-	 * @throws IllegalArgumentException
-	 * 			If dt isn't a valid time interval to advance the time with.
-	 * 			| !isValidDt(dt)
-	 */
-	@Model
-	private double advanceX(double dt) throws IllegalArgumentException {
-		if (!isValidDt(dt)) {
-			throw new IllegalArgumentException();
-		}
-		
-		double max_s = maxAdvanceX(dt);
-		// This second formula can be changed, the first one is static.
-		double actual_s = maxAdvanceX(dt);
-		double newx = getX() + Math.min(max_s, actual_s);
-		
-		return getXWithinBounds(newx);
-	}
-	
-	/**
-	 * Gets an x-position within the bounds of the game world.
-	 * 
-	 * @param x
-	 * 			The x-position which should be converted to a valid one.
-	 * @return	The new x-position. If it's already within the bounds, this will be equal to the given x.
-	 * 			If it's too small or too large, it will be set to the smallest or largest possible value, respectively.
-	 * 			| result = Math.max(0, Math.min(getWorldWidth() - 1, x))
-	 */
-	private double getXWithinBounds(double x) {
-		if(x >= 0 || x <= getWorld().getWorldWidth()- 1)
-			return x;
-		terminate();
-		return Math.max(0, Math.min(getWorld().getWorldWidth() - 1, x));
-	}
-	
-	/**
-	 * Calculates the maximal change in x-position within a given period of time.
-	 * Currently also used to calculate the actual change in x-position within a given period of time.
-	 * 
-	 * @param dt
-	 * 			The period of time which should be advanced.
-	 * @return	The maximal change in x-position using dt, in pixels.
-	 * 			| result = 100*(getVx()*dt + getAx()*Math.pow(dt, 2)/2)
-	 * @throws IllegalArgumentException
-	 * 			If dt isn't a valid time interval to advance the time with.
-	 * 			| !isValidDt(dt)
-	 */
-	private double maxAdvanceX(double dt) throws IllegalArgumentException {
-		if (!isValidDt(dt)) {
-			throw new IllegalArgumentException();
-		}
-		
-		return 100*(getVx()*dt + getAx()*Math.pow(dt, 2)/2);
-	}
-	
-	/**
-	 * Returns the new horizontal velocity after a given time has passed.
-	 * 
-	 * @param dt
-	 * 			The amount of seconds to be advanced.
-	 * @return	The new horizontal velocity after dt time has passed in meters per second.
-	 * 			| result = Math.max(-vxmax, Math.min(vxmax, getVx() + getAx()*dt))
-	 * @throws IllegalArgumentException
-	 * 			If dt isn't a valid time interval to advance the time with.
-	 * 			| !isValidDt(dt)
-	 */
-	@Model
-	private double advanceVx(double dt) throws IllegalArgumentException, IllegalStateException {
-		if (!isValidDt(dt)) {
-			throw new IllegalArgumentException();
-		}
-		
-		double newvx = getVx() + getAx()*dt;
-		newvx = Math.max(-getVxmax(), Math.min(getVxmax(), newvx));
-		
-		return newvx;
-	}
-	
-	/**
-	 * Returns the new y-position after a given time has passed.
-	 * 
-	 * @param dt
-	 * 			The amount of seconds to be advanced.
-	 * @return	The new y-position after dt time has passed.
-	 * 			| max_s = maxAdvanceX(dt)
-	 * 			| actual_s = maxAdvanceX(dt)
-	 * 			| result = getYWithinBounds(getY() + (int) Math.round(Math.min(max_s, actual_s)))
-	 * @throws IllegalArgumentException
-	 * 			If dt isn't a valid time interval to advance the time with.
-	 * 			| !isValidDt(dt)
-	 */
-	@Model
-	private double advanceY(double dt) throws IllegalArgumentException {
-		if (!isValidDt(dt)) {
-			throw new IllegalArgumentException();
-		}
-		
-		double max_s = maxAdvanceY(dt);
-		// This second formula can be changed, the first one is static.
-		double actual_s = maxAdvanceY(dt);
-		double newy = getY() + Math.min(max_s, actual_s);
-		
-		return getYWithinBounds(newy);
-	}
-	
-	/**
-	 * Gets an y-position within the bounds of the game world.
-	 * 
-	 * @param y
-	 * 			The y-position which should be converted to a valid one.
-	 * @return	The new y-position. If it's already within the bounds, this will be equal to the given y.
-	 * 			If it's too small or too large, it will be set to the smallest or largest possible value, respectively.
-	 * 			| result = Math.max(0, Math.min(getWorldHeight() - 1, y))
-	 */
-	private double getYWithinBounds(double y) {
-		if(y >= 0 || y <= getWorld().getWindowHeight()-1)
-			return y;
-		terminate();
-		return Math.max(0, Math.min(getWorld().getWorldHeight() - 1, y));
-	}
-	
-	/**
-	 * Calculates the maximal change in y-position within a given period of time.
-	 * Currently also used to calculate the actual change in y-position within a given period of time.
-	 * 
-	 * @param dt
-	 * 			The period of time which should be advanced.
-	 * @return	The maximal change in y-position using dt, in pixels.
-	 * 			| result = 100*(getVy()*dt + getAy()*Math.pow(dt, 2)/2)
-	 * @throws IllegalArgumentException
-	 * 			If dt isn't a valid time interval to advance the time with.
-	 * 			| !isValidDt(dt)
-	 */
-	private double maxAdvanceY(double dt) throws IllegalArgumentException {
-		if (!isValidDt(dt)) {
-			throw new IllegalArgumentException();
-		}
-		
-		return 100*(getVy()*dt + getAy()*Math.pow(dt, 2)/2);
-	}
-	
-	/**
-	 * Returns the new vertical velocity after a given time has passed.
-	 * 
-	 * @param dt
-	 * 			The amount of seconds to be advanced.
-	 * @return	The new vertical velocity after dt time has passed in meters per second.
-	 * 			| result = getVy() + getAy()*dt
-	 * @throws IllegalArgumentException
-	 * 			If dt isn't a valid time interval to advance the time with.
-	 * 			| !isValidDt(dt)
-	 * @throws IllegalStateException
-	 * 			If the vertical velocity after updating overflows negatively.
-	 * 			| (newvy == Double.NEGATIVE_INFINITY)
-	 */
-	@Model
-	private double advanceVy(double dt) throws IllegalArgumentException, IllegalStateException {
-		if (!isValidDt(dt)) {
-			throw new IllegalArgumentException();
-		}
-		
-		if (getY() <= 0) {
-			return 0;
-		}
-		
-		double newvy = getVy() + getAy()*dt;
-		
-		if (newvy == Double.NEGATIVE_INFINITY) {
-			throw new IllegalStateException();
-		}
-		return newvy;
-	}
-	
-	/**
-	 * Returns the new vertical acceleration at this Mazub's current y-position.
-	 * 
-	 * @return	The new vertical acceleration at this Mazub's current y-position has passed in meters per second squared.
-	 * 			This will be -10 if this Mazub's y-position is larger than 0, else it'll be 0.
-	 * 			| if (getY() == 0)
-	 * 			| 	then result = -10
-	 * 			| else
-	 * 			|	result = getAy()
-	 */
-	@Model
-	private double advanceAy() {
-		
-		if (canjump() || (int) getY() == getWorld().getWorldHeight() -1 ) {
-			return 0;
-		} else {
-			return -10;
-		}
-	}
-	
-	/**
 	 * Gets the last move variable using the given dt.
 	 * 
 	 * @param dt
@@ -947,18 +593,18 @@ public class Mazub extends GameObject {
 	}
 	
 	/**
-	 * Returns wether or not this Mazub is (partially) on solid ground
+	 * Checks whether or not this Mazub is (partially) on solid ground.
 	 * 
-	 * @return 	if this mazub is (partially) on solid ground true else it returns false
-	 * 			| for(int x = (int) Math.round(getX()); x < (int) Math.round(getX()) + getWidth(); x ++){
+	 * @return 	True if this mazub is (partially) on solid ground true, else false.
+	 * 			| for(int x = (int) getX(); x <= (int) getX() + getWidth(); x++)
 	 *			| 	if(getWorld().getFeature(getWorld().getTilePos(x),getWorld().getTilePos((int) Math.round(getY())))
 	 *			|		== Feature.ground)
 	 *			|		result =  true;
 	 *			| result = false
 	 */
 	public boolean canjump(){
-		for(int x = (int) Math.round(getX()); x < (int) Math.round(getX()) + getWidth(); x ++){
-			if(getWorld().getFeature(getWorld().getTilePos(x),getWorld().getTilePos((int) Math.round(getY())))
+		for(int x = (int) getX(); x <= (int) getX() + getWidth(); x++) {
+			if (getWorld().getFeature(getWorld().getTilePos(x), getWorld().getTilePos((int) Math.round(getY())))
 					== Feature.ground)
 				return true;
 		}
@@ -1039,6 +685,7 @@ public class Mazub extends GameObject {
 		else 
 			return getImages()[8 + getFramesAmount() + getCurrentFrameIndex()].getHeight();
 	}
+	
 	/**
 	 * Gets the current sprite object given this Mazub's past and current horizontal velocity, vertical position and ducking state.
 	 * 
@@ -1059,6 +706,7 @@ public class Mazub extends GameObject {
 	 * 			The m used above corresponds to getFramesAmount(), which is the amount of frames in both the running left and
 	 * 			running right animations.
 	 */
+	@Override
 	public Sprite getCurrentSprite() {
 		
 		if (getVx() == 0) {
