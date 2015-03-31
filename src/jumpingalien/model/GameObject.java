@@ -130,13 +130,12 @@ public abstract class GameObject {
 	 * 			| result = ((-vxmax <= vx && vx <= -vxi) || (vx == 0) || (vxi <= vx && vx <= vxmax))
 	 */
 	public boolean isValidVx(double vx) {
-		return ((-vxmax <= vx && vx <= -vxi)
+		return ((-getVxmax() <= vx && vx <= -getVxi())
 				|| (vx == 0)
-				|| (vxi <= vx && vx <= vxmax));
+				|| (getVxi() <= vx && vx <= getVxmax()));
 	}
 	
 	private double vx;
-	
 	
 	/**
 	 * Gets the magnitude of the maximal horizontal velocity this game object can achieve when moving.
@@ -145,6 +144,16 @@ public abstract class GameObject {
 	public double getVxmax() {
 		return this.vxmax;
 	}
+	
+	/**
+	 * Gets the magnitude of the initial horizontal velocity any Mazub starts with when they start moving.
+	 */
+	@Basic @Immutable
+	public double getVxi() {
+		return this.vxi;
+	}
+
+	private final double vxi = 1;
 	
 	/**
 	 * Sets this game object's maximal horizontal velocity to a given vxmax.
