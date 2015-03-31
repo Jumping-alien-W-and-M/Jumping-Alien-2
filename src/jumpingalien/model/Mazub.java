@@ -61,32 +61,6 @@ public class Mazub extends GameObject {
 		
 		setLastMove(0);
 	}
-		
-	
-	/**
-	 * Checks if the given vx is a valid horizontal velocity.
-	 * 
-	 * @param vx
-	 * @return Whether or not the magnitude of vx is equal to 0 or not smaller than the initial horizontal velocity and not larger than
-	 * 			the maximal horizontal velocity.
-	 * 			| result = ((-vxmax <= vx && vx <= -vxi) || (vx == 0) || (vxi <= vx && vx <= vxmax))
-	 */
-	public boolean isValidVx(double vx) {
-		return ((-getVxmax() <= vx && vx <= -getVxi())
-				|| (vx == 0)
-				|| (getVxi() <= vx && vx <= getVxmax()));
-	}
-
-	
-	/**
-	 * Gets the magnitude of the initial horizontal velocity any Mazub starts with when they start moving.
-	 */
-	@Basic @Immutable
-	public double getVxi() {
-		return this.vxi;
-	}
-
-	private final double vxi = 1;
 	
 	/**
 	 * Gets the vertical velocity of this Mazub.
@@ -395,7 +369,7 @@ public class Mazub extends GameObject {
 	 * @post	If hitpoints is larger then or equal to 500 this mazubs hitpoints will be set to 500.
 	 * 			If hitpoints is smaller then or equal to 0 this mazubs hitpoints will be set to 0 
 	 * 				and this mazub will be terminated.
-	 * 			Else this mazub hitpoints will be set to hitpoints.
+	 * 			Else this Mazub's hitpoints will be set to hitpoints.
 	 * 			| if(hitpoints <= 0)
 	 *			|	this.hitpoints = 0;
 	 *			| 	this.terminate
@@ -409,34 +383,34 @@ public class Mazub extends GameObject {
 			this.hitpoints = 0;
 			this.terminate();	
 		}
-		else if(hitpoints >= 500)
+		else if(hitpoints >= 500) {
 			this.hitpoints = 500;
-		else
+		} else {
 			this.hitpoints = hitpoints;
+		}
 	}
 	
 	private int hitpoints = 100;
-
 	
 	/**
-	 * Gets this mazub time in water.
+	 * Gets this Mazub's time in water.
 	 */
 	private double getTimeInWater(){
 		return this.time_in_water;
 	}
 	
 	/**
-	 * Sets this mazub time in water.
+	 * Sets this Mazub's time in water.
 	 * 
 	 * @param timeinwater
-	 * 			the new time in water of this mazub
-	 * @post	The timeinwater of this mazub will be equal to timeinwater.
-	 * 			| new.getTimeinwater() = timeinwater
-	 * @pre		the timeinwater parameter must be larger then or equal to zero
-	 * 			| timeinwater >= 0
+	 * 			the new time in water of this Mazub.
+	 * @post	The timeinwater variable of this Mazub will be equal to timeinwater.
+	 * 			| (new.getTimeinwater() = timeinwater)
+	 * @pre		The timeinwater parameter must be larger then or equal to zero
+	 * 			| (timeinwater >= 0)
 	 */
 	private void setTimeInWater(int timeinwater){
-		assert( timeinwater >= 0);
+		assert(timeinwater >= 0);
 		this.time_in_water = timeinwater;
 	}
 	
@@ -450,14 +424,14 @@ public class Mazub extends GameObject {
 	}
 	
 	/**
-	 * Sets this mazub time in magma.
+	 * Sets this Mazub's time in magma.
 	 * 
 	 * @param timeinmagma
-	 * 			the new time in magma of this mazub
-	 * @post	The timeinmagma of this mazub will be equal to timeinmagma.
-	 * 			| new.getTimeinmagma() = timeinmagma
-	 *  @pre	the timeinmagma parameter must be larger then or equal to zero
-	 * 			| timeinmagma >= 0
+	 * 			the new time in magma of this Mazub.
+	 * @post	The timeinmagma variable of this Mazub will be equal to timeinmagma.
+	 * 			| (new.getTimeinmagma() = timeinmagma)
+	 *  @pre	The timeinmagma parameter must be larger then or equal to zero
+	 * 			| (timeinmagma >= 0)
 	 */
 	private void setTimeInMagma(int timeinmagma){
 		assert( timeinmagma >= 0);
@@ -475,14 +449,14 @@ public class Mazub extends GameObject {
 	}
 	
 	/**
-	 * sets the time that mazub will stay invincible for to time
+	 * Sets the time that Mazub will stay invincible for to the given time.
 	 * 
 	 * @param time
-	 * 			the new time that mazub is invincible for 
-	 * @post	this mazubs new time he will be invincible for, will be equal to time
-	 * 			| new.getTimeInvincible() = time
+	 * 			The new time that Mazub is invincible for 
+	 * @post	This Mazub's new time he will be invincible for, will be equal to time
+	 * 			| (new.getTimeInvincible() = time)
 	 * @pre		The time parameter must be larger then or equal to zero.
-	 * 			| time >= 0
+	 * 			| (time >= 0)
 	 */
 	private void setTimeInvincible(double time){
 		assert(time >= 0);
@@ -612,11 +586,11 @@ public class Mazub extends GameObject {
 				/helpparameter;
 	}
 	
-	protected void collisionhandle(ArrayList<ArrayList<ArrayList<Object>>> collisions){
-		for(int i = 0; i <= 4; i++){
-			ArrayList<Object> collision_objects = collisions.get(i).get(0);
+	protected void collisionhandle(ArrayList<List<List<Object>>> collisions){
+		for(int i = 0; i <= 4; i++) {
+			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
 			for(int j = 0; j < collision_objects.size(); j ++){
-				if(collision_objects.get(j).getClass().toString() ==  "Shark")
+				if(collision_objects.get(j).getClass().toString() == "Shark")
 					collisionhandleshark((Shark) collision_objects.get(j));
 				if(collision_objects.get(j).getClass().toString() == "Plant")
 					collisionhandleplant((Plant) collision_objects.get(j));
@@ -929,12 +903,12 @@ public class Mazub extends GameObject {
 		assert(direction == "left" || direction == "right");
 		if (direction == "left"){
 			if (getVx() <= 0)
-				setVx(-vxi);
-			setAx(-axi);
+				setVx(-getVxi());
+			setAx(-getAxi());
 		} else {
 			if (getVx() >= 0)
-				setVx(vxi);
-			setAx(axi);
+				setVx(getVxi());
+			setAx(getAxi());
 		}
 		setAnimationTime(0);
 	}
@@ -1035,8 +1009,8 @@ public class Mazub extends GameObject {
 	 * Gets the current sprite object heigth given 
 	 * this Mazub's past and current horizontal velocity, vertical position and not ducking.
 	 * 
-	 * @return	The current sprite object height fitting this Mazub's current state except that mazub is not ducking, 
-	 * 			the current sprite is computed by following rules:
+	 * @return	The current sprite object height fitting this Mazub's current state except that Mazub is not ducking,.
+	 * 			The current sprite is computed by following rules:
 	 * 				CORRESPONDING INDEX			STATE
 	 * 			0							Not moving horizontally, not moving horizontally during the last second, not ducking.
 	 * 			2							Not moving horizontally, was moving right during the last second, not ducking.
