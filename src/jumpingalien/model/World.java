@@ -447,7 +447,7 @@ public class World {
 	 * @return	...
 	 * 			| FORMELE SPECIFICATIES AANVULLEN HIER
 	 */
-	public Object[][] collisionDetect(Object object) {
+	public Object[][] collisionDetect(GameObject object) {
 		
 		Object[] collisions_one_side = {new ArrayList<GameObject>(), new ArrayList<Feature>()};
 		Object[][] collisions = {collisions_one_side, collisions_one_side, collisions_one_side, collisions_one_side};
@@ -474,15 +474,17 @@ public class World {
 		return collisions; 
 	}
 	
-	private static void collisionDetectObject(Object mobile_object, Object static_object, Object[][] collision_objects)  {
+	private static void collisionDetectObject(GameObject mobile_object, GameObject static_object, Object[][] collision_objects)  {
 		
 		if (mobile_object == static_object) {
 			return;
 		}
 		
+		
+		
 	}
 	
-	private static void collisionDetectFeature(Object object, Feature feature, Object[][] collision_objects)  {
+	private static void collisionDetectFeature(GameObject object, Feature feature, Object[][] collision_objects)  {
 		
 		
 		
