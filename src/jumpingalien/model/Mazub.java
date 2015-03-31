@@ -18,10 +18,9 @@ import be.kuleuven.cs.som.annotate.Model;
  * @invar	The horizontal velocity is valid.
  * 			| isValidVx(getVx())
  * 
- * @author Michiel Bollen en Wouter Baert
  * @version 2.0
  */
-public class Mazub extends GameObject{
+public class Mazub extends GameObject {
 	
 	/**
 	 * Creates a new Mazub at a given position with a series of given sprites.
@@ -528,15 +527,15 @@ public class Mazub extends GameObject{
 			throw new IllegalArgumentException();
 		}
 		
-		for(double timestep = getTimesstep(); timestep <= dt; timestep += timestep){
+		for(double timestep = getTimesstep(); timestep <= dt; timestep += timestep) {
 			Object [][] collisions = getWorld().collisionDetect(this);
-			if((collisions[0][0] == null) && (collisions[0][1] == null) && (getVx() < 0)
+			if ((collisions[0][0] == null) && (collisions[0][1] == null) && (getVx() < 0)
 				|| (collisions[1][0] == null) && (collisions[1][1] == null) && (getVx() > 0)) 
 					advanceX(timestep);	
 			
 			setVx(advanceVx(timestep));
 			
-			if((collisions[2][0] == null) && (collisions[2][1] == null) && (getVy() > 0)
+			if ((collisions[2][0] == null) && (collisions[2][1] == null) && (getVy() > 0)
 				|| (collisions[3][0] == null) && (collisions[3][1] == null) && (getVx() < 0)) 
 				advanceY(timestep);
 			

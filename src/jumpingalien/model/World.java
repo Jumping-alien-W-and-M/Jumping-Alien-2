@@ -15,7 +15,6 @@ import be.kuleuven.cs.som.annotate.Immutable;
  * @invar	...
  * 			| (getYWindow() == getProperYWindow(getYWindow()))
  * 
- * @author Michiel Bollen en Wouter Baert
  * @version 1.0
  *
  */
@@ -413,7 +412,11 @@ public class World {
 	 * 			| result = getFeatures().get(getHash(getTilePos(x), getTilePos(y)))
 	 */
 	public Feature getFeature(int x, int y) {
-		return getFeatures().get(getHash(getTilePos(x), getTilePos(y)));
+		Feature feature = getFeatures().get(getHash(getTilePos(x), getTilePos(y)));
+		if (feature != null) {
+			return feature;
+		}
+		return Feature.air;
 	}
 	
 	/**
@@ -436,24 +439,53 @@ public class World {
 	
 	private final int hashDigitsAmount;
 	
+	/**
+	 * Checks the collisions of a given object with all other objects and features during an instant.
+	 * 
+	 * @param object
+	 * 			The object whose collisions with other objects and features should be checked.
+	 * @return	...
+	 * 			| FORMELE SPECIFICATIES AANVULLEN HIER
+	 */
 	public Object[][] collisionDetect(Object object) {
 		
-		ArrayList[] collision_objects = {new ArrayList<Object>(), new ArrayList<Object>(),
-											new ArrayList<Object>(), new ArrayList<Object>()};
+		Object[] collisions_one_side = {new ArrayList<GameObject>(), new ArrayList<Feature>()};
+		Object[][] collisions = {collisions_one_side, collisions_one_side, collisions_one_side, collisions_one_side};
 		
+		// Checks collisions with the player, sharks, slimes and plants
+		collisionDetectObject(object, player, collisions);
 		for(Shark shark : sharks) {
-			collisionDetect(object, shark, collision_objects);
+			collisionDetectObject(object, shark, collisions);
+		}
+		for(School school : schools) {
+			for(Slime slime : school.getSlimes()) {
+				collisionDetectObject(object, slime, collisions);
+			}
+		}
+		for(Plant plant : plants) {
+			collisionDetectObject(object, plant, collisions);
 		}
 		
-		Object[][] collisions = {{new ArrayList<Object>(), null}, {new ArrayList<Object>(), null},
-									{new ArrayList<Object>(), null}, {new ArrayList<Object>(), null}};
+		// Checks collisions with features
+		for(Feature feature : getFeatures().values()) {
+			collisionDetectFeature(object, feature, collisions);
+		}
+		
 		return collisions; 
 	}
 	
-	private static void collisionDetect(Object mobile_object, Object static_object, ArrayList[] collision_objects)  {
+	private static void collisionDetectObject(Object mobile_object, Object static_object, Object[][] collision_objects)  {
 		
-		Class mobile_class = mobile_object.getClass();
-				
+		if (mobile_object == static_object) {
+			return;
+		}
+		
+	}
+	
+	private static void collisionDetectFeature(Object object, Feature feature, Object[][] collision_objects)  {
+		
+		
+		
 	}
 	
 }
