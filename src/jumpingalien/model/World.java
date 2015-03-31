@@ -1,7 +1,9 @@
 package jumpingalien.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
@@ -331,7 +333,7 @@ public class World {
 	 * 			| result = (int) Math.floor(pos/getTileSize())
 	 */
 	protected int getTilePos(int pos) {
-		return (int) Math.floor(pos/getTileSize());
+		return (int) pos/getTileSize();
 	}
 	
 	/**
@@ -447,10 +449,12 @@ public class World {
 	 * @return	...
 	 * 			| FORMELE SPECIFICATIES AANVULLEN HIER
 	 */
-	public Object[][] collisionDetect(GameObject object) {
+	public ArrayList<List<List<Object>>> collisionDetect(GameObject object) {
 		
-		Object[] collisions_one_side = {new ArrayList<GameObject>(), new ArrayList<Feature>()};
-		Object[][] collisions = {collisions_one_side, collisions_one_side, collisions_one_side, collisions_one_side};
+		ArrayList<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>(
+																Collections.nCopies(4, 
+																Collections.nCopies(2, new ArrayList<Object>()))
+															);
 		
 		// Checks collisions with the player, sharks, slimes and plants
 		collisionDetectObject(object, player, collisions);
@@ -467,26 +471,57 @@ public class World {
 		}
 		
 		// Checks collisions with features
-		for(Feature feature : getFeatures().values()) {
-			collisionDetectFeature(object, feature, collisions);
+		for(int i = 0; i < getWorldWidth(); i += getTileSize()) {
+			for(int j = 0; j < getWorldWidth(); j += getTileSize()) {
+				collisionDetectFeature(object, i, j, collisions);
+			}
 		}
 		
 		return collisions; 
 	}
 	
-	private static void collisionDetectObject(GameObject mobile_object, GameObject static_object, Object[][] collision_objects)  {
+	private void collisionDetectObject(GameObject object1, GameObject object2, ArrayList<List<List<Object>>> collision_objects)  {
 		
-		if (mobile_object == static_object) {
+		if (object1 == object2) {
 			return;
 		}
 		
+		// Defining temporary variables
+		int x1 = (int) object2.getX();
+		int y1 = (int) object2.getY();
+		int x2 = x1 + object2.getWidth();
+		int y2 = y1 + object2.getHeight();
 		
+		collisionDetectBasic(object1, x1, y1, x2, y2, object2, 0, collision_objects);
 		
 	}
 	
-	private static void collisionDetectFeature(GameObject object, Feature feature, Object[][] collision_objects)  {
+	private void collisionDetectFeature(GameObject object, int x, int y, ArrayList<List<List<Object>>> collision_objects)  {
 		
+		Feature feature = getFeature(x, y);
+		if (feature == Feature.air) {
+			return;
+		}
 		
+		collisionDetectBasic(object, x, y, x + getTileSize(), y + getTileSize(), feature, 1, collision_objects);
+		
+	}
+	
+	private void collisionDetectBasic(GameObject object1, int sx1, int sy1, int sx2, int sy2,
+									Object object2, int index, ArrayList<List<List<Object>>> collision_objects) {
+		
+		// Defining temporary variables
+		int mx1 = (int) object1.getX();
+		int my1 = (int) object1.getY();
+		int mx2 = mx1 + object1.getWidth();
+		int my2 = my1 + object1.getHeight();
+		
+		int[] overlaps = {sx2 - mx1, mx2 - sx1, sy2 - my1, my2 - sy1};
+		for(int i = 0; i < 4; i++) {
+			if (overlaps[i] == 1) {
+				collision_objects.get(i).get(index).add(object2);
+			}
+		}
 		
 	}
 	
