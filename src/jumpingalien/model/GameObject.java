@@ -1,5 +1,8 @@
 package jumpingalien.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Model;
@@ -376,13 +379,13 @@ public abstract class GameObject {
 	 * 
 	 * @param timeinwater
 	 * 			the new time in water of this game object
-	 * @post	The timeinwater of this game object will be equal to timeinwater.
-	 * 			| new.getTimeinwater() = timeinwater
-	 * @pre		the timeinwater parameter must be larger then or equal to zero
-	 * 			| timeinwater >= 0
+	 * @post	The timeinwater variable of this game object will be equal to the given timeinwater.
+	 * 			| (new.getTimeinwater() = timeinwater)
+	 * @pre		The timeinwater parameter must be larger than or equal to zero.
+	 * 			| (timeinwater >= 0)
 	 */
 	private void setTimeInWater(int timeinwater){
-		assert( timeinwater >= 0);
+		assert(timeinwater >= 0);
 		this.time_in_water = timeinwater;
 	}
 	
@@ -400,21 +403,94 @@ public abstract class GameObject {
 	 * 
 	 * @param timeinmagma
 	 * 			the new time in magma of this game object
-	 * @post	The timeinmagma of this game object will be equal to timeinmagma.
-	 * 			| new.getTimeinmagma() = timeinmagma
+	 * @post	The timeinmagma variable of this game object will be equal to the given timeinmagma.
+	 * 			| (new.getTimeinmagma() = timeinmagma)
 	 *  @pre	the timeinmagma parameter must be larger then or equal to zero
-	 * 			| timeinmagma >= 0
+	 * 			| (timeinmagma >= 0)
 	 */
 	private void setTimeInMagma(int timeinmagma){
-		assert( timeinmagma >= 0);
+		assert(timeinmagma >= 0);
 		this.time_in_magma = timeinmagma;
 	}
 	
 	private double time_in_magma;
+	
+	/**
+	 * Gets how long this Mazub will be invincible.
+	 */
+	@Basic
+	public double getTimeInvincible(){
+		return this.time_invincible;
+	}
+	
+	/**
+	 * Sets the time that this Mazub will stay invincible for to the given time.
+	 * 
+	 * @param time
+	 * 			The new time that Mazub is invincible for 
+	 * @post	This Mazub's new time he will be invincible for, will be equal to time
+	 * 			| (new.getTimeInvincible() = time)
+	 * @pre		The time parameter must be larger then or equal to zero.
+	 * 			| (time >= 0)
+	 */
+	private void setTimeInvincible(double time){
+		assert(time >= 0);
+		this.time_invincible = time;
+	}
+	
+	private double time_invincible;
 	 
 	protected abstract void terminate();
 	
-	public abstract void advanceTime(double dt)throws IllegalArgumentException;
+	public abstract void advanceTime(double dt) throws IllegalArgumentException;
+	
+	/**
+	 * Advances the time by a given timestep.
+	 * 
+	 * @param timestep
+	 * 			The amount of seconds to be advanced.
+	 * @effect	The x-position will be advanced using the given time.
+	 * 			| setX(advanceX(timestep))
+	 * @effect	The horizontal velocity will be advanced using the given time.
+	 * 			| setVx(advanceVx(timestep))
+	 * @effect	The y-position will be advanced using the given time.
+	 * 			| setY(advanceY(timestep))
+	 * @effect	The vertical velocity will be advanced using the given time.
+	 * 			| setVy(advanceVy(timestep))
+	 * @effect	The vertical acceleration will be equal to -10 if this Mazub is in mid-air, else it will be 0.
+	 * 			| setAy(advanceAy())
+	 * @effect	The last movement time will be equal to -1 if this Mazub is moving to the left,
+	 * 			1 if this Mazub is moving to the right, and if this Mazub is standing still the absolute value of the
+	 * 			previous last movement time will be decreased by timestep, unless it hits 0, in which case it will stick to 0.
+	 * 			| setLastMove(advanceLastMove(timestep))
+	 * @effect	The animation time will be increased by timestep.
+	 * 			| setAnimationTime(getAnimationTime() + timestep))
+	 * @throws IllegalArgumentException
+	 * 			If timestep isn't a valid time interval to advance the time with.
+	 * 			| !isValidDt(timestep)
+	 */
+	public void advanceTimeStep(double timestep) throws IllegalArgumentException {
+		if (!isValidDt(timestep)) {
+			throw new IllegalArgumentException();
+		}
+		
+		ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
+		if ((collisions.get(0).get(0) == null) && (collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0)
+			|| (collisions.get(1).get(0) == null) && (collisions.get(1).get(1).contains(Feature.ground)) && (getVx() > 0)) 
+				advanceX(timestep);	
+		
+		setVx(advanceVx(timestep));
+		
+		if ((collisions.get(2).get(0) == null) && (collisions.get(2).get(1).contains(Feature.ground)) && (getVy() > 0)
+			|| (collisions.get(3).get(0) == null) && (collisions.get(3).get(1).contains(Feature.ground)) && (getVx() < 0)) 
+			advanceY(timestep);
+		
+		setVy(advanceVy(timestep));
+		setAy(advanceAy());
+		
+		collisionhandle(collisions);
+		setTimeInvincible(advanceTimeInvincible(timestep));
+	}
 	
 	/**
 	 * Checks if a given time is a valid time interval to advance the time with.
@@ -431,13 +507,13 @@ public abstract class GameObject {
 	/**
 	 * Gets the timestep necessary to move this game object pixel by pixel.
 	 * 
-	 * @return	If this game object ax en ay is equal to zero, the result will be the minimum of 4 formulas.
-	 * 			1) 1 divided by the absolute value of, this mazubs horizontal velocity divided by 100.
-	 * 			2) 1 divided by the absolute value of, this mazubs vertical velocity divide by 100.
+	 * @return	If this game object's ax and ay are equal to zero, the result will be the minimum of 4 formulas.
+	 * 			1) 1 divided by the absolute value of, this Mazub's horizontal velocity divided by 100.
+	 * 			2) 1 divided by the absolute value of, this Mazub's vertical velocity divide by 100.
 	 * 			3) the result of computeformula(v,a) with as parameters 
-	 * 				this game object's horizontal accelartion and velocity
+	 * 				this game object's horizontal acceleration and velocity.
 	 * 			4) the result of computeformula(v,a) with as parameters 
-	 * 				this game object's vertical accelartion and velocity
+	 * 				this game object's vertical acceleration and velocity.
 	 * 			| result =  Math.min(computeformula(getVx,getAx)
 	 * 			|				Math.min(computeformula(getVy,getAy),
 	 * 			|					Math.min( 1/Math.abs(getVx()/100),1/Math.abs(getVy()/100)))
@@ -477,7 +553,7 @@ public abstract class GameObject {
 				/helpparameter;
 	}
 	
-	protected abstract void collisionhandle(Object[][] collisions);
+	protected abstract void collisionhandle(ArrayList<List<List<Object>>> collisions);
 	
 	/**
 	 * Returns the new x-position after a given time has passed.
@@ -493,7 +569,7 @@ public abstract class GameObject {
 	 * 			| !isValidDt(dt)
 	 */
 	@Model
-	private void advanceX(double dt) throws IllegalArgumentException {
+	protected void advanceX(double dt) throws IllegalArgumentException {
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();
 		}
@@ -542,7 +618,7 @@ public abstract class GameObject {
 	 * 			| !isValidDt(dt)
 	 */
 	@Model
-	private double advanceVx(double dt) throws IllegalArgumentException, IllegalStateException {
+	protected double advanceVx(double dt) throws IllegalArgumentException, IllegalStateException {
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();
 		}
@@ -567,7 +643,7 @@ public abstract class GameObject {
 	 * 			| !isValidDt(dt)
 	 */
 	@Model
-	private void advanceY(double dt) throws IllegalArgumentException {
+	protected void advanceY(double dt) throws IllegalArgumentException {
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();
 		}
@@ -631,7 +707,7 @@ public abstract class GameObject {
 	 * 			| (newvy == Double.NEGATIVE_INFINITY)
 	 */
 	@Model
-	private double advanceVy(double dt) throws IllegalArgumentException, IllegalStateException {
+	protected double advanceVy(double dt) throws IllegalArgumentException, IllegalStateException {
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();
 		}
@@ -659,19 +735,52 @@ public abstract class GameObject {
 	 * 			|	result = getAy()
 	 */
 	@Model
-	private double advanceAy() {
+	protected double advanceAy() {
 		
-		if (canjump() || (int) getY() == getWorld().getWorldHeight() -1 ) {
+		if (canJump() || (int) getY() <= 0 ) {
 			return 0;
 		} else {
 			return -10;
 		}
 	}
 	
+	/**
+	 * Return the new time this mazub will be invincible for
+	 * 
+	 * @param dt
+	 * 			The period of time wich should be advance, in seconds.
+	 * @return	The current time this mazub will be invinceble for min the given dt 
+	 * 			if this is bigger then or equal to 0 else 0 is returned.
+	 * 			| result = Math.max(0, getTimeInvincible()-dt)
+	 */
+	private double advanceTimeInvincible(double dt){
+		return Math.max(0, getTimeInvincible()-dt);
+	}
+	
+	/**
+	 * Checks whether or not this game object can jump.
+	 * 
+	 * @return	True (by default for any game object).
+	 * 			| result = true
+	 */
+	public boolean canJump() {
+		return true;
+	}
+	
+	/**
+	 * Gets the current sprite of this game object.
+	 * 
+	 * @return	The first image from this game object's image array if it's moving to the left or standing still, else
+	 * 			the second image.
+	 * 			| if (this.getVx() <= 0)
+	 * 			| 	then result = getImages()[0]
+	 * 			| else
+	 * 			| 	then getImages()[1]
+	 */
 	public Sprite getCurrentSprite() {
-		if(this.getVx() <= 0){
-			return images[0];
+		if (this.getVx() <= 0) {
+			return getImages()[0];
 		}
-		return images[1];
+		return getImages()[1];
 	}
 }
