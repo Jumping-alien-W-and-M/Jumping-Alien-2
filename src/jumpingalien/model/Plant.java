@@ -1,83 +1,42 @@
 package jumpingalien.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
 
+/**
+ * @invar 	the lengt of images is equal to two
+ * 			| images.length == 2 
+ *
+ */
 public class Plant extends GameObject {
-	
 	/**
-	 * Gets this plants x-position.
-	 */
-	@Basic
-	public double getX(){
-		return this.x;
-	}
-	
-	/**
-	 * Sets the x-position of this plant.
+	 * Creates a new plant.
 	 * 
 	 * @param x
-	 * 			the new x position of this plant
-	 * @pre		x must be a valid x position
-	 * 			|isvalidx(x)
-	 * @post	the new x position of this plant is equal to x
-	 * 			| new.getX() = x
+	 * 			the x-position of the new plant
+	 * @param y
+	 * 			the y-position of the new plant
+	 * @param images
+	 * 			the new plant's array of sprites
+	 * @effect	This new plant will be initialized as a game object with the given position and 
+	 * 			array of sprites.
+	 * 			| super(x,y,images)
+	 * @effect	This new plant's dead time will be set to zero.
+	 * 			| setDeathTim(0)
+	 * @effect	This new plant's movement time will be set to zero.
+	 * 			| setMovementTime(0)
 	 */
-	private void setX(double x){
-		assert(isValidX(x));
-		this.x = x;
+	public Plant(double x, double y, Sprite[] images){
+		super(x,y,images);
+		
+		setDeathTime(0);
+		setMovementTime(0);
 	}
-	
-	
-	/**
-	 * Checks whether or not x is a valid x-position. 
-	 * 
-	 * @param x
-	 * 			The x-position that which should be checked.
-	 * @return	Returns true if x is between 0 and the world width.
-	 * 			| result = (x >= 0 && x < getWorld().getWorldWidth())
-	 */
-	public boolean isValidX(double x){
-		return(x >= 0 && x < getWorld().getWorldWidth());
-	}
-	
-	private double x;
-	
-	/**
-	 * Gets this plants horizontal velocity.
-	 */
-	@Basic
-	public double getVx(){
-		return this.vx;
-	}
-	
-	/**
-	 * Sets this plants horizontal velocity to vx
-	 * 
-	 * @param vx
-	 * 			the new horizontal velocity of this plant
-	 * @pre		vx must be a valid horizontal velocity
-	 * 			| isValidvx(double vx)
-	 * @post	the new horizontal velocity of this plant is equal to vx
-	 * 			| new.getVx() = vx
-	 */
-	private void setVx(double vx){
-		assert(isValidVx(vx));
-		this.vx = vx;
-	}
-	
-	/**
-	 * Returns whether or not the given vx is a valid horizontal velocity.
-	 * 
-	 * @param vx
-	 * 			The horizontal velocity wich should be checked.
-	 * @return	true if the absolute value of vx is equal to 0.5	
-	 * 			| result = return(Math.abs(vx) == 0.5)
-	 */
-	public boolean isValidVx(double vx){
-		return(Math.abs(vx) == 0.5);
-	}
-	
-	private double vx = 0.5;
+
+
 	
 	/**
 	 * Gets the time this plant is moving in one direction.
@@ -101,7 +60,7 @@ public class Plant extends GameObject {
 	
 	
 	/**
-	 * Gets the time this plant is been dead for.
+	 * Gets the time this plant has been dead for.
 	 */
 	@Basic
 	public double getDeathTime(){
@@ -122,41 +81,37 @@ public class Plant extends GameObject {
 	
 	private double death_time;
 	
-	/**
-	 * Gets the world this plant belongs to
-	 */
-	@Basic
-	public World getWorld(){
-		return this.world;
-	}
 	
-	/**
-	 * Sets this plants world to world.
-	 * @param world
-	 * 			the new world of this plant
-	 * @post	the new world of this plant is equal to world
-	 * 			| new.getWorld() = world
-	 */
-	private void setWorld(World world){
-		this.world = world;
-	}
-	
-	private World world;
 	
 	/**
 	 * Advances the time by a given time period.
 	 * 
 	 * @param dt
 	 * 			The amount of seconds to advance.
-	 * @effect	if the current movement time exceeds 0.5 it will be reduced by 0.5 
-	 * 			and the direction of this plant will be changed
-	 * 			|if(getMovementTime() + dt > 0.5)
-	 *			|	setMovementTime(getMovementTime() +dt - 0.5)
-	 *			|	changeDirection()
-	 *@effect	Advances the DeathTime of this plant.
-	 *			|advanceDeathTime(dt)
-	 *@effect	
+	 * @effect	advances deatthime step by step 
+	 * 			| double timestep = 1 / Math.abs(getVx()/100); 
+	 *			| for(double time = timestep; timestep <= dt; time += timestep)
+	 * 			|   advanceDeathtime(time).
+	 * @effect	advances the x-position of this plant step by step 
+	 * 			if this plant hits a wall or the player it will stop moving in that direction.
+	 *  		| double timestep = 1 / Math.abs(getVx()/100); 
+	 *			| for(double time = timestep; timestep <= dt; time += timestep)
+	 * 			| 	ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this,0);
+	 *			| 	if (canmove(collisions)) 
+	 *			|		advanceX(time);	
+	 * @effect  step by step advances movement time 
+	 *  		| double timestep = 1 / Math.abs(getVx()/100); 
+	 *			| for(double time = timestep; timestep <= dt; time += timestep
+	 * 			| 	advanceMovementTime(time)
+	 * @effect  Checks and deals with collisions in each step.
+	 * 			| double timestep = 1 / Math.abs(getVx()/100); 
+	 *			| for(double time = timestep; timestep <= dt; time += timestep)
+	 *			|		collisionhandle(collisions);
+	 * @throws IllegalArgumentException
+	 * 			If dt is not a valid time interval to advance the time with.
+	 * 			| !isValidDt(dt)
 	 */
+	@Override
 	public void advanceTime(double dt)throws IllegalArgumentException{
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();
@@ -164,74 +119,158 @@ public class Plant extends GameObject {
 		
 		double timestep = 1 / Math.abs(getVx()/100); 
 		for(double time = timestep; timestep <= dt; time += timestep){
-			// collision detect toevoegen
 			advanceDeathTime(time);
-			advanceX(time);
-			if(getMovementTime() + time > 0.5){
-				setMovementTime(getMovementTime() + time - 0.5);
-				changeDirection();			
+			advanceMovementTime(time);
+			
+			ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this,0);
+			if (canmove(collisions)) 
+					advanceX(time);				
+			
+			collisionhandle(collisions);
+		}
+	}	
+	
+	/**
+	 * Advances the time this plant has been dead for with time.
+	 * 
+	 * @param time
+	 * 			The time to increase the death time of this plant with.
+	 * @post	If deathtime is not equal to zero it will be set to the currendeathtime min time.
+	 * 			| if(! (getDeathTime() == 0)){
+	 *			|	this.setDeathTime(getDeathTime() - time);
+	 * @effect	If the new deatthime is lower then or equal to zero this plant will be terminated.
+	 * 			| if(new.getDeathTime() <= 0)
+	 *			| 	terminate();
+	 */
+	private void advanceDeathTime(double time){
+		if(! (getDeathTime() == 0)){
+			this.setDeathTime(getDeathTime() - time);
+			if(getDeathTime() <= 0)
+				terminate();
+		}
+	}
+	
+	/**
+	 * Advances the time this plant has been moving in the same direction.
+	 * 
+	 * @param time
+	 * 			The time to increase the movement time of this plant with.
+	 * @effect	Sets the movement time of this plant to the current movement time plus time.
+	 * 			| setMovementTime(getMovementTime() + time)
+	 * @effect 	If the new movement time is bigger then 0.5 it will be decreased by 0.5 
+	 * 			and the direction of this plant will be changed.
+	 * 			| if(new.getMovementTime() > 0.5)
+	 *			| 	setMovementTime(getMovementTime() - 0.5);
+	 *			| 	changeDirection();			
+	 */
+	private void advanceMovementTime(double time){
+		setMovementTime(getMovementTime() + time);
+		if(getMovementTime() > 0.5){
+			setMovementTime(getMovementTime() - 0.5);
+			changeDirection();			
+		}
+	}
+	
+	/**
+	 * Checks and deals with collisions.
+	 * 
+	 * @param collisions
+	 * 			The result of the collisiondetect methode in World.
+	 * @effect	loops over the elements of collisions 
+	 * 			and if there is a player in it, the method calls collisionhandleplayer() 
+	 * 			|for(int i = 0; i <= 4; i++) {
+	 *			| 	ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
+	 *			| 	for(int j = 0; j < collision_objects.size(); j ++){
+	 *			|		if(collision_objects.get(j) instanceof Mazub)
+	 *			|			collisionhandleplayer((Mazub) collision_objects.get(j));	
+	 */
+	@Override
+	protected void collisionhandle(ArrayList<List<List<Object>>> collisions){
+		for(int i = 0; i <= 4; i++) {
+			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
+			for(int j = 0; j < collision_objects.size(); j ++){
+				if(collision_objects.get(j) instanceof Mazub)
+					collisionhandleplayer((Mazub) collision_objects.get(j));				
 			}
 		}
 	}
 	
 	/**
-	 * Checks if a given time is a valid time interval to advance the time with.
+	 * Handles a collision with the player.
 	 * 
-	 * @param dt
-	 * 			The amount of seconds which should be checked.
-	 * @return	Whether or not dt is in between 0 and 0.2 seconds, exclusively.
-	 * 			| result = ((0 < dt) && (dt < 0.2))
+	 * @param player
+	 * 			The player this plant collides with.
+	 * @effect	The hitpoints of player will be set to the current hitpoints plus 50.
+	 * 			| player.setHitpoints(player.getHitpoints() + 50)
+	 * @effect	This plant is killed
+	 * 			| this.kill()
 	 */
-	public static boolean isValidDt(double dt) {
-		return ((0 < dt) && (dt < 0.2));
+	private void collisionhandleplayer(Mazub player){
+		player.setHitpoints(player.getHitpoints() + 50);
+		this.kill();
 	}
 	
 	/**
-	 * Returns the x-position of this plant after a given time. 
-	 * @param dt
-	 * 			The time to advance.
-	 * @return	The new x-position after dt time has passed.
-	 * 			| result = getXWithinBounds(getX() + GetVx()*dt)
-	 * @throws 	IllegalArgumentException
-	 * 			if dt is not a valid time
-	 * 			| !isValidDt(dt)
-	 */
-	private void advanceX(double dt)throws IllegalArgumentException{
-		if(!isValidDt(dt))
-			throw new IllegalArgumentException();
-		
-		double newx = getX() + getVx()*dt;
-		setXWithinBounds(newx);
-	}
-	
-	/**
-	 * Returns an x-position withing the boundaries of the world and if necessary kills the plant.
+	 * Returns whether or not this plant can move.
 	 * 
-	 * @param x
-	 * 			The x-position which should be converted to a valid one.
-	 * @return	The new x-position if is already was within bound it will be equal to x
-	 * 			| result = Math.max(0, Math.min(x, getWorld().getWorldWidth() - 1))
+	 * @param collisions
+	 * 			The result of the method collisiondetect() in World.
+	 * @return	If this plant stands next to solid ground or the player in his movement direction,
+	 * 			false will be returned. In all other cases true will be returned.
+	 * 			|  if((collisions.get(0).get(1).contains(Feature.ground) && getVx() < 0)
+	 *			|		|| (collisions.get(3).get(1).contains(Feature.ground) && getVx() > 0))
+	 *			|		 return false
+	 *			| ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(0).get(0)		
+	 *			| for(Object object: collision_objects)
+	 *			| 	if(object instanceof Mazub && getVx() < 0)
+	 *			|		return false	
+	 *			| collision_objects = (ArrayList<Object>) collisions.get(3).get(0)
+	 *			| for(Object object: collision_objects)
+	 *			|	if(object instanceof Mazub && getVx() > 0)
+	 *			|		return false		
+	 *			| return true
 	 */
-	private void setXWithinBounds(double x){
-		setX( Math.max(0, Math.min(x, getWorld().getWorldWidth() - 1)));
-		if(x < 0 || x >= getWorld().getWorldWidth())
-			kill();
-	}
-	
-	private void advanceDeathTime(double time){
-		if(getDeathTime() != 0){
-			if (getDeathTime() - time < 0)
-				terminate();
-			else
-				setDeathTime(getDeathTime() - time);
+	private boolean canmove(ArrayList<List<List<Object>>> collisions){
+		 if((collisions.get(0).get(1).contains(Feature.ground) && getVx() < 0)
+			|| (collisions.get(3).get(1).contains(Feature.ground) && getVx() > 0))
+			 return false;
+			 
+		ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(0).get(0);		
+		for(Object object: collision_objects){
+			if(object instanceof Mazub && getVx() < 0)
+				return false;
 		}
+		
+		collision_objects = (ArrayList<Object>) collisions.get(3).get(0);
+		for(Object object: collision_objects){
+			if(object instanceof Mazub && getVx() > 0)
+				return false;
+		}		
+		return true;
 	}
 	
+	/**
+	 * Terminates this plant with a delay of 0.6 seconds.
+	 * 
+	 * @effect	The death time of this plant will we set to 0.6.
+	 * 			| setDeathTime(0.6)
+	 */
 	private void kill(){
 		setDeathTime(0.6);
 	}
 	
-	private void terminate(){
+	/**
+	 * This plant will be removed from the game world.
+	 * 
+	 * @effect	This plant will be removed from the game world.
+	 * 			| getWorld().removePlant(null)
+	 * @effect  The world this plant belongs to will be set to null.
+	 * 			| setWorld(null)
+	 */
+	@Override
+	protected void terminate(){
+		getWorld().removePlant(null);
+		setWorld(null);
 	}
 	
 	
