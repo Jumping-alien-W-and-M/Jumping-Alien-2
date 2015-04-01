@@ -191,30 +191,10 @@ public class Mazub extends GameObject {
 		return (int) Math.floor(getAnimationTime()/getFrameTime());
 	}
 	
-	/**
-	 * Gets the world this Mazub is in.
-	 */
-	@Basic
-	public World getWorld() {
-		return this.world;
-	}
-	
-	/**
-	 * Sets the world this Mazub is in.
-	 * 
-	 * @param world
-	 * 			The world this Mazub should be in.
-	 * @post	This Mazub should be in the given world.
-	 * 			| (getWorld() == world)
-	 */
-	protected void setWorld(World world) {
-		this.world = world;
-	}
-	
 	private World world;
 	
 	/**
-	 * Gets hits mazubs hitpoints.	
+	 * Gets this Mazub's hitpoints.	
 	 */
 	@Basic
 	public int getHitpoints(){
