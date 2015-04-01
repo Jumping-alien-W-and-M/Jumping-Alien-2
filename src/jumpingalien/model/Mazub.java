@@ -54,9 +54,10 @@ public class Mazub extends GameObject {
 	 * 			| new.getLastMove() = 0
 	 */
 	public Mazub(double x, double y, Sprite[] images) {
+		super(x, y, images);
+		
 		assert(images.length >= 10 && images.length%2 == 0);
 		
-		super(x, y, images);
 		setVxmax(3);
 		setLastMove(0);
 	}
@@ -109,16 +110,6 @@ public class Mazub extends GameObject {
 	}
 	
 	private double last_move;
-
-	/**
-	 * Gets the image array of this Mazub.
-	 */
-	@Basic @Immutable
-	public Sprite[] getImages() {
-		return this.images;
-	}
-	
-	private final Sprite[] images;
 	
 	/**
 	 * Gets the amount of frames in this Mazub's running left/right animation.
@@ -209,28 +200,28 @@ public class Mazub extends GameObject {
 	}
 	
 	/**
-	 * Sets the hitpoints of this mazub.
+	 * Sets the hitpoints of this Mazub.
 	 * 
 	 * @param hitpoints
-	 * 			the new number of hitpoints of this mazub
-	 * @post	If hitpoints is larger then or equal to 500 this mazubs hitpoints will be set to 500.
-	 * 			If hitpoints is smaller then or equal to 0 this mazubs hitpoints will be set to 0 
-	 * 				and this mazub will be terminated.
+	 * 			The new number of hitpoints of this Mazub
+	 * @post	If hitpoints is larger then or equal to 500 this Mazub's hitpoints will be set to 500.
+	 * 			If hitpoints is smaller then or equal to 0 this Mazub's hitpoints will be set to 0 
+	 * 				and this Mazub will be terminated.
 	 * 			Else this Mazub's hitpoints will be set to hitpoints.
-	 * 			| if(hitpoints <= 0)
+	 * 			| if (hitpoints <= 0)
 	 *			|	this.hitpoints = 0;
-	 *			| 	this.terminate
-	 *			| else if(hitpoints >= 500)
+	 *			| 	this.terminate()
+	 *			| else if (hitpoints >= 500)
 	 *			|	this.hitpoints = 500;
 	 *			| else
 	 *			|	this.hitpoints = hitpoints;		
 	 */
 	private void setHitpoints(int hitpoints){
-		if(hitpoints <= 0){
+		if (hitpoints <= 0){
 			this.hitpoints = 0;
 			this.terminate();	
 		}
-		else if(hitpoints >= 500) {
+		else if (hitpoints >= 500) {
 			this.hitpoints = 500;
 		} else {
 			this.hitpoints = hitpoints;
@@ -385,21 +376,21 @@ public class Mazub extends GameObject {
 	}
 	
 	/**
-	 * Gets the timestep necessary to move this mazub pixel by pixel.
+	 * Gets the timestep necessary to move this Mazub's pixel by pixel.
 	 * 
-	 * @return	If this mazub ax en ay is equal to zero, the result will be the minimum of 4 formulas.
-	 * 			1) 1 divided by the absolute value of, this mazubs horizontal velocity divided by 100.
-	 * 			2) 1 divided by the absolute value of, this mazubs vertical velocity divide by 100.
-	 * 			3) the result of computeformula(v,a) with as parameters 
-	 * 				this mazubs horizontal accelartion and velocity
-	 * 			4) the result of computeformula(v,a) with as parameters 
-	 * 				this mazubs vertical accelartion and velocity
+	 * @return	If this Mazub's ax and ay is equal to zero, the result will be the minimum of 4 formulas.
+	 * 			1) 1 divided by the absolute value of, this Mazub's horizontal velocity divided by 100.
+	 * 			2) 1 divided by the absolute value of, this Mazub's vertical velocity divide by 100.
+	 * 			3) The result of computeformula(v,a) with as parameters 
+	 * 				this Mazub's horizontal acceleration and velocity
+	 * 			4) The result of computeformula(v,a) with as parameters 
+	 * 				this Mazub's vertical acceleration and velocity
 	 * 			| result =  Math.min(computeformula(getVx,getAx)
 	 * 			|				Math.min(computeformula(getVy,getAy),
-	 * 			|					Math.min( 1/Math.abs(getVx()/100),1/Math.abs(getVy()/100)))
+	 * 			|					Math.min(1/Math.abs(getVx()/100), 1/Math.abs(getVy()/100)))
 	 */
-	private double getTimesstep(){
-		double firstparameter = Math.min( 1/Math.abs(getVx()/100),1/Math.abs(getVy()/100));		
+	private double getTimesstep() {
+		double firstparameter = Math.min(1/Math.abs(getVx()/100), 1/Math.abs(getVy()/100));		
 		double secondparameter = computeformula(getVx(),getAx());		
 		double thirdparameter = computeformula(getVy(),getAy());
 		
