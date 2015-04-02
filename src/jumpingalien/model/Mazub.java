@@ -74,7 +74,7 @@ public class Mazub extends GameObject {
 	 * Sets this Mazub's state of ducking to the given state.
 	 * 
 	 * @param ducking
-	 * 		Whether or not this Mazub should be ducking.
+	 * 			Whether or not this Mazub should be ducking.
 	 * @post	If ducking is true, this Mazub should be ducking, else it shouldn't be.
 	 * 			| new.getDucking() == ducking
 	 */
@@ -191,8 +191,6 @@ public class Mazub extends GameObject {
 		return (int) Math.floor(getAnimationTime()/getFrameTime());
 	}
 	
-	private World world;
-	
 	/**
 	 * Gets this Mazub's hitpoints.	
 	 */
@@ -211,10 +209,10 @@ public class Mazub extends GameObject {
 	 * 				and this Mazub will be terminated.
 	 * 			Else this Mazub's hitpoints will be set to hitpoints.
 	 * 			| if (hitpoints <= 0)
-	 *			|	this.hitpoints = 0;
+	 *			|	this.hitpoints = 0
 	 *			| 	this.terminate()
 	 *			| else if (hitpoints >= 500)
-	 *			|	this.hitpoints = 500;
+	 *			|	this.hitpoints = 500
 	 *			| else
 	 *			|	this.hitpoints = hitpoints;		
 	 */
@@ -232,7 +230,19 @@ public class Mazub extends GameObject {
 	
 	private int hitpoints = 100;
 	
-	protected void terminate(){
+	/**
+	 * Breaks the connection between this Mazub and its world.
+	 * 
+	 * @pre		This Mazub is currently part of a world.
+	 * 			| (getWorld() != null)
+	 * @post	The old world will no longer have a player.
+	 * 			| (new.(this.getWorld()).getPlayer == null)
+	 * @post	This Mazub will no longer be part of a world.
+	 * 			| (new.getWorld() == null)
+	 */
+	protected void terminate() {
+		assert(getWorld() != null);
+		
 		getWorld().setMazub(null);
 		setWorld(null);
 	}
@@ -280,69 +290,8 @@ public class Mazub extends GameObject {
 			
 		}
 	}
-
-	/**
-	 * Checks if a given time is a valid time interval to advance the time with.
-	 * 
-	 * @param dt
-	 * 			The amount of seconds which should be checked.
-	 * @return	Whether or not dt is in between 0 and 0.2 seconds, exclusively.
-	 * 			| result = ((0 < dt) && (dt < 0.2))
-	 */
-	public static boolean isValidDt(double dt) {
-		return ((0 < dt) && (dt < 0.2));
-	}
 	
-	/**
-	 * Gets the timestep necessary to move this Mazub's pixel by pixel.
-	 * 
-	 * @return	If this Mazub's ax and ay is equal to zero, the result will be the minimum of 4 formulas.
-	 * 			1) 1 divided by the absolute value of, this Mazub's horizontal velocity divided by 100.
-	 * 			2) 1 divided by the absolute value of, this Mazub's vertical velocity divide by 100.
-	 * 			3) The result of computeformula(v,a) with as parameters 
-	 * 				this Mazub's horizontal acceleration and velocity
-	 * 			4) The result of computeformula(v,a) with as parameters 
-	 * 				this Mazub's vertical acceleration and velocity
-	 * 			| result =  Math.min(computeformula(getVx,getAx)
-	 * 			|				Math.min(computeformula(getVy,getAy),
-	 * 			|					Math.min(1/Math.abs(getVx()/100), 1/Math.abs(getVy()/100)))
-	 */
-	private double getTimesstep() {
-		double firstparameter = Math.min(1/Math.abs(getVx()/100), 1/Math.abs(getVy()/100));		
-		double secondparameter = computeformula(getVx(),getAx());		
-		double thirdparameter = computeformula(getVy(),getAy());
-		
-		return Math.min(firstparameter,Math.min(secondparameter,thirdparameter));
-	}
-	
-	/**
-	 * Computes a formula for the calculation of timesteps().
-	 * 
-	 * @param v
-	 * 			the velocity to compute the formula with
-	 * @param a
-	 * 			the acceleration to compute the formula with	 * 
-	 * @return	if a is not equal to zero
-	 * 			The square root of two times the absolute value of, a divided by 100, 
-	 * 			plus ,the square of v divide by 100, min the absolute value of, v divided by 100. 
-	 * 			This square root divide by the absolute value of, a divide by 100.
-	 * 			| if a != 0
-	 * 			|	then result = Math.sqrt(2*Math.abs(a / 100) + Math.pow(v,2)/100 - Math.abs(v/100))
-	 *			| 			/Math.abs(a / 100)
-	 *@return 	if a is equal to zero 
-	 *			Double.POSITIVE_INFINITY
-	 *			| if a == 0
-	 *			|  then result = Double.POSITIVE_INFINITY 
-	 */
-	private double computeformula(double v, double a){
-		if(a == 0)
-			return Double.POSITIVE_INFINITY;
-		double helpparameter = Math.abs(a / 100);
-		return Math.sqrt(2*helpparameter + Math.pow(v,2)/100 - Math.abs(v/100))
-				/helpparameter;
-	}
-	
-	protected void collisionhandle(ArrayList<List<List<Object>>> collisions){
+	protected void collisionHandle(ArrayList<List<List<Object>>> collisions){
 		for(int i = 0; i <= 4; i++) {
 			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
 			for(int j = 0; j < collision_objects.size(); j ++){
@@ -527,13 +476,13 @@ public class Mazub extends GameObject {
 	 * Sets this Mazub's ducking state to false and his maximum horizontal velocity to 3, if possible.
 	 * 
 	 * @effect	If this Mazub can stand, the new Mazub's ducking state will be false.
-	 * 			| if (canstand)
+	 * 			| if (canstand())
 	 * 			|	then setDucking(false)
 	 * @effect	If this Mazub can stand, the new Mazub's magnitude of maximal horizontal velocity will be equal to 3.
-	 * 			| if (canstand)
+	 * 			| if (canstand())
 	 * 			|	then setVxmax(3)
 	 * @effect	If this Mazub can't stand, this will be saved.
-	 * 			| if (canstand)
+	 * 			| if (canstand())
 	 * 			|	then setTryStand(true)
 	 */
 	public void endDuck() {
