@@ -216,7 +216,7 @@ public class Mazub extends GameObject {
 	 *			| else
 	 *			|	this.hitpoints = hitpoints;		
 	 */
-	private void setHitpoints(int hitpoints) {
+	void setHitpoints(int hitpoints) {
 		if (hitpoints <= 0){
 			this.hitpoints = 0;
 			this.terminate();	
