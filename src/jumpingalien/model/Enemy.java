@@ -22,6 +22,7 @@ public abstract class Enemy extends GameObject {
 	 * @post	The amount of hitpoints of this enemy is equal to the given hitpoints.
 	 * 			| (new.getHitpoints() == hitpoints)
 	 */
+	@Override
 	protected void setHitpoints(int hitpoints) {
 		this.hitpoints = hitpoints;
 	}

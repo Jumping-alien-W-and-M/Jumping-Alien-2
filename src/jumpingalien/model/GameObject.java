@@ -365,7 +365,7 @@ public abstract class GameObject {
 		return this.hitpoints;
 	}
 	
-	protected abstract void setHitpoints(int hitpoints);
+	protected void setHitpoints(int hitpoints) { }
 	
 	protected int hitpoints;
 	
@@ -813,10 +813,10 @@ public abstract class GameObject {
 		}
 	}
 	
-	protected abstract void collisionHandleMazub(Mazub player);
-	protected abstract void collisionHandleShark(Shark shark);
-	protected abstract void collisionHandlePlant(Plant plant);
-	protected abstract void collisionHandleSlime(Slime slime);
+	protected void collisionHandleMazub(Mazub player) { }
+	protected void collisionHandleShark(Shark shark) { }
+	protected void collisionHandlePlant(Plant plant) { }
+	protected void collisionHandleSlime(Slime slime) { }
 	
 	/**
 	 * Checks whether or not this game object can jump.

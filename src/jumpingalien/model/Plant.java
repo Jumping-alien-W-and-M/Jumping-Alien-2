@@ -102,7 +102,7 @@ public class Plant extends GameObject {
 			if (canmove(collisions)) 
 					advanceX(time);				
 			
-			collisionhandle(collisions);
+			collisionHandle(collisions);
 		}
 	}	
 	
@@ -166,7 +166,7 @@ public class Plant extends GameObject {
 			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
 			for(Object collision_object: collision_objects){
 				if(collision_object instanceof Mazub)
-					collisionhandleplayer((Mazub) collision_object);				
+					collisionHandleplayer((Mazub) collision_object);				
 			}
 		}
 	}
@@ -182,7 +182,7 @@ public class Plant extends GameObject {
 	 * @effect	This plant is killed if it wasn't already killed.
 	 * 			| this.kill()
 	 */
-	private void collisionhandleplayer(Mazub player){
+	private void collisionHandleplayer(Mazub player){
 		if(!(getDeathTime() > 0)){
 			player.setHitpoints(player.getHitpoints() + 50);
 			this.kill();
