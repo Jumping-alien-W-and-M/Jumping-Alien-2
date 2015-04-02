@@ -1,9 +1,37 @@
 package jumpingalien.model;
 
+import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 
-public class Slime extends GameObject {
+public class Slime extends Enemy {
+	
+	public Slime(double x, double y, Sprite[] images) {
+		super(x, y, images, 0.7, 0, 2, 6);
+		setHitpoints(100);
+
+		setVxmax(2.5);
+	}
+	
+	/**
+	 * Sets the world this game object is in.
+	 * 
+	 * @param world
+	 * 			The world this game object should be in.
+	 * @pre		...
+	 * 			| (getSchool() != null)
+	 * @pre		...
+	 * 			| (getSchool().getWorld() == world)
+	 * @effect	...
+	 * 			| super.setWorld(world)
+	 */
+	@Override
+	protected void setWorld(World world) {
+		assert(getSchool() != null);
+		assert(getSchool().getWorld() == world);
+		
+		super.setWorld(world);
+	}
 	
 	/**
 	 * Gets the school this slime is a part of.

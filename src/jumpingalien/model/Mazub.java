@@ -54,7 +54,7 @@ public class Mazub extends GameObject {
 	 * 			| new.getLastMove() = 0
 	 */
 	public Mazub(double x, double y, Sprite[] images) {
-		super(x, y, images);
+		super(x, y, images, 0.9, 1);
 		
 		assert(images.length >= 10 && images.length%2 == 0);
 		
@@ -216,7 +216,8 @@ public class Mazub extends GameObject {
 	 *			| else
 	 *			|	this.hitpoints = hitpoints;		
 	 */
-	void setHitpoints(int hitpoints) {
+	@Override
+	protected void setHitpoints(int hitpoints) {
 		if (hitpoints <= 0){
 			this.hitpoints = 0;
 			this.terminate();	
@@ -291,29 +292,23 @@ public class Mazub extends GameObject {
 		}
 	}
 	
-	protected void collisionHandle(ArrayList<List<List<Object>>> collisions){
-		for(int i = 0; i <= 4; i++) {
-			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
-			for(int j = 0; j < collision_objects.size(); j ++){
-				if(collision_objects.get(j).getClass().toString() == "Shark")
-					collisionhandleshark((Shark) collision_objects.get(j));
-				if(collision_objects.get(j).getClass().toString() == "Plant")
-					collisionhandleplant((Plant) collision_objects.get(j));
-				if(collision_objects.get(j).getClass().toString() == "Slime")
-					collisionhandleslime((Slime) collision_objects.get(j));
-			}
-		}
-	}
-	
-	private void collisionhandleshark(Shark shark) {
+	@Override
+	protected void collisionHandleMazub(Mazub player) {
 		
 	}
 	
-	private void collisionhandleplant(Plant plant) {
+	@Override
+	protected void collisionHandleShark(Shark shark) {
 		
 	}
 	
-	private void collisionhandleslime(Slime slime) {
+	@Override
+	protected void collisionHandlePlant(Plant plant) {
+		
+	}
+	
+	@Override
+	protected void collisionHandleSlime(Slime slime) {
 		
 	}
 	
@@ -426,8 +421,7 @@ public class Mazub extends GameObject {
 	 * 			|	new.getVy() = 8
 	 */
 	public void startJump() {
-		if(canjump())
-			setVy(8);
+		if (canJump()) setVy(8);
 	}
 	
 	/**
@@ -450,7 +444,8 @@ public class Mazub extends GameObject {
 	 *			|		result =  true;
 	 *			| result = false
 	 */
-	public boolean canjump(){
+	@Override
+	public boolean canJump() {
 		for(int x = (int) getX(); x < (int) getX() + getWidth(); x++) {
 			if (getWorld().getFeature(getWorld().getTilePos(x), getWorld().getTilePos((int) Math.round(getY())))
 					== Feature.ground)

@@ -5,15 +5,13 @@ import java.util.List;
 
 import jumpingalien.util.Sprite;
 
-public class Shark extends GameObject {
+public class Shark extends Enemy {
 
 	public Shark(double x, double y, Sprite[] images) {
-		super(x, y, images);
+		super(x, y, images, 1.5, 0, 1, 4);
 		setHitpoints(100);
 
 		setVxmax(4);
-
-		this.axi = 1.5;
 	}
 	
 	/**

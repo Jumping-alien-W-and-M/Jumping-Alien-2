@@ -7,6 +7,35 @@ import be.kuleuven.cs.som.annotate.Basic;
 public class School {
 	
 	/**
+	 * Gets the world this game object is in.
+	 */
+	@Basic
+	public World getWorld() {
+		return this.world;
+	}
+	
+	/**
+	 * Sets the world this game object is in.
+	 * 
+	 * @param world
+	 * 			The world this game object should be in.
+	 * @post	...
+	 * 			| (getWorld() == world)
+	 * @effect	...
+	 * 			| for(Slime slime : slimes)
+	 * 			|	slime.setWorld(world)
+	 */
+	protected void setWorld(World world) {
+		this.world = world;
+		
+		for(Slime slime : slimes) {
+			slime.setWorld(world);
+		}
+	}
+	
+	private World world;
+	
+	/**
 	 * Gets the list of slimes which this school contains.
 	 */
 	@Basic

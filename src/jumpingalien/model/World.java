@@ -188,17 +188,17 @@ public class World {
 	 * 			The X-position which should be converted.
 	 * @return	...
 	 * 			| result = Math.max(0, Math.min(getWorldWidth() - getWindowWidth(),
-	 * 			| 	Math.max(player.getX() + window_margin - getWindowWidth(), Math.min(player.getX() - window_margin, x))
+	 * 			| 	Math.max(getMazub().getX() + window_margin - getWindowWidth(), Math.min(getMazub().getX() - window_margin, x))
 	 * 			| ))
 	 */
 	public int getProperXWindow(int x) {
 		
-		if (x > player.getX() - window_margin) {
+		if (x > getMazub().getX() - window_margin) {
 			// If Mazub is too close to the left wall.
-			x = (int) player.getX() - window_margin;
-		} else if (x + getWindowWidth() < player.getX() + window_margin) {
+			x = (int) getMazub().getX() - window_margin;
+		} else if (x + getWindowWidth() < getMazub().getX() + window_margin) {
 			// If Mazub is too close to the right wall.
-			x = (int) player.getX() + window_margin - getWindowWidth();
+			x = (int) getMazub().getX() + window_margin - getWindowWidth();
 		}
 		
 		return Math.max(0, Math.min(getWorldWidth() - getWindowWidth(), x));
@@ -212,17 +212,17 @@ public class World {
 	 * 			The Y-position which should be converted.
 	 * @return	...
 	 * 			| result = Math.max(0, Math.min(getWorldHeight() - getWindowHeight(),
-	 * 			| 	Math.max(player.getY() + window_margin - getWindowHeight(), Math.min(player.getY() - window_margin, y))
+	 * 			| 	Math.max(getMazub().getY() + window_margin - getWindowHeight(), Math.min(getMazub().getY() - window_margin, y))
 	 * 			| ))
 	 */
 	public int getProperYWindow(int y) {
 		
-		if (y > player.getY() - window_margin) {
+		if (y > getMazub().getY() - window_margin) {
 			// If Mazub is too close to the left wall.
-			y = (int) player.getY() - window_margin;
-		} else if (y + getWindowHeight() < player.getY() + window_margin) {
+			y = (int) getMazub().getY() - window_margin;
+		} else if (y + getWindowHeight() < getMazub().getY() + window_margin) {
 			// If Mazub is too close to the right wall.
-			y = (int) player.getY() + window_margin - getWindowHeight();
+			y = (int) getMazub().getY() + window_margin - getWindowHeight();
 		}
 		
 		return Math.max(0, Math.min(getWorldHeight() - getWindowHeight(), y));
@@ -300,10 +300,10 @@ public class World {
 	 * Checks whether or not this world is terminated.
 	 * 
 	 * @return	...
-	 * 			| result = ((player == null) || (touchesTarget()))
+	 * 			| result = ((getMazub() == null) || (touchesTarget()))
 	 */
 	public boolean isGameOver() {
-		return ((player == null) || (touchesTarget()));
+		return ((getMazub() == null) || (touchesTarget()));
 		
 
 	}
@@ -312,8 +312,8 @@ public class World {
 	 * Checks whether or not this world's player is touching the target tile.
 	 * 
 	 * @return	...
-	 * 			| for(x = player.getX(); x <= player.getX() + player.getWidth(); x += player.getWidth())
-	 * 			|	for(y = player.getY(); y <= player.getY() + player.getHeight(); y += player.getHeight())
+	 * 			| for(x = getMazub().getX(); x <= getMazub().getX() + getMazub().getWidth(); x += getMazub().getWidth())
+	 * 			|	for(y = getMazub().getY(); y <= getMazub().getY() + getMazub().getHeight(); y += getMazub().getHeight())
 	 * 			| 		if ((x >= getXTarget()) && (x < getXTarget() + getTileSize())
 	 * 			|			&& (y >= getYTarget()) && (y < getYTarget() + getTileSize()))
 	 * 			|			result = true
@@ -321,8 +321,8 @@ public class World {
 	 */
 	private boolean touchesTarget() {
 		
-		for(int x = (int) player.getX(); x <= player.getX() + player.getWidth(); x += player.getWidth()) {
-			for(int y = (int) player.getY(); y <= player.getY() + player.getHeight(); y += player.getHeight()) {
+		for(int x = (int) getMazub().getX(); x <= getMazub().getX() + getMazub().getWidth(); x += getMazub().getWidth()) {
+			for(int y = (int) getMazub().getY(); y <= getMazub().getY() + getMazub().getHeight(); y += getMazub().getHeight()) {
 				if ((getTilePos(x) == getXTarget())
 						&& (getTilePos(y) == getYTarget())) {
 					return true;
@@ -346,17 +346,24 @@ public class World {
 	}
 	
 	/**
+	 * Gets the player inhabiting this world.
+	 */
+	public Mazub getMazub() {
+		return this.player;
+	}
+	
+	/**
 	 * Connects a given player with a this world, and vice versa.
 	 * 
 	 * @param player
 	 * 			The player which should be associated with the world.
 	 * @post	...
-	 * 			| (getPlayer() == player)
+	 * 			| (getMazub() == player)
 	 * @effect	...
 	 * 			| if (player != null)
 	 * 			| 	then player.setWorld(this)
 	 */
-	public void setMazub(Mazub player) {
+	protected void setMazub(Mazub player) {
 		this.player = player;
 		if (player != null) player.setWorld(this);
 	}
@@ -371,24 +378,204 @@ public class World {
 		return this.sharks;
 	}
 	
+	/**
+	 * Adds a given shark to this world's list of sharks.
+	 * 
+	 * @param shark
+	 * 			The shark which should be added.
+	 * @pre		...
+	 * 			| (shark != null)
+	 * @pre		...
+	 * 			| (!(hasAsShark(shark)))
+	 * @effect	...
+	 * 			| getSharks().add(shark)
+	 * @effect	...
+	 * 			| shark.setWorld(this)
+	 */
+	protected void addShark(Shark shark) {
+		assert(shark != null);
+		assert(!(hasAsShark(shark)));
+		
+		getSharks().add(shark);
+		shark.setWorld(this);
+	}
+	
+	/**
+	 * Checks whether or not the given shark is part of this world.
+	 * 
+	 * @param shark
+	 * 			The shark whose participation in this world should be checked.
+	 * @pre		...
+	 * 			| (shark != null)
+	 * @return	...
+	 * 			| result = getSharks().contains(shark)
+	 */
+	public boolean hasAsShark(Shark shark) {
+		assert(shark != null);
+		
+		return getSharks().contains(shark);
+	}
+	
+	/**
+	 * Removes the given shark from this world's list of sharks.
+	 * 
+	 * @param shark
+	 * 			The shark which should be removed.
+	 * @pre		...
+	 * 			| (shark != null)
+	 * @pre		...
+	 * 			| (hasAsShark(shark))
+	 * @effect	...
+	 * 			| getSharks().remove(shark)
+	 * @effect	...
+	 * 			| shark.setWorld(null)
+	 */
+	protected void removeShark(Shark shark) {
+		assert(shark != null);
+		assert(hasAsShark(shark));
+		
+		getSharks().remove(shark);
+		shark.setWorld(null);
+	}
+	
 	private final ArrayList<Shark> sharks = new ArrayList<Shark>();
 	
 	/**
-	 * Gets the list of sharks in this world.
+	 * Gets the list of plants in this world.
 	 */
 	@Basic @Immutable
 	public ArrayList<Plant> getPlants() {
 		return this.plants;
 	}
+	
+	/**
+	 * Adds a given plant to this world's list of plants.
+	 * 
+	 * @param plant
+	 * 			The plant which should be added.
+	 * @pre		...
+	 * 			| (plant != null)
+	 * @pre		...
+	 * 			| (!(hasAsPlant(plant)))
+	 * @effect	...
+	 * 			| getPlants().add(plant)
+	 * @effect	...
+	 * 			| plant.setWorld(this)
+	 */
+	protected void addPlant(Plant plant) {
+		assert(plant != null);
+		assert(!(hasAsPlant(plant)));
+		
+		getPlants().add(plant);
+		plant.setWorld(this);
+	}
+	
+	/**
+	 * Checks whether or not the given plant is part of this world.
+	 * 
+	 * @param plant
+	 * 			The plant whose participation in this world should be checked.
+	 * @pre		...
+	 * 			| (plant != null)
+	 * @return	...
+	 * 			| result = getPlants().contains(plant)
+	 */
+	public boolean hasAsPlant(Plant plant) {
+		assert(plant != null);
+		
+		return getPlants().contains(plant);
+	}
+	
+	/**
+	 * Removes the given plant from this world's list of plants.
+	 * 
+	 * @param plant
+	 * 			The plant which should be removed.
+	 * @pre		...
+	 * 			| (plant != null)
+	 * @pre		...
+	 * 			| (hasAsPlant(plant))
+	 * @effect	...
+	 * 			| getPlants().remove(plant)
+	 * @effect	...
+	 * 			| plant.setWorld(null)
+	 */
+	protected void removePlant(Plant plant) {
+		assert(plant != null);
+		assert(hasAsPlant(plant));
+		
+		getPlants().remove(plant);
+		plant.setWorld(null);
+	}
 
 	private final ArrayList<Plant> plants = new ArrayList<Plant>();
 	
 	/**
-	 * Gets the list of sharks in this world.
+	 * Gets the list of schools in this world.
 	 */
 	@Basic @Immutable
 	public ArrayList<School> getSchools() {
 		return this.schools;
+	}
+	
+	/**
+	 * Adds a given school to this world's list of schools.
+	 * 
+	 * @param school
+	 * 			The school which should be added.
+	 * @pre		...
+	 * 			| (school != null)
+	 * @pre		...
+	 * 			| (!(hasAsSchool(school)))
+	 * @effect	...
+	 * 			| getSchools().add(school)
+	 * @effect	...
+	 * 			| school.setWorld(this)
+	 */
+	protected void addSchool(School school) {
+		assert(school != null);
+		assert(!(hasAsSchool(school)));
+		
+		getSchools().add(school);
+		school.setWorld(this);
+	}
+	
+	/**
+	 * Checks whether or not the given school is part of this world.
+	 * 
+	 * @param school
+	 * 			The school whose participation in this world should be checked.
+	 * @pre		...
+	 * 			| (school != null)
+	 * @return	...
+	 * 			| result = getSchools().contains(school)
+	 */
+	public boolean hasAsSchool(School school) {
+		assert(school != null);
+		
+		return getSchools().contains(school);
+	}
+	
+	/**
+	 * Removes the given school from this world's list of schools.
+	 * 
+	 * @param school
+	 * 			The school which should be removed.
+	 * @pre		...
+	 * 			| (school != null)
+	 * @pre		...
+	 * 			| (hasAsSchool(school))
+	 * @effect	...
+	 * 			| getSchools().remove(school)
+	 * @effect	...
+	 * 			| school.setWorld(null)
+	 */
+	protected void removeSchool(School school) {
+		assert(school != null);
+		assert(hasAsSchool(school));
+		
+		getSchools().remove(school);
+		school.setWorld(null);
 	}
 	
 	private final ArrayList<School> schools = new ArrayList<School>();
@@ -461,17 +648,19 @@ public class World {
 															);
 		
 		// Checks collisions with the player, sharks, slimes and plants
-		collisionDetectObject(object, player, custom_height, collisions);
-		for(Shark shark : sharks) {
-			collisionDetectObject(object, shark, custom_height, collisions);
-		}
-		for(School school : schools) {
-			for(Slime slime : school.getSlimes()) {
-				collisionDetectObject(object, slime, custom_height, collisions);
+		collisionDetectObject(object, getMazub(), custom_height, collisions);
+		if (!(object instanceof Plant)) {
+			for(Shark shark : sharks) {
+				collisionDetectObject(object, shark, custom_height, collisions);
 			}
-		}
-		for(Plant plant : plants) {
-			collisionDetectObject(object, plant, custom_height, collisions);
+			for(School school : schools) {
+				for(Slime slime : school.getSlimes()) {
+					collisionDetectObject(object, slime, custom_height, collisions);
+				}
+			}
+			for(Plant plant : plants) {
+				collisionDetectObject(object, plant, custom_height, collisions);
+			}
 		}
 		
 		// Checks collisions with features
@@ -487,7 +676,7 @@ public class World {
 	private void collisionDetectObject(GameObject object1, GameObject object2, int custom_height, 
 										ArrayList<List<List<Object>>> collision_objects)  {
 		
-		if (object1 == object2 || ((object1 instanceof Plant) && (object2 instanceof Plant))) {
+		if (object1 == object2) {
 			return;
 		}
 		

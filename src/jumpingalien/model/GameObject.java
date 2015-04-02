@@ -10,10 +10,12 @@ import jumpingalien.util.Sprite;
 
 public abstract class GameObject {
 	
-	public GameObject(double x, double y, Sprite[] images){
+	public GameObject(double x, double y, Sprite[] images, double axi, double vxi){
 		setX(x);
 		setY(y);
 		this.images = images;
+		this.axi = axi;
+		this.vxi = axi;
 		
 		setVx(0);
 		setVy(0);
@@ -156,7 +158,7 @@ public abstract class GameObject {
 		return this.vxi;
 	}
 
-	private final double vxi = 1;
+	private final double vxi;
 	
 	/**
 	 * Sets this game object's maximal horizontal velocity to a given vxmax.
@@ -243,20 +245,20 @@ public abstract class GameObject {
 	 * 			| result = ((ax == 0) || (ax == axi) || (ax = -axi))
 	 */
 	public boolean isValidAx(double ax) {
-		return ((ax == 0) || (ax == axi) || (ax == -axi));
+		return ((ax == 0) || (ax == getAxi()) || (ax == -getAxi()));
 	}
 	
 	private double ax;
 	
 	/**
-	 * Gets the horizontal initial acceleration
+	 * Gets the horizontal initial acceleration.
 	 */
 	@Basic
 	protected double getAxi() {
 		return this.axi;
 	}
 	
-	private double axi = 0.9;
+	protected final double axi;
 	
 	/**
 	 * Gets the vertical acceleration of this game object.
@@ -359,13 +361,45 @@ public abstract class GameObject {
 	 * Gets hits game object hitpoints.	
 	 */
 	@Basic
-	public int getHitpoints(){
+	public int getHitpoints() {
 		return this.hitpoints;
 	}
 	
-	protected abstract void setHitpoints();
+	protected abstract void setHitpoints(int hitpoints);
 	
-	private int hitpoints;
+	protected int hitpoints;
+	
+	/**
+	 * Gets the time this game object has been dead for.
+	 */
+	@Basic
+	public double getDeathTime(){
+		return this.death_time;
+	}
+	
+	/**
+	 * Sets the time this game object has been dead for.
+	 * 
+	 * @param deathtime
+	 * 			The new time this game object has been dead for.
+	 * @post	The new time this game object has been dead for is equal to the given death time.
+	 * 			| new.getDeathTime() = deathtime 
+	 */	
+	protected void setDeathTime(double deathtime){
+		this.death_time = deathtime;
+	}
+	
+	/**
+	 * Terminates this plant with a delay of 0.6 seconds.
+	 * 
+	 * @effect	The death time of this plant will we set to 0.6.
+	 * 			| setDeathTime(0.6)
+	 */
+	protected void kill(){
+		setDeathTime(0.6);
+	}
+	
+	private double death_time = 0;
 	
 	/**
 	 * Gets this game object time in water.
@@ -445,7 +479,7 @@ public abstract class GameObject {
 	public abstract void advanceTime(double dt) throws IllegalArgumentException;
 	
 	/**
-	 * Advances the time by a given timestep.
+	 * Advances the time by a given timestep for this game object.
 	 * 
 	 * @param timestep
 	 * 			The amount of seconds to be advanced.
@@ -457,22 +491,16 @@ public abstract class GameObject {
 	 * 			| setY(advanceY(timestep))
 	 * @effect	The vertical velocity will be advanced using the given time.
 	 * 			| setVy(advanceVy(timestep))
-	 * @effect	The vertical acceleration will be equal to -10 if this Mazub is in mid-air, else it will be 0.
+	 * @effect	The vertical acceleration will be equal to -10 if this game object is in mid-air, else it will be 0.
 	 * 			| setAy(advanceAy())
-	 * @effect	The last movement time will be equal to -1 if this Mazub is moving to the left,
-	 * 			1 if this Mazub is moving to the right, and if this Mazub is standing still the absolute value of the
+	 * @effect	The last movement time will be equal to -1 if this game object is moving to the left,
+	 * 			1 if this game object is moving to the right, and if this game object is standing still the absolute value of the
 	 * 			previous last movement time will be decreased by timestep, unless it hits 0, in which case it will stick to 0.
 	 * 			| setLastMove(advanceLastMove(timestep))
 	 * @effect	The animation time will be increased by timestep.
 	 * 			| setAnimationTime(getAnimationTime() + timestep))
-	 * @throws IllegalArgumentException
-	 * 			If timestep isn't a valid time interval to advance the time with.
-	 * 			| !isValidDt(timestep)
 	 */
-	public void advanceTimeStep(double timestep) throws IllegalArgumentException {
-		if (!isValidDt(timestep)) {
-			throw new IllegalArgumentException();
-		}
+	public void advanceTimeStep(double timestep) {
 		
 		ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
 		if ((collisions.get(0).get(0) == null) && (collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0)
@@ -488,7 +516,7 @@ public abstract class GameObject {
 		setVy(advanceVy(timestep));
 		setAy(advanceAy());
 		
-		collisionhandle(collisions);
+		collisionHandle(collisions);
 		setTimeInvincible(advanceTimeInvincible(timestep));
 	}
 	
@@ -552,8 +580,6 @@ public abstract class GameObject {
 		return Math.sqrt(2*helpparameter + Math.pow(v,2)/100 - Math.abs(v/100))
 				/helpparameter;
 	}
-	
-	protected abstract void collisionhandle(ArrayList<List<List<Object>>> collisions);
 	
 	/**
 	 * Returns the new x-position after a given time has passed.
@@ -770,13 +796,36 @@ public abstract class GameObject {
 	}
 	
 	/**
+	 * Handles the collisions
+	 * 
+	 * @param collisions
+	 */
+	protected void collisionHandle(ArrayList<List<List<Object>>> collisions){
+		for(int i = 0; i <= 4; i++) {
+			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
+			
+			for(Object object : collision_objects) {
+				if (object instanceof Mazub) collisionHandleMazub((Mazub) object);
+				if (object instanceof Shark) collisionHandleShark((Shark) object);
+				if (object instanceof Plant) collisionHandlePlant((Plant) object);
+				if (object instanceof Slime) collisionHandleSlime((Slime) object);
+			}
+		}
+	}
+	
+	protected abstract void collisionHandleMazub(Mazub player);
+	protected abstract void collisionHandleShark(Shark shark);
+	protected abstract void collisionHandlePlant(Plant plant);
+	protected abstract void collisionHandleSlime(Slime slime);
+	
+	/**
 	 * Checks whether or not this game object can jump.
 	 * 
-	 * @return	True (by default for any game object).
-	 * 			| result = true
+	 * @return	False (by default for any game object).
+	 * 			| result = false
 	 */
 	public boolean canJump() {
-		return true;
+		return false;
 	}
 	
 	/**

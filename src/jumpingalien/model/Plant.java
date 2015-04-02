@@ -24,23 +24,18 @@ public class Plant extends GameObject {
 	 * @effect	This new plant will be initialized as a game object with the given position and 
 	 * 			array of sprites.
 	 * 			| super(x,y,images)
-	 * @effect	This new plant's dead time will be set to zero.
-	 * 			| setDeathTim(0)
 	 * @effect	This new plant's movement time will be set to zero.
 	 * 			| setMovementTime(0)
 	 * @effect	This new plant's horizontal movement is set to 0.5.
 	 * 			| setVx(0.5)
 	 */
 	public Plant(double x, double y, Sprite[] images){
-		super(x,y,images);
+		super(x, y, images, 0, 0.5);
 		
-		setDeathTime(0);
 		setMovementTime(0);
 		
 		setVx(0.5);
 	}
-
-
 	
 	/**
 	 * Gets the time this plant is moving in one direction.
@@ -58,36 +53,11 @@ public class Plant extends GameObject {
 	 * @post 	The new movement time of this plant is equal to movement_time
 	 * 			| new.getMovementTime() = movement_time
 	 */
-	private void setMovementTime(double movement_time){
+	protected void setMovementTime(double movement_time){
 		this.movement_time = movement_time;
 	}
 	
 	private double movement_time;
-	
-	
-	/**
-	 * Gets the time this plant has been dead for.
-	 */
-	@Basic
-	public double getDeathTime(){
-		return this.death_time;
-	}
-	
-	/**
-	 * Sets the time this plant has been dead for.
-	 * 
-	 * @param deathtime
-	 * 			The new time this plant has been dead for.
-	 * @post	The new time this plant has been dead for is equal to deathtime.
-	 * 			| new.getDeathTime() = deathtime 
-	 */	
-	private void setDeathTime(double deathtime){
-		this.death_time = deathtime;
-	}
-	
-	private double death_time;
-	
-	
 	
 	/**
 	 * Advances the time by a given time period.
@@ -123,12 +93,12 @@ public class Plant extends GameObject {
 			throw new IllegalArgumentException();
 		}
 		
-		double timestep = 1 / Math.abs(getVx()/100); 
-		for(double time = timestep; timestep <= dt; time += timestep){
+		double timestep = 1/Math.abs(getVx()/100); 
+		for(double time = timestep; timestep <= dt; time += timestep) {
 			advanceDeathTime(time);
 			advanceMovementTime(time);
 			
-			ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this,0);
+			ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
 			if (canmove(collisions)) 
 					advanceX(time);				
 			
@@ -191,7 +161,7 @@ public class Plant extends GameObject {
 	 *			|			collisionhandleplayer((Mazub) collision_object);	
 	 */
 	@Override
-	protected void collisionhandle(ArrayList<List<List<Object>>> collisions){
+	protected void collisionHandle(ArrayList<List<List<Object>>> collisions){
 		for(int i = 0; i <= 4; i++) {
 			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
 			for(Object collision_object: collision_objects){
@@ -213,7 +183,7 @@ public class Plant extends GameObject {
 	 * 			| this.kill()
 	 */
 	private void collisionhandleplayer(Mazub player){
-		if(! (getDeathTime() > 0)){
+		if(!(getDeathTime() > 0)){
 			player.setHitpoints(player.getHitpoints() + 50);
 			this.kill();
 		}
@@ -259,16 +229,6 @@ public class Plant extends GameObject {
 	}
 	
 	/**
-	 * Terminates this plant with a delay of 0.6 seconds.
-	 * 
-	 * @effect	The death time of this plant will we set to 0.6.
-	 * 			| setDeathTime(0.6)
-	 */
-	private void kill(){
-		setDeathTime(0.6);
-	}
-	
-	/**
 	 * This plant will be removed from the game world.
 	 * 
 	 * @effect	This plant will be removed from the game world.
@@ -277,7 +237,7 @@ public class Plant extends GameObject {
 	 * 			| setWorld(null)
 	 */
 	@Override
-	protected void terminate(){
+	protected void terminate() {
 		getWorld().removePlant(null);
 		setWorld(null);
 	}
