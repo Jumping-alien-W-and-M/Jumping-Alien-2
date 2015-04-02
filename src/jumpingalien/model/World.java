@@ -480,7 +480,7 @@ public class World {
 		return collisions; 
 	}
 	
-	private void collisionDetectObject(GameObject object1, GameObject object2, ArrayList<List<List<Object>>> collision_objects)  {
+	protected void collisionDetectObject(GameObject object1, GameObject object2, ArrayList<List<List<Object>>> collision_objects)  {
 		
 		if (object1 == object2) {
 			return;
@@ -496,7 +496,7 @@ public class World {
 		
 	}
 	
-	private void collisionDetectFeature(GameObject object, int x, int y, ArrayList<List<List<Object>>> collision_objects)  {
+	protected void collisionDetectFeature(GameObject object, int x, int y, ArrayList<List<List<Object>>> collision_objects)  {
 		
 		Feature feature = getFeature(x, y);
 		if (feature == Feature.air) {
