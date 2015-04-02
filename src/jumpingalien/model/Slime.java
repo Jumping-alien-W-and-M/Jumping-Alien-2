@@ -22,7 +22,7 @@ public class Slime extends GameObject {
 	 * 			| (school != null)
 	 * @post	The slime's old school shall no longer contain this slime, if this slime had an old school.
 	 * 			| if (getSchool() != null)
-	 * 			|	then (new (getSchool().hasAsSlime(this)) == false)
+	 * 			|	then (new.(this.getSchool()).hasAsSlime(this)) == false)
 	 * @post	The slime's new school is the given school.
 	 * 			| new.getSchool() == school
 	 * @post	The slime's new school contains this slime.

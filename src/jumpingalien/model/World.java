@@ -288,6 +288,15 @@ public class World {
 	private int window_height;
 	
 	/**
+	 * Gets the factor which translates pixels to meters.
+	 */
+	public static int getScalingFactor() {
+		return scaling_factor;
+	}
+	
+	private static final int scaling_factor = 100;
+	
+	/**
 	 * Checks whether or not this world is terminated.
 	 * 
 	 * @return	...
@@ -337,24 +346,19 @@ public class World {
 	}
 	
 	/**
-	 * Connects a given player with a given world, and vice versa.
+	 * Connects a given player with a this world, and vice versa.
 	 * 
-	 * @param world
-	 * 			The world which should be associated with the player.
 	 * @param player
 	 * 			The player which should be associated with the world.
-	 * @pre		...
-	 * 			| (world != null)
 	 * @post	...
-	 * 			| (world.getPlayer() == player)
+	 * 			| (getPlayer() == player)
 	 * @effect	...
-	 * 			| player.setWorld(world)
+	 * 			| if (player != null)
+	 * 			| 	then player.setWorld(this)
 	 */
-	public static void setMazub(World world, Mazub player) {
-		assert(world != null);
-		
-		world.player = player;
-		player.setWorld(world);
+	public void setMazub(Mazub player) {
+		this.player = player;
+		if (player != null) player.setWorld(this);
 	}
 	
 	private Mazub player;
@@ -449,7 +453,7 @@ public class World {
 	 * @return	...
 	 * 			| FORMELE SPECIFICATIES AANVULLEN HIER
 	 */
-	public ArrayList<List<List<Object>>> collisionDetect(GameObject object) {
+	public ArrayList<List<List<Object>>> collisionDetect(GameObject object, int custom_height) {
 		
 		ArrayList<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>(
 																Collections.nCopies(4, 
@@ -457,32 +461,33 @@ public class World {
 															);
 		
 		// Checks collisions with the player, sharks, slimes and plants
-		collisionDetectObject(object, player, collisions);
+		collisionDetectObject(object, player, custom_height, collisions);
 		for(Shark shark : sharks) {
-			collisionDetectObject(object, shark, collisions);
+			collisionDetectObject(object, shark, custom_height, collisions);
 		}
 		for(School school : schools) {
 			for(Slime slime : school.getSlimes()) {
-				collisionDetectObject(object, slime, collisions);
+				collisionDetectObject(object, slime, custom_height, collisions);
 			}
 		}
 		for(Plant plant : plants) {
-			collisionDetectObject(object, plant, collisions);
+			collisionDetectObject(object, plant, custom_height, collisions);
 		}
 		
 		// Checks collisions with features
 		for(int i = 0; i < getWorldWidth(); i += getTileSize()) {
 			for(int j = 0; j < getWorldWidth(); j += getTileSize()) {
-				collisionDetectFeature(object, i, j, collisions);
+				collisionDetectFeature(object, i, j, custom_height, collisions);
 			}
 		}
 		
 		return collisions; 
 	}
 	
-	private void collisionDetectObject(GameObject object1, GameObject object2, ArrayList<List<List<Object>>> collision_objects)  {
+	private void collisionDetectObject(GameObject object1, GameObject object2, int custom_height, 
+										ArrayList<List<List<Object>>> collision_objects)  {
 		
-		if (object1 == object2) {
+		if (object1 == object2 || ((object1 instanceof Plant) && (object2 instanceof Plant))) {
 			return;
 		}
 		
@@ -492,31 +497,43 @@ public class World {
 		int x2 = x1 + object2.getWidth();
 		int y2 = y1 + object2.getHeight();
 		
-		collisionDetectBasic(object1, x1, y1, x2, y2, object2, 0, collision_objects);
+		collisionDetectBasic(object1, x1, y1, x2, y2, object2, 0, custom_height, collision_objects);
 		
 	}
 	
-	private void collisionDetectFeature(GameObject object, int x, int y, ArrayList<List<List<Object>>> collision_objects)  {
+	private void collisionDetectFeature(GameObject object, int x, int y, int custom_height, 
+										ArrayList<List<List<Object>>> collision_objects)  {
 		
 		Feature feature = getFeature(x, y);
 		if (feature == Feature.air) {
 			return;
 		}
 		
-		collisionDetectBasic(object, x, y, x + getTileSize(), y + getTileSize(), feature, 1, collision_objects);
+		collisionDetectBasic(object, x, y, x + getTileSize(), y + getTileSize(), feature, 1, custom_height, collision_objects);
 		
 	}
 	
-	private void collisionDetectBasic(GameObject object1, int sx1, int sy1, int sx2, int sy2,
-									Object object2, int index, ArrayList<List<List<Object>>> collision_objects) {
+	private void collisionDetectBasic(GameObject object1, int sx1, int sy1, int sx2, int sy2, Object object2, int index,
+										int custom_height, ArrayList<List<List<Object>>> collision_objects) {
 		
 		// Defining temporary variables
 		int mx1 = (int) object1.getX();
 		int my1 = (int) object1.getY();
 		int mx2 = mx1 + object1.getWidth();
-		int my2 = my1 + object1.getHeight();
+		int my2 = my1;
+		if (custom_height == 0) {
+			my2 += object1.getHeight();
+		} else {
+			my2 += custom_height;
+		}
 		
+		// Returns collisions in order: left, up, right, down
 		int[] overlaps = {sx2 - mx1, mx2 - sx1, sy2 - my1, my2 - sy1};
+		for(int i = 0; i < 4; i++) {
+			if (overlaps[i] < 1) {
+				return;
+			}
+		}
 		for(int i = 0; i < 4; i++) {
 			if (overlaps[i] == 1) {
 				collision_objects.get(i).get(index).add(object2);

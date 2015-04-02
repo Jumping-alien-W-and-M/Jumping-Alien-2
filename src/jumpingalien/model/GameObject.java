@@ -518,7 +518,7 @@ public abstract class GameObject {
 	 * 			|				Math.min(computeformula(getVy,getAy),
 	 * 			|					Math.min( 1/Math.abs(getVx()/100),1/Math.abs(getVy()/100)))
 	 */
-	private double getTimesstep(){
+	public double getTimesstep(){
 		double firstparameter = Math.min( 1/Math.abs(getVx()/100),1/Math.abs(getVy()/100));		
 		double secondparameter = computeformula(getVx(),getAx());		
 		double thirdparameter = computeformula(getVy(),getAy());
@@ -545,7 +545,7 @@ public abstract class GameObject {
 	 *			| if a == 0
 	 *			|  then result = Double.POSITIVE_INFINITY 
 	 */
-	private double computeformula(double v, double a){
+	public double computeformula(double v, double a){
 		if(a == 0)
 			return Double.POSITIVE_INFINITY;
 		double helpparameter = Math.abs(a / 100);
@@ -597,13 +597,25 @@ public abstract class GameObject {
 		terminate();
 		setX(Math.max(0, Math.min(getWorld().getWorldWidth() - 1, x)));
 	}
-	
+
+	/**
+	 * Calculates the maximal change in x-position within a given period of time.
+	 * Currently also used to calculate the actual change in x-position within a given period of time.
+	 * 
+	 * @param dt
+	 * 			The period of time which should be advanced.
+	 * @return	The maximal change in x-position using dt, in pixels.
+	 * 			| result = 100*(getVx()*dt + getAx()*Math.pow(dt, 2)/2)
+	 * @throws IllegalArgumentException
+	 * 			If dt isn't a valid time interval to advance the time with.
+	 * 			| !isValidDt(dt)
+	 */
 	private double maxAdvanceX(double dt) throws IllegalArgumentException {
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();
 		}
 		
-		return 100*(getVx()*dt + getAx()*Math.pow(dt, 2)/2);
+		return World.getScalingFactor()*(getVx()*dt + getAx()*Math.pow(dt, 2)/2);
 	}
 	
 	/**
@@ -689,7 +701,7 @@ public abstract class GameObject {
 			throw new IllegalArgumentException();
 		}
 		
-		return 100*(getVy()*dt + getAy()*Math.pow(dt, 2)/2);
+		return World.getScalingFactor()*(getVy()*dt + getAy()*Math.pow(dt, 2)/2);
 	}
 	
 	/**
