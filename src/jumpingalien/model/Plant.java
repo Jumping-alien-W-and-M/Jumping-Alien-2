@@ -28,12 +28,16 @@ public class Plant extends GameObject {
 	 * 			| setDeathTim(0)
 	 * @effect	This new plant's movement time will be set to zero.
 	 * 			| setMovementTime(0)
+	 * @effect	This new plant's horizontal movement is set to 0.5.
+	 * 			| setVx(0.5)
 	 */
 	public Plant(double x, double y, Sprite[] images){
 		super(x,y,images);
 		
 		setDeathTime(0);
 		setMovementTime(0);
+		
+		setVx(0.5);
 	}
 
 
@@ -51,6 +55,8 @@ public class Plant extends GameObject {
 	 * 
 	 * @param movement_time
 	 * 				the new movement time of this plant
+	 * @post 	The new movement time of this plant is equal to movement_time
+	 * 			| new.getMovementTime() = movement_time
 	 */
 	private void setMovementTime(double movement_time){
 		this.movement_time = movement_time;
@@ -93,7 +99,7 @@ public class Plant extends GameObject {
 	 *			| for(double time = timestep; timestep <= dt; time += timestep)
 	 * 			|   advanceDeathtime(time).
 	 * @effect	advances the x-position of this plant step by step 
-	 * 			if this plant hits a wall or the player it will stop moving in that direction.
+	 * 			if this plant hits a wall or the player it will not move in that direction.
 	 *  		| double timestep = 1 / Math.abs(getVx()/100); 
 	 *			| for(double time = timestep; timestep <= dt; time += timestep)
 	 * 			| 	ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this,0);
@@ -134,7 +140,7 @@ public class Plant extends GameObject {
 	 * Advances the time this plant has been dead for with time.
 	 * 
 	 * @param time
-	 * 			The time to increase the death time of this plant with.
+	 * 			The time to decrease the death time of this plant with.
 	 * @post	If deathtime is not equal to zero it will be set to the currendeathtime min time.
 	 * 			| if(! (getDeathTime() == 0)){
 	 *			|	this.setDeathTime(getDeathTime() - time);
@@ -175,22 +181,22 @@ public class Plant extends GameObject {
 	 * Checks and deals with collisions.
 	 * 
 	 * @param collisions
-	 * 			The result of the collisiondetect methode in World.
+	 * 			The result of the collisiondetect method in World.
 	 * @effect	loops over the elements of collisions 
 	 * 			and if there is a player in it, the method calls collisionhandleplayer() 
 	 * 			|for(int i = 0; i <= 4; i++) {
 	 *			| 	ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
-	 *			| 	for(int j = 0; j < collision_objects.size(); j ++){
-	 *			|		if(collision_objects.get(j) instanceof Mazub)
-	 *			|			collisionhandleplayer((Mazub) collision_objects.get(j));	
+	 *			| 	for(Object collision_object: collision_objects){
+	 *			|		if(collision_object instanceof Mazub)
+	 *			|			collisionhandleplayer((Mazub) collision_object);	
 	 */
 	@Override
 	protected void collisionhandle(ArrayList<List<List<Object>>> collisions){
 		for(int i = 0; i <= 4; i++) {
 			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
-			for(int j = 0; j < collision_objects.size(); j ++){
-				if(collision_objects.get(j) instanceof Mazub)
-					collisionhandleplayer((Mazub) collision_objects.get(j));				
+			for(Object collision_object: collision_objects){
+				if(collision_object instanceof Mazub)
+					collisionhandleplayer((Mazub) collision_object);				
 			}
 		}
 	}
@@ -200,14 +206,17 @@ public class Plant extends GameObject {
 	 * 
 	 * @param player
 	 * 			The player this plant collides with.
-	 * @effect	The hitpoints of player will be set to the current hitpoints plus 50.
+	 * @effect	If this plant is not dying, 
+	 * 			the hitpoints of player will be set to the current hitpoints plus 50.
 	 * 			| player.setHitpoints(player.getHitpoints() + 50)
-	 * @effect	This plant is killed
+	 * @effect	This plant is killed if it wasn't already killed.
 	 * 			| this.kill()
 	 */
 	private void collisionhandleplayer(Mazub player){
-		player.setHitpoints(player.getHitpoints() + 50);
-		this.kill();
+		if(! (getDeathTime() > 0)){
+			player.setHitpoints(player.getHitpoints() + 50);
+			this.kill();
+		}
 	}
 	
 	/**
@@ -271,27 +280,6 @@ public class Plant extends GameObject {
 	protected void terminate(){
 		getWorld().removePlant(null);
 		setWorld(null);
-	}
-	
-	
-	/**
-	 * Sets this plants horizontal velocity to -0.5
-	 * 
-	 * @post	this plants new horizontal velocity is equal to -0.5
-	 * 			| new.getVx() = -0.5
-	 */
-	private void startMoveLeft(){
-		setVx(-0.5);		
-	}
-	
-	/**
-	 * Sets this plants horizontal velocity to 0.5
-	 * 
-	 * @post	this plants new horizontal velocity is equal to 0.5
-	 * 			| new.getVx() = 0.5
-	 */
-	private void startMoveRight(){
-		setVx(0.5);		
 	}
 	
 	/**
