@@ -1,8 +1,9 @@
 package jumpingalien.model;
 
+import java.util.Random;
+
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
-import be.kuleuven.cs.som.annotate.Immutable;
 
 public class Slime extends Enemy {
 	
@@ -42,43 +43,47 @@ public class Slime extends Enemy {
 	}
 	
 	/**
-	 * Sets the school of this slime, optionally removing its link with its old school.
+	 * Sets the school of this slime.
 	 * 
 	 * @param school
 	 * 			The new school this slime should be linked to.
-	 * @pre		The given school is an existing school.
-	 * 			| (school != null)
 	 * @post	The slime's old school shall no longer contain this slime, if this slime had an old school.
 	 * 			| if (getSchool() != null)
 	 * 			|	then (new.(this.getSchool()).hasAsSlime(this)) == false)
-	 * @post	The slime's new school is the given school.
-	 * 			| new.getSchool() == school
-	 * @post	The slime's new school contains this slime.
-	 * 			| ((new.getSchool()).hasAsSlime(this) == true)
 	 */
 	public void setSchool(School school) {
-		assert(school != null);
-		if (getSchool() != null) getSchool().removeSlime(this);
 		this.school = school;
-		getSchool().addSlime(this);
-	}
-	
-	/**
-	 * Removes this slime from the school it was part of.
-	 * 
-	 * @pre		This slime is part of a school.
-	 * 			| (getSchool() != null)
-	 * @post	The slime will not be part of any school anymore.
-	 * 			| (new.getSchool() == null)
-	 * @post	The slime's old school will not contain this slime anymore.
-	 * 			| (new (getSchool().hasAsSlime(this)) == false)
-	 */
-	public void removeSchool() {
-		assert(getSchool() != null);
-		getSchool().removeSlime(this);
-		this.school = null;
 	}
 	
 	private School school;
+	
+	/**
+	 * Performs a random action for this slime.
+	 * 
+	 * @effect	...
+	 * 			| setVx(0)
+	 * @effect	...
+	 * 			| rand = new Random()
+	 * 			| if (rand.nextInt(2) == 0) setAx(getAxi())
+	 * 			| else setAx(-getAxi())
+	 */
+	@Override
+	protected void performRandomAction() {
+		setVx(0);
+		Random rand = new Random();
+		if (rand.nextInt(2) == 0) setAx(getAxi());
+		else setAx(-getAxi());
+	}
+	
+	/**
+	 * Terminates this slime.
+	 * 
+	 * @effect	...
+	 * 			| getSchool().removeSlime(this)
+	 */
+	@Override
+	protected void terminate() {
+		getSchool().removeSlime(this);
+	}
 	
 }

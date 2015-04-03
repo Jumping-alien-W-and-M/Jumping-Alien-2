@@ -418,7 +418,7 @@ public abstract class GameObject {
 	 * @pre		The timeinwater parameter must be larger than or equal to zero.
 	 * 			| (timeinwater >= 0)
 	 */
-	private void setTimeInWater(int timeinwater){
+	private void setTimeInWater(int timeinwater) {
 		assert(timeinwater >= 0);
 		this.time_in_water = timeinwater;
 	}
