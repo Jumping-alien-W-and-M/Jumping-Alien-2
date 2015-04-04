@@ -21,20 +21,21 @@ public class Plant extends GameObject {
 	 * 			the y-position of the new plant
 	 * @param images
 	 * 			the new plant's array of sprites
-	 * @effect	This new plant will be initialized as a game object with the given position and 
-	 * 			array of sprites.
-	 * 			| super(x,y,images)
+	 * @effect	This new plant will be initialized as a game object with the given position, 
+	 * 			the given array of sprites, an initial horizontal accelaration of 0 
+	 * 			and a initial horizontal velocity of 0.5.
+	 * 			| super(x,y,images, 0, 0.5)
 	 * @effect	This new plant's movement time will be set to zero.
 	 * 			| setMovementTime(0)
-	 * @effect	This new plant's horizontal movement is set to 0.5.
-	 * 			| setVx(0.5)
+	 * @effect	This new plant's horizontal movement is set to the initial horizontal velocity of this plant.
+	 * 			| setVx(getVxi())
 	 */
 	public Plant(double x, double y, Sprite[] images){
 		super(x, y, images, 0, 0.5);
 		
 		setMovementTime(0);
 		
-		setVx(0.5);
+		setVx(getVxi());
 	}
 	
 	/**
