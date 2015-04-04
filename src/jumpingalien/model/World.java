@@ -288,15 +288,6 @@ public class World {
 	private int window_height;
 	
 	/**
-	 * Gets the factor which translates pixels to meters.
-	 */
-	public static int getScalingFactor() {
-		return scaling_factor;
-	}
-	
-	private static final int scaling_factor = 100;
-	
-	/**
 	 * Checks whether or not this world is terminated.
 	 * 
 	 * @return	...

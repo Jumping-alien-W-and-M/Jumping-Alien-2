@@ -665,7 +665,7 @@ public abstract class GameObject {
 			throw new IllegalArgumentException();
 		}
 		
-		return World.getScalingFactor()*(getVx()*dt + getAx()*Math.pow(dt, 2)/2);
+		return 100*(getVx()*dt + getAx()*Math.pow(dt, 2)/2);
 	}
 	
 	/**
@@ -728,7 +728,7 @@ public abstract class GameObject {
 	 * 			| result = Math.max(0, Math.min(getWorldHeight() - 1, y))
 	 */
 	private void setYWithinBounds(double y) {
-		if(y >= 0 || y <= getWorld().getWindowHeight()-1)
+		if(y >= 0 || y <= getWorld().getWindowHeight() - 1)
 			setY(y);
 		terminate();
 		setY(Math.max(0, Math.min(getWorld().getWorldHeight() - 1, y)));
@@ -751,7 +751,7 @@ public abstract class GameObject {
 			throw new IllegalArgumentException();
 		}
 		
-		return World.getScalingFactor()*(getVy()*dt + getAy()*Math.pow(dt, 2)/2);
+		return 100*(getVy()*dt + getAy()*Math.pow(dt, 2)/2);
 	}
 	
 	/**
@@ -816,7 +816,7 @@ public abstract class GameObject {
 	 * 			| result = Math.max(0, getTimeInvincible()-dt)
 	 */
 	private double advanceTimeInvincible(double dt){
-		return Math.max(0, getTimeInvincible()-dt);
+		return Math.max(0, getTimeInvincible() - dt);
 	}
 	
 	/**

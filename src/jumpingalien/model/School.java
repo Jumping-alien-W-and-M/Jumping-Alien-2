@@ -7,6 +7,20 @@ import be.kuleuven.cs.som.annotate.Basic;
 public class School {
 	
 	/**
+	 * Creates a new, empty, school in a given world.
+	 * 
+	 * @param world
+	 * 			The world this school should be part of.
+	 * @pre		...
+	 * 			| (world != null)
+	 */
+	public School(World world) {
+		assert(world != null);
+		
+		setWorld(world);
+	}
+	
+	/**
 	 * Gets the world this school is in.
 	 */
 	@Basic
@@ -26,6 +40,7 @@ public class School {
 	 * 			|	slime.setWorld(world)
 	 */
 	protected void setWorld(World world) {
+		
 		this.world = world;
 		
 		for(Slime slime : slimes) {
@@ -44,7 +59,7 @@ public class School {
 	}
 	
 	/**
-	 * Gets the maximum
+	 * Gets the maximum amount of slimes in any school.
 	 */
 	public static int getMaxSlimesAmount() {
 		return max_slimes_amount;
