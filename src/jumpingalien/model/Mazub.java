@@ -34,22 +34,11 @@ public class Mazub extends GameObject {
 	 * 			The new Mazub's array of sprites.
 	 * @pre		The length of images must be 10 or larger and even.
 	 * 			| ((images.length >= 10) && (images.length%2 == 0))
-	 * @post	This Mazub's x-position will be equal to the given x.
-	 * 			| new.getX() = x
-	 * @post	This Mazub's y-position will be equal to the given y.
-	 * 			| new.getY() = y
-	 * @post	This Mazub's images array will be equal to the given images array.
-	 * 			| new.getImages() = images
-	 * @post	This Mazub's horizontal velocity will be equal to 0.
-	 * 			| new.getVx() = 0
+	 * @effect	This new Mazub will be initialized as a game object with the given position, 
+	 * 			the given array of sprites, an initial horizontal accelaration of 0.9 
+	 * 			and a initial horizontal velocity of 1.
 	 * @post	This Mazub's maximal horizontal velocity will be equal to 3.
 	 * 			| new.getVxmax() = 3
-	 * @post	This Mazub's vertical velocity will be equal to 0.
-	 * 			| new.getVy() = 0
-	 * @post	This Mazub's horizontal acceleration will be equal to 0.
-	 * 			| new.getAx() = 0
-	 * @post	This Mazub's vertical acceleration will be equal to 0.
-	 * 			| new.getAy() = 0
 	 * @post	This Mazub's last movement will be "standing still".
 	 * 			| new.getLastMove() = 0
 	 */
@@ -98,7 +87,7 @@ public class Mazub extends GameObject {
 	 * @param try_stand
 	 * 			Whether or not this Mazub has tried to stand up, but couldn't at the time.
 	 * @post	If try_stand is true, this Mazub will have tried to stand up, but couldn't at the time. False if otherwise.
-	 * 			| ew.getTryStand() = try_stand
+	 * 			| new.getTryStand() = try_stand
 	 */
 	private void setTryStand(boolean try_stand) {
 		this.try_stand = try_stand;
@@ -192,14 +181,6 @@ public class Mazub extends GameObject {
 	}
 	
 	/**
-	 * Gets this Mazub's hitpoints.	
-	 */
-	@Basic
-	public int getHitpoints(){
-		return this.hitpoints;
-	}
-	
-	/**
 	 * Sets the hitpoints of this Mazub.
 	 * 
 	 * @param hitpoints
@@ -253,26 +234,20 @@ public class Mazub extends GameObject {
 	 * 
 	 * @param dt
 	 * 			The amount of seconds to be advanced.
-	 * @effect	The x-position will be advanced using the given time.
-	 * 			| setX(advanceX(dt))
-	 * @effect	The horizontal velocity will be advanced using the given time.
-	 * 			| setVx(advanceVx(dt))
-	 * @effect	The y-position will be advanced using the given time.
-	 * 			| setY(advanceY(dt))
-	 * @effect	The vertical velocity will be advanced using the given time.
-	 * 			| setVy(advanceVy(dt))
-	 * @effect	The vertical acceleration will be equal to -10 if this Mazub is in mid-air, else it will be 0.
-	 * 			| setAy(advanceAy())
-	 * @effect	The last movement time will be equal to -1 if this Mazub is moving to the left,
-	 * 			1 if this Mazub is moving to the right, and if this Mazub is standing still the absolute value of the
-	 * 			previous last movement time will be decreased by dt, unless it hits 0, in which case it will stick to 0.
-	 * 			| setLastMove(advanceLastMove(dt))
-	 * @effect	The animation time will be increased by dt.
-	 * 			| setAnimationTime(getAnimationTime() + dt))
+	 * @effect	Each step advanceTimeStep of the super class will be executed.
+	 * 			| for(double timestep = getTimesstep(); timestep <= dt; timestep += timestep) 
+	 *			| 	super.advanceTimeStep(timestep);
+	 * @effect	Step by step increases the last movement time of This Mazub.
+	 * 			| for(double timestep = getTimesstep(); timestep <= dt; timestep += timestep)
+	 * 			|	setLastMove(advanceLastMove(dt))
+	 * @effect	Step by step advances the animation time of this Mazub.
+	 * 			| for(double timestep = getTimesstep(); timestep <= dt; timestep += timestep) 
+	 * 			|	setAnimationTime(getAnimationTime() + dt))
 	 * @throws IllegalArgumentException
 	 * 			If dt isn't a valid time interval to advance the time with.
 	 * 			| !isValidDt(dt)
 	 */
+	@Override
 	public void advanceTime(double dt) throws IllegalArgumentException {
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();
@@ -286,30 +261,201 @@ public class Mazub extends GameObject {
 			
 			if (getTryStand()) {
 				endDuck();
-				setTryStand(false);
-			}
-			
+			}			
 		}
 	}
 	
+	/**
+	 * Handles the collisions
+	 * 
+	 * @param collisions
+	 * 			The result of the method collisiondetect in World.
+	 * @effect	Loops over all the game objects this mazub collides with and handles them.
+	 * 			Collisions of this mazub's bottom perimeter with a shark or slime will be ignored.
+	 * 			| for(int i = 0; i <= 4; i++) 
+	 *			|	ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0)
+	 *			|		for(Object object : collision_objects) 
+	 *			|			if ((object instanceof Shark) && (i != 4)) collisionHandleShark((Shark) object)
+	 *			|			if (object instanceof Plant) collisionHandlePlant((Plant) object)
+	 *			|			if ((object instanceof Slime) && (i != 4)) collisionHandleSlime((Slime) object)
+	 */
 	@Override
-	protected void collisionHandleMazub(Mazub player) {
-		
+	protected void collisionHandle(ArrayList<List<List<Object>>> collisions){
+		for(int i = 0; i <= 4; i++) {
+			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
+			
+			for(Object object : collision_objects) {
+				if ((object instanceof Shark) && (i != 4)) collisionHandleShark((Shark) object);
+				if (object instanceof Plant) collisionHandlePlant((Plant) object);
+				if ((object instanceof Slime) && (i != 4)) collisionHandleSlime((Slime) object);
+			}
+		}
 	}
 	
+	/**
+	 * Handles a collisions of this mazub with a given shark.
+	 * 
+	 * @param shark
+	 * 			The shark this mazub collides with.
+	 * @pre		shark is not null
+	 * 			| shark != null
+	 * @effect	If shark is not dying and mazub is not invincible,
+	 * 			this mazub's hipoints will be decreased by 50.
+	 * 			| if(shark.getDeathTime() != 0 && getTimeInvincible() == 0)
+	 *			|	this.setHitpoints(this.getHitpoints() - 50)
+	 * @effect 	If shark is not dying and mazub is not invincible,
+	 * 			shark's hitpoints will be decreased by 50.
+	 * 			| if(shark.getDeathTime() != 0 && getTimeInvincible() == 0)
+	 * 			|  	shark.setHitpoints(shark.getHitpoints() - 50)
+	 * @effect 	If shark is not dying and mazub is not invincible,
+	 * 			this mazub will be invincible for the next 0.6 seconds.
+	 * 			| if(shark.getDeathTime() != 0 && getTimeInvincible() == 0)
+	 * 			|	this.setTimeInvincible(0.6);
+	 */
 	@Override
 	protected void collisionHandleShark(Shark shark) {
-		
+		assert(shark != null);
+		if(shark.getDeathTime() != 0 && getTimeInvincible() == 0){
+			this.setHitpoints(this.getHitpoints() - 50);
+			shark.setHitpoints(shark.getHitpoints() - 50);
+			this.setTimeInvincible(0.6);
+		}
 	}
 	
+	/**
+	 * Handles a collision of this mazub with a given plant.
+	 * 
+	 * @param plant	
+	 * 			The plant this mazub collides with.
+	 * @pre		plant is not null
+	 * 			| plant != null
+	 * @effect 	If plant is not dying and this mazub's hitpoints are less then 500,
+	 * 			plant will be killed
+	 * 			| if( !(plant.getDeathTime() > 0) && (getHitpoints() < 500))
+	 * 			| 	plant.kill()
+	 * @effect	If this plant is not dying and this mazub's hitpoints are less then 500, 
+	 * 			this mazub's hitpoints will be increased by 50.
+	 * 			| if( !(plant.getDeathTime() > 0) && (getHitpoints() < 500))
+	 * 			|	setHitpoints(getHitpoints() + 50)
+	 */
 	@Override
 	protected void collisionHandlePlant(Plant plant) {
-		
+		assert(plant != null);
+		if( !(plant.getDeathTime() > 0) && (getHitpoints() < 500)){
+			plant.kill();
+			setHitpoints(getHitpoints() + 50);
+		}
 	}
 	
 	@Override
 	protected void collisionHandleSlime(Slime slime) {
 		
+	}
+	
+	/**
+	 * Handles collisions between this mazub and the features of the tiles this mazub is in.
+	 * 
+	 * @param collisions
+	 * 			The result of the method collisiondetect in the class World.
+	 * @param time
+	 * 			The time to advance (if necessary) this mazub's time in water and time in magma with.
+	 * @effect 	If this mazub touches a water tile it's time in water will be advanced.
+	 * 			Else it's time in water will be set to 0.
+	 * 			| for( int i = 0; (i < 4) && !timeinwaterupdated; i++)
+	 *			|	ArrayList<Object> collision_features = (ArrayList<Object>) collisions.get(i).get(1)
+	 * 			|	if(collision_features.contains(Feature.water))
+	 *			|		advanceTimeInWater(time)
+	 *			|		timeinwaterupdated = true
+	 *			| if(! timeinwaterupdated)
+	 *			|	setTimeInWater(0)
+	 * @effect 	If this mazub touches a magma tile it's time in magma will be advanced.
+	 * 			Else it's time in magma will be set to 0.
+	 * 			| for( int i = 0; (i < 4) && !timeinmagmaupdated; i++)
+	 *			|	ArrayList<Object> collision_features = (ArrayList<Object>) collisions.get(i).get(1)
+	 * 			|	if(collision_features.contains(Feature.magma))
+	 *			|		advanceTimeInMagma(time)
+	 *			|		timeinmagmaupdated = true
+	 *			| if(! timeinmagmaupdated)
+	 *			|	setTimeInMagma(0)
+	 *@throws IllegalArgumentException
+	 *			If dt isn't a valid time interval to advance the time with.
+	 * 			| !isValidDt(dt)
+	 */
+	protected void collisionHandleFeature(ArrayList<List<List<Object>>> collisions, double time) 
+				throws IllegalArgumentException{
+		if( ! isValidDt(time))
+			throw new IllegalArgumentException();
+		boolean timeinwaterupdated = false;
+		boolean timeinmagmaupdated = false;
+		for( int i = 0; (i < 4) && !timeinwaterupdated && !timeinmagmaupdated; i++){
+			ArrayList<Object> collision_features = (ArrayList<Object>) collisions.get(i).get(1);
+			if(collision_features.contains(Feature.water)){
+				advanceTimeInWater(time);
+				timeinwaterupdated = true;
+			}
+			if(collision_features.contains(Feature.magma)){
+				advanceTimeInMagma(time);
+				timeinmagmaupdated = true;
+			}
+		}
+		
+		if(! timeinwaterupdated)
+			setTimeInWater(0);
+		if(! timeinmagmaupdated)
+			setTimeInMagma(0);
+	}
+	
+	/**
+	 * Advances the time in water of this mazub with a given time.
+	 * 
+	 * @param time
+	 * 			The time to increase the time in water of this mazub with.
+	 * @effect	Reduces the hitpoints of this mazub with 2 for each 0.2 seconds this mazub is in water
+	 * 			and sets this mazub's time in water to the current time plus time, modulo 0.2.
+	 * 			| setTimeInWater(getTimeInWater() + time)
+	 *			| while(getTimeInWater() > 0.2)
+	 *			|	setHitpoints(getHitpoints() - 2)
+	 *			|	setTimeInWater(getTimeInWater() - 0.2)
+	 *@throws IllegalArgumentException
+	 *			If the given time is not a valid time period.
+	 *			| ! isValidDt(time)
+	 */
+	private void advanceTimeInWater(double time) throws IllegalArgumentException{
+		if (! isValidDt(time))
+			throw new IllegalArgumentException();
+		setTimeInWater(getTimeInWater() + time);
+		while(getTimeInWater() > 0.2){
+			setHitpoints(getHitpoints() - 2);
+			setTimeInWater(getTimeInWater() - 0.2);
+		}
+	}
+	
+	/**
+	 * Advances the time in magma of this mazub with a given time.
+	 * 
+	 * @param time
+	 * 			The time to increase the time in magma of this mazub with.
+	 * @effect	If the current time in magma is equal to 0, 
+	 * 			the hitpoints of this mazub will be decreased with 50.
+	 * 			| if(getTimeInMagma() == 0)
+	 *			|	setHitpoints(getHitpoints() - 50)
+	 * @effect	Reduces the hitpoints of this mazub with 50 for each 0.2 seconds this mazub is in magma
+	 * 			and sets this mazub's time in magma to the current time plus time, modulo 0.2.
+	 * 			| setTimeInMagma(getTimeInMagma() + time)
+	 *			| while(getTimeInMagma() > 0.2)
+	 *			|	setHitpoints(getHitpoints() - 2)
+	 *			|	setTimeInMagma(getTimeInMagma() - 0.2)
+	 */
+	private void advanceTimeInMagma(double time){
+		if(getTimeInMagma() == 0)
+			setHitpoints(getHitpoints() - 50);
+		
+		setTimeInMagma(getTimeInMagma() + time);	
+		
+		while(getTimeInMagma() > 0.2){
+			setHitpoints(getHitpoints() - 50);
+			setTimeInMagma(getTimeInMagma() - 0.2);			
+		}
 	}
 	
 	/**
@@ -446,11 +592,10 @@ public class Mazub extends GameObject {
 	 */
 	@Override
 	public boolean canJump() {
-		for(int x = (int) getX(); x < (int) getX() + getWidth(); x++) {
-			if (getWorld().getFeature(getWorld().getTilePos(x), getWorld().getTilePos((int) Math.round(getY())))
-					== Feature.ground)
-				return true;
-		}
+		ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
+		if(collisions.get(3).get(0).size() != 0 || collisions.get(3).get(1).contains(Feature.ground))
+			return true;
+		
 		return false;
 	}
 	
@@ -476,6 +621,9 @@ public class Mazub extends GameObject {
 	 * @effect	If this Mazub can stand, the new Mazub's magnitude of maximal horizontal velocity will be equal to 3.
 	 * 			| if (canstand())
 	 * 			|	then setVxmax(3)
+	 * @effect 	If this Mazub can stand, the new mazub will not try to stand.
+	 * 			| if( canstand())
+	 * 			|	then setTryStand(false)
 	 * @effect	If this Mazub can't stand, this will be saved.
 	 * 			| if (canstand())
 	 * 			|	then setTryStand(true)
@@ -484,6 +632,7 @@ public class Mazub extends GameObject {
 		if (canstand()) {
 			setDucking(false);
 			setVxmax(3);
+			setTryStand(false);
 		} else {
 			setTryStand(true);
 		}
@@ -492,7 +641,15 @@ public class Mazub extends GameObject {
 	/**
 	 * Checks if this Mazub can stand in its current situation.
 	 * 
-	 * @return
+	 * @return	True if there are no collisions between this mazub and other game objects or the ground
+	 * 			when this mazub rises step by step to a standing position.
+	 * 			| int currentheigth = getCurrentSprite().getHeight()
+	 *			| int standingheigth = getHeightWhenNotDucking()
+	 *			| for(int heigth = currentheigth; heigth <=  standingheigth; heigth ++) 			
+	 *			|	ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0)			
+	 *			|	if (collisions.get(1).get(0).size() > 0 || collisions.get(1).get(1).contains(Feature.ground)) 
+	 *			|		return false
+	 *			| return true
 	 */
 	private boolean canstand(){
 		int currentheigth = getCurrentSprite().getHeight();
@@ -501,10 +658,8 @@ public class Mazub extends GameObject {
 			
 			ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
 			
-			if (collisions.get(1).get(0).size() > 0 || collisions.get(1).get(1).contains(Feature.ground)) {
-				return false;
-			}
-			
+			if (collisions.get(1).get(0).size() > 0 || collisions.get(1).get(1).contains(Feature.ground)) 
+				return false;			
 		}
 		return true;
 	}

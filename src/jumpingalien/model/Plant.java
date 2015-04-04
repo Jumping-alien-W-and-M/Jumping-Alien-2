@@ -163,7 +163,7 @@ public class Plant extends GameObject {
 	 */
 	@Override
 	protected void collisionHandle(ArrayList<List<List<Object>>> collisions){
-		for(int i = 0; i <= 4; i++) {
+		for(int i = 0; i < 4; i++) {
 			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
 			for(Object collision_object: collision_objects){
 				if(collision_object instanceof Mazub)
@@ -184,10 +184,7 @@ public class Plant extends GameObject {
 	 * 			| this.kill()
 	 */
 	private void collisionHandleplayer(Mazub player){
-		if(!(getDeathTime() > 0)){
-			player.setHitpoints(player.getHitpoints() + 50);
-			this.kill();
-		}
+		player.collisionHandlePlant(this);
 	}
 	
 	/**
@@ -232,14 +229,17 @@ public class Plant extends GameObject {
 	/**
 	 * This plant will be removed from the game world.
 	 * 
+	 * @pre		...
+	 * 			| getWorld() != null
 	 * @effect	This plant will be removed from the game world.
-	 * 			| getWorld().removePlant(null)
+	 * 			| getWorld().removePlant(this)
 	 * @effect  The world this plant belongs to will be set to null.
 	 * 			| setWorld(null)
 	 */
 	@Override
 	protected void terminate() {
-		getWorld().removePlant(null);
+		assert(getWorld() != null);
+		getWorld().removePlant(this);
 		setWorld(null);
 	}
 	

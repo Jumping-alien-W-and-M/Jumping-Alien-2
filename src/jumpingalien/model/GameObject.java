@@ -418,7 +418,7 @@ public abstract class GameObject {
 	 * @pre		The timeinwater parameter must be larger than or equal to zero.
 	 * 			| (timeinwater >= 0)
 	 */
-	protected void setTimeInWater(int timeinwater) {
+	protected void setTimeInWater(double timeinwater) {
 		assert(timeinwater >= 0);
 		this.time_in_water = timeinwater;
 	}
@@ -442,7 +442,7 @@ public abstract class GameObject {
 	 * @pre		The timeinmagma parameter must be larger then or equal to zero.
 	 * 			| (timeinmagma >= 0)
 	 */
-	protected void setTimeInMagma(int timeinmagma){
+	protected void setTimeInMagma(double timeinmagma){
 		assert(timeinmagma >= 0);
 		this.time_in_magma = timeinmagma;
 	}
@@ -467,7 +467,7 @@ public abstract class GameObject {
 	 * @pre		The time parameter must be larger then or equal to zero.
 	 * 			| (time >= 0)
 	 */
-	private void setTimeInvincible(double time){
+	protected void setTimeInvincible(double time){
 		assert(time >= 0);
 		this.time_invincible = time;
 	}
