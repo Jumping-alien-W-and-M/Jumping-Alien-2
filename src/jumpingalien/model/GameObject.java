@@ -358,7 +358,7 @@ public abstract class GameObject {
 	private World world;
 	
 	/**
-	 * Gets hits game object hitpoints.	
+	 * Gets this game object's hitpoints.	
 	 */
 	@Basic
 	public int getHitpoints() {
@@ -404,7 +404,7 @@ public abstract class GameObject {
 	/**
 	 * Gets this game object time in water.
 	 */
-	private double getTimeInWater(){
+	public double getTimeInWater(){
 		return this.time_in_water;
 	}
 	
@@ -412,13 +412,13 @@ public abstract class GameObject {
 	 * Sets this game object time in water.
 	 * 
 	 * @param timeinwater
-	 * 			the new time in water of this game object
+	 * 			The new time in water of this game object
 	 * @post	The timeinwater variable of this game object will be equal to the given timeinwater.
 	 * 			| (new.getTimeinwater() = timeinwater)
 	 * @pre		The timeinwater parameter must be larger than or equal to zero.
 	 * 			| (timeinwater >= 0)
 	 */
-	private void setTimeInWater(int timeinwater) {
+	protected void setTimeInWater(int timeinwater) {
 		assert(timeinwater >= 0);
 		this.time_in_water = timeinwater;
 	}
@@ -428,7 +428,7 @@ public abstract class GameObject {
 	/**
 	 * Gets this game object time in magma.
 	 */
-	private double getTimeInMagma(){
+	public double getTimeInMagma(){
 		return this.time_in_magma;
 	}
 	
@@ -436,13 +436,13 @@ public abstract class GameObject {
 	 * Sets this game object time in magma.
 	 * 
 	 * @param timeinmagma
-	 * 			the new time in magma of this game object
+	 * 			The new time in magma of this game object
 	 * @post	The timeinmagma variable of this game object will be equal to the given timeinmagma.
 	 * 			| (new.getTimeinmagma() = timeinmagma)
-	 *  @pre	the timeinmagma parameter must be larger then or equal to zero
+	 * @pre		The timeinmagma parameter must be larger then or equal to zero.
 	 * 			| (timeinmagma >= 0)
 	 */
-	private void setTimeInMagma(int timeinmagma){
+	protected void setTimeInMagma(int timeinmagma){
 		assert(timeinmagma >= 0);
 		this.time_in_magma = timeinmagma;
 	}

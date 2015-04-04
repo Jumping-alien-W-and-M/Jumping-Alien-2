@@ -25,6 +25,10 @@ public abstract class Enemy extends GameObject {
 	@Override
 	protected void setHitpoints(int hitpoints) {
 		this.hitpoints = hitpoints;
+		
+		if (getHitpoints() <= 0) {
+			kill();
+		}
 	}
 	
 	/**

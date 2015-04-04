@@ -724,7 +724,7 @@ public class World {
 			}
 		}
 		for(int i = 0; i < 4; i++) {
-			if (overlaps[i] == 1) {
+			if ((overlaps[i] >= 1) && (overlaps[i] >= 1)) {
 				collision_objects.get(i).get(index).add(object2);
 			}
 		}
