@@ -93,7 +93,7 @@ public class Plant extends GameObject {
 			throw new IllegalArgumentException();
 		}
 		
-		double timestep = 1/Math.abs(getVx()/100); 
+		double timestep = 0.01/getVx(); 
 		for(double time = timestep; timestep <= dt; time += timestep) {
 			advanceDeathTime(time);
 			advanceMovementTime(time);
