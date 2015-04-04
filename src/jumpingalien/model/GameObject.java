@@ -402,17 +402,41 @@ public abstract class GameObject {
 	private double death_time = 0;
 	
 	/**
-	 * Gets this game object time in water.
+	 * Gets this game object's time in air.
+	 */
+	public double getTimeInAir(){
+		return this.time_in_air;
+	}
+	
+	/**
+	 * Sets this game object's time in air.
+	 * 
+	 * @param timeinmagma
+	 * 			The new time in air of this game object.
+	 * @pre		The timeinair parameter must be larger then or equal to zero.
+	 * 			| (timeinair >= 0)
+	 * @post	The timeinair variable of this game object will be equal to the given timeinair.
+	 * 			| (new.getTimeInAir() = timeinair)
+	 */
+	protected void setTimeInAir(double timeinair){
+		assert(timeinair >= 0);
+		this.time_in_air = timeinair;
+	}
+	
+	private double time_in_air;
+	
+	/**
+	 * Gets this game object's time in water.
 	 */
 	public double getTimeInWater(){
 		return this.time_in_water;
 	}
 	
 	/**
-	 * Sets this game object time in water.
+	 * Sets this game object's time in water.
 	 * 
 	 * @param timeinwater
-	 * 			The new time in water of this game object
+	 * 			The new time in water of this game object.
 	 * @post	The timeinwater variable of this game object will be equal to the given timeinwater.
 	 * 			| (new.getTimeinwater() = timeinwater)
 	 * @pre		The timeinwater parameter must be larger than or equal to zero.
@@ -426,17 +450,17 @@ public abstract class GameObject {
 	private double time_in_water;
 	
 	/**
-	 * Gets this game object time in magma.
+	 * Gets this game object's time in magma.
 	 */
 	public double getTimeInMagma(){
 		return this.time_in_magma;
 	}
 	
 	/**
-	 * Sets this game object time in magma.
+	 * Sets this game object's time in magma.
 	 * 
 	 * @param timeinmagma
-	 * 			The new time in magma of this game object
+	 * 			The new time in magma of this game object.
 	 * @post	The timeinmagma variable of this game object will be equal to the given timeinmagma.
 	 * 			| (new.getTimeinmagma() = timeinmagma)
 	 * @pre		The timeinmagma parameter must be larger then or equal to zero.
@@ -516,7 +540,7 @@ public abstract class GameObject {
 		setVy(advanceVy(timestep));
 		setAy(advanceAy());
 		
-		collisionHandle(collisions);
+		collisionHandle(collisions, timestep);
 		setTimeInvincible(advanceTimeInvincible(timestep));
 	}
 	
@@ -800,9 +824,15 @@ public abstract class GameObject {
 	 * 
 	 * @param collisions
 	 */
-	protected void collisionHandle(ArrayList<List<List<Object>>> collisions){
+	protected void collisionHandle(ArrayList<List<List<Object>>> collisions, double time) {
+		
+		boolean touched_air = false;
+		boolean touched_water = false;
+		boolean touched_magma = false;
+		
 		for(int i = 0; i <= 4; i++) {
 			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
+			ArrayList<Object> collision_features = (ArrayList<Object>) collisions.get(i).get(1);
 			
 			for(Object object : collision_objects) {
 				if (object instanceof Mazub) collisionHandleMazub((Mazub) object);
@@ -810,13 +840,36 @@ public abstract class GameObject {
 				if (object instanceof Plant) collisionHandlePlant((Plant) object);
 				if (object instanceof Slime) collisionHandleSlime((Slime) object);
 			}
+			
+			for(Object feature : collision_features) {
+				if (((Feature) feature == Feature.air) && (touched_air)) {
+					collisionHandleAir(time);
+					touched_air = true;
+				}
+				if (((Feature) feature == Feature.water) && (touched_water)) {
+					collisionHandleWater(time);
+					touched_water = true;
+				}
+				if (((Feature) feature == Feature.magma) && (touched_magma)) {
+					collisionHandleMagma(time);
+					touched_magma = true;
+				}
+			}
 		}
+		
+		if (!(touched_air)) setTimeInAir(0);
+		if (!(touched_water)) setTimeInWater(0);
+		if (!(touched_magma)) setTimeInMagma(0);
 	}
 	
 	protected void collisionHandleMazub(Mazub player) { }
 	protected void collisionHandleShark(Shark shark) { }
 	protected void collisionHandlePlant(Plant plant) { }
 	protected void collisionHandleSlime(Slime slime) { }
+
+	protected void collisionHandleAir(double time) { }
+	protected void collisionHandleWater(double time) { }
+	protected void collisionHandleMagma(double time) { }
 	
 	/**
 	 * Checks whether or not this game object can jump.
