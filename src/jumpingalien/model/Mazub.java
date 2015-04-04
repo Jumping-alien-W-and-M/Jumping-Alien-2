@@ -37,10 +37,11 @@ public class Mazub extends GameObject {
 	 * @effect	This new Mazub will be initialized as a game object with the given position, 
 	 * 			the given array of sprites, an initial horizontal accelaration of 0.9 
 	 * 			and a initial horizontal velocity of 1.
-	 * @post	This Mazub's maximal horizontal velocity will be equal to 3.
-	 * 			| new.getVxmax() = 3
-	 * @post	This Mazub's last movement will be "standing still".
-	 * 			| new.getLastMove() = 0
+	 * 			| super(x, y, images, 0.9, 1)
+	 * @effect	This Mazub's maximal horizontal velocity will be equal to 3.
+	 * 			| setVxmax(3)
+	 * @effect	This Mazub's last movement will be "standing still".
+	 * 			| setLastMove(0)
 	 */
 	public Mazub(double x, double y, Sprite[] images) {
 		super(x, y, images, 0.9, 1);
@@ -222,6 +223,7 @@ public class Mazub extends GameObject {
 	 * @post	This Mazub will no longer be part of a world.
 	 * 			| (new.getWorld() == null)
 	 */
+	@Override
 	protected void terminate() {
 		assert(getWorld() != null);
 		
@@ -235,14 +237,16 @@ public class Mazub extends GameObject {
 	 * @param dt
 	 * 			The amount of seconds to be advanced.
 	 * @effect	Each step advanceTimeStep of the super class will be executed.
-	 * 			| for(double timestep = getTimesstep(); timestep <= dt; timestep += timestep) 
-	 *			| 	super.advanceTimeStep(timestep);
-	 * @effect	Step by step increases the last movement time of This Mazub.
-	 * 			| for(double timestep = getTimesstep(); timestep <= dt; timestep += timestep)
-	 * 			|	setLastMove(advanceLastMove(dt))
-	 * @effect	Step by step advances the animation time of this Mazub.
-	 * 			| for(double timestep = getTimesstep(); timestep <= dt; timestep += timestep) 
-	 * 			|	setAnimationTime(getAnimationTime() + dt))
+	 * 			Step by step increases the last movement time of This Mazub.
+	 * 			Step by step advances the animation time of this Mazub.
+	 * 			If this mazub tried to stand before but couldn't, endduck() will be executed.
+	 * 			| double timestep = getTimestep()
+	 * 			| for(double time = getTimestep(); time <= dt; time += timestep) 
+	 *			| 	super.advanceTimeStep(time);
+	 *			|	setLastMove(advanceLastMove(dt))
+	 *			|	setAnimationTime(getAnimationTime() + dt))
+	 *			| 	if (getTryStand()) 
+	 *			|		endDuck();
 	 * @throws IllegalArgumentException
 	 * 			If dt isn't a valid time interval to advance the time with.
 	 * 			| !isValidDt(dt)
@@ -253,11 +257,12 @@ public class Mazub extends GameObject {
 			throw new IllegalArgumentException();
 		}
 		
-		for(double timestep = getTimesstep(); timestep <= dt; timestep += timestep) {
-			super.advanceTimeStep(timestep);
+		double timestep = getTimestep();
+		for(double time = timestep; time <= dt; time += timestep) {
+			super.advanceTimeStep(time);
 		
-			setLastMove(advanceLastMove(timestep));
-			setAnimationTime(advanceAnimationTime(timestep));
+			setLastMove(advanceLastMove(time));
+			setAnimationTime(advanceAnimationTime(time));
 			
 			if (getTryStand()) {
 				endDuck();
@@ -266,14 +271,14 @@ public class Mazub extends GameObject {
 	}
 	
 	/**
-	 * Handles a collisions of this mazub with a given shark.
+	 * Handles a collision of this mazub with a given shark.
 	 * 
 	 * @param shark
 	 * 			The shark this mazub collides with.
 	 * @pre		shark is not null
 	 * 			| shark != null
 	 * @effect	If shark is not dying and mazub is not invincible,
-	 * 			this mazub's hipoints will be decreased by 50.
+	 * 			this mazub's hitpoints will be decreased by 50.
 	 * 			| if(shark.getDeathTime() != 0 && getTimeInvincible() == 0)
 	 *			|	this.setHitpoints(this.getHitpoints() - 50)
 	 * @effect 	If shark is not dying and mazub is not invincible,
@@ -285,7 +290,7 @@ public class Mazub extends GameObject {
 	 * 			| if(shark.getDeathTime() != 0 && getTimeInvincible() == 0)
 	 * 			|	this.setTimeInvincible(0.6);
 	 */
-	@Override
+	@Override 
 	protected void collisionHandleShark(Shark shark) {
 		assert(shark != null);
 		if(shark.getDeathTime() != 0 && getTimeInvincible() == 0){
@@ -364,15 +369,14 @@ public class Mazub extends GameObject {
 		for( int i = 0; (i < 4) && !timeinwaterupdated && !timeinmagmaupdated; i++){
 			ArrayList<Object> collision_features = (ArrayList<Object>) collisions.get(i).get(1);
 			if(collision_features.contains(Feature.water)){
-				advanceTimeInWater(time);
+				collisionHandleWater(time);
 				timeinwaterupdated = true;
 			}
 			if(collision_features.contains(Feature.magma)){
-				advanceTimeInMagma(time);
+				collisionHandleMagma(time);
 				timeinmagmaupdated = true;
 			}
-		}
-		
+		}		
 		if(! timeinwaterupdated)
 			setTimeInWater(0);
 		if(! timeinmagmaupdated)
@@ -394,7 +398,8 @@ public class Mazub extends GameObject {
 	 *			If the given time is not a valid time period.
 	 *			| ! isValidDt(time)
 	 */
-	private void advanceTimeInWater(double time) throws IllegalArgumentException{
+	@Override
+	protected void collisionHandleWater(double time) throws IllegalArgumentException{
 		if (! isValidDt(time))
 			throw new IllegalArgumentException();
 		setTimeInWater(getTimeInWater() + time);
@@ -420,7 +425,8 @@ public class Mazub extends GameObject {
 	 *			|	setHitpoints(getHitpoints() - 2)
 	 *			|	setTimeInMagma(getTimeInMagma() - 0.2)
 	 */
-	private void advanceTimeInMagma(double time){
+	@Override
+	protected void collisionHandleMagma(double time){
 		if(getTimeInMagma() == 0)
 			setHitpoints(getHitpoints() - 50);
 		
@@ -541,7 +547,8 @@ public class Mazub extends GameObject {
 	 * 			|	new.getVy() = 8
 	 */
 	public void startJump() {
-		if (canJump()) setVy(8);
+		if (canJump()) 
+			setVy(8);
 	}
 	
 	/**

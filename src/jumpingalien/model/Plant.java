@@ -161,13 +161,12 @@ public class Plant extends GameObject {
 	 *			|		if(collision_object instanceof Mazub)
 	 *			|			collisionhandleplayer((Mazub) collision_object);	
 	 */
-	@Override
 	protected void collisionHandle(ArrayList<List<List<Object>>> collisions){
 		for(int i = 0; i < 4; i++) {
 			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
 			for(Object collision_object: collision_objects){
 				if(collision_object instanceof Mazub)
-					collisionHandleplayer((Mazub) collision_object);				
+					collisionHandleMazub((Mazub) collision_object);				
 			}
 		}
 	}
@@ -183,7 +182,8 @@ public class Plant extends GameObject {
 	 * @effect	This plant is killed if it wasn't already killed.
 	 * 			| this.kill()
 	 */
-	private void collisionHandleplayer(Mazub player){
+	@Override
+	protected void collisionHandleMazub(Mazub player){
 		player.collisionHandlePlant(this);
 	}
 	

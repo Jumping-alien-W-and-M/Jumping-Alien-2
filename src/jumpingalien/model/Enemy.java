@@ -83,7 +83,7 @@ public abstract class Enemy extends GameObject {
 			throw new IllegalArgumentException();
 		}
 		
-		for(double timestep = getTimesstep(); timestep <= dt; timestep += timestep) {
+		for(double timestep = getTimestep(); timestep <= dt; timestep += timestep) {
 			super.advanceTimeStep(timestep);
 			
 			advanceActionTime(timestep);

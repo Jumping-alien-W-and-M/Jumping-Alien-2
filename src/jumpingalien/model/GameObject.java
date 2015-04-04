@@ -570,7 +570,7 @@ public abstract class GameObject {
 	 * 			|				Math.min(computeformula(getVy,getAy),
 	 * 			|					Math.min( 1/Math.abs(getVx()/100),1/Math.abs(getVy()/100)))
 	 */
-	public double getTimesstep(){
+	public double getTimestep(){
 		double firstparameter = Math.min( 1/Math.abs(getVx()/100),1/Math.abs(getVy()/100));		
 		double secondparameter = computeformula(getVx(),getAx());		
 		double thirdparameter = computeformula(getVy(),getAy());
@@ -579,7 +579,7 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Computes a formula for the calculation of timesteps().
+	 * Computes a formula for the calculation of timestep().
 	 * 
 	 * @param v
 	 * 			the velocity to compute the formula with
@@ -824,13 +824,14 @@ public abstract class GameObject {
 	 * 
 	 * @param collisions
 	 */
+	@Model
 	protected void collisionHandle(ArrayList<List<List<Object>>> collisions, double time) {
 		
 		boolean touched_air = false;
 		boolean touched_water = false;
 		boolean touched_magma = false;
-		
-		for(int i = 0; i <= 4; i++) {
+	
+		for(int i = 0; i < 4; i++) {
 			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
 			ArrayList<Object> collision_features = (ArrayList<Object>) collisions.get(i).get(1);
 			
