@@ -385,6 +385,7 @@ public class Mazub extends GameObject {
 				throws IllegalArgumentException{
 		if( ! isValidDt(time))
 			throw new IllegalArgumentException();
+		
 		boolean timeinwaterupdated = false;
 		boolean timeinmagmaupdated = false;
 		for( int i = 0; (i < 4) && !timeinwaterupdated && !timeinmagmaupdated; i++){
