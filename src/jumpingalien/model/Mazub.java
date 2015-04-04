@@ -266,33 +266,6 @@ public class Mazub extends GameObject {
 	}
 	
 	/**
-	 * Handles the collisions
-	 * 
-	 * @param collisions
-	 * 			The result of the method collisiondetect in World.
-	 * @effect	Loops over all the game objects this mazub collides with and handles them.
-	 * 			Collisions of this mazub's bottom perimeter with a shark or slime will be ignored.
-	 * 			| for(int i = 0; i <= 4; i++) 
-	 *			|	ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0)
-	 *			|		for(Object object : collision_objects) 
-	 *			|			if ((object instanceof Shark) && (i != 4)) collisionHandleShark((Shark) object)
-	 *			|			if (object instanceof Plant) collisionHandlePlant((Plant) object)
-	 *			|			if ((object instanceof Slime) && (i != 4)) collisionHandleSlime((Slime) object)
-	 */
-	@Override
-	protected void collisionHandle(ArrayList<List<List<Object>>> collisions){
-		for(int i = 0; i <= 4; i++) {
-			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
-			
-			for(Object object : collision_objects) {
-				if ((object instanceof Shark) && (i != 4)) collisionHandleShark((Shark) object);
-				if (object instanceof Plant) collisionHandlePlant((Plant) object);
-				if ((object instanceof Slime) && (i != 4)) collisionHandleSlime((Slime) object);
-			}
-		}
-	}
-	
-	/**
 	 * Handles a collisions of this mazub with a given shark.
 	 * 
 	 * @param shark
