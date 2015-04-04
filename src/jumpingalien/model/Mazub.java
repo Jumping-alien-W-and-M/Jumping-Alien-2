@@ -403,7 +403,7 @@ public class Mazub extends GameObject {
 		if (! isValidDt(time))
 			throw new IllegalArgumentException();
 		setTimeInWater(getTimeInWater() + time);
-		while(getTimeInWater() > 0.2){
+		while(getTimeInWater() >= 0.2){
 			setHitpoints(getHitpoints() - 2);
 			setTimeInWater(getTimeInWater() - 0.2);
 		}
@@ -432,7 +432,7 @@ public class Mazub extends GameObject {
 		
 		setTimeInMagma(getTimeInMagma() + time);	
 		
-		while(getTimeInMagma() > 0.2){
+		while(getTimeInMagma() >= 0.2){
 			setHitpoints(getHitpoints() - 50);
 			setTimeInMagma(getTimeInMagma() - 0.2);			
 		}
