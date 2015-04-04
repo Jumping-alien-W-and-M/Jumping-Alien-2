@@ -723,10 +723,16 @@ public class World {
 				return;
 			}
 		}
+		// Direction-dependent collisions
+		boolean has_central_collision = true;
 		for(int i = 0; i < 4; i++) {
-			if ((overlaps[i] >= 1) && (overlaps[i] >= 1)) {
+			if (overlaps[i] == 1) {
 				collision_objects.get(i).get(index).add(object2);
+				has_central_collision = false;
 			}
+		}
+		if (has_central_collision) {
+			collision_objects.get(0).get(1).add(object2);
 		}
 		
 	}
