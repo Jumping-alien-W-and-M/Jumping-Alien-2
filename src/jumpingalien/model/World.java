@@ -658,8 +658,10 @@ public class World {
 					collisionDetectObject(object, slime, custom_height, collisions);
 				}
 			}
-			for(Plant plant : plants) {
-				collisionDetectObject(object, plant, custom_height, collisions);
+			if (object instanceof Mazub) {
+				for(Plant plant : plants) {
+					collisionDetectObject(object, plant, custom_height, collisions);
+				}
 			}
 		}
 		

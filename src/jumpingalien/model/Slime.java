@@ -75,6 +75,15 @@ public class Slime extends Enemy {
 		else setAx(-getAxi());
 	}
 	
+	protected void collisionHandleMazub(Mazub player) { }
+	protected void collisionHandleShark(Shark shark) { }
+	protected void collisionHandlePlant(Plant plant) { }
+	protected void collisionHandleSlime(Slime slime) { }
+
+	protected void collisionHandleAir(double time) { }
+	protected void collisionHandleWater(double time) { }
+	protected void collisionHandleMagma(double time) { }
+	
 	/**
 	 * Terminates this slime.
 	 * 
