@@ -836,9 +836,9 @@ public abstract class GameObject {
 			
 			for(Object object : collision_objects) {
 				if (object instanceof Mazub) collisionHandleMazub((Mazub) object);
-				if (object instanceof Shark) collisionHandleShark((Shark) object);
+				if ((object instanceof Shark) && (!(this instanceof Mazub) || (i != 3))) collisionHandleShark((Shark) object);
 				if (object instanceof Plant) collisionHandlePlant((Plant) object);
-				if (object instanceof Slime) collisionHandleSlime((Slime) object);
+				if ((object instanceof Slime) && (!(this instanceof Mazub) || (i != 3))) collisionHandleSlime((Slime) object);
 			}
 			
 			for(Object feature : collision_features) {
