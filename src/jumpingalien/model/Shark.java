@@ -35,14 +35,14 @@ public class Shark extends Enemy {
 	 * 			| new.getNonJumpingPeriods() = nonjumpinperiods
 	 */
 	public void setNonJumpingPeriods(int nonjumpingperiods) {
-		this.non_jumping_periods = non_jumping_periods;
+		this.non_jumping_periods = nonjumpingperiods;
 	}
 
 	private int non_jumping_periods;
 	
 	@Override
 	public void advanceTime(double time){
-		
+		super.advanceTime(time);
 	}
 
 	@Override
@@ -133,6 +133,13 @@ public class Shark extends Enemy {
 		if(submerged(getWorld().collisionDetect(this,0)))
 			return 0;
 		return(super.advanceVy(time));
+	}
+	
+	@Override
+	protected void advanceY(double time){
+		if(submerged(getWorld().collisionDetect(this,0)))
+			setY(getY());
+		super.advanceY(time);
 	}
 	
 
