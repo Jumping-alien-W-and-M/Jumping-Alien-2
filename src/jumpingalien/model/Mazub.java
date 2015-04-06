@@ -384,7 +384,7 @@ public class Mazub extends GameObject {
 	}
 	
 	/**
-	 * Advances the time in water of this mazub with a given time.
+	 * Handles a collision between the player and water.
 	 * 
 	 * @param time
 	 * 			The time to increase the time in water of this mazub with.
@@ -410,7 +410,7 @@ public class Mazub extends GameObject {
 	}
 	
 	/**
-	 * Advances the time in magma of this mazub with a given time.
+	 * Handles a collision between the player and magma.
 	 * 
 	 * @param time
 	 * 			The time to increase the time in magma of this mazub with.
