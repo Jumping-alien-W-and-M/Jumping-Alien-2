@@ -108,39 +108,144 @@ public class GameObjectTest {
 	}
 	
 	@Test
-	public void TestadvanceTimeupdatingxpositionnewxwithinbounds(){
+	public void TestadvanceTimeStepupdatingxpositionnewxwithinbounds(){
 		player.setVx(1);
-		player.advanceTime(0.1);
+		player.advanceTimeStep(0.1);
 		assert(player.getX() == 
 				 (player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2)));
 	}
 	
 	@Test
-	public void TestadvanceTimeupdatingxpositionnewxoutsidebounds(){
+	public void TestadvanceTimeStepupdatingxpositionnewxoutsidebounds(){
 		player.setVx(-1);
 		player.setAx(-1);
-		player.advanceTime(0.1);
+		player.advanceTimeStep(0.1);
 		assert(player.getX() == 0);
 		assert(player.getWorld() == null);
 		player.setWorld(world);
 		player.setVx(1);
 		player.setAx(1);
 		player.setX(player.getWorld().getWorldWidth()-1);
-		player.advanceTime(0.1);
+		player.advanceTimeStep(0.1);
 		assert(player.getX() == player.getWorld().getWorldWidth()-1);
 		assert(player.getWorld() == null);
 	}
 	
 	@Test
-	public void TestadvanceTimeUpdatingXPositionWithoutWorld(){
+	public void TestadvanceTimeStepUpdatingXPositionWithoutWorld(){
 		player.setWorld(null);
 		player.setVx(1);
-		player.advanceTime(0.1);
+		player.advanceTimeStep(0.1);
 		assert(player.getX() == 
 				 (player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2)));
 	}
 	
+	@Test
+	public void TestAdvanceTimeStepUpdatingXPositionWithCollision(){
+		world.setFeature(100, 0, 1);
+		player.setVx(1);
+		player.setX((100 - player.getWidth() + 1));
+		player.advanceTimeStep(0.1);
+		assert(player.getX()  == (100 - player.getWidth()));
+	}
 	
+	@Test
+	public void TestadvanceTimeStepupdatinghorizontalvelocitynewvxwithinbounds(){
+		player.setAx(1);
+		player.advanceTimeStep(0.01);
+		assert(player.getVx() == player.getVx() + player.getAx()*0.01);		
+	}
+	
+	@Test
+	public void TestadvanceTimeStepupdatinghorizontalvelocitynewvxoutsidebounds(){
+		player.setAx(-1);
+		player.setVx(-player.getVxmax());
+		player.advanceTimeStep(0.1);
+		assert(player.getVx() == -player.getVxmax());
+		player.setAx(1);
+		player.setVx(player.getVxmax());
+		player.advanceTimeStep(0.1);
+		assert(player.getVx() == player.getVxmax());
+	}
+	
+	@Test
+	public void TestadvanceTimeStepupdatingypositionnewywithinbounds(){
+			player.setVy(6);
+			player.advanceTimeStep(0.1);
+			assert(player.getY() == 
+					player.getY() + player.getVy()*0.1 + 1/2*player.getAy()*Math.pow(0.1, 2));
+		}		
+	
+	@Test
+	public void TestadvanceTimeStepupdatingypositionnewyoutsidebounds(){
+		player.setVy(-8);
+		player.setAy(-10);
+		player.advanceTimeStep(0.1);
+		assert(player.getY() == 0);
+		player.setVy(1);
+		player.setY(player.getWorld().getWorldHeight()-1);
+		player.advanceTimeStep(0.1);
+		assert(player.getY() == player.getWorld().getWorldHeight()-1);
+	}
+	
+	@Test
+	public void TestadvanceTimeStepUpdatingYPositionWithoutWorld(){
+		player.setWorld(null);
+		player.setVy(6);
+		player.advanceTimeStep(0.1);
+		assert(player.getY() == 
+				player.getY() + player.getVy()*0.1 + 1/2*player.getAy()*Math.pow(0.1, 2));
+	}
+	
+	@Test
+	public void TestadvanceTimeStepUpdatingYPositionWithCollision(){
+		world.setFeature(0, 100, 1);
+		player.setY(100 - player.getHeight() + 1);
+		player.setVy(3);
+		player.advanceTimeStep(0.1);
+		assert(player.getY() == (100 - player.getHeight()));
+	}
+	
+	@Test
+	public void TestadvanceTimeStepupdatingverticalvelocitynewvywithinbounds(){
+		player.setVy(7);
+		player.setAy(-10);
+		player.advanceTimeStep(0.1);
+		assert(player.getVy() == player.getVy() + player.getAy()*0.1);		
+	}
+	
+	@Test
+	public void TestadvanceTimeStepupdatingverticalacceleration(){
+		player.advanceTime(0.1);
+		assert(player.getAy() == 0);
+		player.setY(5);
+		player.advanceTimeStep(0.1);
+		assert(player.getAx() == -10);
+		player.setY(10);
+		world.setFeature(0, 0, 1);
+		player.advanceTimeStep(0.1);
+		assert(player.getAx() == 0);
+	}
+	
+	@Test
+	public void TestadvanceTimeStepBreakCollisionRight(){
+		world.setFeature(100,10,1);
+		player.setX((100 - player.getWidth() + 1));
+		player.setAy(0);
+		player.setVy(3);
+		player.advanceTimeStep(0.1);
+		assert ((player.getAy() == -10) && (player.getVy() == 0));
+	}
+	
+	@Test
+	public void TestadvanceTimeStepBreakCollisionLeft(){
+		world.setFeature(100,10,1);
+		player.setX(100 + world.getTileSize());
+		player.setAy(0);
+		player.setVy(3);
+		player.advanceTimeStep(0.1);
+		assert ((player.getAy() == -10) && (player.getVy() == 0));
+	}
 	
 	
 }
