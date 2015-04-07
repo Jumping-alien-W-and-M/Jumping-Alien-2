@@ -192,13 +192,16 @@ public class World {
 	 * 			| ))
 	 */
 	public int getProperXWindow(int x) {
+		double x_player = 0;
+		if(this.getMazub() != null)
+			x_player = getMazub().getX();
 		
-		if (x > getMazub().getX() - window_margin) {
+		if (x > x_player - window_margin) {
 			// If Mazub is too close to the left wall.
-			x = (int) getMazub().getX() - window_margin;
-		} else if (x + getWindowWidth() < getMazub().getX() + window_margin) {
+			x = (int) x_player - window_margin;
+		} else if (x + getWindowWidth() < x_player + window_margin) {
 			// If Mazub is too close to the right wall.
-			x = (int) getMazub().getX() + window_margin - getWindowWidth();
+			x = (int) x_player + window_margin - getWindowWidth();
 		}
 		
 		return Math.max(0, Math.min(getWorldWidth() - getWindowWidth(), x));
@@ -216,13 +219,16 @@ public class World {
 	 * 			| ))
 	 */
 	public int getProperYWindow(int y) {
+		double y_player = 0;
+		if(this.getMazub() != null)
+			y_player = getMazub().getY();
 		
-		if (y > getMazub().getY() - window_margin) {
+		if (y > y_player - window_margin) {
 			// If Mazub is too close to the left wall.
-			y = (int) getMazub().getY() - window_margin;
-		} else if (y + getWindowHeight() < getMazub().getY() + window_margin) {
+			y = (int) y_player - window_margin;
+		} else if (y + getWindowHeight() < y_player + window_margin) {
 			// If Mazub is too close to the right wall.
-			y = (int) getMazub().getY() + window_margin - getWindowHeight();
+			y = (int) y_player + window_margin - getWindowHeight();
 		}
 		
 		return Math.max(0, Math.min(getWorldHeight() - getWindowHeight(), y));

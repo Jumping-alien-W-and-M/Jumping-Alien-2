@@ -12,10 +12,10 @@ public class MazubTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.basic_alien = new Mazub(0, 0, JumpingAlienSprites.ALIEN_SPRITESET);
+		this.player = new Mazub(0, 0, JumpingAlienSprites.ALIEN_SPRITESET);
 	}
 	
-	private Mazub basic_alien;
+	private Mazub player;
 	
 	@After
 	public void tearDown() throws Exception {
@@ -23,16 +23,16 @@ public class MazubTest {
 
 	@Test
 	public void TestBasicConstructorCorrectParameters() {
-		assertEquals(basic_alien.getX(), 0, Util.DEFAULT_EPSILON);
-		assertEquals(basic_alien.getY(), 0, Util.DEFAULT_EPSILON);
-		assertArrayEquals(basic_alien.getImages(), JumpingAlienSprites.ALIEN_SPRITESET);
-		assertEquals(basic_alien.getVx(), 0, Util.DEFAULT_EPSILON);
-		assertEquals(basic_alien.getVxmax(), 3, Util.DEFAULT_EPSILON);
-		assertEquals(basic_alien.getVy(), 0, Util.DEFAULT_EPSILON);
-		assertEquals(basic_alien.getAx(), 0, Util.DEFAULT_EPSILON);
-		assertEquals(basic_alien.getAy(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(player.getX(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(player.getY(), 0, Util.DEFAULT_EPSILON);
+		assertArrayEquals(player.getImages(), JumpingAlienSprites.ALIEN_SPRITESET);
+		assertEquals(player.getVx(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(player.getVxmax(), 3, Util.DEFAULT_EPSILON);
+		assertEquals(player.getVy(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(player.getAx(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(player.getAy(), 0, Util.DEFAULT_EPSILON);
 
-		assertEquals(basic_alien.getLastMove(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(player.getLastMove(), 0, Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -66,20 +66,20 @@ public class MazubTest {
 	@Test
 	public void TestCoordinateSettersCorrectParameters() {
 		
-		basic_alien.setX(10);
-		assertEquals(basic_alien.getX(), 10, Util.DEFAULT_EPSILON);
-		basic_alien.setY(100);
-		assertEquals(basic_alien.getY(), 100, Util.DEFAULT_EPSILON);
+		player.setX(10);
+		assertEquals(player.getX(), 10, Util.DEFAULT_EPSILON);
+		player.setY(100);
+		assertEquals(player.getY(), 100, Util.DEFAULT_EPSILON);
 		
-		basic_alien.setX(0);
-		assertEquals(basic_alien.getX(),0, Util.DEFAULT_EPSILON);
-		basic_alien.setY(0);
-		assertEquals(basic_alien.getY(),0, Util.DEFAULT_EPSILON);
+		player.setX(0);
+		assertEquals(player.getX(),0, Util.DEFAULT_EPSILON);
+		player.setY(0);
+		assertEquals(player.getY(),0, Util.DEFAULT_EPSILON);
 		
-		basic_alien.setX(1023);
-		assertEquals(basic_alien.getX(), 1023, Util.DEFAULT_EPSILON);
-		basic_alien.setY(767);
-		assertEquals(basic_alien.getY(), 767, Util.DEFAULT_EPSILON);
+		player.setX(1023);
+		assertEquals(player.getX(), 1023, Util.DEFAULT_EPSILON);
+		player.setY(767);
+		assertEquals(player.getY(), 767, Util.DEFAULT_EPSILON);
 		
 	}
 	
@@ -87,16 +87,16 @@ public class MazubTest {
 	public void TestCoordinateSettersIllegalParameters() {
 		
 		try {
-			basic_alien.setX(-1);
+			player.setX(-1);
 		} catch (IllegalArgumentException exc1) {
 			try {
-				basic_alien.setX(1024);
+				player.setX(1024);
 			} catch (IllegalArgumentException exc2) {
 				try {
-					basic_alien.setY(-1);
+					player.setY(-1);
 				} catch (IllegalArgumentException exc3) {
 					try {
-						basic_alien.setY(768);
+						player.setY(768);
 					} catch (IllegalArgumentException exc4) {
 						assert(true);
 						return;
@@ -111,303 +111,303 @@ public class MazubTest {
 	@Test
 	public void TestValidCoordinates() {
 		
-		assertEquals(basic_alien.isValidX(-1), false);
-		assertEquals(basic_alien.isValidX(0), true);
-		assertEquals(basic_alien.isValidX(1023), true);
-		assertEquals(basic_alien.isValidX(1024), false);
+		assertEquals(player.isValidX(-1), false);
+		assertEquals(player.isValidX(0), true);
+		assertEquals(player.isValidX(1023), true);
+		assertEquals(player.isValidX(1024), false);
 		
-		assertEquals(basic_alien.isValidY(-1), false);
-		assertEquals(basic_alien.isValidY(0), true);
-		assertEquals(basic_alien.isValidY(767), true);
-		assertEquals(basic_alien.isValidY(768), false);
+		assertEquals(player.isValidY(-1), false);
+		assertEquals(player.isValidY(0), true);
+		assertEquals(player.isValidY(767), true);
+		assertEquals(player.isValidY(768), false);
 		
 	}
 	
 	@Test
 	public void TestVelocitySetters() {
 
-		basic_alien.setVx(-3);
-		assertEquals(basic_alien.getVx(), -3, Util.DEFAULT_EPSILON);
-		basic_alien.setVx(-1);
-		assertEquals(basic_alien.getVx(), -1, Util.DEFAULT_EPSILON);
-		basic_alien.setVx(0);
-		assertEquals(basic_alien.getVx(), 0, Util.DEFAULT_EPSILON);
-		basic_alien.setVx(1);
-		assertEquals(basic_alien.getVx(), 1, Util.DEFAULT_EPSILON);
-		basic_alien.setVx(3);
-		assertEquals(basic_alien.getVx(), 3, Util.DEFAULT_EPSILON);
+		player.setVx(-3);
+		assertEquals(player.getVx(), -3, Util.DEFAULT_EPSILON);
+		player.setVx(-1);
+		assertEquals(player.getVx(), -1, Util.DEFAULT_EPSILON);
+		player.setVx(0);
+		assertEquals(player.getVx(), 0, Util.DEFAULT_EPSILON);
+		player.setVx(1);
+		assertEquals(player.getVx(), 1, Util.DEFAULT_EPSILON);
+		player.setVx(3);
+		assertEquals(player.getVx(), 3, Util.DEFAULT_EPSILON);
 
-		basic_alien.setVy(-16);
-		assertEquals(basic_alien.getVy(), -16, Util.DEFAULT_EPSILON);
-		basic_alien.setVy(-8);
-		assertEquals(basic_alien.getVy(), -8, Util.DEFAULT_EPSILON);
-		basic_alien.setVy(0);
-		assertEquals(basic_alien.getVy(), 0, Util.DEFAULT_EPSILON);
-		basic_alien.setVy(8);
-		assertEquals(basic_alien.getVy(), 8, Util.DEFAULT_EPSILON);
-		basic_alien.setVy(16);
-		assertEquals(basic_alien.getVy(), 8, Util.DEFAULT_EPSILON);
+		player.setVy(-16);
+		assertEquals(player.getVy(), -16, Util.DEFAULT_EPSILON);
+		player.setVy(-8);
+		assertEquals(player.getVy(), -8, Util.DEFAULT_EPSILON);
+		player.setVy(0);
+		assertEquals(player.getVy(), 0, Util.DEFAULT_EPSILON);
+		player.setVy(8);
+		assertEquals(player.getVy(), 8, Util.DEFAULT_EPSILON);
+		player.setVy(16);
+		assertEquals(player.getVy(), 8, Util.DEFAULT_EPSILON);
 		
 	}
 	
 	@Test
 	public void TestVxmaxIsValidX() {
 		
-		assertEquals(basic_alien.isValidVx(-6), false);
-		assertEquals(basic_alien.isValidVx(-3), true);
-		assertEquals(basic_alien.isValidVx(-2), true);
-		assertEquals(basic_alien.isValidVx(-1), true);
-		assertEquals(basic_alien.isValidVx(-0.5), false);
-		assertEquals(basic_alien.isValidVx(0), true);
-		assertEquals(basic_alien.isValidVx(0.5), false);
-		assertEquals(basic_alien.isValidVx(1), true);
-		assertEquals(basic_alien.isValidVx(2), true);
-		assertEquals(basic_alien.isValidVx(3), true);
-		assertEquals(basic_alien.isValidVx(6), false);
+		assertEquals(player.isValidVx(-6), false);
+		assertEquals(player.isValidVx(-3), true);
+		assertEquals(player.isValidVx(-2), true);
+		assertEquals(player.isValidVx(-1), true);
+		assertEquals(player.isValidVx(-0.5), false);
+		assertEquals(player.isValidVx(0), true);
+		assertEquals(player.isValidVx(0.5), false);
+		assertEquals(player.isValidVx(1), true);
+		assertEquals(player.isValidVx(2), true);
+		assertEquals(player.isValidVx(3), true);
+		assertEquals(player.isValidVx(6), false);
 		
-		basic_alien.setVxmax(5);
+		player.setVxmax(5);
 		
-		assertEquals(basic_alien.isValidVx(-6), false);
-		assertEquals(basic_alien.isValidVx(-5), true);
-		assertEquals(basic_alien.isValidVx(-2), true);
-		assertEquals(basic_alien.isValidVx(-1), true);
-		assertEquals(basic_alien.isValidVx(-0.5), false);
-		assertEquals(basic_alien.isValidVx(0), true);
-		assertEquals(basic_alien.isValidVx(0.5), false);
-		assertEquals(basic_alien.isValidVx(1), true);
-		assertEquals(basic_alien.isValidVx(2), true);
-		assertEquals(basic_alien.isValidVx(5), true);
-		assertEquals(basic_alien.isValidVx(6), false);
+		assertEquals(player.isValidVx(-6), false);
+		assertEquals(player.isValidVx(-5), true);
+		assertEquals(player.isValidVx(-2), true);
+		assertEquals(player.isValidVx(-1), true);
+		assertEquals(player.isValidVx(-0.5), false);
+		assertEquals(player.isValidVx(0), true);
+		assertEquals(player.isValidVx(0.5), false);
+		assertEquals(player.isValidVx(1), true);
+		assertEquals(player.isValidVx(2), true);
+		assertEquals(player.isValidVx(5), true);
+		assertEquals(player.isValidVx(6), false);
 		
-		basic_alien.setVxmax(3);
+		player.setVxmax(3);
 		
-		assertEquals(basic_alien.isValidVx(-6), false);
-		assertEquals(basic_alien.isValidVx(-3), true);
-		assertEquals(basic_alien.isValidVx(-2), true);
-		assertEquals(basic_alien.isValidVx(-1), true);
-		assertEquals(basic_alien.isValidVx(-0.5), false);
-		assertEquals(basic_alien.isValidVx(0), true);
-		assertEquals(basic_alien.isValidVx(0.5), false);
-		assertEquals(basic_alien.isValidVx(1), true);
-		assertEquals(basic_alien.isValidVx(2), true);
-		assertEquals(basic_alien.isValidVx(3), true);
-		assertEquals(basic_alien.isValidVx(6), false);
+		assertEquals(player.isValidVx(-6), false);
+		assertEquals(player.isValidVx(-3), true);
+		assertEquals(player.isValidVx(-2), true);
+		assertEquals(player.isValidVx(-1), true);
+		assertEquals(player.isValidVx(-0.5), false);
+		assertEquals(player.isValidVx(0), true);
+		assertEquals(player.isValidVx(0.5), false);
+		assertEquals(player.isValidVx(1), true);
+		assertEquals(player.isValidVx(2), true);
+		assertEquals(player.isValidVx(3), true);
+		assertEquals(player.isValidVx(6), false);
 		
 	}
 	
 	@Test
 	public void TestMoving() {
 		
-		basic_alien.setX(500);
-		double pos = basic_alien.getX();
+		player.setX(500);
+		double pos = player.getX();
 		
-		basic_alien.startMove("left");
+		player.startMove("left");
 
-		assertEquals(basic_alien.getVx(), -1, Util.DEFAULT_EPSILON);
-		assertEquals(basic_alien.getAx(), -0.9, Util.DEFAULT_EPSILON);
-		assertEquals(basic_alien.getAnimationTime(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(player.getVx(), -1, Util.DEFAULT_EPSILON);
+		assertEquals(player.getAx(), -0.9, Util.DEFAULT_EPSILON);
+		assertEquals(player.getAnimationTime(), 0, Util.DEFAULT_EPSILON);
 		
-		basic_alien.advanceTime(0.1);
+		player.advanceTime(0.1);
 		
-		basic_alien.endMove();
+		player.endMove();
 
-		assertEquals(basic_alien.getVx(), 0, Util.DEFAULT_EPSILON);
-		assertEquals(basic_alien.getAx(), 0, Util.DEFAULT_EPSILON);
-		assertEquals(pos > basic_alien.getX(), true);
-		pos = basic_alien.getX();
+		assertEquals(player.getVx(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(player.getAx(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(pos > player.getX(), true);
+		pos = player.getX();
 		
-		basic_alien.startMove("right");
+		player.startMove("right");
 
-		assertEquals(basic_alien.getVx(), 1, Util.DEFAULT_EPSILON);
-		assertEquals(basic_alien.getAx(), 0.9, Util.DEFAULT_EPSILON);
-		assertEquals(basic_alien.getAnimationTime(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(player.getVx(), 1, Util.DEFAULT_EPSILON);
+		assertEquals(player.getAx(), 0.9, Util.DEFAULT_EPSILON);
+		assertEquals(player.getAnimationTime(), 0, Util.DEFAULT_EPSILON);
 		
-		basic_alien.advanceTime(0.1);
+		player.advanceTime(0.1);
 		
-		basic_alien.endMove();
+		player.endMove();
 
-		assertEquals(basic_alien.getVx(), 0, Util.DEFAULT_EPSILON);
-		assertEquals(basic_alien.getAx(), 0, Util.DEFAULT_EPSILON);
-		assertEquals(pos < basic_alien.getX(), true);
+		assertEquals(player.getVx(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(player.getAx(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(pos < player.getX(), true);
 	}
 	
 	@Test
 	public void TestJumpingFalling() {
 		
-		double pos = basic_alien.getY();
+		double pos = player.getY();
 		
-		basic_alien.startJump();
+		player.startJump();
 
-		assertEquals(basic_alien.getVy(), 8, Util.DEFAULT_EPSILON);
+		assertEquals(player.getVy(), 8, Util.DEFAULT_EPSILON);
 		
-		basic_alien.advanceTime(0.1);
+		player.advanceTime(0.1);
 		
-		basic_alien.endJump();
+		player.endJump();
 
-		assertEquals(basic_alien.getVy(), 0, Util.DEFAULT_EPSILON);
-		assertEquals(pos < basic_alien.getY(), true);
-		pos = basic_alien.getY();
+		assertEquals(player.getVy(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(pos < player.getY(), true);
+		pos = player.getY();
 		
-		basic_alien.startJump();
+		player.startJump();
 		
-		assertEquals(basic_alien.getVy(), 8, Util.DEFAULT_EPSILON);
+		assertEquals(player.getVy(), 8, Util.DEFAULT_EPSILON);
 		
 		for(int i = 0; i < 10; i++) {
-			basic_alien.advanceTime(0.1);
+			player.advanceTime(0.1);
 		}
 		
-		basic_alien.endJump();
+		player.endJump();
 
-		assertEquals(basic_alien.getVy(), -2, Util.DEFAULT_EPSILON);
-		assertEquals(pos < basic_alien.getY(), true);
-		pos = basic_alien.getY();
+		assertEquals(player.getVy(), -2, Util.DEFAULT_EPSILON);
+		assertEquals(pos < player.getY(), true);
+		pos = player.getY();
 		
-		basic_alien.advanceTime(0.1);
+		player.advanceTime(0.1);
 		
-		assertEquals(pos > basic_alien.getY(), true);
+		assertEquals(pos > player.getY(), true);
 	}
 	
 	@Test
 	public void TestDucking() {
 		
-		basic_alien.startDuck();
-		assertEquals(basic_alien.getDucking(), true);
-		basic_alien.endDuck();
-		assertEquals(basic_alien.getDucking(), false);
+		player.startDuck();
+		assertEquals(player.getDucking(), true);
+		player.endDuck();
+		assertEquals(player.getDucking(), false);
 		
 	}
 	
 	@Test
 	public void TestGetCurrentSprite() {
 		
-		assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[0]);
+		assertEquals(player.getCurrentSprite(), player.getImages()[0]);
 		
-		basic_alien.startDuck();
-		assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[1]);
-		basic_alien.endDuck();
+		player.startDuck();
+		assertEquals(player.getCurrentSprite(), player.getImages()[1]);
+		player.endDuck();
 		
-		basic_alien.startMove("right");
-		basic_alien.advanceTime(0.1);
-		basic_alien.endMove();
-		assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[2]);
+		player.startMove("right");
+		player.advanceTime(0.1);
+		player.endMove();
+		assertEquals(player.getCurrentSprite(), player.getImages()[2]);
 		for(int i = 0; i < 10; i++) {
-			basic_alien.advanceTime(0.1);
+			player.advanceTime(0.1);
 		}
-		assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[2]);
-		basic_alien.advanceTime(0.1);
-		assertNotEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[2]);
+		assertEquals(player.getCurrentSprite(), player.getImages()[2]);
+		player.advanceTime(0.1);
+		assertNotEquals(player.getCurrentSprite(), player.getImages()[2]);
 		
-		basic_alien.startMove("left");
-		basic_alien.advanceTime(0.1);
-		basic_alien.endMove();
-		assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[3]);
+		player.startMove("left");
+		player.advanceTime(0.1);
+		player.endMove();
+		assertEquals(player.getCurrentSprite(), player.getImages()[3]);
 		for(int i = 0; i < 10; i++) {
-			basic_alien.advanceTime(0.1);
+			player.advanceTime(0.1);
 		}
-		assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[3]);
-		basic_alien.advanceTime(0.1);
-		assertNotEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[3]);
+		assertEquals(player.getCurrentSprite(), player.getImages()[3]);
+		player.advanceTime(0.1);
+		assertNotEquals(player.getCurrentSprite(), player.getImages()[3]);
 		
-		basic_alien.startMove("right");
-		basic_alien.startJump();
-		basic_alien.advanceTime(0.1);
-		assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[4]);
+		player.startMove("right");
+		player.startJump();
+		player.advanceTime(0.1);
+		assertEquals(player.getCurrentSprite(), player.getImages()[4]);
 		for(int i = 0; i < 10; i++) {
-			basic_alien.advanceTime(0.1);
+			player.advanceTime(0.1);
 		}
-		assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[4]);
-		basic_alien.endJump();
-		basic_alien.endMove();
+		assertEquals(player.getCurrentSprite(), player.getImages()[4]);
+		player.endJump();
+		player.endMove();
 		for(int i = 0; i < 10; i++) {
-			basic_alien.advanceTime(0.1);
-		}
-		
-		basic_alien.startMove("left");
-		basic_alien.startJump();
-		basic_alien.advanceTime(0.1);
-		assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[5]);
-		for(int i = 0; i < 10; i++) {
-			basic_alien.advanceTime(0.1);
-		}
-		assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[5]);
-		basic_alien.endJump();
-		basic_alien.endMove();
-		for(int i = 0; i < 10; i++) {
-			basic_alien.advanceTime(0.1);
+			player.advanceTime(0.1);
 		}
 		
-		basic_alien.startDuck();
-		
-		basic_alien.startMove("right");
-		basic_alien.advanceTime(0.1);
-		assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[6]);
-		basic_alien.endMove();
+		player.startMove("left");
+		player.startJump();
+		player.advanceTime(0.1);
+		assertEquals(player.getCurrentSprite(), player.getImages()[5]);
 		for(int i = 0; i < 10; i++) {
-			basic_alien.advanceTime(0.1);
+			player.advanceTime(0.1);
 		}
-		assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[6]);
-		basic_alien.advanceTime(0.1);
-		assertNotEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[6]);
-		
-		basic_alien.startMove("left");
-		basic_alien.advanceTime(0.1);
-		assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[7]);
-		basic_alien.endMove();
+		assertEquals(player.getCurrentSprite(), player.getImages()[5]);
+		player.endJump();
+		player.endMove();
 		for(int i = 0; i < 10; i++) {
-			basic_alien.advanceTime(0.1);
+			player.advanceTime(0.1);
 		}
-		assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[7]);
-		basic_alien.advanceTime(0.1);
-		assertNotEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[7]);
 		
-		basic_alien.endDuck();
+		player.startDuck();
+		
+		player.startMove("right");
+		player.advanceTime(0.1);
+		assertEquals(player.getCurrentSprite(), player.getImages()[6]);
+		player.endMove();
+		for(int i = 0; i < 10; i++) {
+			player.advanceTime(0.1);
+		}
+		assertEquals(player.getCurrentSprite(), player.getImages()[6]);
+		player.advanceTime(0.1);
+		assertNotEquals(player.getCurrentSprite(), player.getImages()[6]);
+		
+		player.startMove("left");
+		player.advanceTime(0.1);
+		assertEquals(player.getCurrentSprite(), player.getImages()[7]);
+		player.endMove();
+		for(int i = 0; i < 10; i++) {
+			player.advanceTime(0.1);
+		}
+		assertEquals(player.getCurrentSprite(), player.getImages()[7]);
+		player.advanceTime(0.1);
+		assertNotEquals(player.getCurrentSprite(), player.getImages()[7]);
+		
+		player.endDuck();
 
-		assertEquals(basic_alien.getY() > 0, false);
-		assertEquals(basic_alien.getDucking(), false);
+		assertEquals(player.getY() > 0, false);
+		assertEquals(player.getDucking(), false);
 		
-		basic_alien.startMove("right");
-		basic_alien.advanceTime(0.01);
-		
-		for(int i = 0; i < 25; i++) {
-			assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()[8 + i%basic_alien.getFramesAmount()]);
-			basic_alien.advanceTime(0.075);
-		}
-		
-		basic_alien.endMove();
-		
-		basic_alien.startMove("left");
-		basic_alien.advanceTime(0.01);
+		player.startMove("right");
+		player.advanceTime(0.01);
 		
 		for(int i = 0; i < 25; i++) {
-			assertEquals(basic_alien.getCurrentSprite(), basic_alien.getImages()
-					[8 + basic_alien.getFramesAmount() + i%basic_alien.getFramesAmount()]);
-			basic_alien.advanceTime(0.075);
+			assertEquals(player.getCurrentSprite(), player.getImages()[8 + i%player.getFramesAmount()]);
+			player.advanceTime(0.075);
 		}
 		
-		basic_alien.endMove();
+		player.endMove();
+		
+		player.startMove("left");
+		player.advanceTime(0.01);
+		
+		for(int i = 0; i < 25; i++) {
+			assertEquals(player.getCurrentSprite(), player.getImages()
+					[8 + player.getFramesAmount() + i%player.getFramesAmount()]);
+			player.advanceTime(0.075);
+		}
+		
+		player.endMove();
 	}@Test
 	public void TestsetAxcorrectparameters(){
-		basic_alien.setAx(basic_alien.getAxi());
-		assertEquals(basic_alien.getAx(),basic_alien.getAxi(),Util.DEFAULT_EPSILON);
-		basic_alien.setAx(-basic_alien.getAxi());
-		assertEquals(basic_alien.getAx(),-basic_alien.getAxi(),Util.DEFAULT_EPSILON);
-		basic_alien.setAx(0);
-		assertEquals(basic_alien.getAx(),0,Util.DEFAULT_EPSILON);		
+		player.setAx(player.getAxi());
+		assertEquals(player.getAx(),player.getAxi(),Util.DEFAULT_EPSILON);
+		player.setAx(-player.getAxi());
+		assertEquals(player.getAx(),-player.getAxi(),Util.DEFAULT_EPSILON);
+		player.setAx(0);
+		assertEquals(player.getAx(),0,Util.DEFAULT_EPSILON);		
 	}
 	
 	@Test
 	public void TestsetAxillegalparameters(){
 		try {
-			basic_alien.setAx(0.1);
+			player.setAx(0.1);
 		} catch (IllegalArgumentException exc1) {
 			try {
-				basic_alien.setAx(-0.1);
+				player.setAx(-0.1);
 			} catch (IllegalArgumentException exc2) {
 				try {
-					basic_alien.setAx(1);
+					player.setAx(1);
 				} catch (IllegalArgumentException exc3) {
 					try {
-						basic_alien.setAx(-1);
+						player.setAx(-1);
 					} catch (IllegalArgumentException exc4) {
 						assert(true);
 						return;
@@ -420,34 +420,34 @@ public class MazubTest {
 	
 	@Test
 	public void TestisValidAxvalidAx(){
-		assert(basic_alien.isValidAx(0));
-		assert(basic_alien.isValidAx(0.9));
-		assert(basic_alien.isValidAx(-0.9));
+		assert(player.isValidAx(0));
+		assert(player.isValidAx(0.9));
+		assert(player.isValidAx(-0.9));
 	}
 	
 	@Test
 	public void TestisValidAxillegalAx(){
-		assert(!basic_alien.isValidAx(0.1));
+		assert(!player.isValidAx(0.1));
 	}
 	
 	@Test
 	public void TestsetAYcorrectparameters(){
-		basic_alien.setAy(0);
-		assertEquals(basic_alien.getAy(),0,Util.DEFAULT_EPSILON);
-		basic_alien.setAy(-10);
-		assertEquals(basic_alien.getAy(),-10,Util.DEFAULT_EPSILON);
+		player.setAy(0);
+		assertEquals(player.getAy(),0,Util.DEFAULT_EPSILON);
+		player.setAy(-10);
+		assertEquals(player.getAy(),-10,Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
 	public void TestsetAYillegalparameters(){
 		try {
-			basic_alien.setAy(0.1);
+			player.setAy(0.1);
 		} catch (IllegalArgumentException exc1) {
 			try {
-				basic_alien.setAy(-0.1);
+				player.setAy(-0.1);
 			} catch (IllegalArgumentException exc2) {
 				try {
-					basic_alien.setAy(100);
+					player.setAy(100);
 				}catch (IllegalArgumentException exc4) {
 						assert(true);
 						return;					
@@ -460,40 +460,40 @@ public class MazubTest {
 	
 	@Test
 	public void TestisValidAyvalidAy(){
-		assert(basic_alien.isValidAy(0));
-		assert(basic_alien.isValidAy(-10));
+		assert(player.isValidAy(0));
+		assert(player.isValidAy(-10));
 	}
 	
 	@Test
 	public void TestisValidAyillegalAy(){
-		assert(!basic_alien.isValidAy(5));
+		assert(!player.isValidAy(5));
 	}
 	
 	@Test
 	public void TestsetDuckingcorrectparameter(){
-		basic_alien.setDucking(true);
-		assert(basic_alien.getDucking());
-		basic_alien.setDucking(false);
-		assert(!basic_alien.getDucking());
+		player.setDucking(true);
+		assert(player.getDucking());
+		player.setDucking(false);
+		assert(!player.getDucking());
 	}
 	
 	@Test
 	public void TestsetLastMovecorrectparameters(){
-		basic_alien.setLastMove(-1);
-		assert(basic_alien.getLastMove() == -1);
-		basic_alien.setLastMove(1);
-		assert(basic_alien.getLastMove() == 1);
-		basic_alien.setLastMove(0.5);
-		assert(basic_alien.getLastMove() == 0.5);		
+		player.setLastMove(-1);
+		assert(player.getLastMove() == -1);
+		player.setLastMove(1);
+		assert(player.getLastMove() == 1);
+		player.setLastMove(0.5);
+		assert(player.getLastMove() == 0.5);		
 	}
 	
 	@Test
 	public void TestsetLastMoveillegalparameters(){
 		try {
-			basic_alien.setLastMove(50);
+			player.setLastMove(50);
 		} catch (IllegalArgumentException exc1) {
 			try {
-				basic_alien.setAx(-50);
+				player.setAx(-50);
 			} catch (IllegalArgumentException exc4) {
 						assert(true);
 						return;					
@@ -504,40 +504,40 @@ public class MazubTest {
 	
 	@Test
 	public void Testgetframesamount(){
-		assert(basic_alien.getFramesAmount() == (basic_alien.getImages().length - 8) /2);
+		assert(player.getFramesAmount() == (player.getImages().length - 8) /2);
 	}
 	
 	@Test
 	public void TestsetAnimationTimesparametersmallerthenthehighestreachableanimationtime(){
-		basic_alien.setAnimationTime(basic_alien.getFramesAmount()*Mazub.getFrameTime()-0.1);
-		assert(basic_alien.getAnimationTime() 
-				== basic_alien.getAnimationTime()%(basic_alien.getFramesAmount()*Mazub.getFrameTime()));
+		player.setAnimationTime(player.getFramesAmount()*Mazub.getFrameTime()-0.1);
+		assert(player.getAnimationTime() 
+				== player.getAnimationTime()%(player.getFramesAmount()*Mazub.getFrameTime()));
 	}
 	
 	@Test
 	public void TestsetAnimationTimesparameterequaltothehighestreachableanimationtime(){
-		basic_alien.setAnimationTime(basic_alien.getFramesAmount()*Mazub.getFrameTime());
-		assert(basic_alien.getAnimationTime() 
-				== basic_alien.getAnimationTime()%(basic_alien.getFramesAmount()*Mazub.getFrameTime()));
+		player.setAnimationTime(player.getFramesAmount()*Mazub.getFrameTime());
+		assert(player.getAnimationTime() 
+				== player.getAnimationTime()%(player.getFramesAmount()*Mazub.getFrameTime()));
 	}
 	
 	@Test
 	public void TestsetAnimationTimesparametershigherthenthehighestreachableanimationtime(){
-		basic_alien.setAnimationTime(basic_alien.getFramesAmount()*Mazub.getFrameTime()+ 0.1);
-		assert(basic_alien.getAnimationTime() 
-				== basic_alien.getAnimationTime()%(basic_alien.getFramesAmount()*Mazub.getFrameTime()));
+		player.setAnimationTime(player.getFramesAmount()*Mazub.getFrameTime()+ 0.1);
+		assert(player.getAnimationTime() 
+				== player.getAnimationTime()%(player.getFramesAmount()*Mazub.getFrameTime()));
 	}
 	
 	@Test
 	public void Testgetcurrentframeindexanimationtimedivisiblebyframetime(){
-		basic_alien.setAnimationTime(Mazub.getFrameTime() *3);
-		assert(basic_alien.getAnimationTime() == 3);
+		player.setAnimationTime(Mazub.getFrameTime() *3);
+		assert(player.getAnimationTime() == 3);
 	}
 	
 	@Test
 	public void Testgetcurrentframeindexanimationtimenotdivisiblebyframetime(){
-		basic_alien.setAnimationTime(Mazub.getFrameTime()*2.5);
-		assert(basic_alien.getAnimationTime() == 2);
+		player.setAnimationTime(Mazub.getFrameTime()*2.5);
+		assert(player.getAnimationTime() == 2);
 	}
 	
 	@Test
@@ -555,141 +555,141 @@ public class MazubTest {
 	
 	@Test
 	public void TestadvanceTimeupdatingxpositionnewxwithinbounds(){
-		basic_alien.setVx(1);
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getX() == 
-				 (basic_alien.getVx()*0.1 + 1/2*basic_alien.getAx()*Math.pow(0.1, 2)));
+		player.setVx(1);
+		player.advanceTime(0.1);
+		assert(player.getX() == 
+				 (player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2)));
 	}
 	
 	@Test
 	public void TestadvanceTimeupdatingxpositionnewxoutsidebounds(){
-		basic_alien.setVx(-1);
-		basic_alien.setAx(-1);
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getX() == 0);
-		basic_alien.setVx(1);
-		basic_alien.setAx(1);
-		basic_alien.setX(basic_alien.getWorld().getWorldWidth()-1);
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getX() == basic_alien.getWorld().getWorldWidth()-1);
+		player.setVx(-1);
+		player.setAx(-1);
+		player.advanceTime(0.1);
+		assert(player.getX() == 0);
+		player.setVx(1);
+		player.setAx(1);
+		player.setX(player.getWorld().getWorldWidth()-1);
+		player.advanceTime(0.1);
+		assert(player.getX() == player.getWorld().getWorldWidth()-1);
 	}
 	
 	@Test
 	public void TestadvanceTimeupdatinghorizontalvelocitynewvxwithinbounds(){
-		basic_alien.setAx(1);
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getVx() == basic_alien.getVx() + basic_alien.getAx()*0.1);		
+		player.setAx(1);
+		player.advanceTime(0.1);
+		assert(player.getVx() == player.getVx() + player.getAx()*0.1);		
 	}
 	
 	@Test
 	public void TestadvanceTimeupdatinghorizontalvelocitynewvxoutsidebounds(){
-		basic_alien.setAx(-1);
-		basic_alien.setVx(-basic_alien.getVxmax());
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getVx() == -basic_alien.getVxmax());
-		basic_alien.setAx(1);
-		basic_alien.setVx(basic_alien.getVxmax());
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getVx() == basic_alien.getVxmax());
+		player.setAx(-1);
+		player.setVx(-player.getVxmax());
+		player.advanceTime(0.1);
+		assert(player.getVx() == -player.getVxmax());
+		player.setAx(1);
+		player.setVx(player.getVxmax());
+		player.advanceTime(0.1);
+		assert(player.getVx() == player.getVxmax());
 	}
 	
 	@Test
 	public void TestadvanceTimeupdatingypositionnewywithinbounds(){
-			basic_alien.setVy(6);
-			basic_alien.advanceTime(0.1);
-			assert(basic_alien.getY() == 
-					basic_alien.getY() + basic_alien.getVy()*0.1 + 1/2*basic_alien.getAy()*Math.pow(0.1, 2));
+			player.setVy(6);
+			player.advanceTime(0.1);
+			assert(player.getY() == 
+					player.getY() + player.getVy()*0.1 + 1/2*player.getAy()*Math.pow(0.1, 2));
 		}		
 	
 	@Test
 	public void TestadvanceTimeupdatingypositionnewyoutsidebounds(){
-		basic_alien.setVy(-8);
-		basic_alien.setAy(-10);
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getY() == 0);
-		basic_alien.setVy(1);
-		basic_alien.setY(basic_alien.getWorld().getWorldHeight()-1);
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getY() == basic_alien.getWorld().getWorldHeight()-1);
+		player.setVy(-8);
+		player.setAy(-10);
+		player.advanceTime(0.1);
+		assert(player.getY() == 0);
+		player.setVy(1);
+		player.setY(player.getWorld().getWorldHeight()-1);
+		player.advanceTime(0.1);
+		assert(player.getY() == player.getWorld().getWorldHeight()-1);
 	}
 	
 	@Test
 	public void TestadvanceTimeupdatingverticalvelocitynewvywithinbounds(){
-		basic_alien.setVy(7);
-		basic_alien.setAy(-10);
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getVy() == basic_alien.getVy() + basic_alien.getAy()*0.1);		
+		player.setVy(7);
+		player.setAy(-10);
+		player.advanceTime(0.1);
+		assert(player.getVy() == player.getVy() + player.getAy()*0.1);		
 	}
 	
 	@Test
 	public void TestadvanceTimeupdatingverticalacceleration(){
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getAy() == 0);
-		basic_alien.setY(5);
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getAx() == -10);
+		player.advanceTime(0.1);
+		assert(player.getAy() == 0);
+		player.setY(5);
+		player.advanceTime(0.1);
+		assert(player.getAx() == -10);
 	}
 	
 	@Test
 	public void TestadvanceTimeupdatingLastMovewhilemovingtotherightortheleft(){
-		basic_alien.setVx(2);
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getLastMove() == 1);
-		basic_alien.setVx(-1);
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getLastMove() == -1);
+		player.setVx(2);
+		player.advanceTime(0.1);
+		assert(player.getLastMove() == 1);
+		player.setVx(-1);
+		player.advanceTime(0.1);
+		assert(player.getLastMove() == -1);
 	}
 	
 	@Test
 	public void TestadvanceTimeupdatingLastMovewhilestandingstillandnewLastMovewithinbounds(){
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getLastMove() == 0);
-		basic_alien.setLastMove(0.5);
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getLastMove() == 0.4);
-		basic_alien.setLastMove(-0.5);
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getLastMove() == -0.4);		
+		player.advanceTime(0.1);
+		assert(player.getLastMove() == 0);
+		player.setLastMove(0.5);
+		player.advanceTime(0.1);
+		assert(player.getLastMove() == 0.4);
+		player.setLastMove(-0.5);
+		player.advanceTime(0.1);
+		assert(player.getLastMove() == -0.4);		
 	}
 	
 	@Test
 	public void TestadvanceTimeupdatingLastMovewhilestandingstillandnewLastMoveoutsidebounds(){
-		basic_alien.setLastMove(0.05);
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getLastMove() == 0);
-		basic_alien.setLastMove(-0.05);
-		basic_alien.advanceTime(0.1);
-		assert(basic_alien.getLastMove() == 0);		
+		player.setLastMove(0.05);
+		player.advanceTime(0.1);
+		assert(player.getLastMove() == 0);
+		player.setLastMove(-0.05);
+		player.advanceTime(0.1);
+		assert(player.getLastMove() == 0);		
 	}
 	
 	@Test
 	public void TestadvanceTimeupdatinganimationtimenewanimationtimewithinbounds(){
-		basic_alien.advanceTime(0.1);
-		double animationtimeafteradvancetime = basic_alien.getAnimationTime();
-		basic_alien.setAnimationTime(0);
-		basic_alien.setAnimationTime(0.1);
-		double animationtimeaftersetter = basic_alien.getAnimationTime();
+		player.advanceTime(0.1);
+		double animationtimeafteradvancetime = player.getAnimationTime();
+		player.setAnimationTime(0);
+		player.setAnimationTime(0.1);
+		double animationtimeaftersetter = player.getAnimationTime();
 		assert(animationtimeafteradvancetime == animationtimeaftersetter);
 	}
 	
 	@Test
 	public void TestadvanceTimeupdatinganimationtimenewanimationtimeoutsidebounds(){
-		basic_alien.setAnimationTime(Mazub.getFrameTime()*basic_alien.getFramesAmount()-0.05);
-		basic_alien.advanceTime(0.1);
-		double animationtimeafteradvancetime = basic_alien.getAnimationTime();
-		basic_alien.setAnimationTime(Mazub.getFrameTime()*basic_alien.getFramesAmount()-0.05);
-		basic_alien.setAnimationTime(basic_alien.getAnimationTime() + 0.1);
-		double animationtimeaftersetter = basic_alien.getAnimationTime();
+		player.setAnimationTime(Mazub.getFrameTime()*player.getFramesAmount()-0.05);
+		player.advanceTime(0.1);
+		double animationtimeafteradvancetime = player.getAnimationTime();
+		player.setAnimationTime(Mazub.getFrameTime()*player.getFramesAmount()-0.05);
+		player.setAnimationTime(player.getAnimationTime() + 0.1);
+		double animationtimeaftersetter = player.getAnimationTime();
 		assert(animationtimeafteradvancetime == animationtimeaftersetter);		
 	}
 	
 	@Test
 	public void TestadvanceTimeillegalparameter(){
 		try{
-			basic_alien.advanceTime(0.2);
+			player.advanceTime(0.2);
 		}catch(IllegalArgumentException exc){
 			try{
-				basic_alien.advanceTime(0);
+				player.advanceTime(0);
 			}catch(IllegalArgumentException exc1){
 				assert(true);
 			}
