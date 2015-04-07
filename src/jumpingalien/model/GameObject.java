@@ -1,6 +1,7 @@
 package jumpingalien.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import be.kuleuven.cs.som.annotate.Basic;
@@ -418,6 +419,7 @@ public abstract class GameObject {
 	/**
 	 * Gets this game object's time in air.
 	 */
+	@Basic
 	public double getTimeInAir(){
 		return this.time_in_air;
 	}
@@ -442,6 +444,7 @@ public abstract class GameObject {
 	/**
 	 * Gets this game object's time in water.
 	 */
+	@Basic
 	public double getTimeInWater(){
 		return this.time_in_water;
 	}
@@ -466,6 +469,7 @@ public abstract class GameObject {
 	/**
 	 * Gets this game object's time in magma.
 	 */
+	@Basic
 	public double getTimeInMagma(){
 		return this.time_in_magma;
 	}
@@ -539,8 +543,11 @@ public abstract class GameObject {
 	 * 			| setAnimationTime(getAnimationTime() + timestep))
 	 */
 	public void advanceTimeStep(double timestep) {
-		
-		ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
+		ArrayList<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>(
+				Collections.nCopies(4, Collections.nCopies(2, new ArrayList<Object>())));
+				
+		if(getWorld() != null)
+			 collisions = getWorld().collisionDetect(this, 0);
 		
 		if ((collisions.get(0).get(0) == null) && !(collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0)
 			|| (collisions.get(2).get(0) == null) && !(collisions.get(2).get(1).contains(Feature.ground)) && (getVx() > 0)) 
@@ -548,7 +555,8 @@ public abstract class GameObject {
 		
 		setVx(advanceVx(timestep));
 		
-		collisions = getWorld().collisionDetect(this, 0);
+		if(getWorld() != null)
+			collisions = getWorld().collisionDetect(this, 0);
 		if ((collisions.get(1).get(0) == null) && !(collisions.get(1).get(1).contains(Feature.ground)) && (getVy() > 0)
 			|| (collisions.get(3).get(0) == null) && !(collisions.get(3).get(1).contains(Feature.ground)) && (getVy() < 0)) 
 			advanceY(timestep);
@@ -634,10 +642,16 @@ public abstract class GameObject {
 	 * 			| result = Math.max(0, Math.min(getWorldWidth() - 1, x))
 	 */
 	private void setXWithinBounds(double x) {
-		if(x >= 0 || x <= getWorld().getWorldWidth()- 1)
+		if(getWorld() != null){
+			if(x >= 0 && x <= getWorld().getWorldWidth()- 1)
+				setX(x);
+			else{
+				terminate();
+				setX(Math.max(0, Math.min(getWorld().getWorldWidth() - 1, x)));
+			}
+		}
+		else
 			setX(x);
-		terminate();
-		setX(Math.max(0, Math.min(getWorld().getWorldWidth() - 1, x)));
 	}
 
 	/**
@@ -720,10 +734,16 @@ public abstract class GameObject {
 	 * 			| result = Math.max(0, Math.min(getWorldHeight() - 1, y))
 	 */
 	private void setYWithinBounds(double y) {
-		if(y >= 0 || y <= getWorld().getWindowHeight() - 1)
+		if(getWorld() != null){
+			if(y >= 0 && y <= getWorld().getWindowHeight() - 1)
+				setY(y);
+			else{
+				terminate();
+				setY(Math.max(0, Math.min(getWorld().getWorldHeight() - 1, y)));
+			}
+		}
+		else
 			setY(y);
-		terminate();
-		setY(Math.max(0, Math.min(getWorld().getWorldHeight() - 1, y)));
 	}
 	
 	/**

@@ -293,8 +293,10 @@ public class Mazub extends GameObject {
 		}
 
 		setTimeInvincible(advanceTimeInvincible(dt));
-		ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
-		collisionHandle(collisions, dt);
+		if(getWorld() != null){
+			ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
+			collisionHandle(collisions, dt);
+		}
 	}
 	
 	/**
@@ -567,6 +569,8 @@ public class Mazub extends GameObject {
 	 */
 	@Override
 	public boolean canJump() {
+		if(getWorld() == null)
+			return true;
 		ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
 		if(collisions.get(3).get(0).size() != 0 || collisions.get(3).get(1).contains(Feature.ground))
 			return true;

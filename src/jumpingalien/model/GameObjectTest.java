@@ -93,6 +93,53 @@ public class GameObjectTest {
 		assert(! player.isValidAy(5));
 	}
 	
+	@Test
+	public void TestgetWidth(){
+		assert(player.getWidth() == player.getCurrentSprite().getWidth());
+		player.setVx(2);
+		assert(player.getWidth() == player.getCurrentSprite().getWidth());
+	}
+	
+	@Test
+	public void TestgetHeigth(){
+		assert(player.getHeight() == player.getCurrentSprite().getHeight());
+		player.setVy(2);
+		assert(player.getHeight() == player.getCurrentSprite().getHeight());
+	}
+	
+	@Test
+	public void TestadvanceTimeupdatingxpositionnewxwithinbounds(){
+		player.setVx(1);
+		player.advanceTime(0.1);
+		assert(player.getX() == 
+				 (player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2)));
+	}
+	
+	@Test
+	public void TestadvanceTimeupdatingxpositionnewxoutsidebounds(){
+		player.setVx(-1);
+		player.setAx(-1);
+		player.advanceTime(0.1);
+		assert(player.getX() == 0);
+		assert(player.getWorld() == null);
+		player.setWorld(world);
+		player.setVx(1);
+		player.setAx(1);
+		player.setX(player.getWorld().getWorldWidth()-1);
+		player.advanceTime(0.1);
+		assert(player.getX() == player.getWorld().getWorldWidth()-1);
+		assert(player.getWorld() == null);
+	}
+	
+	@Test
+	public void TestadvanceTimeUpdatingXPositionWithoutWorld(){
+		player.setWorld(null);
+		player.setVx(1);
+		player.advanceTime(0.1);
+		assert(player.getX() == 
+				 (player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2)));
+	}
+	
 	
 	
 	
