@@ -36,9 +36,9 @@ public class GameObjectTest {
 		player.setY(0);
 		assertEquals(player.getY(),0, Util.DEFAULT_EPSILON);
 		
-		player.setX(1023);
+		player.setX(199);
 		assertEquals(player.getX(), 199, Util.DEFAULT_EPSILON);
-		player.setY(767);
+		player.setY(199);
 		assertEquals(player.getY(), 199, Util.DEFAULT_EPSILON);
 		
 	}

@@ -59,7 +59,9 @@ public abstract class GameObject {
 	 * 			| result = (x >= 0 && x < getWorldWidth)
 	 */
 	public boolean isValidX(double x) {
-		return (x >= 0 && x < getWorld().getWorldWidth());
+		if(getWorld() != null)
+			return (x >= 0 && x < getWorld().getWorldWidth());
+		return x >= 0;
 	}
 	
 	private double x;
@@ -99,7 +101,9 @@ public abstract class GameObject {
 	 * 			| result = (y >= 0 && y < getWorldHeight())
 	 */
 	public boolean isValidY(double y) {
-		return (y >= 0 && y < getWorld().getWorldHeight()); 
+		if (getWorld() != null)
+			return (y >= 0 && y < getWorld().getWorldHeight()); 
+		return y >= 0;
 	}
 	
 	private double y;
