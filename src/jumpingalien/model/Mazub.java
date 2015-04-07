@@ -328,58 +328,7 @@ public class Mazub extends GameObject {
 		
 	}
 	
-	/**
-	 * Handles collisions between this mazub and the features of the tiles this mazub is in.
-	 * 
-	 * @param collisions
-	 * 			The result of the method collisiondetect in the class World.
-	 * @param time
-	 * 			The time to advance (if necessary) this mazub's time in water and time in magma with.
-	 * @effect 	If this mazub touches a water tile it's time in water will be advanced.
-	 * 			Else it's time in water will be set to 0.
-	 * 			| for( int i = 0; (i < 4) && !timeinwaterupdated; i++)
-	 *			|	ArrayList<Object> collision_features = (ArrayList<Object>) collisions.get(i).get(1)
-	 * 			|	if(collision_features.contains(Feature.water))
-	 *			|		advanceTimeInWater(time)
-	 *			|		timeinwaterupdated = true
-	 *			| if(! timeinwaterupdated)
-	 *			|	setTimeInWater(0)
-	 * @effect 	If this mazub touches a magma tile it's time in magma will be advanced.
-	 * 			Else it's time in magma will be set to 0.
-	 * 			| for( int i = 0; (i < 4) && !timeinmagmaupdated; i++)
-	 *			|	ArrayList<Object> collision_features = (ArrayList<Object>) collisions.get(i).get(1)
-	 * 			|	if(collision_features.contains(Feature.magma))
-	 *			|		advanceTimeInMagma(time)
-	 *			|		timeinmagmaupdated = true
-	 *			| if(! timeinmagmaupdated)
-	 *			|	setTimeInMagma(0)
-	 *@throws IllegalArgumentException
-	 *			If dt isn't a valid time interval to advance the time with.
-	 * 			| !isValidDt(dt)
-	 */
-	protected void collisionHandleFeature(ArrayList<List<List<Object>>> collisions, double time) 
-				throws IllegalArgumentException{
-		if( ! isValidDt(time))
-			throw new IllegalArgumentException();
-		
-		boolean timeinwaterupdated = false;
-		boolean timeinmagmaupdated = false;
-		for( int i = 0; (i < 4) && !timeinwaterupdated && !timeinmagmaupdated; i++){
-			ArrayList<Object> collision_features = (ArrayList<Object>) collisions.get(i).get(1);
-			if(collision_features.contains(Feature.water)){
-				collisionHandleWater(time);
-				timeinwaterupdated = true;
-			}
-			if(collision_features.contains(Feature.magma)){
-				collisionHandleMagma(time);
-				timeinmagmaupdated = true;
-			}
-		}		
-		if(! timeinwaterupdated)
-			setTimeInWater(0);
-		if(! timeinmagmaupdated)
-			setTimeInMagma(0);
-	}
+
 	
 	/**
 	 * Handles a collision between the player and water.
