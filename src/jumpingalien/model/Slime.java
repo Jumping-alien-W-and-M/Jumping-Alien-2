@@ -1,7 +1,5 @@
 package jumpingalien.model;
 
-import java.util.Random;
-
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
 
@@ -30,13 +28,10 @@ public class Slime extends Enemy {
 	 * 			| setVxmax(2.5)
 	 */
 	public Slime(double x, double y, Sprite[] images, School school) {
-		super(x, y, images, 0.7, 0, 2, 6);
+		super(x, y, images, 0.7, 0, 2.5, 2, 6, 100);
 		
 		assert(school != null);
 		school.addSlime(this);
-		setHitpoints(100);
-
-		setVxmax(2.5);
 	}
 	
 	/**
@@ -53,7 +48,7 @@ public class Slime extends Enemy {
 	 * @effect	...
 	 * 			| setHitpoints(getHitpoints() - hitpoints)
 	 */
-	private void hit(int hitpoints) {
+	protected void hit(int hitpoints) {
 		assert(hitpoints >= 0);
 		
 		for (Slime slime : getSchool().getSlimes()) {
@@ -157,24 +152,6 @@ public class Slime extends Enemy {
 	private School school;
 	
 	/**
-	 * Performs a random action for this slime.
-	 * 
-	 * @effect	...
-	 * 			| setVx(0)
-	 * @effect	...
-	 * 			| rand = new Random()
-	 * 			| if (rand.nextInt(2) == 0) setAx(getAxi())
-	 * 			| else setAx(-getAxi())
-	 */
-	@Override
-	protected void performRandomAction() {
-		setVx(0);
-		Random rand = new Random();
-		if (rand.nextInt(2) == 0) setAx(getAxi());
-		else setAx(-getAxi());
-	}
-	
-	/**
 	 * Handles a collision with a Mazub.
 	 * 
 	 * @param player
@@ -185,7 +162,7 @@ public class Slime extends Enemy {
 	 * 			| collisionHandleEnemy()
 	 */
 	@Override
-	protected void collisionHandleMazub(Mazub player) { assert(player != null); collisionHandleEnemy(); }
+	protected void collisionHandleMazub(Mazub player) { assert(player != null); player.collisionHandleSlime(this); }
 
 	/**
 	 * Handles a collision with a shark.
@@ -198,22 +175,7 @@ public class Slime extends Enemy {
 	 * 			| collisionHandleEnemy()
 	 */
 	@Override
-	protected void collisionHandleShark(Shark shark) { assert(shark != null); collisionHandleEnemy(); }
-	
-	/**
-	 * Handles a collision with a Mazub or shark.
-	 * 
-	 * @effect	...
-	 * 			| hit(50)
-	 * @effect	...
-	 * 			| setTimeInvincible(0.6)
-	 */
-	private void collisionHandleEnemy() {
-		if (getTimeInvincible() <= 0) {
-			hit(50);
-			setTimeInvincible(0.6);
-		}
-	}
+	protected void collisionHandleShark(Shark shark) { assert(shark != null); shark.collisionHandleSlime(this); }
 	
 	/**
 	 * Handles a collision with another slime
@@ -266,7 +228,7 @@ public class Slime extends Enemy {
 		setTimeInWater(getTimeInWater() + time);
 		
 		while (getTimeInWater() >= 0.2) {
-			hit(20);
+			hit(2);
 			setTimeInWater(getTimeInWater() - 0.2);
 		}
 	}
@@ -294,13 +256,13 @@ public class Slime extends Enemy {
 		assert(time > 0);
 		
 		if (getTimeInMagma() == 0) {
-			hit(20);
+			hit(50);
 		}
 		
 		setTimeInMagma(getTimeInMagma() + time);
 		
 		while (getTimeInMagma() >= 0.2) {
-			hit(20);
+			hit(50);
 			setTimeInMagma(getTimeInMagma() - 0.2);
 		}
 	}

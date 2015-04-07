@@ -10,12 +10,13 @@ import jumpingalien.util.Sprite;
 
 public abstract class GameObject {
 	
-	public GameObject(double x, double y, Sprite[] images, double axi, double vxi){
+	public GameObject(double x, double y, Sprite[] images, double axi, double vxi, double vxmax){
 		setX(x);
 		setY(y);
 		this.images = images;
 		this.axi = axi;
 		this.vxi = axi;
+		setVxmax(vxmax);
 		
 		setVx(0);
 		setVy(0);
@@ -527,21 +528,29 @@ public abstract class GameObject {
 	public void advanceTimeStep(double timestep) {
 		
 		ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
-		if ((collisions.get(0).get(0) == null) && (collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0)
-			|| (collisions.get(1).get(0) == null) && (collisions.get(1).get(1).contains(Feature.ground)) && (getVx() > 0)) 
+		
+		if ((collisions.get(0).get(0) == null) && !(collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0)
+			|| (collisions.get(2).get(0) == null) && !(collisions.get(2).get(1).contains(Feature.ground)) && (getVx() > 0)) 
 				advanceX(timestep);
 		
 		setVx(advanceVx(timestep));
 		
-		if ((collisions.get(1).get(0) == null) && (collisions.get(1).get(1).contains(Feature.ground)) && (getVy() > 0)
-			|| (collisions.get(3).get(0) == null) && (collisions.get(3).get(1).contains(Feature.ground)) && (getVx() < 0)) 
+		collisions = getWorld().collisionDetect(this, 0);
+		if ((collisions.get(1).get(0) == null) && !(collisions.get(1).get(1).contains(Feature.ground)) && (getVy() > 0)
+			|| (collisions.get(3).get(0) == null) && !(collisions.get(3).get(1).contains(Feature.ground)) && (getVy() < 0)) 
 			advanceY(timestep);
+		
+		if (getVy() > 0) {
+			for(int i = 0; i < 4; i++) {
+				if ((collisions.get(i).get(0) != null) || (collisions.get(i).get(1).contains(Feature.ground))) {
+					setVy(0);
+					break;
+				}
+			}
+		}
 		
 		setVy(advanceVy(timestep));
 		setAy(advanceAy());
-		
-		collisionHandle(collisions, timestep);
-		setTimeInvincible(advanceTimeInvincible(timestep));
 	}
 	
 	/**
@@ -570,39 +579,9 @@ public abstract class GameObject {
 	 * 			|				Math.min(computeformula(getVy,getAy),
 	 * 			|					Math.min( 1/Math.abs(getVx()/100),1/Math.abs(getVy()/100)))
 	 */
-	public double getTimestep(){
-		double firstparameter = Math.min( 1/Math.abs(getVx()/100),1/Math.abs(getVy()/100));		
-		double secondparameter = computeformula(getVx(),getAx());		
-		double thirdparameter = computeformula(getVy(),getAy());
-		
-		return Math.min(firstparameter,Math.min(secondparameter,thirdparameter));
-	}
-	
-	/**
-	 * Computes a formula for the calculation of timestep().
-	 * 
-	 * @param v
-	 * 			the velocity to compute the formula with
-	 * @param a
-	 * 			the acceleration to compute the formula with	 * 
-	 * @return	if a is not equal to zero
-	 * 			The square root of two times the absolute value of, a divided by 100, 
-	 * 			plus ,the square of v divide by 100, min the absolute value of, v divided by 100. 
-	 * 			This square root divide by the absolute value of, a divide by 100.
-	 * 			| if a != 0
-	 * 			|	then result = Math.sqrt(2*Math.abs(a / 100) + Math.pow(v,2)/100 - Math.abs(v/100))
-	 *			| 			/Math.abs(a / 100)
-	 *@return 	if a is equal to zero 
-	 *			Double.POSITIVE_INFINITY
-	 *			| if a == 0
-	 *			|  then result = Double.POSITIVE_INFINITY 
-	 */
-	public double computeformula(double v, double a){
-		if(a == 0)
-			return Double.POSITIVE_INFINITY;
-		double helpparameter = Math.abs(a / 100);
-		return Math.sqrt(2*helpparameter + Math.pow(v,2)/100 - Math.abs(v/100))
-				/helpparameter;
+	public double getTimestep(double dt) {
+		return 0.01/(Math.sqrt(Math.pow(getVx(), 2) + Math.pow(getVy(), 2)) +
+				Math.sqrt(Math.pow(getAx(), 2) + Math.pow(getAy(), 2))*dt);
 	}
 	
 	/**
@@ -807,7 +786,7 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Return the new time this mazub will be invincible for
+	 * Return the new time this mazub will be invincible for.
 	 * 
 	 * @param dt
 	 * 			The period of time wich should be advance, in seconds.
@@ -815,7 +794,7 @@ public abstract class GameObject {
 	 * 			if this is bigger then or equal to 0 else 0 is returned.
 	 * 			| result = Math.max(0, getTimeInvincible()-dt)
 	 */
-	private double advanceTimeInvincible(double dt){
+	protected double advanceTimeInvincible(double dt){
 		return Math.max(0, getTimeInvincible() - dt);
 	}
 	
@@ -826,14 +805,9 @@ public abstract class GameObject {
 	 */
 	@Model
 	protected void collisionHandle(ArrayList<List<List<Object>>> collisions, double time) {
-		
-		boolean touched_air = false;
-		boolean touched_water = false;
-		boolean touched_magma = false;
 	
 		for(int i = 0; i < 4; i++) {
 			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
-			ArrayList<Object> collision_features = (ArrayList<Object>) collisions.get(i).get(1);
 			
 			for(Object object : collision_objects) {
 				if (object instanceof Mazub) collisionHandleMazub((Mazub) object);
@@ -841,26 +815,40 @@ public abstract class GameObject {
 				if (object instanceof Plant) collisionHandlePlant((Plant) object);
 				if ((object instanceof Slime) && (!(this instanceof Mazub) || (i != 3))) collisionHandleSlime((Slime) object);
 			}
-			
-			for(Object feature : collision_features) {
-				if (((Feature) feature == Feature.air) && (touched_air)) {
-					collisionHandleAir(time);
-					touched_air = true;
-				}
-				if (((Feature) feature == Feature.water) && (touched_water)) {
-					collisionHandleWater(time);
-					touched_water = true;
-				}
-				if (((Feature) feature == Feature.magma) && (touched_magma)) {
-					collisionHandleMagma(time);
-					touched_magma = true;
-				}
+		}
+		
+		collisionHandleFeature(collisions, time);
+		
+
+	}
+	
+	protected void collisionHandleFeature(ArrayList<List<List<Object>>> collisions, double time) {
+		
+		boolean touched_air = false;
+		boolean touched_water = false;
+		boolean touched_magma = false;
+		
+		for(int i = 0; i < 4; i++) {
+			ArrayList<Object> collision_features = (ArrayList<Object>) collisions.get(i).get(1);
+		
+			if ((collision_features.contains(Feature.air)) && !(touched_air)) {
+				collisionHandleAir(time);
+				touched_air = true;
+			}
+			if ((collision_features.contains(Feature.water)) && !(touched_water)) {
+				collisionHandleWater(time);
+				touched_water = true;
+			}
+			if ((collision_features.contains(Feature.magma)) && !(touched_magma)) {
+				collisionHandleMagma(time);
+				touched_magma = true;
 			}
 		}
 		
 		if (!(touched_air)) setTimeInAir(0);
 		if (!(touched_water)) setTimeInWater(0);
 		if (!(touched_magma)) setTimeInMagma(0);
+		
 	}
 	
 	protected void collisionHandleMazub(Mazub player) { }
