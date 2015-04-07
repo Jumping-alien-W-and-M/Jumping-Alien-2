@@ -278,7 +278,7 @@ public class Mazub extends GameObject {
 	 * @pre		shark is not null
 	 * 			| shark != null
 	 * @effect	If shark is not dying and Mazub is not invincible,
-	 * 			this mazub's hitpoints will be decreased by 50.
+	 * 			this Mazub hitpoints will be decreased by 50.
 	 * 			| if(shark.getDeathTime() != 0 && getTimeInvincible() == 0)
 	 *			|	this.setHitpoints(this.getHitpoints() - 50)
 	 * @effect 	If shark is not dying and Mazub is not invincible,
@@ -286,7 +286,7 @@ public class Mazub extends GameObject {
 	 * 			| if(shark.getDeathTime() != 0 && getTimeInvincible() == 0)
 	 * 			|  	shark.setHitpoints(shark.getHitpoints() - 50)
 	 * @effect 	If shark is not dying and Mazub is not invincible,
-	 * 			this mazub will be invincible for the next 0.6 seconds.
+	 * 			this Mazub will be invincible for the next 0.6 seconds.
 	 * 			| if(shark.getDeathTime() != 0 && getTimeInvincible() == 0)
 	 * 			|	this.setTimeInvincible(0.6);
 	 */

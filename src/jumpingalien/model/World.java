@@ -672,13 +672,12 @@ public class World {
 					collisionDetectObject(object, slime, custom_height, collisions);
 				}
 			}
-			if (object instanceof Mazub) {
-				for(Plant plant : plants) {
-					collisionDetectObject(object, plant, custom_height, collisions);
-				}
+		}
+		if ((object instanceof Mazub) || (object instanceof Plant)){
+			for(Plant plant : plants) {
+				collisionDetectObject(object, plant, custom_height, collisions);
 			}
 		}
-		
 		// Checks collisions with features
 		for(int i = 0; i < getWorldWidth(); i += getTileSize()) {
 			for(int j = 0; j < getWorldHeight(); j += getTileSize()) {

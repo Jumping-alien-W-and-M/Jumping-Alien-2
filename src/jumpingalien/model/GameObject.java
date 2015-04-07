@@ -529,11 +529,11 @@ public abstract class GameObject {
 		ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
 		if ((collisions.get(0).get(0) == null) && (collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0)
 			|| (collisions.get(1).get(0) == null) && (collisions.get(1).get(1).contains(Feature.ground)) && (getVx() > 0)) 
-				advanceX(timestep);	
+				advanceX(timestep);
 		
 		setVx(advanceVx(timestep));
 		
-		if ((collisions.get(2).get(0) == null) && (collisions.get(2).get(1).contains(Feature.ground)) && (getVy() > 0)
+		if ((collisions.get(1).get(0) == null) && (collisions.get(1).get(1).contains(Feature.ground)) && (getVy() > 0)
 			|| (collisions.get(3).get(0) == null) && (collisions.get(3).get(1).contains(Feature.ground)) && (getVx() < 0)) 
 			advanceY(timestep);
 		
