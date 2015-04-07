@@ -1,5 +1,7 @@
 package jumpingalien.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import be.kuleuven.cs.som.annotate.Basic;
@@ -8,10 +10,12 @@ import jumpingalien.util.Sprite;
 
 public abstract class Enemy extends GameObject {
 
-	public Enemy(double x, double y, Sprite[] images, double axi, double vxi, double min_action_time, double max_action_time) {
-		super(x, y, images, axi, vxi);
+	public Enemy(double x, double y, Sprite[] images, double axi, double vxi, double vxmax, double min_action_time,
+			double max_action_time, int hitpoints) {
+		super(x, y, images, axi, vxi, vxmax);
 		this.min_action_time = min_action_time;
 		this.max_action_time = max_action_time;
+		setHitpoints(hitpoints);
 	}
 	
 	/**
@@ -83,12 +87,17 @@ public abstract class Enemy extends GameObject {
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();
 		}
-		
-		for(double timestep = getTimestep(); timestep <= dt; timestep += timestep) {
-			super.advanceTimeStep(timestep);
+
+		double timestep = getTimestep(dt);
+		for(double time = timestep; time <= dt; time += timestep) {
+			super.advanceTimeStep(time);
 			
-			advanceActionTime(timestep);
+			advanceActionTime(time);
 		}
+
+		setTimeInvincible(advanceTimeInvincible(dt));
+		ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
+		collisionHandle(collisions, dt);
 	}
 	
 	/**
@@ -145,5 +154,31 @@ public abstract class Enemy extends GameObject {
 	
 	protected final double max_action_time;
 	
-	protected abstract void performRandomAction();
+	protected void performRandomAction() {
+		performRandomHorizontalAction();
+		performRandomVerticalAction();
+	}
+
+	/**
+	 * Start a random horizontal movement for this enemy.
+	 * 
+	 * @effect	...
+	 * 			| setVx(0)
+	 * @effect 	...
+	 * 			| Random rand = new Random()
+	 *			| if (rand.nextInt(2) == 0) 
+	 *			|	setAx(getAxi())
+	 *			| else 
+	 *			|	setAx(-getAxi())
+	 */
+	protected void performRandomHorizontalAction(){
+		setVx(0);
+		Random rand = new Random();
+		if (rand.nextInt(2) == 0) 
+			setAx(getAxi());
+		else 
+			setAx(-getAxi());	
+	}
+	
+	protected void performRandomVerticalAction() { }
 }

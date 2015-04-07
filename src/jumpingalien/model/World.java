@@ -310,7 +310,7 @@ public class World {
 	 * 			|			result = true
 	 * 			| result = false
 	 */
-	private boolean touchesTarget() {
+	public boolean touchesTarget() {
 		
 		for(int x = (int) getMazub().getX(); x <= getMazub().getX() + getMazub().getWidth(); x += getMazub().getWidth()) {
 			for(int y = (int) getMazub().getY(); y <= getMazub().getY() + getMazub().getHeight(); y += getMazub().getHeight()) {
@@ -332,8 +332,45 @@ public class World {
 	 * @return	...
 	 * 			| result = (int) Math.floor(pos/getTileSize())
 	 */
-	protected int getTilePos(int pos) {
+	public int getTilePos(int pos) {
 		return (int) pos/getTileSize();
+	}
+	
+	/**
+	 * Returns the tile positions of all tiles within the given rectangular
+	 * region.
+	 * 
+	 * @param x1
+	 *            The x-coordinate of the left side of the rectangular region.
+	 * @param y1
+	 *            The y-coordinate of the bottom side of the rectangular region.
+	 * @param x2
+	 *            The x-coordinate of the right side of the rectangular region.
+	 * @param y2
+	 *            The y-coordinate of the top side of the rectangular region.
+	 * @return	...
+	 * 			| positions = new int[getTilePos(y2 - y1)*getTilePos(x2 - x1)][2]
+	 * 			| index = 0
+	 * 			| for(int y = getTilePos(y1); y <= getTilePos(y2); y += getTileSize())
+	 * 			| 	for(int x = getTilePos(x1); x <= getTilePos(x2); x += getTileSize())
+	 * 			| 		position = {x, y}
+	 * 			|		positions[index] = position
+	 * 			|		index++
+	 * 			| result = positions
+	 */
+	public int[][] getTilePositionsIn(int x1, int y1, int x2, int y2) {
+		int[][] positions = new int[getTilePos(y2 - y1)*getTilePos(x2 - x1)][2];
+		
+		int index = 0;
+		for(int y = getTilePos(y1); y <= getTilePos(y2); y += getTileSize()) {
+			for(int x = getTilePos(x1); x <= getTilePos(x2); x += getTileSize()) {
+				int[] position = {x, y};
+				positions[index] = position;
+				index++;
+			}
+		}
+		
+		return positions;
 	}
 	
 	/**
@@ -354,7 +391,7 @@ public class World {
 	 * 			| if (player != null)
 	 * 			| 	then player.setWorld(this)
 	 */
-	protected void setMazub(Mazub player) {
+	public void setMazub(Mazub player) {
 		this.player = player;
 		if (player != null) player.setWorld(this);
 	}
@@ -383,7 +420,7 @@ public class World {
 	 * @effect	...
 	 * 			| shark.setWorld(this)
 	 */
-	protected void addShark(Shark shark) {
+	public void addShark(Shark shark) {
 		assert(shark != null);
 		assert(!(hasAsShark(shark)));
 		
@@ -453,7 +490,7 @@ public class World {
 	 * @effect	...
 	 * 			| plant.setWorld(this)
 	 */
-	protected void addPlant(Plant plant) {
+	public void addPlant(Plant plant) {
 		assert(plant != null);
 		assert(!(hasAsPlant(plant)));
 		
@@ -523,12 +560,13 @@ public class World {
 	 * @effect	...
 	 * 			| school.setWorld(this)
 	 */
-	protected void addSchool(School school) {
+	public void addSchool(School school) {
 		assert(school != null);
 		assert(!(hasAsSchool(school)));
 		
-		getSchools().add(school);
-		school.setWorld(this);
+		if (getNbOfSchools() < getMaxSchoolsAmount())
+			getSchools().add(school);
+			school.setWorld(this);
 	}
 	
 	/**
@@ -545,6 +583,16 @@ public class World {
 		assert(school != null);
 		
 		return getSchools().contains(school);
+	}
+	
+	/**
+	 * Gets the number of schools in this world.
+	 * 
+	 * @return	...
+	 * 			| result = getSchools().size()
+	 */
+	public int getNbOfSchools() {
+		return getSchools().size();
 	}
 	
 	/**
@@ -570,6 +618,32 @@ public class World {
 	}
 	
 	private final ArrayList<School> schools = new ArrayList<School>();
+	
+	/**
+	 * Gets the maximum amount of schools in any world.
+	 */
+	public static int getMaxSchoolsAmount() {
+		return max_schools_amount;
+	}
+	
+	private static final int max_schools_amount = 10;
+	
+	/**
+	 * Returns all the slimes currently located in this world..
+	 * 
+	 * @return	...
+	 * 			| slimes = new ArrayList<Slime>()
+	 * 			| for(School school : getSchools())
+	 * 			| 	slimes.addAll(school.getSlimes())
+	 * 			| result = slimes
+	 */
+	public ArrayList<Slime> getSlimes() {
+		ArrayList<Slime> slimes = new ArrayList<Slime>();
+		for(School school : getSchools()) {
+			slimes.addAll(school.getSlimes());
+		}
+		return slimes;
+	}
 	
 	/**
 	 * Gets the hash of a given x and y position.
@@ -603,6 +677,18 @@ public class World {
 		return Feature.air;
 	}
 	
+	public void setFeature(int x, int y, int id) {
+		Feature feature = null;
+		switch (id) {
+			case 1: feature = Feature.ground; break;
+			case 2: feature = Feature.water; break;
+			case 3: feature = Feature.magma; break;
+			default: feature = Feature.air;
+		}
+		
+		getFeatures().put(getHash(getTilePos(x), getTilePos(y)), feature);
+	}
+	
 	/**
 	 * Gets the hashmap containing the features of this world.
 	 */
@@ -622,6 +708,25 @@ public class World {
 	}
 	
 	private final int hashDigitsAmount;
+	
+	public void advanceTime(double dt) throws IllegalArgumentException {
+		if (!GameObject.isValidDt(dt)) {
+			throw new IllegalArgumentException();
+		}
+		
+		player.advanceTime(dt);
+		for(Shark shark : getSharks()) {
+			shark.advanceTime(dt);
+		}
+		for(School school : getSchools()) {
+			for(Slime slime : school.getSlimes()) {
+				slime.advanceTime(dt);
+			}
+		}
+		for(Plant plant : getPlants()) {
+			plant.advanceTime(dt);
+		}
+	}
 	
 	/**
 	 * Checks the collisions of a given object with all other objects and features during an instant.
@@ -643,10 +748,10 @@ public class World {
 	 * 			|	for(School school : schools)
 	 * 			|		for(Slime slime : school.getSlimes())
 	 * 			|			collisionDetectObject(object, slime, custom_height, collisions)
-	 * 			|	if (object instanceof Mazub)
-	 * 			|		for(Plant plant : plants)
-	 * 			|			collisionDetectObject(object, plant, custom_height, collisions)
 	 * 			| }
+	 * 			| if ((object instanceof Mazub) || (object instanceof Plant))
+	 * 			|	for(Plant plant : plants)
+	 * 			|		collisionDetectObject(object, plant, custom_height, collisions)
 	 *			|
 	 *			| for(int i = 0; i < getWorldWidth(); i += getTileSize())
 	 *			|	for(int j = 0; j < getWorldHeight(); j += getTileSize())
@@ -664,17 +769,17 @@ public class World {
 		// Checks collisions with the player, sharks, slimes and plants
 		collisionDetectObject(object, getMazub(), custom_height, collisions);
 		if (!(object instanceof Plant)) {
-			for(Shark shark : sharks) {
+			for(Shark shark : getSharks()) {
 				collisionDetectObject(object, shark, custom_height, collisions);
 			}
-			for(School school : schools) {
+			for(School school : getSchools()) {
 				for(Slime slime : school.getSlimes()) {
 					collisionDetectObject(object, slime, custom_height, collisions);
 				}
 			}
 		}
-		if ((object instanceof Mazub) || (object instanceof Plant)){
-			for(Plant plant : plants) {
+		if ((object instanceof Mazub) || (object instanceof Plant)) {
+			for(Plant plant : getPlants()) {
 				collisionDetectObject(object, plant, custom_height, collisions);
 			}
 		}
@@ -741,18 +846,13 @@ public class World {
 	 * 			The 3-dimensional arraylist which stores the collisions of object.
 	 * @effect	...
 	 * 			| feature = getFeature(x, y)
-	 * 			| if (feature != Feature.air) {
-	 * 			|	collisionDetectBasic(object, x, y, x + getTileSize(), y + getTileSize(), feature, 1, custom_height,
+	 * 			| collisionDetectBasic(object, x, y, x + getTileSize(), y + getTileSize(), feature, 1, custom_height,
 	 * 			|							collision_objects)
-	 * 			| }
 	 */
 	private void collisionDetectFeature(GameObject object, int x, int y, int custom_height, 
 										ArrayList<List<List<Object>>> collision_objects)  {
 		
 		Feature feature = getFeature(x, y);
-		if (feature == Feature.air) {
-			return;
-		}
 		
 		collisionDetectBasic(object, x, y, x + getTileSize(), y + getTileSize(), feature, 1, custom_height, collision_objects);
 		

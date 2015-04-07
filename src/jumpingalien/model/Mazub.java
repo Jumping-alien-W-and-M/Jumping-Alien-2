@@ -18,6 +18,8 @@ import be.kuleuven.cs.som.annotate.Model;
  * 			| isValidY(getY())
  * @invar	The horizontal velocity is valid.
  * 			| isValidVx(getVx())
+ * @invar	The amount of sprites of this Mazub is larger than or equal to 10 and divisible by 2.
+ * 			| ((images.length >= 10) && (images.length%2 == 0))
  * 
  * @version 2.0
  */
@@ -32,8 +34,6 @@ public class Mazub extends GameObject {
 	 * 			The new Mazub's y-position.
 	 * @param images
 	 * 			The new Mazub's array of sprites.
-	 * @pre		The length of images must be 10 or larger and even.
-	 * 			| ((images.length >= 10) && (images.length%2 == 0))
 	 * @effect	This new Mazub will be initialized as a game object with the given position, 
 	 * 			the given array of sprites, an initial horizontal accelaration of 0.9 
 	 * 			and a initial horizontal velocity of 1.
@@ -44,11 +44,8 @@ public class Mazub extends GameObject {
 	 * 			| setLastMove(0)
 	 */
 	public Mazub(double x, double y, Sprite[] images) {
-		super(x, y, images, 0.9, 1);
+		super(x, y, images, 0.9, 1, 3);
 		
-		assert(images.length >= 10 && images.length%2 == 0);
-		
-		setVxmax(3);
 		setLastMove(0);
 	}
 	
@@ -122,6 +119,34 @@ public class Mazub extends GameObject {
 	}
 	
 	private double last_move;
+	
+	/**
+	 * Gets the previous move of this Mazub. This is an empty string if only one movement is currently going on,
+	 * and the first invoked movement otherwise.
+	 */
+	@Basic
+	public String getPrevMove() {
+		return prev_move;
+	}
+	
+	/**
+	 * Sets the previous move of this Mazub.
+	 * 
+	 * @param prev_move
+	 * 			The previous move of this Mazub.This should be an empty string if only one movement is currently going on,
+	 * 			and the first invoked movement otherwise.
+	 * @pre		The given previous move is either an empty string, "left" or "right".
+	 * 			| ((prev_move == "") || (prev_move == "left") || (prev_move == "right"))
+	 * @post	This Mazub's previous move will be equal to the given previous move.
+	 * 			| (getPrevMove() == prev_move)
+	 */
+	public void setPrevMove(String prev_move) {
+		assert((prev_move == "") || (prev_move == "left") || (prev_move == "right"));
+		
+		this.prev_move = prev_move;
+	}
+	
+	private String prev_move;
 	
 	/**
 	 * Gets the amount of frames in this Mazub's running left/right animation.
@@ -255,7 +280,7 @@ public class Mazub extends GameObject {
 			throw new IllegalArgumentException();
 		}
 		
-		double timestep = getTimestep();
+		double timestep = getTimestep(dt);
 		for(double time = timestep; time <= dt; time += timestep) {
 			super.advanceTimeStep(time);
 		
@@ -266,6 +291,10 @@ public class Mazub extends GameObject {
 				endDuck();
 			}			
 		}
+
+		setTimeInvincible(advanceTimeInvincible(dt));
+		ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
+		collisionHandle(collisions, dt);
 	}
 	
 	/**
@@ -325,7 +354,12 @@ public class Mazub extends GameObject {
 	
 	@Override
 	protected void collisionHandleSlime(Slime slime) {
-		
+		assert(slime != null);
+		if(slime.getDeathTime() != 0 && getTimeInvincible() == 0){
+			this.setHitpoints(this.getHitpoints() - 50);
+			slime.hit(50);
+			this.setTimeInvincible(0.6);
+		}
 	}
 	
 	/**
@@ -514,15 +548,21 @@ public class Mazub extends GameObject {
 	 */
 	public void startMove(String direction){
 		assert(direction == "left" || direction == "right");
-		if (direction == "left"){
-			if (getVx() <= 0)
-				setVx(-getVxi());
+		
+		if ((getAx() < 0) && (direction == "right")) {
+			setPrevMove("left");
+		} else if ((getAx() > 0) && (direction == "left")) {
+			setPrevMove("right");
+		}
+		
+		if (direction == "left") {
+			setVx(-getVxi());
 			setAx(-getAxi());
 		} else {
-			if (getVx() >= 0)
-				setVx(getVxi());
+			setVx(getVxi());
 			setAx(getAxi());
 		}
+		
 		setAnimationTime(0);
 	}
 	
@@ -532,9 +572,16 @@ public class Mazub extends GameObject {
 	 * @post	vx and ax are set to 0.
 	 * 			| new.getVx() == 0 && new.getAx()  == 0
 	 */
-	public void endMove(){
-		setVx(0);
-		setAx(0);
+	public void endMove() {
+		
+		if (getPrevMove() == "") {
+			setVx(0);
+			setAx(0);
+		} else {
+			String prev_move = getPrevMove();
+			setPrevMove("");
+			startMove(prev_move);
+		}
 	}
 	
 	/**

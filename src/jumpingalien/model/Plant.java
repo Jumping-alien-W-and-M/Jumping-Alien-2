@@ -12,6 +12,7 @@ import be.kuleuven.cs.som.annotate.Basic;
  *
  */
 public class Plant extends GameObject {
+	
 	/**
 	 * Creates a new plant.
 	 * 
@@ -31,7 +32,7 @@ public class Plant extends GameObject {
 	 * 			| setVx(getVxi())
 	 */
 	public Plant(double x, double y, Sprite[] images){
-		super(x, y, images, 0, 0.5);
+		super(x, y, images, 0, 0.5, 0.5);
 		
 		setMovementTime(0);
 		
@@ -94,17 +95,16 @@ public class Plant extends GameObject {
 			throw new IllegalArgumentException();
 		}
 		
-		double timestep = 0.01/getVx(); 
+		double timestep = 0.01/getVx();
 		for(double time = timestep; timestep <= dt; time += timestep) {
+			super.advanceTimeStep(time);
+			
 			advanceDeathTime(time);
 			advanceMovementTime(time);
-			
-			ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
-			if (canmove(collisions)) 
-					advanceX(time);				
-			
-			collisionHandle(collisions);
 		}
+		
+		ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
+		collisionHandle(collisions, dt);
 	}	
 	
 	/**
@@ -185,45 +185,6 @@ public class Plant extends GameObject {
 	@Override
 	protected void collisionHandleMazub(Mazub player){
 		player.collisionHandlePlant(this);
-	}
-	
-	/**
-	 * Returns whether or not this plant can move.
-	 * 
-	 * @param collisions
-	 * 			The result of the method collisiondetect() in World.
-	 * @return	If this plant stands next to solid ground or the player in his movement direction,
-	 * 			false will be returned. In all other cases true will be returned.
-	 * 			|  if((collisions.get(0).get(1).contains(Feature.ground) && getVx() < 0)
-	 *			|		|| (collisions.get(3).get(1).contains(Feature.ground) && getVx() > 0))
-	 *			|		 return false
-	 *			| ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(0).get(0)		
-	 *			| for(Object object: collision_objects)
-	 *			| 	if(object instanceof Mazub && getVx() < 0)
-	 *			|		return false	
-	 *			| collision_objects = (ArrayList<Object>) collisions.get(3).get(0)
-	 *			| for(Object object: collision_objects)
-	 *			|	if(object instanceof Mazub && getVx() > 0)
-	 *			|		return false		
-	 *			| return true
-	 */
-	private boolean canmove(ArrayList<List<List<Object>>> collisions){
-		 if((collisions.get(0).get(1).contains(Feature.ground) && getVx() < 0)
-			|| (collisions.get(3).get(1).contains(Feature.ground) && getVx() > 0))
-			 return false;
-			 
-		ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(0).get(0);		
-		for(Object object: collision_objects){
-			if(object instanceof Mazub && getVx() < 0)
-				return false;
-		}
-		
-		collision_objects = (ArrayList<Object>) collisions.get(3).get(0);
-		for(Object object: collision_objects){
-			if(object instanceof Mazub && getVx() > 0)
-				return false;
-		}		
-		return true;
 	}
 	
 	/**
