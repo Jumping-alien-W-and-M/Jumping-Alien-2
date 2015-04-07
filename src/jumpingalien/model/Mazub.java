@@ -271,21 +271,21 @@ public class Mazub extends GameObject {
 	}
 	
 	/**
-	 * Handles a collision of this mazub with a given shark.
+	 * Handles a collision of this Mazub with a given shark.
 	 * 
 	 * @param shark
-	 * 			The shark this mazub collides with.
+	 * 			The shark this Mazub collides with.
 	 * @pre		shark is not null
 	 * 			| shark != null
-	 * @effect	If shark is not dying and mazub is not invincible,
+	 * @effect	If shark is not dying and Mazub is not invincible,
 	 * 			this mazub's hitpoints will be decreased by 50.
 	 * 			| if(shark.getDeathTime() != 0 && getTimeInvincible() == 0)
 	 *			|	this.setHitpoints(this.getHitpoints() - 50)
-	 * @effect 	If shark is not dying and mazub is not invincible,
+	 * @effect 	If shark is not dying and Mazub is not invincible,
 	 * 			shark's hitpoints will be decreased by 50.
 	 * 			| if(shark.getDeathTime() != 0 && getTimeInvincible() == 0)
 	 * 			|  	shark.setHitpoints(shark.getHitpoints() - 50)
-	 * @effect 	If shark is not dying and mazub is not invincible,
+	 * @effect 	If shark is not dying and Mazub is not invincible,
 	 * 			this mazub will be invincible for the next 0.6 seconds.
 	 * 			| if(shark.getDeathTime() != 0 && getTimeInvincible() == 0)
 	 * 			|	this.setTimeInvincible(0.6);

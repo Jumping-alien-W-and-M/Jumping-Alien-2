@@ -628,8 +628,31 @@ public class World {
 	 * 
 	 * @param object
 	 * 			The object whose collisions with other objects and features should be checked.
+	 * @param custom_height
+	 * 			An optional custom height of object. If 0, object.getHeight() will be used.
 	 * @return	...
-	 * 			| FORMELE SPECIFICATIES AANVULLEN HIER
+	 * 			| collisions = new ArrayList<List<List<Object>>>(
+	 * 			| 							Collections.nCopies(4, 
+	 * 			| 							Collections.nCopies(2, new ArrayList<Object>()))
+	 * 			|						)
+	 * 			|
+	 * 			| collisionDetectObject(object, getMazub(), custom_height, collisions)
+	 * 			| if (!(object instanceof Plant)) {
+	 * 			|	for(Shark shark : sharks)
+	 * 			|		collisionDetectObject(object, shark, custom_height, collisions)
+	 * 			|	for(School school : schools)
+	 * 			|		for(Slime slime : school.getSlimes())
+	 * 			|			collisionDetectObject(object, slime, custom_height, collisions)
+	 * 			|	if (object instanceof Mazub)
+	 * 			|		for(Plant plant : plants)
+	 * 			|			collisionDetectObject(object, plant, custom_height, collisions)
+	 * 			| }
+	 *			|
+	 *			| for(int i = 0; i < getWorldWidth(); i += getTileSize())
+	 *			|	for(int j = 0; j < getWorldHeight(); j += getTileSize())
+	 *			|		collisionDetectFeature(object, i, j, custom_height, collisions)
+	 * 			|
+	 * 			| result = collisions
 	 */
 	public ArrayList<List<List<Object>>> collisionDetect(GameObject object, int custom_height) {
 		
@@ -658,7 +681,7 @@ public class World {
 		
 		// Checks collisions with features
 		for(int i = 0; i < getWorldWidth(); i += getTileSize()) {
-			for(int j = 0; j < getWorldWidth(); j += getTileSize()) {
+			for(int j = 0; j < getWorldHeight(); j += getTileSize()) {
 				collisionDetectFeature(object, i, j, custom_height, collisions);
 			}
 		}
@@ -666,6 +689,27 @@ public class World {
 		return collisions; 
 	}
 	
+	/**
+	 * Checks the collisions in between two given objects.
+	 * 
+	 * @param object1
+	 * 			The first object whose collisions with the second object should be checked.
+	 * @param object2
+	 * 			The second object whose collisions with the first object should be checked.
+	 * @param custom_height
+	 * 			An optional custom height of object1. If 0, object1.getHeight() will be used.
+	 * @param collision_objects
+	 * 			The 3-dimensional arraylist which stores the collisions of object1.
+	 * @effect	...
+	 * 			| if (!(object1 == object2)) {
+	 * 			|	x1 = (int) object2.getX()
+	 * 			|	y1 = (int) object2.getY()
+	 * 			|	x2 = x1 + object2.getWidth()
+	 * 			|	y2 = y1 + object2.getHeight()
+	 * 			| }
+	 * 			|
+	 * 			| collisionDetectBasic(object1, x1, y1, x2, y2, object2, 0, custom_height, collision_objects)
+	 */
 	private void collisionDetectObject(GameObject object1, GameObject object2, int custom_height, 
 										ArrayList<List<List<Object>>> collision_objects)  {
 		
@@ -683,6 +727,26 @@ public class World {
 		
 	}
 	
+	/**
+	 * Checks the collisions in between a given object and given feature.
+	 * 
+	 * @param object
+	 * 			The object whose collisions with the feature should be checked.
+	 * @param x
+	 * 			The x-position of the feature whose collisions with the object should be checked.
+	 * @param y
+	 * 			The y-position of the feature whose collisions with the object should be checked.
+	 * @param custom_height
+	 * 			An optional custom height of object. If 0, object.getHeight() will be used.
+	 * @param collision_objects
+	 * 			The 3-dimensional arraylist which stores the collisions of object.
+	 * @effect	...
+	 * 			| feature = getFeature(x, y)
+	 * 			| if (feature != Feature.air) {
+	 * 			|	collisionDetectBasic(object, x, y, x + getTileSize(), y + getTileSize(), feature, 1, custom_height,
+	 * 			|							collision_objects)
+	 * 			| }
+	 */
 	private void collisionDetectFeature(GameObject object, int x, int y, int custom_height, 
 										ArrayList<List<List<Object>>> collision_objects)  {
 		
@@ -695,6 +759,49 @@ public class World {
 		
 	}
 	
+	/**
+	 * A basic collision detection method, which checks the collisions between a given object and a given rectangle.
+	 * 
+	 * @param object1
+	 * 			The object whose collisions with the rectangle should be checked.
+	 * @param sx1
+	 * 			The x-position of the left boundary of the rectangle whose collisions with the object should be checked.
+	 * @param sy1
+	 * 			The y-position of the bottom boundary of the rectangle whose collisions with the object should be checked.
+	 * @param sx2
+	 * 			The x-position of the right boundary of the rectangle whose collisions with the object should be checked.
+	 * @param sy2
+	 * 			The y-position of the upper boundary of the rectangle whose collisions with the object should be checked.
+	 * @param object2
+	 * 			The object which is represented by the rectangle and which will be stored if there is a collision.
+	 * @param index
+	 * 			Indicates whether the given object2 is a Game object or a Feature.
+	 * 			0 represents Game object, 1 represents Feature.
+	 * @param custom_height
+	 * 			An optional custom height of object1. If 0, object1.getHeight() will be used.
+	 * @param collision_objects
+	 * 			The 3-dimensional arraylist which stores the collisions of object.
+	 * @effect	...
+	 * 			| mx1 = (int) object1.getX()
+	 * 			| my1 = (int) object1.getY()
+	 * 			| mx2 = mx1 + object1.getWidth()
+	 * 			| my2 = my1
+	 * 			| if (custom_height == 0)
+	 * 			|	then my2 += object1.getHeight()
+	 * 			| else
+	 * 			|	then my2 += custom_height
+	 * 			| 
+	 * 			| overlaps = {sx2 - mx1, mx2 - sx1, sy2 - my1, my2 - sy1}
+	 * 			| if ((overlaps[0] >= 1) && (overlaps[1] >= 1) && (overlaps[2] >= 1) && (overlaps[3] >= 1)) {
+	 * 			|	has_central_collision = true
+	 * 			|	for(int i = 0; i < 4; i++) {
+	 * 			|		collision_objects.get(i).get(index).add(object2)
+	 * 			|		has_central_collision = false
+	 * 			|	}
+	 * 			|	if (has_central_collision)
+	 * 			|		then collision_objects.get(0).get(1).add(object2)
+	 * 			| }
+	 */
 	private void collisionDetectBasic(GameObject object1, int sx1, int sy1, int sx2, int sy2, Object object2, int index,
 										int custom_height, ArrayList<List<List<Object>>> collision_objects) {
 		
