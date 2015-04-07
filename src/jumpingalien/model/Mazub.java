@@ -211,8 +211,6 @@ public class Mazub extends GameObject {
 		}
 	}
 	
-	private int hitpoints = 100;
-	
 	/**
 	 * Breaks the connection between this Mazub and its world.
 	 * 
