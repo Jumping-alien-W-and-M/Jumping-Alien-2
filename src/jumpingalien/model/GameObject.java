@@ -10,7 +10,7 @@ import jumpingalien.util.Sprite;
 
 public abstract class GameObject {
 	
-	public GameObject(double x, double y, Sprite[] images, double axi, double vxi, double vxmax){
+	protected GameObject(double x, double y, Sprite[] images, double axi, double vxi, double vxmax){
 		setX(x);
 		setY(y);
 		this.images = images;
@@ -55,9 +55,12 @@ public abstract class GameObject {
 	 * 
 	 * @param x
 	 * 			The x-position in pixels which should be checked.
-	 * @return	Whether or not the given x is within the game world.
-	 * 			| result = (x >= 0 && x < getWorldWidth)
-	 */
+	 * @return	If this game object is in a world, whether or not the given x is within the game world.
+	 * 			else it returns whether or not the given x is larger then or equal to zero.
+	 * 			| if(getWorld() != null)
+	 *			|	return (x >= 0 && x < getWorld().getWorldWidth());
+	 *			| return x >= 0;
+	*/
 	public boolean isValidX(double x) {
 		if(getWorld() != null)
 			return (x >= 0 && x < getWorld().getWorldWidth());
@@ -97,8 +100,11 @@ public abstract class GameObject {
 	 * 
 	 * @param y
 	 * 			The y-position in pixels which should be checked.
-	 * @return	Whether or not the given y is within the game world.
-	 * 			| result = (y >= 0 && y < getWorldHeight())
+	 * @return	If this game object is in a world, whether or not the given y is within the game world.
+	 * 			else it returns whether or not the given y is larger then or equal to zero.
+	 * 			| if(getWorld() != null)
+	 *			|	return (y >= 0 && x < getWorld().getWorldHeight());
+	 *			| return y >= 0;
 	 */
 	public boolean isValidY(double y) {
 		if (getWorld() != null)
@@ -147,13 +153,8 @@ public abstract class GameObject {
 	
 	private double vx;
 	
-	/**
-	 * Gets the magnitude of the maximal horizontal velocity this game object can achieve when moving.
-	 */
-	@Basic
-	public double getVxmax() {
-		return this.vxmax;
-	}
+
+	 
 	
 	/**
 	 * Gets the magnitude of the initial horizontal velocity any Mazub starts with when they start moving.
@@ -164,6 +165,14 @@ public abstract class GameObject {
 	}
 
 	private final double vxi;
+	
+	/**
+	 * Gets the magnitude of the maximal horizontal velocity this game object can achieve when moving.
+	 */
+	@Basic
+	public double getVxmax() {
+		return this.vxmax;
+	}
 	
 	/**
 	 * Sets this game object's maximal horizontal velocity to a given vxmax.
