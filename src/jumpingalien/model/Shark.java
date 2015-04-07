@@ -10,10 +10,7 @@ import jumpingalien.util.Sprite;
 public class Shark extends Enemy {
 
 	public Shark(double x, double y, Sprite[] images) {
-		super(x, y, images, 1.5, 0, 1, 4);
-		setHitpoints(100);
-
-		setVxmax(4);
+		super(x, y, images, 1.5, 0, 4, 1, 4, 100);
 	}
 	
 	/**
@@ -107,42 +104,6 @@ public class Shark extends Enemy {
 	}
 	
 	/**
-	 * Starts a random action for this shark.
-	 * 
-	 * @effect	...
-	 * 			| performRandomHorizontalAction()
-	 * @effect 	...
-	 * 			| performRandomVerticalAction()
-	 */
-	@Override
-	protected void performRandomAction() {
-		performRandomHorizontalAction();
-		performRandomVerticalAction();
-		
-	}
-	
-	/**
-	 * Start a random horizontal movement for this shark.
-	 * 
-	 * @effect	...
-	 * 			| setVx(0)
-	 * @effect 	...
-	 * 			| Random rand = new Random()
-	 *			| if (rand.nextInt(2) == 0) 
-	 *			|	setAx(getAxi())
-	 *			| else 
-	 *			|	setAx(-getAxi())
-	 */
-	protected void performRandomHorizontalAction(){
-		setVx(0);
-		Random rand = new Random();
-		if (rand.nextInt(2) == 0) 
-			setAx(getAxi());
-		else 
-			setAx(-getAxi());	
-	}
-	
-	/**
 	 * Starts a random vertical movement for this shark.
 	 * 
 	 * @effect	...
@@ -162,7 +123,8 @@ public class Shark extends Enemy {
 	 * 			| else if(canDiveOrRise())
 	 *			|	startRiseOrDive()	
 	 */
-	protected void performRandomVerticalAction(){
+	@Override
+	protected void performRandomVerticalAction() {
 		setVy(0);
 		if(getAy() != -10)
 			setAy(0);
@@ -196,7 +158,7 @@ public class Shark extends Enemy {
 	protected void collisionHandleSlime(Slime slime){
 		assert(slime != null);
 		this.setHitpoints(getHitpoints() - 50);
-		slime.setHitpoints(getHitpoints() - 50);
+		slime.hit(50);
 	}
 	
 	/**
@@ -334,11 +296,7 @@ public class Shark extends Enemy {
 	private void startRiseOrDive(){
 		Random rand = new Random(); 
 		setNonJumpingPeriods(getNonJumpingPeriods() + 1);
-		double abs_value_ax = getAxi()*rand.nextDouble();
-		if(rand.nextInt(2) == 0)
-			setAx(-abs_value_ax);
-		else
-			setAx(abs_value_ax);
+		setAx(2*getAxi()*rand.nextDouble() - getAxi());
 	}
 	
 	/**
