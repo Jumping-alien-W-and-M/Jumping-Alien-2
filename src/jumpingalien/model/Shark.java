@@ -14,6 +14,19 @@ public class Shark extends Enemy {
 	}
 	
 	/**
+	 * Checks if ay is a valid vertical acceleration.
+	 * 
+	 * @param ay
+	 * 			the value to be checked
+	 * @result	True if and only if ay is equal to 0 or -10.
+	 * 			| result = ((ay == 0) || (ay == -10))
+	 */
+	@Override
+	public boolean isValidAy(double ay) {
+		return ((ay == 0) || (ay == -10) || (Math.abs(ay) <= 0.2));
+	}
+	
+	/**
 	 * Gets the number of periods this shark has not jumped.
 	 */
 	@Basic
@@ -31,7 +44,7 @@ public class Shark extends Enemy {
 	 * @post	...
 	 * 			| new.getNonJumpingPeriods() = nonjumpinperiods
 	 */
-	public void setNonJumpingPeriods(int nonjumpingperiods) {
+	private void setNonJumpingPeriods(int nonjumpingperiods) {
 		this.non_jumping_periods = nonjumpingperiods;
 	}
 

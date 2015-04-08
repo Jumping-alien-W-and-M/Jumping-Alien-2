@@ -15,6 +15,7 @@ public class SchoolTest {
 
 	@Before
 	public void setUp() throws Exception {
+		null_school = new School();
 		test_school = new School();
 		test_world = new World(20, 50, 50, 500, 500, 1, 1);
 	}
@@ -22,7 +23,8 @@ public class SchoolTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-	
+
+	private School null_school;
 	private School test_school;
 	private World test_world;
 	
@@ -45,11 +47,11 @@ public class SchoolTest {
 		
 		for(int i = 0; i < 25; i++) {
 			assertEquals(test_school.getNbOfSlimes(), i);
-			Slime slime = new Slime(100, 100, slime_sprites, null);
+			Slime slime = new Slime(100, 100, slime_sprites, null_school);
 			test_school.addSlime(slime);
 			assertEquals(test_school.hasAsSlime(slime), true);
 		}
-		Slime extra_slime = new Slime(100, 100, slime_sprites, null);
+		Slime extra_slime = new Slime(100, 100, slime_sprites, null_school);
 		assertEquals(test_school.hasAsSlime(extra_slime), false);
 		assertEquals(test_school.getNbOfSlimes(), 25);
 		
