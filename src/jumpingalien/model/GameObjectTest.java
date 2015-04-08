@@ -28,18 +28,18 @@ public class GameObjectTest {
 	
 	@Test
 	public void TestIsValidXWithWorldNotEqualTonull() {		
-		assert(player.isValidX(-1));
+		assert(! player.isValidX(-1));
 		assert(player.isValidX(0));
 		assert(player.isValidX(199.1));
-		assert(player.isValidX(200));
+		assert(! player.isValidX(200));
 	}
 	
 	@Test
 	public void TestIsValidYWithWorldNotEqualTonull(){
-		assert(player.isValidY(-1));
+		assert(! player.isValidY(-1));
 		assert(player.isValidY(0));
 		assert(player.isValidY(199.5));
-		assert(player.isValidY(200));		
+		assert(! player.isValidY(200));		
 	}
 	
 	
@@ -112,7 +112,7 @@ public class GameObjectTest {
 		player.setVx(1);
 		player.advanceTimeStep(0.1);
 		assertEquals(player.getX(),
-				 (player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2)), Util.DEFAULT_EPSILON);
+				 (100*(player.getVx()*0.1 + (1/2)*player.getAx()*Math.pow(0.1, 2))), Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -158,11 +158,11 @@ public class GameObjectTest {
 	
 	@Test
 	public void TestadvanceTimeStepupdatinghorizontalvelocitynewvxoutsidebounds(){
-		player.setAx(-1);
+		player.setAx(- player.getAxi());
 		player.setVx(-player.getVxmax());
 		player.advanceTimeStep(0.1);
 		assertEquals(player.getVx(), -player.getVxmax(), Util.DEFAULT_EPSILON);
-		player.setAx(1);
+		player.setAx(player.getAxi());
 		player.setVx(player.getVxmax());
 		player.advanceTimeStep(0.1);
 		assertEquals(player.getVx(), player.getVxmax(), Util.DEFAULT_EPSILON);
@@ -211,12 +211,12 @@ public class GameObjectTest {
 		player.setVy(7);
 		player.setAy(-10);
 		player.advanceTimeStep(0.1);
-		assertEquals(player.getVy(), player.getVy() + player.getAy()*0.1, Util.DEFAULT_EPSILON);		
+		assertEquals(player.getVy(), 7 +(-10)*0.1, Util.DEFAULT_EPSILON);		
 	}
 	
 	@Test
 	public void TestadvanceTimeStepupdatingverticalacceleration(){
-		player.advanceTime(0.1);
+		player.advanceTimeStep(0.1);
 		assertEquals(player.getAy(), 0, Util.DEFAULT_EPSILON);
 		player.setY(5);
 		player.advanceTimeStep(0.1);
