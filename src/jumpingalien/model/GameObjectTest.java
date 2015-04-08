@@ -13,14 +13,11 @@ public class GameObjectTest {
 	private static World world;
 	private GameObject player;
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		world = new World(10, 20, 20, 200, 200, 19, 0);
-	}
 
 	@Before
 	public void setUp() throws Exception {
 		player = new Mazub(0, 0, JumpingAlienSprites.ALIEN_SPRITESET);
+		world = new World(10, 20, 20, 200, 200, 19, 0);
 		world.setMazub((Mazub) player);
 	}
 

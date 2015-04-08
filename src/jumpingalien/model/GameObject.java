@@ -16,7 +16,7 @@ public abstract class GameObject {
 		setY(y);
 		this.images = images;
 		this.axi = axi;
-		this.vxi = axi;
+		this.vxi = vxi;
 		setVxmax(vxmax);
 		
 		setVx(0);
