@@ -42,13 +42,13 @@ public class GameObjectTest {
 	
 	@Test
 	public void TestIsValidXWithWorldEqualTonull() {		
-		assert(player.isValidX(-0.1));
+		assert(! player.isValidX(-0.1));
 		assert(player.isValidX(0));
 	}
 	
 	@Test
 	public void TestIsValidYWithWorldEqualTonull(){		
-		assert(player.isValidY(-0.1));
+		assert(! player.isValidY(-0.1));
 		assert(player.isValidY(0));	
 	}
 	
@@ -179,10 +179,13 @@ public class GameObjectTest {
 		player.setAy(-10);
 		player.advanceTimeStep(0.1);
 		assertEquals(player.getY(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(player.getWorld(), null);
+		player.setWorld(world);
 		player.setVy(1);
 		player.setY(player.getWorld().getWorldHeight()-1);
 		player.advanceTimeStep(0.1);
 		assertEquals(player.getY(), player.getWorld().getWorldHeight()-1, Util.DEFAULT_EPSILON);
+		assertEquals(player.getWorld(), null);
 	}
 	
 	@Test
