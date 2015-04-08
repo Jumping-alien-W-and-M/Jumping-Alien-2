@@ -68,10 +68,10 @@ public class World {
 		assert(tile_size > 0);
 		assert(tiles_x_amount > 0);
 		assert(tiles_y_amount > 0);
-		assert(x_target > 0);
-		assert(y_target > 0);
-		assert(x_target < tiles_x_amount);
-		assert(y_target < tiles_y_amount);
+		assert(x_target >= 0);
+		assert(y_target >= 0);
+		assert(x_target <= tiles_x_amount);
+		assert(y_target <= tiles_y_amount);
 		
 		this.tile_size = tile_size;
 		this.world_width = tiles_x_amount*getTileSize();
