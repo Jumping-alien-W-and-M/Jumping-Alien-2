@@ -146,7 +146,7 @@ public class MazubTest {
 		player.setVy(8);
 		assertEquals(player.getVy(), 8, Util.DEFAULT_EPSILON);
 		player.setVy(16);
-		assertEquals(player.getVy(), 8, Util.DEFAULT_EPSILON);
+		assertEquals(player.getVy(), 16, Util.DEFAULT_EPSILON);
 		
 	}
 	
