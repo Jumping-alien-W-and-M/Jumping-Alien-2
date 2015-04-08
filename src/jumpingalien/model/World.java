@@ -936,9 +936,9 @@ public class World {
 				has_central_collision = false;
 			}
 		}
-		if (has_central_collision) {
-			collision_objects.get(0).get(1).add(object2);
-		}
+		//if (has_central_collision) {
+		//	collision_objects.get(0).get(1).add(object2);
+		//}
 		
 	}
 	

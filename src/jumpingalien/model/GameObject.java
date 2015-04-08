@@ -549,21 +549,21 @@ public abstract class GameObject {
 		if(getWorld() != null)
 			 collisions = getWorld().collisionDetect(this, 0);
 		
-		if ((collisions.get(0).get(0) == null) && !(collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0)
-			|| (collisions.get(2).get(0) == null) && !(collisions.get(2).get(1).contains(Feature.ground)) && (getVx() > 0)) 
+		if ((collisions.get(0).get(0).size() == 0) && !(collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0)
+			|| (collisions.get(2).get(0).size() == 0) && !(collisions.get(2).get(1).contains(Feature.ground)) && (getVx() > 0)) 
 				advanceX(timestep);
 		
 		setVx(advanceVx(timestep));
 		
 		if(getWorld() != null)
 			collisions = getWorld().collisionDetect(this, 0);
-		if ((collisions.get(1).get(0) == null) && !(collisions.get(1).get(1).contains(Feature.ground)) && (getVy() > 0)
-			|| (collisions.get(3).get(0) == null) && !(collisions.get(3).get(1).contains(Feature.ground)) && (getVy() < 0)) 
+		if ((collisions.get(1).get(0).size() == 0) && !(collisions.get(1).get(1).contains(Feature.ground)) && (getVy() > 0)
+			|| (collisions.get(3).get(0).size() == 0) && !(collisions.get(3).get(1).contains(Feature.ground)) && (getVy() < 0)) 
 			advanceY(timestep);
 		
 		if (getVy() > 0) {
 			for(int i = 0; i < 4; i++) {
-				if ((collisions.get(i).get(0) != null) || (collisions.get(i).get(1).contains(Feature.ground))) {
+				if ((collisions.get(i).get(0).size() != 0) || (collisions.get(i).get(1).contains(Feature.ground))) {
 					setVy(0);
 					break;
 				}
@@ -641,13 +641,13 @@ public abstract class GameObject {
 	 * 			If it's too small or too large, it will be set to the smallest or largest possible value, respectively.
 	 * 			| result = Math.max(0, Math.min(getWorldWidth() - 1, x))
 	 */
-	private void setXWithinBounds(double x) {
+	protected void setXWithinBounds(double x) {
 		if(getWorld() != null){
 			if(x >= 0 && x <= getWorld().getWorldWidth()- 1)
 				setX(x);
-			else{
-				terminate();
+			else{			
 				setX(Math.max(0, Math.min(getWorld().getWorldWidth() - 1, x)));
+				terminate();
 			}
 		}
 		else
@@ -737,9 +737,9 @@ public abstract class GameObject {
 		if(getWorld() != null){
 			if(y >= 0 && y <= getWorld().getWindowHeight() - 1)
 				setY(y);
-			else{
-				terminate();
+			else{			
 				setY(Math.max(0, Math.min(getWorld().getWorldHeight() - 1, y)));
+				terminate();
 			}
 		}
 		else
