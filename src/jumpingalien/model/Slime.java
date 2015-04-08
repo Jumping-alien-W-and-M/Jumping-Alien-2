@@ -16,22 +16,16 @@ public class Slime extends Enemy {
 	 * 			The series of sprites of the new slime.
 	 * @param school
 	 * 			The school the new sprite should be part of.
-	 * @pre		...
-	 * 			| (school != null)
 	 * @effect	...
 	 * 			| super(x, y, images, 0.7, 0, 2, 6)
 	 * @effect	...
-	 * 			| school.addSlime(this)
-	 * @effect	...
-	 * 			| setHitpoints(100)
-	 * @effect	...
-	 * 			| setVxmax(2.5)
+	 * 			| if (school != null)
+	 * 			|	then school.addSlime(this)
 	 */
 	public Slime(double x, double y, Sprite[] images, School school) {
 		super(x, y, images, 0.7, 0, 2.5, 2, 6, 100);
 		
-		assert(school != null);
-		school.addSlime(this);
+		if (school != null) school.addSlime(this);
 	}
 	
 	/**

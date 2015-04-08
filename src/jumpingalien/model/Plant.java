@@ -7,7 +7,7 @@ import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
 
 /**
- * @invar 	the lengt of images is equal to two
+ * @invar 	The amount of sprites is equal to two.
  * 			| images.length == 2 
  *
  */
