@@ -118,12 +118,13 @@ public class GameObjectTest {
 		player.advanceTimeStep(0.1);
 		assertEquals(player.getX(), 0, Util.DEFAULT_EPSILON);
 		assertEquals(player.getWorld(), null);
-		player.setWorld(world);
+		world.setMazub(player);
 		player.setVx(1);
 		player.setAx(1);
 		player.setX(player.getWorld().getWorldWidth()-1);
+		int world_width = player.getWorld().getWorldWidth();
 		player.advanceTimeStep(0.1);
-		assertEquals(player.getX(), player.getWorld().getWorldWidth()-1, Util.DEFAULT_EPSILON);
+		assertEquals(player.getX(), world_width - 1, Util.DEFAULT_EPSILON);
 		assertEquals(player.getWorld(), null);
 	}
 	
@@ -131,18 +132,18 @@ public class GameObjectTest {
 	public void TestadvanceTimeStepUpdatingXPositionWithoutWorld(){
 		player.setWorld(null);
 		player.setVx(1);
+		double predicted_position = player.getX() + 100*(player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2));
 		player.advanceTimeStep(0.1);
-		assertEquals(player.getX(),
-				 (player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2)), Util.DEFAULT_EPSILON);
+		assertEquals(player.getX(), predicted_position, Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
 	public void TestAdvanceTimeStepUpdatingXPositionWithCollision(){
 		world.setFeature(100, 0, 1);
 		player.setVx(1);
-		player.setX((100 - player.getWidth() + 1));
-		player.advanceTimeStep(0.1);
-		assertEquals(player.getX(), (100 - player.getWidth()), Util.DEFAULT_EPSILON);
+		player.setX(100 - player.getWidth());
+		player.advanceTimeStep(0.01);
+		assertEquals(player.getX(), (100 - player.getWidth() + 1), Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -167,9 +168,9 @@ public class GameObjectTest {
 	@Test
 	public void TestadvanceTimeStepupdatingypositionnewywithinbounds(){
 			player.setVy(6);
+			double predicted_height = player.getY() + 100*(player.getVy()*0.1 + 1/2*player.getAy()*Math.pow(0.1, 2));
 			player.advanceTimeStep(0.1);
-			assertEquals(player.getY(),
-					player.getY() + player.getVy()*0.1 + 1/2*player.getAy()*Math.pow(0.1, 2), Util.DEFAULT_EPSILON);
+			assertEquals(player.getY(), predicted_height, Util.DEFAULT_EPSILON);
 		}		
 	
 	@Test
@@ -192,9 +193,9 @@ public class GameObjectTest {
 	public void TestadvanceTimeStepUpdatingYPositionWithoutWorld(){
 		player.setWorld(null);
 		player.setVy(6);
+		double predicted_height = player.getY() + 100*(player.getVy()*0.1 + 1/2*player.getAy()*Math.pow(0.1, 2));
 		player.advanceTimeStep(0.1);
-		assertEquals(player.getY(), 
-				player.getY() + player.getVy()*0.1 + 1/2*player.getAy()*Math.pow(0.1, 2), Util.DEFAULT_EPSILON);
+		assertEquals(player.getY(), predicted_height, Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -203,7 +204,7 @@ public class GameObjectTest {
 		player.setY(100 - player.getHeight() + 1);
 		player.setVy(3);
 		player.advanceTimeStep(0.1);
-		assertEquals(player.getY() ,(100 - player.getHeight()), Util.DEFAULT_EPSILON);
+		assertEquals(player.getY(), 100 - player.getHeight() + 1, Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
