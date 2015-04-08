@@ -24,10 +24,10 @@ public class SlimeTest {
 	@After
 	public void tearDown() throws Exception {
 	}
-	
+
+	private Sprite[] slime_sprites;
 	private Slime test_slime;
 	private School test_school;
-	private Sprite[] slime_sprites;
 	
 	@Test
 	public void constructorTest() {

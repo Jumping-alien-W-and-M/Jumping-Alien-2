@@ -55,7 +55,7 @@ public abstract class Enemy extends GameObject {
 		this.action_time = action_time;
 	}
 	
-	private double action_time;
+	private double action_time = 0;
 	
 	/**
 	 * Advances the time by a given time.
