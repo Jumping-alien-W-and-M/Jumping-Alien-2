@@ -212,11 +212,7 @@ public abstract class GameObject {
 	 *
 	 */
 	protected void setVy(double vy) {
-		if (vy <= 8) {
 			this.vy = vy;
-		} else {
-			this.vy = 8;
-		}
 	}
 	
 	protected double vy;
