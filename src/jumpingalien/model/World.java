@@ -562,17 +562,20 @@ public class World {
 	 * @pre		...
 	 * 			| (!(hasAsSchool(school)))
 	 * @effect	...
-	 * 			| getSchools().add(school)
+	 * 			| if (getNbOfSchools() < getMaxSchoolsAmount())
+	 * 			| 	then getSchools().add(school)
 	 * @effect	...
-	 * 			| school.setWorld(this)
+	 * 			| if (getNbOfSchools() < getMaxSchoolsAmount())
+	 * 			| 	then school.setWorld(this)
 	 */
 	public void addSchool(School school) {
 		assert(school != null);
 		assert(!(hasAsSchool(school)));
 		
-		if (getNbOfSchools() < getMaxSchoolsAmount())
+		if (getNbOfSchools() < getMaxSchoolsAmount()) {
 			getSchools().add(school);
 			school.setWorld(this);
+		}
 	}
 	
 	/**
