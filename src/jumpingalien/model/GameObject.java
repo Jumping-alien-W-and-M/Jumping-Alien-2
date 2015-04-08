@@ -539,11 +539,13 @@ public abstract class GameObject {
 	 * 			| setAnimationTime(getAnimationTime() + timestep))
 	 */
 	public void advanceTimeStep(double timestep) {
-		ArrayList<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>(
-				Collections.nCopies(4, Collections.nCopies(2, new ArrayList<Object>())));
-				
+		
+		List<List<List<Object>>> collisions;
 		if(getWorld() != null)
-			 collisions = getWorld().collisionDetect(this, 0);
+			collisions = getWorld().collisionDetect(this, 0);
+		else
+			collisions = new ArrayList<List<List<Object>>>(
+							Collections.nCopies(4, Collections.nCopies(2, new ArrayList<Object>())));
 		
 		if ((collisions.get(0).get(0).size() == 0) && !(collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0)
 			|| (collisions.get(2).get(0).size() == 0) && !(collisions.get(2).get(1).contains(Feature.ground)) && (getVx() > 0)) 
@@ -833,7 +835,7 @@ public abstract class GameObject {
 	 * @param collisions
 	 */
 	@Model
-	protected void collisionHandle(ArrayList<List<List<Object>>> collisions, double time) {
+	protected void collisionHandle(List<List<List<Object>>> collisions, double time) {
 	
 		for(int i = 0; i < 4; i++) {
 			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
@@ -847,11 +849,10 @@ public abstract class GameObject {
 		}
 		
 		collisionHandleFeature(collisions, time);
-		
 
 	}
 	
-	protected void collisionHandleFeature(ArrayList<List<List<Object>>> collisions, double time) {
+	protected void collisionHandleFeature(List<List<List<Object>>> collisions, double time) {
 		
 		boolean touched_air = false;
 		boolean touched_water = false;

@@ -768,9 +768,17 @@ public class World {
 	 * 			|
 	 * 			| result = collisions
 	 */
-	public ArrayList<List<List<Object>>> collisionDetect(GameObject object, int custom_height) {
+	public List<List<List<Object>>> collisionDetect(GameObject object, int custom_height) {
 		
-		ArrayList<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		
+		for(int i = 0; i < 4; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}
 		
 		// Checks collisions with the player, sharks, slimes and plants
 		collisionDetectObject(object, getMazub(), custom_height, collisions);
@@ -819,7 +827,7 @@ public class World {
 	 * 			| collisionDetectBasic(object1, x1, y1, x2, y2, object2, 0, custom_height, collision_objects)
 	 */
 	private void collisionDetectObject(GameObject object1, GameObject object2, int custom_height, 
-										ArrayList<List<List<Object>>> collision_objects)  {
+			List<List<List<Object>>> collision_objects)  {
 		
 		if (object1 == object2) {
 			return;
@@ -854,7 +862,7 @@ public class World {
 	 * 			|							collision_objects)
 	 */
 	private void collisionDetectFeature(GameObject object, int x, int y, int custom_height, 
-										ArrayList<List<List<Object>>> collision_objects)  {
+			List<List<List<Object>>> collision_objects)  {
 		
 		Feature feature = getFeature(x, y);
 		
@@ -906,7 +914,7 @@ public class World {
 	 * 			| }
 	 */
 	private void collisionDetectBasic(GameObject object1, int sx1, int sy1, int sx2, int sy2, Object object2, int index,
-										int custom_height, ArrayList<List<List<Object>>> collision_objects) {
+										int custom_height, List<List<List<Object>>> collision_objects) {
 		
 		// Defining temporary variables
 		int mx1 = (int) object1.getX();
@@ -929,15 +937,15 @@ public class World {
 		// Direction-dependent collisions
 		boolean has_central_collision = true;
 		for(int i = 0; i < 4; i++) {
-			if (overlaps[i] == 1) {
+			if ((overlaps[i] == 1) && !(collision_objects.get(i).get(index).contains(object2))) {
 				collision_objects.get(i).get(index).add(object2);
 				has_central_collision = false;
 			}
 		}
 
 		// Direction-independent collisions
-		if (has_central_collision) {
-			collision_objects.get(0).get(1).add(object2);
+		if ((has_central_collision) && !(collision_objects.get(0).get(index).contains(object2))) {
+			collision_objects.get(0).get(index).add(object2);
 		}
 		
 	}

@@ -96,7 +96,7 @@ public abstract class Enemy extends GameObject {
 		}
 
 		setTimeInvincible(advanceTimeInvincible(dt));
-		ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
+		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
 		collisionHandle(collisions, dt);
 	}
 	

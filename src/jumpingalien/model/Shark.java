@@ -272,7 +272,7 @@ public class Shark extends Enemy {
 	 *			| return false
 	 */
 	private boolean canDiveOrRise(){
-		ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
+		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
 		if(collisions.get(3).get(1).contains(Feature.water) || submerged(collisions))
 			return true;
 		return false;
@@ -288,7 +288,7 @@ public class Shark extends Enemy {
 	 *			|	return true
 	 *			| return false
 	 */
-	private boolean submerged(ArrayList<List<List<Object>>> collisions){
+	private boolean submerged(List<List<List<Object>>> collisions){
 		if( collisions.get(1).get(1).contains(Feature.water))
 			return true;
 		return false;
@@ -324,7 +324,7 @@ public class Shark extends Enemy {
 	 */
 	@Override
 	public boolean canJump(){
-		ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
+		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
 		
 		if(collisions.get(3).get(1).contains(Feature.ground) || collisions.get(3).get(1).contains(Feature.water)
 				|| collisions.get(3).get(0).size() != 0)

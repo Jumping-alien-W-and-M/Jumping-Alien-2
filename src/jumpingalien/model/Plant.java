@@ -103,7 +103,7 @@ public class Plant extends GameObject {
 			advanceMovementTime(time);
 		}
 		
-		ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
+		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
 		collisionHandle(collisions, dt);
 	}	
 	
