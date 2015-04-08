@@ -15,7 +15,7 @@ public class GameObjectTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		world = new World(10, 20, 20, 200, 200, 190, 0);
+		world = new World(10, 20, 20, 200, 200, 19, 0);
 	}
 
 	@Before
@@ -95,24 +95,24 @@ public class GameObjectTest {
 	
 	@Test
 	public void TestgetWidth(){
-		assert(player.getWidth() == player.getCurrentSprite().getWidth());
+		assertEquals(player.getWidth(), player.getCurrentSprite().getWidth());
 		player.setVx(2);
-		assert(player.getWidth() == player.getCurrentSprite().getWidth());
+		assertEquals(player.getWidth(), player.getCurrentSprite().getWidth());
 	}
 	
 	@Test
 	public void TestgetHeigth(){
-		assert(player.getHeight() == player.getCurrentSprite().getHeight());
+		assertEquals(player.getHeight(), player.getCurrentSprite().getHeight());
 		player.setVy(2);
-		assert(player.getHeight() == player.getCurrentSprite().getHeight());
+		assertEquals(player.getHeight(), player.getCurrentSprite().getHeight());
 	}
 	
 	@Test
 	public void TestadvanceTimeStepupdatingxpositionnewxwithinbounds(){
 		player.setVx(1);
 		player.advanceTimeStep(0.1);
-		assert(player.getX() == 
-				 (player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2)));
+		assertEquals(player.getX(),
+				 (player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2)), Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -120,15 +120,15 @@ public class GameObjectTest {
 		player.setVx(-1);
 		player.setAx(-1);
 		player.advanceTimeStep(0.1);
-		assert(player.getX() == 0);
-		assert(player.getWorld() == null);
+		assertEquals(player.getX(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(player.getWorld(), null);
 		player.setWorld(world);
 		player.setVx(1);
 		player.setAx(1);
 		player.setX(player.getWorld().getWorldWidth()-1);
 		player.advanceTimeStep(0.1);
-		assert(player.getX() == player.getWorld().getWorldWidth()-1);
-		assert(player.getWorld() == null);
+		assertEquals(player.getX(), player.getWorld().getWorldWidth()-1, Util.DEFAULT_EPSILON);
+		assertEquals(player.getWorld(), null);
 	}
 	
 	@Test
@@ -136,8 +136,8 @@ public class GameObjectTest {
 		player.setWorld(null);
 		player.setVx(1);
 		player.advanceTimeStep(0.1);
-		assert(player.getX() == 
-				 (player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2)));
+		assertEquals(player.getX(),
+				 (player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2)), Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -146,14 +146,14 @@ public class GameObjectTest {
 		player.setVx(1);
 		player.setX((100 - player.getWidth() + 1));
 		player.advanceTimeStep(0.1);
-		assert(player.getX()  == (100 - player.getWidth()));
+		assertEquals(player.getX(), (100 - player.getWidth()), Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
 	public void TestadvanceTimeStepupdatinghorizontalvelocitynewvxwithinbounds(){
 		player.setAx(1);
 		player.advanceTimeStep(0.01);
-		assert(player.getVx() == player.getVx() + player.getAx()*0.01);		
+		assertEquals(player.getVx(), player.getVx() + player.getAx()*0.01, Util.DEFAULT_EPSILON);		
 	}
 	
 	@Test
@@ -161,19 +161,19 @@ public class GameObjectTest {
 		player.setAx(-1);
 		player.setVx(-player.getVxmax());
 		player.advanceTimeStep(0.1);
-		assert(player.getVx() == -player.getVxmax());
+		assertEquals(player.getVx(), -player.getVxmax(), Util.DEFAULT_EPSILON);
 		player.setAx(1);
 		player.setVx(player.getVxmax());
 		player.advanceTimeStep(0.1);
-		assert(player.getVx() == player.getVxmax());
+		assertEquals(player.getVx(), player.getVxmax(), Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
 	public void TestadvanceTimeStepupdatingypositionnewywithinbounds(){
 			player.setVy(6);
 			player.advanceTimeStep(0.1);
-			assert(player.getY() == 
-					player.getY() + player.getVy()*0.1 + 1/2*player.getAy()*Math.pow(0.1, 2));
+			assertEquals(player.getY(),
+					player.getY() + player.getVy()*0.1 + 1/2*player.getAy()*Math.pow(0.1, 2), Util.DEFAULT_EPSILON);
 		}		
 	
 	@Test
@@ -181,11 +181,11 @@ public class GameObjectTest {
 		player.setVy(-8);
 		player.setAy(-10);
 		player.advanceTimeStep(0.1);
-		assert(player.getY() == 0);
+		assertEquals(player.getY(), 0, Util.DEFAULT_EPSILON);
 		player.setVy(1);
 		player.setY(player.getWorld().getWorldHeight()-1);
 		player.advanceTimeStep(0.1);
-		assert(player.getY() == player.getWorld().getWorldHeight()-1);
+		assertEquals(player.getY(), player.getWorld().getWorldHeight()-1, Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -193,8 +193,8 @@ public class GameObjectTest {
 		player.setWorld(null);
 		player.setVy(6);
 		player.advanceTimeStep(0.1);
-		assert(player.getY() == 
-				player.getY() + player.getVy()*0.1 + 1/2*player.getAy()*Math.pow(0.1, 2));
+		assertEquals(player.getY(), 
+				player.getY() + player.getVy()*0.1 + 1/2*player.getAy()*Math.pow(0.1, 2), Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -203,7 +203,7 @@ public class GameObjectTest {
 		player.setY(100 - player.getHeight() + 1);
 		player.setVy(3);
 		player.advanceTimeStep(0.1);
-		assert(player.getY() == (100 - player.getHeight()));
+		assertEquals(player.getY() ,(100 - player.getHeight()), Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -211,20 +211,20 @@ public class GameObjectTest {
 		player.setVy(7);
 		player.setAy(-10);
 		player.advanceTimeStep(0.1);
-		assert(player.getVy() == player.getVy() + player.getAy()*0.1);		
+		assertEquals(player.getVy(), player.getVy() + player.getAy()*0.1, Util.DEFAULT_EPSILON);		
 	}
 	
 	@Test
 	public void TestadvanceTimeStepupdatingverticalacceleration(){
 		player.advanceTime(0.1);
-		assert(player.getAy() == 0);
+		assertEquals(player.getAy(), 0, Util.DEFAULT_EPSILON);
 		player.setY(5);
 		player.advanceTimeStep(0.1);
-		assert(player.getAx() == -10);
+		assertEquals(player.getAy(), -10, Util.DEFAULT_EPSILON);
 		player.setY(10);
 		world.setFeature(0, 0, 1);
 		player.advanceTimeStep(0.1);
-		assert(player.getAx() == 0);
+		assertEquals(player.getAx(), 0, Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -234,7 +234,8 @@ public class GameObjectTest {
 		player.setAy(0);
 		player.setVy(3);
 		player.advanceTimeStep(0.1);
-		assert ((player.getAy() == -10) && (player.getVy() == 0));
+		assertEquals (player.getAy(), -10, Util.DEFAULT_EPSILON); 
+		assertEquals(player.getVy(), 0, Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -244,7 +245,8 @@ public class GameObjectTest {
 		player.setAy(0);
 		player.setVy(3);
 		player.advanceTimeStep(0.1);
-		assert ((player.getAy() == -10) && (player.getVy() == 0));
+		assertEquals(player.getAy(), -10, Util.DEFAULT_EPSILON);
+		assertEquals(player.getVy(), 0, Util.DEFAULT_EPSILON);
 	}
 	
 	
