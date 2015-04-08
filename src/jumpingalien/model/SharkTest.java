@@ -12,7 +12,7 @@ import org.junit.Test;
 public class SharkTest {
 	
 	private Shark shark;
-	Sprite[] slime_sprites = {JumpingAlienSprites.ALIEN_SPRITESET[0], JumpingAlienSprites.ALIEN_SPRITESET[1]};
+	Sprite[] sprites = {JumpingAlienSprites.ALIEN_SPRITESET[0], JumpingAlienSprites.ALIEN_SPRITESET[1]};
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -20,15 +20,15 @@ public class SharkTest {
 
 	@Before
 	public void setUp() throws Exception {
-		shark = new Shark(0, 0, slime_sprites);
+		shark = new Shark(0, 0, sprites);
 	}
 
 	@Test
 	public void TestConstructor() {
 		assertEquals(shark.getX(), 0, Util.DEFAULT_EPSILON);
 		assertEquals(shark.getY(),0, Util.DEFAULT_EPSILON);
-		assertEquals(shark.getImages()[0], slime_sprites[0]);
-		assertEquals(shark.getImages()[1], slime_sprites[1]);
+		assertEquals(shark.getImages()[0], sprites[0]);
+		assertEquals(shark.getImages()[1], sprites[1]);
 		assertEquals(shark.getAxi(), 1.5, Util.DEFAULT_EPSILON);
 		assertEquals(shark.getVxi(), 0, Util.DEFAULT_EPSILON);
 		assertEquals(shark.getVxmax(), 4, Util.DEFAULT_EPSILON);
