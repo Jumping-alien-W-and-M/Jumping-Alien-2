@@ -5,13 +5,12 @@ import jumpingalien.common.sprites.JumpingAlienSprites;
 import jumpingalien.util.Util;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class GameObjectTest {
 	
 	private static World world;
-	private GameObject player;
+	private Mazub player;
 
 
 	@Before
@@ -180,11 +179,12 @@ public class GameObjectTest {
 		player.advanceTimeStep(0.1);
 		assertEquals(player.getY(), 0, Util.DEFAULT_EPSILON);
 		assertEquals(player.getWorld(), null);
-		player.setWorld(world);
+		world.setMazub(player);
 		player.setVy(1);
 		player.setY(player.getWorld().getWorldHeight()-1);
+		int world_height = player.getWorld().getWorldHeight();
 		player.advanceTimeStep(0.1);
-		assertEquals(player.getY(), player.getWorld().getWorldHeight()-1, Util.DEFAULT_EPSILON);
+		assertEquals(player.getY(), world_height - 1, Util.DEFAULT_EPSILON);
 		assertEquals(player.getWorld(), null);
 	}
 	
@@ -241,7 +241,7 @@ public class GameObjectTest {
 	@Test
 	public void TestadvanceTimeStepBreakCollisionLeft(){
 		world.setFeature(100,10,1);
-		player.setX(100 + world.getTileSize());
+		player.setX(100 + world.getTileSize() - 1);
 		player.setAy(0);
 		player.setVy(3);
 		player.advanceTimeStep(0.1);
