@@ -25,7 +25,7 @@ public class School {
 	 * 			| for(Slime slime : slimes)
 	 * 			|	slime.setWorld(world)
 	 */
-	protected void setWorld(World world) {
+	public void setWorld(World world) {
 		
 		this.world = world;
 		
@@ -41,7 +41,7 @@ public class School {
 	 */
 	@Basic
 	public ArrayList<Slime> getSlimes() {
-		return this.slimes;
+		return new ArrayList<Slime>(slimes);
 	}
 	
 	/**
@@ -54,7 +54,7 @@ public class School {
 	 * @pre		...
 	 * 			| (!(hasAsSlime(slime)))
 	 * @effect	...
-	 * 			| getSlimes().add(slime)
+	 * 			| slimes.add(slime)
 	 * @effect	...
 	 * 			| slime.setSchool(this)
 	 * @effect	...
@@ -64,7 +64,7 @@ public class School {
 		assert(slime != null);
 		assert(!(hasAsSlime(slime)));
 		
-		getSlimes().add(slime);
+		slimes.add(slime);
 		slime.setSchool(this);
 		slime.setWorld(this.getWorld());
 	}
@@ -105,7 +105,7 @@ public class School {
 	 * @pre		...
 	 * 			| (hasAsSlime(slime))
 	 * @effect	...
-	 * 			| getSlimes().remove(slime)
+	 * 			| slimes.remove(slime)
 	 * @effect	...
 	 * 			| slime.setWorld(null)
 	 * @effect	...
@@ -116,7 +116,7 @@ public class School {
 		assert(slime != null);
 		assert(hasAsSlime(slime));
 		
-		getSlimes().remove(slime);
+		slimes.remove(slime);
 		slime.setSchool(null);
 		slime.setWorld(null);
 		

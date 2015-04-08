@@ -20,7 +20,7 @@ public class EnemyTest {
 		test_school = new School();
 		test_school.setWorld(test_world);
 		
-		test_slime = new Slime(100, 200, slime_sprites, null);
+		test_slime = new Slime(100, 200, slime_sprites, test_school);
 	}
 
 	@After

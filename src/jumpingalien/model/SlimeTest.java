@@ -16,8 +16,9 @@ public class SlimeTest {
 		slime_sprites = new Sprite[2];
 		slime_sprites[0] = JumpingAlienSprites.ALIEN_SPRITESET[0];
 		slime_sprites[1] = JumpingAlienSprites.ALIEN_SPRITESET[1];
-		
-		test_slime = new Slime(100, 200, slime_sprites, null);
+
+		null_school = new School();
+		test_slime = new Slime(100, 200, slime_sprites, null_school);
 		test_school = new School();
 	}
 
@@ -27,6 +28,7 @@ public class SlimeTest {
 
 	private Sprite[] slime_sprites;
 	private Slime test_slime;
+	private School null_school;
 	private School test_school;
 	
 	@Test
@@ -34,7 +36,7 @@ public class SlimeTest {
 		assertEquals(test_slime.getX(), 100, Util.DEFAULT_EPSILON);
 		assertEquals(test_slime.getY(), 200, Util.DEFAULT_EPSILON);
 		assertArrayEquals(test_slime.getImages(), slime_sprites);
-		assertEquals(test_slime.getSchool(), null);
+		assertEquals(test_slime.getSchool(), null_school);
 	}
 	
 	@Test

@@ -242,9 +242,7 @@ public class Facade implements IFacadePart2 {
 
 	@Override
 	public void addSlime(World world, Slime slime) {
-		School school = createSchool();
-		school.addSlime(slime);
-		world.addSchool(school);
+		slime.getSchool().setWorld(world);
 	}
 
 	@Override

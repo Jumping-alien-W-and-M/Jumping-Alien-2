@@ -409,7 +409,7 @@ public class World {
 	 */
 	@Basic @Immutable
 	public ArrayList<Shark> getSharks() {
-		return this.sharks;
+		return new ArrayList<Shark>(sharks);
 	}
 	
 	/**
@@ -422,7 +422,7 @@ public class World {
 	 * @pre		...
 	 * 			| (!(hasAsShark(shark)))
 	 * @effect	...
-	 * 			| getSharks().add(shark)
+	 * 			| sharks.add(shark)
 	 * @effect	...
 	 * 			| shark.setWorld(this)
 	 */
@@ -430,7 +430,7 @@ public class World {
 		assert(shark != null);
 		assert(!(hasAsShark(shark)));
 		
-		getSharks().add(shark);
+		sharks.add(shark);
 		shark.setWorld(this);
 	}
 	
@@ -460,7 +460,7 @@ public class World {
 	 * @pre		...
 	 * 			| (hasAsShark(shark))
 	 * @effect	...
-	 * 			| getSharks().remove(shark)
+	 * 			| sharks.remove(shark)
 	 * @effect	...
 	 * 			| shark.setWorld(null)
 	 */
@@ -468,7 +468,7 @@ public class World {
 		assert(shark != null);
 		assert(hasAsShark(shark));
 		
-		getSharks().remove(shark);
+		sharks.remove(shark);
 		shark.setWorld(null);
 	}
 	
@@ -479,7 +479,7 @@ public class World {
 	 */
 	@Basic @Immutable
 	public ArrayList<Plant> getPlants() {
-		return this.plants;
+		return new ArrayList<Plant>(plants);
 	}
 	
 	/**
@@ -492,7 +492,7 @@ public class World {
 	 * @pre		...
 	 * 			| (!(hasAsPlant(plant)))
 	 * @effect	...
-	 * 			| getPlants().add(plant)
+	 * 			| plants.add(plant)
 	 * @effect	...
 	 * 			| plant.setWorld(this)
 	 */
@@ -500,7 +500,7 @@ public class World {
 		assert(plant != null);
 		assert(!(hasAsPlant(plant)));
 		
-		getPlants().add(plant);
+		plants.add(plant);
 		plant.setWorld(this);
 	}
 	
@@ -530,7 +530,7 @@ public class World {
 	 * @pre		...
 	 * 			| (hasAsPlant(plant))
 	 * @effect	...
-	 * 			| getPlants().remove(plant)
+	 * 			| plants.remove(plant)
 	 * @effect	...
 	 * 			| plant.setWorld(null)
 	 */
@@ -538,7 +538,7 @@ public class World {
 		assert(plant != null);
 		assert(hasAsPlant(plant));
 		
-		getPlants().remove(plant);
+		plants.remove(plant);
 		plant.setWorld(null);
 	}
 
@@ -549,7 +549,7 @@ public class World {
 	 */
 	@Basic @Immutable
 	public ArrayList<School> getSchools() {
-		return this.schools;
+		return new ArrayList<School>(schools);
 	}
 	
 	/**
@@ -563,7 +563,7 @@ public class World {
 	 * 			| (!(hasAsSchool(school)))
 	 * @effect	...
 	 * 			| if (getNbOfSchools() < getMaxSchoolsAmount())
-	 * 			| 	then getSchools().add(school)
+	 * 			| 	then schools.add(school)
 	 * @effect	...
 	 * 			| if (getNbOfSchools() < getMaxSchoolsAmount())
 	 * 			| 	then school.setWorld(this)
@@ -573,7 +573,7 @@ public class World {
 		assert(!(hasAsSchool(school)));
 		
 		if (getNbOfSchools() < getMaxSchoolsAmount()) {
-			getSchools().add(school);
+			schools.add(school);
 			school.setWorld(this);
 		}
 	}
@@ -614,7 +614,7 @@ public class World {
 	 * @pre		...
 	 * 			| (hasAsSchool(school))
 	 * @effect	...
-	 * 			| getSchools().remove(school)
+	 * 			| schools.remove(school)
 	 * @effect	...
 	 * 			| school.setWorld(null)
 	 */
@@ -622,7 +622,7 @@ public class World {
 		assert(school != null);
 		assert(hasAsSchool(school));
 		
-		getSchools().remove(school);
+		schools.remove(school);
 		school.setWorld(null);
 	}
 	
@@ -770,10 +770,7 @@ public class World {
 	 */
 	public ArrayList<List<List<Object>>> collisionDetect(GameObject object, int custom_height) {
 		
-		ArrayList<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>(
-																Collections.nCopies(4, 
-																Collections.nCopies(2, new ArrayList<Object>()))
-															);
+		ArrayList<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
 		
 		// Checks collisions with the player, sharks, slimes and plants
 		collisionDetectObject(object, getMazub(), custom_height, collisions);
@@ -781,10 +778,8 @@ public class World {
 			for(Shark shark : getSharks()) {
 				collisionDetectObject(object, shark, custom_height, collisions);
 			}
-			for(School school : getSchools()) {
-				for(Slime slime : school.getSlimes()) {
-					collisionDetectObject(object, slime, custom_height, collisions);
-				}
+			for(Slime slime : getSlimes()) {
+				collisionDetectObject(object, slime, custom_height, collisions);
 			}
 		}
 		if ((object instanceof Mazub) || (object instanceof Plant)) {
@@ -925,7 +920,7 @@ public class World {
 		}
 		
 		// Returns collisions in order: left, up, right, down
-		int[] overlaps = {sx2 - mx1, mx2 - sx1, sy2 - my1, my2 - sy1};
+		int[] overlaps = {sx2 - mx1, my2 - sy1, mx2 - sx1, sy2 - my1};
 		for(int i = 0; i < 4; i++) {
 			if (overlaps[i] < 1) {
 				return;
@@ -939,6 +934,8 @@ public class World {
 				has_central_collision = false;
 			}
 		}
+
+		// Direction-independent collisions
 		if (has_central_collision) {
 			collision_objects.get(0).get(1).add(object2);
 		}

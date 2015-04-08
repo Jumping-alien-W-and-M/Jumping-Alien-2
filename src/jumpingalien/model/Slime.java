@@ -3,6 +3,12 @@ package jumpingalien.model;
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
 
+/**
+ * The slime class, an enemy which lives in schools.
+ * 
+ * @invar	...
+ * 			| (getSchool() != null)
+ */
 public class Slime extends Enemy {
 	
 	/**
@@ -25,7 +31,8 @@ public class Slime extends Enemy {
 	public Slime(double x, double y, Sprite[] images, School school) {
 		super(x, y, images, 0.7, 0, 2.5, 2, 6, 100);
 		
-		if (school != null) school.addSlime(this);
+		assert(school != null);
+		school.addSlime(this);
 	}
 	
 	/**
