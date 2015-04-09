@@ -2,6 +2,7 @@ package jumpingalien.model;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -234,7 +235,8 @@ public class WorldTest {
 	public void TestaddSharkValidshark(){
 		Shark shark = new Shark(0, 0, sprites);
 		world.addShark(shark);
-		assert(world.getSharks().contains(shark));		
+		assert(world.getSharks().contains(shark));
+		assertEquals(shark.getWorld(), world);
 	}
 	
 	@Test
@@ -249,7 +251,7 @@ public class WorldTest {
 	}
 	
 	@Test
-	public void TestaddSharksharkSharkIsDouble(){
+	public void TestaddSharksharkIsDouble(){
 		Shark shark = new Shark(0, 0, sprites);
 		world.addShark(shark);
 		try{
@@ -282,18 +284,50 @@ public class WorldTest {
 	}
 	
 	@Test
-	public void TestremoveSharkNoAsertionErrors(){
-		Shark shark = new Shark(0, 0, sprites);
-		world.addShark(shark);
-		world.removeShark(shark);
-		assertEquals(shark.getWorld(), null);
-		assert(! world.hasAsShark(shark));
+	public void TestaddPlantValidplant(){
+		Plant plant = new Plant(0, 0, sprites);
+		world.addPlant(plant);
+		assert(world.getPlants().contains(plant));
+		assertEquals(plant.getWorld(), world);
 	}
 	
 	@Test
-	public void TestremoveSharksharkIsnull(){
+	public void TestaddPlantplantIsnull(){
+		try {
+			world.addPlant(null);
+		} catch (AssertionError err){
+			assert(true);
+			return;
+		}
+		assert(false);
+	}
+	
+	@Test
+	public void TestaddPlantplantIsDouble(){
+		Plant plant = new Plant(0, 0, sprites);
+		world.addPlant(plant);
 		try{
-			world.removeShark(null);
+			world.addPlant(plant);
+		} catch(AssertionError err){
+			assert(true);
+			return;
+		}
+		assert(false);		
+	}
+	
+	@Test
+	public void TesthasAsPlantplantIsNotnull(){
+		Plant plant = new Plant(0, 0, sprites);
+		assert(! world.hasAsPlant(plant));
+		
+		world.addPlant(plant);
+		assert(world.hasAsPlant(plant));
+	}
+	
+	@Test
+	public void TesthasAsPlantplantIsnull(){
+		try{
+			world.hasAsPlant(null);
 		} catch(AssertionError err){
 			assert(true);
 			return;
@@ -302,14 +336,137 @@ public class WorldTest {
 	}
 	
 	@Test
-	public void TestremoveSharksharkIsNotInworld(){
-		Shark shark = new Shark(0, 0, sprites);
+	public void TestaddSchoolValidschool(){
+		School school = new School();
+		world.addSchool(school);
+		assert(world.getSchools().contains(school));
+		assertEquals(school.getWorld(), world);
+	}
+	
+	@Test
+	public void TestaddSchoolschoolIsnull(){
+		try {
+			world.addSchool(null);
+		} catch (AssertionError err){
+			assert(true);
+			return;
+		}
+		assert(false);
+	}
+	
+	@Test
+	public void TestaddSchoolschoolIsDouble(){
+		School school = new School();
+		world.addSchool(school);
 		try{
-			world.removeShark(shark);
+			world.addSchool(school);
+		} catch(AssertionError err){
+			assert(true);
+			return;
+		}
+		assert(false);		
+	}
+	
+	@Test
+	public void TestaddSchoolToManySchools(){
+		School school = new School();
+		world.addSchool(school);
+		school = new School();
+		world.addSchool(school);
+		school = new School();
+		world.addSchool(school);
+		school = new School();
+		world.addSchool(school);
+		school = new School();
+		world.addSchool(school);
+		school = new School();
+		world.addSchool(school);
+		school = new School();
+		world.addSchool(school);
+		school = new School();
+		world.addSchool(school);
+		school = new School();
+		world.addSchool(school);
+		school = new School();
+		world.addSchool(school);
+		school = new School();
+		world.addSchool(school);
+		assert(! world.hasAsSchool(school));
+		assertEquals(school.getWorld(), null);
+	}
+	
+	@Test
+	public void TesthasAsSchoolschoolIsNotnull(){
+		School school = new School();
+		assert(! world.hasAsSchool(school));
+		
+		world.addSchool(school);
+		assert(world.hasAsSchool(school));
+	}
+	
+	@Test
+	public void TesthasAsSchoolschoolIsnull(){
+		try{
+			world.hasAsSchool(null);
 		} catch(AssertionError err){
 			assert(true);
 			return;
 		}
 		assert(false);
 	}
+	
+	@Test
+	public void TestgetSlimesNoSlimesInworld(){
+		assertEquals(world.getSlimes(), new ArrayList<Slime>());
+	}
+	
+	@Test
+	public void TestgetSlimesOneSchool(){
+		School school = new School();
+		world.addSchool(school);
+		Slime slime1 = new Slime(0, 0, sprites, school);
+		Slime slime2 = new Slime(0, 0, sprites, school);
+		Slime slime3 = new Slime(0, 0, sprites, school);
+		ArrayList<Slime> slimes = new ArrayList<Slime>();
+		slimes.add(slime1);
+		slimes.add(slime2);
+		slimes.add(slime3);
+		assertEquals(slimes, world.getSlimes());
+	}
+	
+	@Test 
+	public void TestgetSlimesMultipleSchools(){
+		School school1 = new School();
+		world.addSchool(school1);
+		Slime slime1 = new Slime(0, 0, sprites, school1);
+		Slime slime2 = new Slime(0, 0, sprites, school1);
+		Slime slime3 = new Slime(0, 0, sprites, school1);
+
+		School school2 = new School();
+		world.addSchool(school2);
+		Slime slime4= new Slime(0, 0, sprites, school2);
+		Slime slime5 = new Slime(0, 0, sprites, school2);
+		Slime slime6 = new Slime(0, 0, sprites, school2);
+		
+		School school3 = new School();
+		world.addSchool(school3);
+		Slime slime7= new Slime(0, 0, sprites, school3);
+		Slime slime8 = new Slime(0, 0, sprites, school3);
+		Slime slime9 = new Slime(0, 0, sprites, school3);
+		
+		ArrayList<Slime> slimes = new ArrayList<Slime>();
+		slimes.add(slime1);
+		slimes.add(slime2);
+		slimes.add(slime3);
+		slimes.add(slime4);
+		slimes.add(slime5);
+		slimes.add(slime6);
+		slimes.add(slime7);
+		slimes.add(slime8);
+		slimes.add(slime9);
+		
+		assertEquals(slimes, world.getSlimes());
+	}
+	
+	
 }

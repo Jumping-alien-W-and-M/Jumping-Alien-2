@@ -368,7 +368,6 @@ public class World {
 	
 		int[][] positions = new int[1][2];
 		if((getTilePos(y2 - y1) != 0) && (getTilePos(x2 - x1) != 0))
-			// dimensies kloppen niet
 			positions = new int[(getTilePos(y2 - y1) + 1) * (getTilePos(x2 - x1) + 1)][2];
 		
 		
@@ -637,6 +636,7 @@ public class World {
 	/**
 	 * Gets the maximum amount of schools in any world.
 	 */
+	@Basic
 	public static int getMaxSchoolsAmount() {
 		return max_schools_amount;
 	}
