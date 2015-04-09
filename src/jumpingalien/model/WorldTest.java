@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import jumpingalien.common.sprites.JumpingAlienSprites;
+import jumpingalien.util.Sprite;
 import jumpingalien.util.Util;
 
 import org.junit.After;
@@ -13,6 +14,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class WorldTest {
+	
+	private World world;
+	private Mazub player;
+	Sprite[] sprites = {JumpingAlienSprites.ALIEN_SPRITESET[0], JumpingAlienSprites.ALIEN_SPRITESET[1]};
 
 	@Before
 	public void setUp() throws Exception {
@@ -21,8 +26,7 @@ public class WorldTest {
 		world.setMazub(player);
 	}
 	
-	private World world;
-	private Mazub player;
+	
 
 	@Test
 	public void TestConstructor() {
@@ -212,5 +216,100 @@ public class WorldTest {
 	public void TestgetTilePositionSixTiles(){
 		int [][] tilepositions1 = {{0,0},{1,0},{2,0},{0,1},{1,1},{2,1}};
 		assert(Arrays.deepEquals(tilepositions1, world.getTilePositionsIn(1, 1, 25, 15)));
+	}
+	
+	@Test
+	public void TestsetMazubPlayerNotEqualTonull(){
+		assertEquals(world.getMazub(), player);
+		assertEquals(player.getWorld(), world);		
+	}
+	
+	@Test
+	public void TestsetMazubPlayerEqualTonull(){
+		world.setMazub(null);
+		assertEquals(world.getMazub(), null);
+	}
+	
+	@Test
+	public void TestaddSharkValidshark(){
+		Shark shark = new Shark(0, 0, sprites);
+		world.addShark(shark);
+		assert(world.getSharks().contains(shark));		
+	}
+	
+	@Test
+	public void TestaddSharksharkIsnull(){
+		try {
+			world.addShark(null);
+		} catch (AssertionError err){
+			assert(true);
+			return;
+		}
+		assert(false);
+	}
+	
+	@Test
+	public void TestaddSharksharkSharkIsDouble(){
+		Shark shark = new Shark(0, 0, sprites);
+		world.addShark(shark);
+		try{
+			world.addShark(shark);
+		} catch(AssertionError err){
+			assert(true);
+			return;
+		}
+		assert(false);		
+	}
+	
+	@Test
+	public void TesthasAsSharksharkIsNotnull(){
+		Shark shark = new Shark(0, 0, sprites);
+		assert(! world.hasAsShark(shark));
+		
+		world.addShark(shark);
+		assert(world.hasAsShark(shark));
+	}
+	
+	@Test
+	public void TesthasAsSharksharkIsnull(){
+		try{
+			world.hasAsShark(null);
+		} catch(AssertionError err){
+			assert(true);
+			return;
+		}
+		assert(false);
+	}
+	
+	@Test
+	public void TestremoveSharkNoAsertionErrors(){
+		Shark shark = new Shark(0, 0, sprites);
+		world.addShark(shark);
+		world.removeShark(shark);
+		assertEquals(shark.getWorld(), null);
+		assert(! world.hasAsShark(shark));
+	}
+	
+	@Test
+	public void TestremoveSharksharkIsnull(){
+		try{
+			world.removeShark(null);
+		} catch(AssertionError err){
+			assert(true);
+			return;
+		}
+		assert(false);
+	}
+	
+	@Test
+	public void TestremoveSharksharkIsNotInworld(){
+		Shark shark = new Shark(0, 0, sprites);
+		try{
+			world.removeShark(shark);
+		} catch(AssertionError err){
+			assert(true);
+			return;
+		}
+		assert(false);
 	}
 }
