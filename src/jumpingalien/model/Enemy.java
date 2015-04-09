@@ -1,6 +1,5 @@
 package jumpingalien.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -94,8 +93,7 @@ public abstract class Enemy extends GameObject {
 			
 			advanceActionTime(time);
 		}
-
-		setTimeInvincible(advanceTimeInvincible(dt));
+		
 		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
 		collisionHandle(collisions, dt);
 	}
