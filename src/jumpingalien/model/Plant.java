@@ -35,7 +35,6 @@ public class Plant extends GameObject {
 		super(x, y, images, 0, 0.5, 0.5);
 		
 		setMovementTime(0);
-		
 		setVx(getVxi());
 	}
 	
@@ -95,11 +94,14 @@ public class Plant extends GameObject {
 			throw new IllegalArgumentException();
 		}
 		
-		double timestep = 0.01/getVx();
-		for(double time_passed = timestep; time_passed <= dt; time_passed += timestep) {
-			timestep = Math.min(0.01/getVx(), dt - time_passed);
-			super.advanceTimeStep(timestep);
+		double timestep = dt;
+		if (getVx() != 0) timestep = 0.01/getVx();
+		
+		for(double time_passed = 0; time_passed < dt; time_passed += timestep) {
+			if (getVx() != 0) timestep = Math.min(0.01/getVx(), dt - time_passed);
+			else timestep = dt - time_passed;
 			
+			super.advanceTimeStep(timestep);
 			advanceDeathTime(timestep);
 			advanceMovementTime(timestep);
 		}
@@ -143,7 +145,7 @@ public class Plant extends GameObject {
 	 */
 	private void advanceMovementTime(double time){
 		setMovementTime(getMovementTime() + time);
-		if(getMovementTime() > 0.5){
+		while (getMovementTime() > 0.5) {
 			setMovementTime(getMovementTime() - 0.5);
 			changeDirection();			
 		}
