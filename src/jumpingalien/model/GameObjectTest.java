@@ -2,6 +2,7 @@ package jumpingalien.model;
 
 import static org.junit.Assert.*;
 import jumpingalien.common.sprites.JumpingAlienSprites;
+import jumpingalien.util.Sprite;
 import jumpingalien.util.Util;
 
 import org.junit.Before;
@@ -122,9 +123,9 @@ public class GameObjectTest {
 		player.setVx(1);
 		player.setAx(1);
 		player.setX(player.getWorld().getWorldWidth()-1);
-		int world_width = player.getWorld().getWorldWidth();
+		double predicted_x = player.getX() + 100*(player.getVx()*0.1 + (1/2)*player.getAx()*Math.pow(0.1, 2));
 		player.advanceTimeStep(0.1);
-		assertEquals(player.getX(), world_width - 1, Util.DEFAULT_EPSILON);
+		assertEquals(player.getX(), predicted_x, Util.DEFAULT_EPSILON);
 		assertEquals(player.getWorld(), null);
 	}
 	
@@ -138,12 +139,22 @@ public class GameObjectTest {
 	}
 	
 	@Test
-	public void TestAdvanceTimeStepUpdatingXPositionWithCollision(){
+	public void TestAdvanceTimeStepUpdatingXPositionWithCollisionRight(){
 		world.setFeature(100, 0, 1);
 		player.setVx(1);
 		player.setX(100 - player.getWidth());
 		player.advanceTimeStep(0.01);
 		assertEquals(player.getX(), (100 - player.getWidth() + 1), Util.DEFAULT_EPSILON);
+	}
+	
+	@Test
+	public void TestAdvanceTimeStepUpdatingXPositionWithCollisionLeft(){
+		world.setFeature(100, 0, 1);
+		player.setX(100 + world.getTileSize() - 1);
+		player.setVx( -3);
+		player.advanceTimeStep(0.1);
+		assertEquals(player.getX(), 100 + world.getTileSize() - 1, Util.DEFAULT_EPSILON);
+		
 	}
 	
 	@Test
@@ -183,9 +194,9 @@ public class GameObjectTest {
 		world.setMazub(player);
 		player.setVy(1);
 		player.setY(player.getWorld().getWorldHeight()-1);
-		int world_height = player.getWorld().getWorldHeight();
+		double predicted_height = player.getY() + 100*(player.getVy()*0.1 + 1/2*player.getAy()*Math.pow(0.1, 2));
 		player.advanceTimeStep(0.1);
-		assertEquals(player.getY(), world_height - 1, Util.DEFAULT_EPSILON);
+		assertEquals(player.getY(), predicted_height, Util.DEFAULT_EPSILON);
 		assertEquals(player.getWorld(), null);
 	}
 	
@@ -199,12 +210,21 @@ public class GameObjectTest {
 	}
 	
 	@Test
-	public void TestadvanceTimeStepUpdatingYPositionWithCollision(){
+	public void TestadvanceTimeStepUpdatingYPositionWithCollisionUp(){
 		world.setFeature(0, 100, 1);
 		player.setY(100 - player.getHeight() + 1);
 		player.setVy(3);
 		player.advanceTimeStep(0.1);
 		assertEquals(player.getY(), 100 - player.getHeight() + 1, Util.DEFAULT_EPSILON);
+	}
+	
+	@Test
+	public void TestadvanceTimeStepUpdatingYPositionWithCollisionUnder(){
+		world.setFeature(0, 100, 1);
+		player.setY(100 + world.getTileSize() -1);
+		player.setVy(-1);
+		player.advanceTimeStep(0.1);
+		assertEquals(player.getY(), 100 + world.getTileSize() - 1, Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -229,7 +249,7 @@ public class GameObjectTest {
 	}
 	
 	@Test
-	public void TestadvanceTimeStepBreakCollisionRight(){
+	public void TestadvanceTimeStepBreakCollisionFeatureRight(){
 		world.setFeature(100,10,1);
 		player.setX((100 - player.getWidth() + 1));
 		player.setAy(0);
@@ -240,7 +260,7 @@ public class GameObjectTest {
 	}
 	
 	@Test
-	public void TestadvanceTimeStepBreakCollisionLeft(){
+	public void TestadvanceTimeStepBreakCollisionFeatureLeft(){
 		world.setFeature(100,10,1);
 		player.setX(100 + world.getTileSize() - 1);
 		player.setAy(0);
@@ -250,5 +270,82 @@ public class GameObjectTest {
 		assertEquals(player.getVy(), 0, Util.DEFAULT_EPSILON);
 	}
 	
+	@Test
+	public void TestadvanceTimeStepBreakCollisionFeatureUp(){
+		world.setFeature(0, 100, 1);
+		player.setY(100 - player.getHeight() + 1);
+		player.setAy(0);
+		player.setVy(4);
+		player.advanceTimeStep(0.1);
+		assertEquals(player.getAy(), -10, Util.DEFAULT_EPSILON);
+		assertEquals(player.getVy(), 0, Util.DEFAULT_EPSILON);
+	}
+	
+	@Test 
+	public void TestadvanceTimeStepBreakCollisionFeatureUnder(){
+		world.setFeature(0, 100, 1);
+		player.setY(100 + world.getTileSize() - 1);
+		player.setAy(0);
+		player.setVy(4);
+		player.advanceTimeStep(0.1);
+		assertEquals(player.getAy(), -10, Util.DEFAULT_EPSILON);
+		assertEquals(player.getVy(), 0, Util.DEFAULT_EPSILON);		
+	}
+	
+	@Test
+	public void TestadvandTimeStepUpdatingTimeInvincibleWithinBounds(){
+		player.setTimeInvincible(0.5);
+		player.advanceTimeStep(0.1);
+		assertEquals(player.getTimeInvincible() , 0.4, Util.DEFAULT_EPSILON);
+	}
+	
+	@Test
+	public void TestadvanceTimesStepUpdatingTimeInvincibleOutsideBound(){
+		player.advanceTimeStep(0.1);
+		assertEquals(player.getTimeInvincible(), 0, Util.DEFAULT_EPSILON);
+		player.setTimeInvincible(0.05);
+		player.advanceTimeStep(0.1);
+		assertEquals(player.getTimeInvincible(), 0, Util.DEFAULT_EPSILON);
+	}
+	
+	@Test
+	public void TestisValidDtValidDt(){
+		assert(GameObject.isValidDt(0.1));
+		assert(GameObject.isValidDt(0.001));
+		assert(GameObject.isValidDt(0.199));
+	}
+	
+	@Test
+	public void TestisValidDtNonValidDt(){
+		assert(!GameObject.isValidDt(0));
+		assert(!GameObject.isValidDt(0.2));
+		assert(!GameObject.isValidDt(0.5));
+		assert(!GameObject.isValidDt(- 0.5));
+	}
+	
+	@Test
+	public void TestgetTimeStepFormulaAsResult(){
+		player.setVx(1);
+		assertEquals(player.getTimestep(0.2,0), (0.01/(Math.sqrt(Math.pow(player.getVx(), 2) + 
+				Math.pow(player.getVy(), 2)) + Math.sqrt(Math.pow(player.getAx(), 2)))), Util.DEFAULT_EPSILON);
+	}
+	
+	@Test
+	public void TestgetTimeStepFormulaNotAsResult(){
+		player.setVx(player.getVxmax());
+		player.setAy(player.getAxi());
+		assertEquals(player.getTimestep(0.1, 0.1), 0, Util.DEFAULT_EPSILON);
+	}
+	
+	@Test
+	public void TestgetCurrentSprite(){
+		Sprite[] sprites = {JumpingAlienSprites.ALIEN_SPRITESET[0], JumpingAlienSprites.ALIEN_SPRITESET[1]};
+		Plant plant = new Plant(0 , 0, sprites);
+		assertEquals(plant.getCurrentSprite(), JumpingAlienSprites.ALIEN_SPRITESET[1]);
+		plant.setVx(- plant.getVxi());
+		assertEquals(plant.getCurrentSprite(), JumpingAlienSprites.ALIEN_SPRITESET[0]);
+		plant.setVx(0);
+		assertEquals(plant.getCurrentSprite(), JumpingAlienSprites.ALIEN_SPRITESET[0]);
+	}
 	
 }

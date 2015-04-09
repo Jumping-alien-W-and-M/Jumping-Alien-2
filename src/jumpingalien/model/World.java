@@ -381,6 +381,7 @@ public class World {
 	/**
 	 * Gets the player inhabiting this world.
 	 */
+	@Basic
 	public Mazub getMazub() {
 		return this.player;
 	}

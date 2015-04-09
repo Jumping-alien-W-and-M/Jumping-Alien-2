@@ -588,7 +588,7 @@ public abstract class GameObject {
 	 * 			|		then result = false
 	 * 			| result = true
 	 */
-	public boolean listEmptyOrPlants(List<Object> list) {
+	protected boolean listEmptyOrPlants(List<Object> list) {
 		for(Object element : list) {
 			if (!(element instanceof Plant)) {
 				return false;
@@ -667,7 +667,7 @@ public abstract class GameObject {
 	protected void setXWithinBounds(double x) {
 		if (getWorld() != null && (x < 0 || x >= getWorld().getWorldWidth()))
 				terminate();
-		setX(x);
+		setX(Math.max(x, 0));
 	}
 
 	/**
@@ -752,7 +752,7 @@ public abstract class GameObject {
 	protected void setYWithinBounds(double y) {
 		if (getWorld() != null && (y < 0 || y >= getWorld().getWorldHeight()))
 				terminate();
-		setX(y);
+		setY(Math.max(y, 0));
 	}
 	
 	/**
@@ -836,6 +836,7 @@ public abstract class GameObject {
 	 * 			if this is bigger then or equal to 0 else 0 is returned.
 	 * 			| result = Math.max(0, getTimeInvincible()-dt)
 	 */
+	@Model
 	protected double advanceTimeInvincible(double dt){
 		return Math.max(0, getTimeInvincible() - dt);
 	}
