@@ -2,8 +2,6 @@ package jumpingalien.part2.tests;
 
 import jumpingalien.model.Feature;
 
-import static org.junit.Assert.*;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

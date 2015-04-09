@@ -94,11 +94,10 @@ public class Plant extends GameObject {
 			throw new IllegalArgumentException();
 		}
 		
-		double timestep = dt;
-		if (getVx() != 0) timestep = 0.01/getVx();
+		double timestep = 0;
 		
 		for(double time_passed = 0; time_passed < dt; time_passed += timestep) {
-			if (getVx() != 0) timestep = Math.min(0.01/getVx(), dt - time_passed);
+			if (getVx() != 0) timestep = Math.min(0.01/Math.abs(getVx()), dt - time_passed);
 			else timestep = dt - time_passed;
 			
 			super.advanceTimeStep(timestep);
@@ -108,8 +107,8 @@ public class Plant extends GameObject {
 		
 		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
 		collisionHandle(collisions, dt);
-	}	
-	
+	}
+
 	/**
 	 * Advances the time this plant has been dead for with time.
 	 * 
