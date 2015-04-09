@@ -624,6 +624,8 @@ public abstract class GameObject {
 	 * 			|					Math.min( 1/Math.abs(getVx()/100),1/Math.abs(getVy()/100)))
 	 */
 	public double getTimestep(double dt, double time_passed) {
+		if ((getVx() == 0) && (getVy() == 0) && (getAx() == 0) && (getAy() == 0))
+			return dt - time_passed;
 		return Math.min(0.01/(Math.sqrt(Math.pow(getVx(), 2) + Math.pow(getVy(), 2)) +
 				Math.sqrt(Math.pow(getAx(), 2) + Math.pow(getAy(), 2))*dt), dt - time_passed);
 	}
