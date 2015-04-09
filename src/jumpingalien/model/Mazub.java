@@ -1,6 +1,5 @@
 package jumpingalien.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import jumpingalien.util.*;
@@ -292,7 +291,6 @@ public class Mazub extends GameObject {
 			}			
 		}
 
-		setTimeInvincible(advanceTimeInvincible(dt));
 		if(getWorld() != null){
 			List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
 			collisionHandle(collisions, dt);
@@ -320,12 +318,19 @@ public class Mazub extends GameObject {
 	 * 			|	this.setTimeInvincible(0.6);
 	 */
 	@Override 
-	protected void collisionHandleShark(Shark shark) {
+	protected void collisionHandleShark(Shark shark, int direction) {
 		assert(shark != null);
-		if(shark.getDeathTime() != 0 && getTimeInvincible() == 0){
-			this.setHitpoints(this.getHitpoints() - 50);
-			shark.setHitpoints(shark.getHitpoints() - 50);
-			this.setTimeInvincible(0.6);
+		
+		if (shark.getDeathTime() != 0 && getTimeInvincible() == 0 && shark.getTimeInvincible() == 0) {
+			if (direction != 1) {
+				shark.setHitpoints(shark.getHitpoints() - 50);
+				shark.setTimeInvincible(0.6);
+			}
+			
+			if (direction != 3) {
+				setHitpoints(getHitpoints() - 50);
+				setTimeInvincible(0.6);
+			}
 		}
 	}
 	
@@ -346,7 +351,7 @@ public class Mazub extends GameObject {
 	 * 			|	setHitpoints(getHitpoints() + 50)
 	 */
 	@Override
-	protected void collisionHandlePlant(Plant plant) {
+	protected void collisionHandlePlant(Plant plant, int direction) {
 		assert(plant != null);
 		if( !(plant.getDeathTime() > 0) && (getHitpoints() < 500)){
 			plant.kill();
@@ -355,12 +360,19 @@ public class Mazub extends GameObject {
 	}
 	
 	@Override
-	protected void collisionHandleSlime(Slime slime) {
+	protected void collisionHandleSlime(Slime slime, int direction) {
 		assert(slime != null);
-		if(slime.getDeathTime() != 0 && getTimeInvincible() == 0){
-			this.setHitpoints(this.getHitpoints() - 50);
-			slime.hit(50);
-			this.setTimeInvincible(0.6);
+		
+		if (slime.getDeathTime() != 0 && getTimeInvincible() == 0 && slime.getTimeInvincible() == 0) {
+			if (direction != 1) {
+				slime.hit(50);
+				slime.setTimeInvincible(0.6);
+			}
+			
+			if (direction != 3) {
+				setHitpoints(getHitpoints() - 50);
+				setTimeInvincible(0.6);
+			}
 		}
 	}
 	

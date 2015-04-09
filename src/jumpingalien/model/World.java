@@ -780,7 +780,7 @@ public class World {
 		}
 		
 		// Checks collisions with the player, sharks, slimes and plants
-		collisionDetectObject(object, getMazub(), custom_height, collisions);
+		if (getMazub() != null)	collisionDetectObject(object, getMazub(), custom_height, collisions);
 		if (!(object instanceof Plant)) {
 			for(Shark shark : getSharks()) {
 				collisionDetectObject(object, shark, custom_height, collisions);

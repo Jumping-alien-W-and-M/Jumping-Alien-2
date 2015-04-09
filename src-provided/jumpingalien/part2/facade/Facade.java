@@ -88,15 +88,6 @@ public class Facade implements IFacadePart2 {
 	}
 
 	@Override
-	public void advanceTime(Mazub alien, double dt) {
-		try {
-			alien.advanceTime(dt);
-		} catch(IllegalArgumentException exc) {
-			throw new ModelException(exc);
-		}
-	}
-
-	@Override
 	public int getNbHitPoints(Mazub alien) {
 		return alien.getHitpoints();
 	}
@@ -121,8 +112,7 @@ public class Facade implements IFacadePart2 {
 
 	@Override
 	public void startGame(World world) {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -160,6 +150,9 @@ public class Facade implements IFacadePart2 {
 
 	@Override
 	public int getGeologicalFeature(World world, int pixelX, int pixelY) throws ModelException {
+		if ((pixelX % world.getTileSize() != 0) || (pixelY % world.getTileSize() != 0)) {
+			throw new ModelException("Coordinates don't correspond with any tile's bottomleft pixel.");
+		}
 		return world.getFeature(world.getTilePos(pixelX), world.getTilePos(pixelY)).getNumber();
 	}
 

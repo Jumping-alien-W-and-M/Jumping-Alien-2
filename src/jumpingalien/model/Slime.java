@@ -163,7 +163,10 @@ public class Slime extends Enemy {
 	 * 			| collisionHandleEnemy()
 	 */
 	@Override
-	protected void collisionHandleMazub(Mazub player) { assert(player != null); player.collisionHandleSlime(this); }
+	protected void collisionHandleMazub(Mazub player, int direction) {
+		assert(player != null);
+		player.collisionHandleSlime(this, (direction + 2)%4);
+	}
 
 	/**
 	 * Handles a collision with a shark.
@@ -176,7 +179,10 @@ public class Slime extends Enemy {
 	 * 			| collisionHandleEnemy()
 	 */
 	@Override
-	protected void collisionHandleShark(Shark shark) { assert(shark != null); shark.collisionHandleSlime(this); }
+	protected void collisionHandleShark(Shark shark, int direction) {
+		assert(shark != null);
+		shark.collisionHandleSlime(this, (direction + 2)%4);
+	}
 	
 	/**
 	 * Handles a collision with another slime

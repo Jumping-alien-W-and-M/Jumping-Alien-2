@@ -1,6 +1,5 @@
 package jumpingalien.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -168,10 +167,20 @@ public class Shark extends Enemy {
 	 * 			| slime.setHitpoints(getHitpoints() - 50)
 	 */
 	@Override
-	protected void collisionHandleSlime(Slime slime){
+	protected void collisionHandleSlime(Slime slime, int direction) {
 		assert(slime != null);
-		this.setHitpoints(getHitpoints() - 50);
-		slime.hit(50);
+		
+		if (slime.getDeathTime() != 0 && getTimeInvincible() == 0 && slime.getTimeInvincible() == 0) {
+			if (direction != 1) {
+				slime.hit(50);
+				slime.setTimeInvincible(0.6);
+			}
+			
+			if (direction != 3) {
+				setHitpoints(getHitpoints() - 50);
+				setTimeInvincible(0.6);
+			}
+		}
 	}
 	
 	/**
@@ -185,9 +194,9 @@ public class Shark extends Enemy {
 	 * 			| player.collisionHandleShark(this)
 	 */
 	@Override
-	protected void collisionHandleMazub(Mazub player){
+	protected void collisionHandleMazub(Mazub player, int direction){
 		assert(player != null);
-		player.collisionHandleShark(this);
+		player.collisionHandleShark(this, (direction + 2)%4);
 	}
 	
 	/**

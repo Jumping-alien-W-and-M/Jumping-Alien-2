@@ -547,16 +547,20 @@ public abstract class GameObject {
 			collisions = new ArrayList<List<List<Object>>>(
 							Collections.nCopies(4, Collections.nCopies(2, new ArrayList<Object>())));
 		
-		if ((collisions.get(0).get(0).size() == 0) && !(collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0)
-			|| (collisions.get(2).get(0).size() == 0) && !(collisions.get(2).get(1).contains(Feature.ground)) && (getVx() > 0)) 
+		if ((listEmptyOrPlants(collisions.get(0).get(0)) && !(collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0))
+			|| ((listEmptyOrPlants(collisions.get(2).get(0)) && !(collisions.get(2).get(1).contains(Feature.ground)) && (getVx() > 0)))) 
 				advanceX(timestep);
 		
 		setVx(advanceVx(timestep));
 		
 		if(getWorld() != null)
 			collisions = getWorld().collisionDetect(this, 0);
-		if ((collisions.get(1).get(0).size() == 0) && !(collisions.get(1).get(1).contains(Feature.ground)) && (getVy() > 0)
-			|| (collisions.get(3).get(0).size() == 0) && !(collisions.get(3).get(1).contains(Feature.ground)) && (getVy() < 0)) 
+		else
+			collisions = new ArrayList<List<List<Object>>>(
+							Collections.nCopies(4, Collections.nCopies(2, new ArrayList<Object>())));
+		
+		if ((listEmptyOrPlants(collisions.get(1).get(0)) && !(collisions.get(1).get(1).contains(Feature.ground)) && (getVy() > 0))
+				|| ((listEmptyOrPlants(collisions.get(3).get(0)) && !(collisions.get(3).get(1).contains(Feature.ground)) && (getVy() < 0)))) 
 			advanceY(timestep);
 		
 		if (getVy() > 0) {
@@ -570,6 +574,27 @@ public abstract class GameObject {
 		
 		setVy(advanceVy(timestep));
 		setAy(advanceAy());
+		setTimeInvincible(advanceTimeInvincible(timestep));
+	}
+	
+	/**
+	 * Checks whether the given (array)list is empty or only contains plants.
+	 * 
+	 * @param list
+	 * 			The (array)list which should be checked.
+	 * @return	...
+	 * 			| for(Object element : list)
+	 * 			|	if (!(element instanceof Plant))
+	 * 			|		then result = false
+	 * 			| result = true
+	 */
+	public boolean listEmptyOrPlants(List<Object> list) {
+		for(Object element : list) {
+			if (!(element instanceof Plant)) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	/**
@@ -841,10 +866,10 @@ public abstract class GameObject {
 			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
 			
 			for(Object object : collision_objects) {
-				if (object instanceof Mazub) collisionHandleMazub((Mazub) object);
-				if ((object instanceof Shark) && (!(this instanceof Mazub) || (i != 3))) collisionHandleShark((Shark) object);
-				if (object instanceof Plant) collisionHandlePlant((Plant) object);
-				if ((object instanceof Slime) && (!(this instanceof Mazub) || (i != 3))) collisionHandleSlime((Slime) object);
+				if (object instanceof Mazub) collisionHandleMazub((Mazub) object, i);
+				if (object instanceof Shark) collisionHandleShark((Shark) object, i);
+				if (object instanceof Plant) collisionHandlePlant((Plant) object, i);
+				if (object instanceof Slime) collisionHandleSlime((Slime) object, i);
 			}
 		}
 		
@@ -881,10 +906,10 @@ public abstract class GameObject {
 		
 	}
 	
-	protected void collisionHandleMazub(Mazub player) { }
-	protected void collisionHandleShark(Shark shark) { }
-	protected void collisionHandlePlant(Plant plant) { }
-	protected void collisionHandleSlime(Slime slime) { }
+	protected void collisionHandleMazub(Mazub player, int direction) { }
+	protected void collisionHandleShark(Shark shark, int direction) { }
+	protected void collisionHandlePlant(Plant plant, int direction) { }
+	protected void collisionHandleSlime(Slime slime, int direction) { }
 
 	protected void collisionHandleAir(double time) { }
 	protected void collisionHandleWater(double time) { }
