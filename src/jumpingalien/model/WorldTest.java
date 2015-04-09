@@ -198,4 +198,19 @@ public class WorldTest {
 		int [][] tilepositions = {{0,0}};
 		assert(Arrays.deepEquals(tilepositions, (world.getTilePositionsIn(1, 1, 5, 5))));
 	}
+	
+	@Test
+	public void TestgetTilePositionFourTiles(){
+		int [][] tilepositions1 = {{0,0},{1,0},{0,1},{1,1}};
+		assert(Arrays.deepEquals(tilepositions1, (world.getTilePositionsIn(1, 1, 15, 15))));
+		
+		int [][] tilepositions2 = {{5,5},{6,5},{5,6},{6,6}};
+		assert(Arrays.deepEquals(tilepositions2, (world.getTilePositionsIn(51, 51, 65, 65))));
+	}
+	
+	@Test
+	public void TestgetTilePositionSixTiles(){
+		int [][] tilepositions1 = {{0,0},{1,0},{2,0},{0,1},{1,1},{2,1}};
+		assert(Arrays.deepEquals(tilepositions1, world.getTilePositionsIn(1, 1, 25, 15)));
+	}
 }
