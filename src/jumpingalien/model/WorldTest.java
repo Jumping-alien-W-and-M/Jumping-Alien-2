@@ -2,6 +2,7 @@ package jumpingalien.model;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 import jumpingalien.common.sprites.JumpingAlienSprites;
@@ -192,5 +193,9 @@ public class WorldTest {
 		assert(! world.touchesTarget());
 	}
 	
-	
+	@Test
+	public void TestgetTilePositionsInOneTile(){
+		int [][] tilepositions = {{0,0}};
+		assert(Arrays.deepEquals(tilepositions, (world.getTilePositionsIn(1, 1, 5, 5))));
+	}
 }

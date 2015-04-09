@@ -364,7 +364,10 @@ public class World {
 	 * 			| result = positions
 	 */
 	public int[][] getTilePositionsIn(int x1, int y1, int x2, int y2) {
-		int[][] positions = new int[getTilePos(y2 - y1)*getTilePos(x2 - x1)][2];
+		int[][] positions = new int[1][2];
+		if((getTilePos(y2 - y1) != 0) && getTilePos(x2 - x1) != 0)
+			positions = new int[getTilePos(y2 - y1)*getTilePos(x2 - x1)][2];
+		
 		
 		int index = 0;
 		for(int y = getTilePos(y1); y <= getTilePos(y2); y += getTileSize()) {
