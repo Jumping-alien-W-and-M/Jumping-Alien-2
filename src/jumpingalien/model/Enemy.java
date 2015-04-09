@@ -86,12 +86,13 @@ public abstract class Enemy extends GameObject {
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();
 		}
-
-		double timestep = getTimestep(dt);
-		for(double time = timestep; time <= dt; time += timestep) {
-			super.advanceTimeStep(time);
+		
+		double timestep = getTimestep(dt, 0);
+		for(double time_passed = 0; time_passed < dt; time_passed += timestep) {
+			timestep = getTimestep(dt, time_passed);
+			super.advanceTimeStep(timestep);
 			
-			advanceActionTime(time);
+			advanceActionTime(timestep);
 		}
 		
 		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);

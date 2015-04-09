@@ -279,12 +279,13 @@ public class Mazub extends GameObject {
 			throw new IllegalArgumentException();
 		}
 		
-		double timestep = getTimestep(dt);
-		for(double time = timestep; time <= dt; time += timestep) {
-			super.advanceTimeStep(time);
+		double timestep = getTimestep(dt, 0);
+		for(double time_passed = 0; time_passed < dt; time_passed += timestep) {
+			timestep = getTimestep(dt, time_passed);
+			super.advanceTimeStep(timestep);
 		
-			setLastMove(advanceLastMove(time));
-			setAnimationTime(advanceAnimationTime(time));
+			setLastMove(advanceLastMove(timestep));
+			setAnimationTime(advanceAnimationTime(timestep));
 			
 			if (getTryStand()) {
 				endDuck();

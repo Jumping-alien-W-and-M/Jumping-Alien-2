@@ -96,11 +96,12 @@ public class Plant extends GameObject {
 		}
 		
 		double timestep = 0.01/getVx();
-		for(double time = timestep; timestep <= dt; time += timestep) {
-			super.advanceTimeStep(time);
+		for(double time_passed = timestep; time_passed <= dt; time_passed += timestep) {
+			timestep = Math.min(0.01/getVx(), dt - time_passed);
+			super.advanceTimeStep(timestep);
 			
-			advanceDeathTime(time);
-			advanceMovementTime(time);
+			advanceDeathTime(timestep);
+			advanceMovementTime(timestep);
 		}
 		
 		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);

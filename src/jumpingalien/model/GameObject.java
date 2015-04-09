@@ -623,9 +623,9 @@ public abstract class GameObject {
 	 * 			|				Math.min(computeformula(getVy,getAy),
 	 * 			|					Math.min( 1/Math.abs(getVx()/100),1/Math.abs(getVy()/100)))
 	 */
-	public double getTimestep(double dt) {
-		return 0.01/(Math.sqrt(Math.pow(getVx(), 2) + Math.pow(getVy(), 2)) +
-				Math.sqrt(Math.pow(getAx(), 2) + Math.pow(getAy(), 2))*dt);
+	public double getTimestep(double dt, double time_passed) {
+		return Math.min(0.01/(Math.sqrt(Math.pow(getVx(), 2) + Math.pow(getVy(), 2)) +
+				Math.sqrt(Math.pow(getAx(), 2) + Math.pow(getAy(), 2))*dt), dt - time_passed);
 	}
 	
 	/**
@@ -665,16 +665,9 @@ public abstract class GameObject {
 	 * 			| result = Math.max(0, Math.min(getWorldWidth() - 1, x))
 	 */
 	protected void setXWithinBounds(double x) {
-		if(getWorld() != null){
-			if(x >= 0 && x <= getWorld().getWorldWidth()- 1)
-				setX(x);
-			else{			
-				setX(Math.max(0, Math.min(getWorld().getWorldWidth() - 1, x)));
+		if (getWorld() != null && (x < 0 || x >= getWorld().getWorldWidth()))
 				terminate();
-			}
-		}
-		else
-			setX(x);
+		setX(x);
 	}
 
 	/**
@@ -756,17 +749,10 @@ public abstract class GameObject {
 	 * 			If it's too small or too large, it will be set to the smallest or largest possible value, respectively.
 	 * 			| result = Math.max(0, Math.min(getWorldHeight() - 1, y))
 	 */
-	private void setYWithinBounds(double y) {
-		if(getWorld() != null){
-			if(y >= 0 && y <= getWorld().getWindowHeight() - 1)
-				setY(y);
-			else{			
-				setY(Math.max(0, Math.min(getWorld().getWorldHeight() - 1, y)));
+	protected void setYWithinBounds(double y) {
+		if (getWorld() != null && (y < 0 || y >= getWorld().getWorldHeight()))
 				terminate();
-			}
-		}
-		else
-			setY(y);
+		setX(y);
 	}
 	
 	/**
