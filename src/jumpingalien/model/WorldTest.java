@@ -4,13 +4,10 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import jumpingalien.common.sprites.JumpingAlienSprites;
 import jumpingalien.util.Sprite;
-import jumpingalien.util.Util;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
