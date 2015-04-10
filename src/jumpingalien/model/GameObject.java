@@ -575,6 +575,8 @@ public abstract class GameObject {
 		setVy(advanceVy(timestep));
 		setAy(advanceAy());
 		setTimeInvincible(advanceTimeInvincible(timestep));
+		
+		System.out.println(getVy());
 	}
 	
 	/**
@@ -929,5 +931,13 @@ public abstract class GameObject {
 			return getImages()[0];
 		}
 		return getImages()[1];
+	}
+	
+	protected int mirrorDirection(int direction) {
+		if (direction < 4) {
+			return (direction + 2)%4;
+		} else {
+			return (direction + 2)%4 + 4;
+		}
 	}
 }
