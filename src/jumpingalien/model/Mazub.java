@@ -145,7 +145,7 @@ public class Mazub extends GameObject {
 		this.prev_move = prev_move;
 	}
 	
-	private String prev_move;
+	private String prev_move = "";
 	
 	/**
 	 * Gets the amount of frames in this Mazub's running left/right animation.
@@ -292,7 +292,7 @@ public class Mazub extends GameObject {
 			}			
 		}
 
-		if(getWorld() != null){
+		if (getWorld() != null) {
 			List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
 			collisionHandle(collisions, dt);
 		}
@@ -650,7 +650,7 @@ public class Mazub extends GameObject {
 			
 			List<List<List<Object>>> collisions = getWorld().collisionDetect(this, height);
 			
-			if (listEmptyOrPlants(collisions.get(1).get(0)) || collisions.get(1).get(1).contains(Feature.ground)) 
+			if (!listEmptyOrPlants(collisions.get(1).get(0)) || collisions.get(1).get(1).contains(Feature.ground)) 
 				return false;			
 		}
 		return true;
@@ -723,7 +723,7 @@ public class Mazub extends GameObject {
 			// Everything which happens if Mazub's moving right.
 			
 			if (!getDucking()) {
-				if (getY() > 0) {
+				if (getAy() < 0) {
 					return getImages()[4];
 				} else {
 					return getImages()[8 + getCurrentFrameIndex()];
@@ -735,7 +735,7 @@ public class Mazub extends GameObject {
 			// Everything which happens if Mazub's moving left.
 			
 			if (!getDucking()) {
-				if (getY() > 0) {
+				if (getAy() < 0) {
 					return getImages()[5];
 				} else {
 					return getImages()[8 + getFramesAmount() + getCurrentFrameIndex()];

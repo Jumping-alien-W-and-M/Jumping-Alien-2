@@ -23,6 +23,14 @@ public class MazubTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+	
+	public void generateGroundLayer() {
+		player.setX(world.getWorldWidth()/2);
+		player.setY(world.getTileSize() - 1);
+		for(int x = 0; x < world.getWorldWidth(); x += world.getTileSize()) {
+			world.setFeature(x, 0, 1);
+		}
+	}
 
 	@Test
 	public void TestBasicConstructorCorrectParameters() {
@@ -214,7 +222,7 @@ public class MazubTest {
 		player.advanceTime(0.1);
 		
 		player.endMove();
-
+		
 		assertEquals(player.getVx(), 0, Util.DEFAULT_EPSILON);
 		assertEquals(player.getAx(), 0, Util.DEFAULT_EPSILON);
 		assertEquals(pos > player.getX(), true);
@@ -238,6 +246,8 @@ public class MazubTest {
 	@Test
 	public void TestJumpingFalling() {
 		
+		generateGroundLayer();
+		
 		double pos = player.getY();
 		
 		player.startJump();
@@ -245,6 +255,8 @@ public class MazubTest {
 		assertEquals(player.getVy(), 8, Util.DEFAULT_EPSILON);
 		
 		player.advanceTime(0.1);
+		
+		
 		
 		player.endJump();
 
@@ -286,6 +298,8 @@ public class MazubTest {
 	@Test
 	public void TestGetCurrentSprite() {
 		
+		generateGroundLayer();
+		
 		assertEquals(player.getCurrentSprite(), player.getImages()[0]);
 		
 		player.startDuck();
@@ -313,7 +327,10 @@ public class MazubTest {
 		assertEquals(player.getCurrentSprite(), player.getImages()[3]);
 		player.advanceTime(0.1);
 		assertNotEquals(player.getCurrentSprite(), player.getImages()[3]);
-		
+
+		for(int i = 0; i < 20; i++) {
+			player.advanceTime(0.15);
+		}
 		player.startMove("right");
 		player.startJump();
 		player.advanceTime(0.1);
@@ -367,8 +384,9 @@ public class MazubTest {
 		assertNotEquals(player.getCurrentSprite(), player.getImages()[7]);
 		
 		player.endDuck();
-
-		assertEquals(player.getY() > 0, false);
+		
+		System.out.println(player.getY());
+		assertEquals((int) player.getY() > world.getTileSize() - 1, false);
 		assertEquals(player.getDucking(), false);
 		
 		player.startMove("right");
@@ -567,11 +585,14 @@ public class MazubTest {
 		player.setAx(-1);
 		player.advanceTime(0.1);
 		assert(player.getX() == 0);
+		assert(player.getWorld() == null);
+		player.setX(world.getWorldWidth() - 1);
+		world.setMazub(player);
 		player.setVx(1);
 		player.setAx(1);
-		player.setX(player.getWorld().getWorldWidth()-1);
 		player.advanceTime(0.1);
-		assert(player.getX() == player.getWorld().getWorldWidth()-1);
+		assert(player.getX() == world.getWorldWidth()-1);
+		assert(player.getWorld() == null);
 	}
 	
 	@Test
@@ -607,10 +628,13 @@ public class MazubTest {
 		player.setAy(-10);
 		player.advanceTime(0.1);
 		assert(player.getY() == 0);
+		player.setY(world.getWorldHeight() - 1);
+		assert(player.getWorld() == null);
+		world.setMazub(player);
 		player.setVy(1);
-		player.setY(player.getWorld().getWorldHeight()-1);
 		player.advanceTime(0.1);
-		assert(player.getY() == player.getWorld().getWorldHeight()-1);
+		assert(player.getY() == world.getWorldHeight() - 1);
+		assert(player.getWorld() == null);
 	}
 	
 	@Test

@@ -775,7 +775,7 @@ public class World {
 	 * 			|
 	 * 			| result = collisions
 	 */
-	public List<List<List<Object>>> collisionDetect(GameObject object, int custom_height ) {
+	protected List<List<List<Object>>> collisionDetect(GameObject object, int custom_height ) {
 		
 		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
 		
@@ -934,7 +934,7 @@ public class World {
 			my2 += custom_height;
 		}
 		
-		// Returns collisions in order: left, up, right, down, upperleft, upperright, bottomright, bottomleft, central
+		// Collisions: left and central, up, right and central, down, upperleft, upperright, bottomright, bottomleft
 		int[] overlaps = {sx2 - mx1, my2 - sy1, mx2 - sx1, sy2 - my1};
 		for(int i = 0; i < 4; i++) {
 			if (overlaps[i] < 1) {
@@ -954,7 +954,7 @@ public class World {
 
 		// Direction-independent collisions
 		if (has_central_collision) {
-			collisionAdd(collision_objects, 8, index, object2);
+			collisionAdd(collision_objects, 0, index, object2);
 		}
 		
 	}
