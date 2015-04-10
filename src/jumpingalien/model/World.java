@@ -367,7 +367,7 @@ public class World {
 	
 		int[][] positions = new int[1][2];
 		if((getTilePos(y2 - y1) != 0) && (getTilePos(x2 - x1) != 0))
-			positions = new int[(getTilePos(y2 - y1) + 1) * (getTilePos(x2 - x1) + 1)][2];
+			positions = new int[(getTilePos(y2) - getTilePos(y1) + 1) * (getTilePos(x2) - getTilePos(x1) + 1)][2];
 		
 		
 		int index = 0;
@@ -779,7 +779,7 @@ public class World {
 	 * 			|
 	 * 			| result = collisions
 	 */
-	protected List<List<List<Object>>> collisionDetect(GameObject object, int custom_height ) {
+	protected List<List<List<Object>>> collisionDetect(GameObject object, int custom_height) {
 		
 		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
 		
@@ -806,11 +806,18 @@ public class World {
 				collisionDetectObject(object, plant, custom_height, collisions);
 			}
 		}
+		
 		// Checks collisions with features
-		for(int i = 0; i < getWorldWidth(); i += getTileSize()) {
-			for(int j = 0; j < getWorldHeight(); j += getTileSize()) {
-				collisionDetectFeature(object, i, j, custom_height, collisions);
-			}
+		int[][] tile_pos;
+		if (custom_height == 0) {
+			tile_pos = getTilePositionsIn((int) object.getX(), (int) object.getY(),
+					(int) object.getX() + object.getWidth(), (int) object.getY() + object.getHeight());
+		} else {
+			tile_pos = getTilePositionsIn((int) object.getX(), (int) object.getY(),
+					(int) object.getX() + object.getWidth(), (int) object.getY() + custom_height);
+		}
+		for(int[] tile : tile_pos) {
+			collisionDetectFeature(object, tile[0]*getTileSize(), tile[1]*getTileSize(), custom_height, collisions);
 		}
 		
 		return collisions; 

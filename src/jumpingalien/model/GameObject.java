@@ -540,29 +540,19 @@ public abstract class GameObject {
 	 */
 	public void advanceTimeStep(double timestep) {
 		
-		List<List<List<Object>>> collisions;
-		if(getWorld() != null)
-			collisions = getWorld().collisionDetect(this, 0);
-		else
-			collisions = new ArrayList<List<List<Object>>>(
-							Collections.nCopies(4, Collections.nCopies(2, new ArrayList<Object>())));
-		
+		List<List<List<Object>>> collisions = getCollisions();
 		if ((listEmptyOrPlants(collisions.get(0).get(0)) && !(collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0))
 			|| ((listEmptyOrPlants(collisions.get(2).get(0)) && !(collisions.get(2).get(1).contains(Feature.ground)) && (getVx() > 0)))) 
 				advanceX(timestep);
 		
 		setVx(advanceVx(timestep));
 		
-		if(getWorld() != null)
-			collisions = getWorld().collisionDetect(this, 0);
-		else
-			collisions = new ArrayList<List<List<Object>>>(
-							Collections.nCopies(4, Collections.nCopies(2, new ArrayList<Object>())));
-		
+		collisions = getCollisions();
 		if ((listEmptyOrPlants(collisions.get(1).get(0)) && !(collisions.get(1).get(1).contains(Feature.ground)) && (getVy() > 0))
 				|| ((listEmptyOrPlants(collisions.get(3).get(0)) && !(collisions.get(3).get(1).contains(Feature.ground)) && (getVy() < 0)))) 
 			advanceY(timestep);
 		
+		collisions = getCollisions();
 		if (getVy() > 0) {
 			for(int i = 0; i < 4; i++) {
 				if ((collisions.get(i).get(0).size() != 0) || (collisions.get(i).get(1).contains(Feature.ground))) {
@@ -575,6 +565,16 @@ public abstract class GameObject {
 		setVy(advanceVy(timestep));
 		setAy(advanceAy());
 		setTimeInvincible(advanceTimeInvincible(timestep));
+	}
+	
+	private List<List<List<Object>>> getCollisions() {
+		List<List<List<Object>>> collisions;
+		if(getWorld() != null)
+			collisions = getWorld().collisionDetect(this, 0);
+		else
+			collisions = new ArrayList<List<List<Object>>>(
+							Collections.nCopies(4, Collections.nCopies(2, new ArrayList<Object>())));
+		return collisions;
 	}
 	
 	/**
