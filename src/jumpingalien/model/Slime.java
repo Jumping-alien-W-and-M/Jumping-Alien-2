@@ -165,7 +165,7 @@ public class Slime extends Enemy {
 	@Override
 	protected void collisionHandleMazub(Mazub player, int direction) {
 		assert(player != null);
-		player.collisionHandleSlime(this, (direction + 2)%4);
+		player.collisionHandleSlime(this, mirrorDirection(direction));
 	}
 
 	/**
@@ -181,7 +181,7 @@ public class Slime extends Enemy {
 	@Override
 	protected void collisionHandleShark(Shark shark, int direction) {
 		assert(shark != null);
-		shark.collisionHandleSlime(this, (direction + 2)%4);
+		shark.collisionHandleSlime(this, mirrorDirection(direction));
 	}
 	
 	/**

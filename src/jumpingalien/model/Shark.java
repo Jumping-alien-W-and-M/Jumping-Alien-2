@@ -194,9 +194,10 @@ public class Shark extends Enemy {
 	 * 			| player.collisionHandleShark(this)
 	 */
 	@Override
-	protected void collisionHandleMazub(Mazub player, int direction){
+	protected void collisionHandleMazub(Mazub player, int direction) {
 		assert(player != null);
-		player.collisionHandleShark(this, (direction + 2)%4);
+		direction += 2;
+		player.collisionHandleShark(this, mirrorDirection(direction));
 	}
 	
 	/**

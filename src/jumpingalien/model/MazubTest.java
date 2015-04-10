@@ -256,10 +256,8 @@ public class MazubTest {
 		
 		player.advanceTime(0.1);
 		
-		
-		
 		player.endJump();
-
+		
 		assertEquals(player.getVy(), 0, Util.DEFAULT_EPSILON);
 		assertEquals(pos < player.getY(), true);
 		pos = player.getY();

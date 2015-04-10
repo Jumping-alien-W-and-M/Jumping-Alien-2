@@ -575,8 +575,6 @@ public abstract class GameObject {
 		setVy(advanceVy(timestep));
 		setAy(advanceAy());
 		setTimeInvincible(advanceTimeInvincible(timestep));
-		
-		System.out.println(getVy());
 	}
 	
 	/**

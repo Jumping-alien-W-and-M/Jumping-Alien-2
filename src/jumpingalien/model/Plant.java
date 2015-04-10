@@ -187,7 +187,7 @@ public class Plant extends GameObject {
 	 */
 	@Override
 	protected void collisionHandleMazub(Mazub player, int direction){
-		player.collisionHandlePlant(this, (direction + 2)%4);
+		player.collisionHandlePlant(this, mirrorDirection(direction));
 	}
 	
 	/**
