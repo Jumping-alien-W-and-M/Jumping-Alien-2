@@ -48,7 +48,7 @@ public class EnemyTest {
 
 	@Test
 	public void actionTimeTest() {
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < 100; i++) {
 			test_slime = new Slime(1000, 0, slime_sprites, test_school);
 			
 			assertEquals(0, test_slime.getActionTime(), Util.DEFAULT_EPSILON);
@@ -57,7 +57,7 @@ public class EnemyTest {
 			assert(action_time >= test_slime.getMinActionTime() - 0.1);
 			assert(action_time < test_slime.getMaxActionTime() - 0.1);
 			
-			for(double j = 0; (j < 3) && (action_time > 0.15); j++) {
+			for(double j = 0; (j < 10) && (action_time > 0.15); j++) {
 				action_time -= 0.15;
 				test_slime.advanceTime(0.15);
 				assertEquals(action_time, test_slime.getActionTime(), Util.DEFAULT_EPSILON);

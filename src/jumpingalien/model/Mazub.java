@@ -315,7 +315,7 @@ public class Mazub extends GameObject {
 		
 		if (getWorld() != null) {
 			List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
-			if (listEmptyOrPlants(collisions.get(3).get(0)) && !(collisions.get(3).get(1).contains(Feature.ground))) {
+			if (!listEmptyOrPlants(collisions.get(3).get(0)) || (collisions.get(3).get(1).contains(Feature.ground))) {
 				setJumping(false);
 			}
 			collisionHandle(collisions, dt);

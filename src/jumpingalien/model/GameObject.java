@@ -561,9 +561,9 @@ public abstract class GameObject {
 				}
 			}
 		}
-		
-		setVy(advanceVy(timestep));
+
 		setAy(advanceAy());
+		setVy(advanceVy(timestep));
 		setTimeInvincible(advanceTimeInvincible(timestep));
 	}
 	

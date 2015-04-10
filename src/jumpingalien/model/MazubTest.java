@@ -279,7 +279,7 @@ public class MazubTest {
 		for(int i = 0; i < 10; i++) {
 			player.advanceTime(0.1);
 		}
-
+		
 		assertEquals(player.getVy(), -2, Util.DEFAULT_EPSILON);
 		assertEquals(pos < player.getY(), true);
 		pos = player.getY();
@@ -336,9 +336,16 @@ public class MazubTest {
 		player.advanceTime(0.1);
 		assertNotEquals(player.getCurrentSprite(), player.getImages()[3]);
 		
+		player.setX(world.getWorldWidth()/2);
 		player.startMove("right");
 		player.startJump();
+		System.out.println(player.getY());
+		System.out.println(player.getVy());
+		System.out.println(player.getAy());
 		player.advanceTime(0.1);
+		System.out.println(player.getY());
+		System.out.println(player.getVy());
+		System.out.println(player.getAy());
 		assertEquals(player.getCurrentSprite(), player.getImages()[4]);
 		for(int i = 0; i < 10; i++) {
 			player.advanceTime(0.1);
@@ -346,8 +353,9 @@ public class MazubTest {
 		assertEquals(player.getCurrentSprite(), player.getImages()[4]);
 		player.endJump();
 		player.endMove();
-		for(int i = 0; i < 10; i++) {
-			player.advanceTime(0.1);
+		
+		for(int i = 0; i < 100; i++) {
+			player.advanceTime(0.15);
 		}
 		
 		player.startMove("left");
