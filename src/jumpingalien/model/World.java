@@ -670,6 +670,8 @@ public class World {
 	 * 			| result = ((int) Math.pow(10, getHashDigitsAmount()))*x + y
 	 */
 	public int getHash(int x, int y) {
+		assert( x <= getWorldWidth()/getTileSize());
+		assert( y <= getWorldHeight()/getTileSize());
 		return ((int) Math.pow(10, getHashDigitsAmount()))*x + y;
 	}
 	
@@ -773,7 +775,7 @@ public class World {
 	 * 			|
 	 * 			| result = collisions
 	 */
-	public List<List<List<Object>>> collisionDetect(GameObject object, int custom_height) {
+	public List<List<List<Object>>> collisionDetect(GameObject object, int custom_height ) {
 		
 		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
 		
