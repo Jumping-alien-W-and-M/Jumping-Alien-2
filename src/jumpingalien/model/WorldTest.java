@@ -503,13 +503,13 @@ public class WorldTest {
 	
 	@Test
 	public void TestgetHashNoAssertionErrors(){
-		assertEquals(world.getHash(20,20), (((int) Math.pow(10, world.getHashDigitsAmount()))* 20 + 20));
+		assertEquals(world.getHash(19, 19), (((int) Math.pow(10, world.getHashDigitsAmount()))* 19 + 19));
 	}
 	
 	@Test
 	public void TestgetHashXOutsideBounds(){
 		try{
-			world.getHash(world.getWorldWidth() / world.getTileSize() + 1, 5);
+			world.getHash(world.getWorldWidth() / world.getTileSize(), 5);
 		} catch( AssertionError err){
 			try{
 				world.getHash(world.getWorldWidth()/ world.getTileSize() + 100, 50);
@@ -524,7 +524,7 @@ public class WorldTest {
 	@Test
 	public void TestgetHashYOutsideBounds(){
 		try{
-			world.getHash( 5, world.getWorldHeight() / world.getTileSize() + 1);
+			world.getHash( 5, world.getWorldHeight() / world.getTileSize());
 		} catch( AssertionError err){
 			try{
 				world.getHash( 10, world.getWorldHeight() / world.getTileSize() + 50);
