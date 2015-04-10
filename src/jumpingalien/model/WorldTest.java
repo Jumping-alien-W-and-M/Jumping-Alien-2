@@ -27,7 +27,7 @@ public class WorldTest {
 	
 
 	@Test
-	public void TestConstructor() {
+	public void TestConstructorLegalParameters() {
 		assertEquals(world.getTileSize(), 10); 
 		assertEquals(world.getWorldWidth(), 20 * world.getTileSize());
 		assertEquals(world.getWorldHeight(), 20 * world.getTileSize());
@@ -38,6 +38,41 @@ public class WorldTest {
 		assertEquals(world.getYWindow(), 0);
 		assertEquals(world.getXTarget(), 19);
 		assertEquals(world.getYTarget(), 0);
+	}
+	
+	@Test
+	public void TestConstructorIllegalParameters(){
+		try{
+			world = new World(0, 20, 20, 200, 200, 19, 0);
+		} catch( AssertionError err0){
+			try{
+				world = new World(10, 0, 20, 200, 200, 19, 0);
+			} catch( AssertionError err1){
+				try{
+					world = new World(10, 20, 0, 200, 200, 19, 0);
+				} catch( AssertionError err2){
+					try{
+						world = new World(10, 20, 20, 200, 200, -5, 0);
+					} catch( AssertionError err3){
+						try{
+							world = new World(10, 20, 20, 200, 200, 19, -5);
+						} catch( AssertionError err4){
+							try{
+								world = new World(10, 20, 20, 200, 200, 21, 0);
+							} catch(AssertionError err5){
+								try{
+									world = new World(10, 20, 20, 200, 200, 19, 21);
+								} catch(AssertionError err6){
+									assert(true);
+									return;
+								}
+							}							
+						}
+					}
+				}
+			}
+		}
+		assert(false);
 	}
 	
 	@Test
@@ -463,6 +498,73 @@ public class WorldTest {
 		slimes.add(slime9);
 		
 		assertEquals(slimes, world.getSlimes());
+	}
+	
+	@Test
+	public void TestgetHashNoAssertionErrors(){
+		assertEquals(world.getHash(20,20), (((int) Math.pow(10, world.getHashDigitsAmount()))* 20 + 20));
+	}
+	
+	@Test
+	public void TestgetHashXOutsideBounds(){
+		try{
+			world.getHash(world.getWorldWidth() / world.getTileSize() + 1, 5);
+		} catch( AssertionError err){
+			try{
+				world.getHash(world.getWorldWidth()/ world.getTileSize() + 100, 50);
+			} catch( AssertionError err1){			
+				assert(true);
+				return;
+			}
+		}
+		assert(false);
+	}
+	
+	@Test
+	public void TestgetHashYOutsideBounds(){
+		try{
+			world.getHash( 5, world.getWorldHeight() / world.getTileSize() + 1);
+		} catch( AssertionError err){
+			try{
+				world.getHash( 10, world.getWorldHeight() / world.getTileSize() + 50);
+			} catch( AssertionError err1){			
+				assert(true);
+				return;
+			}
+		}
+		assert(false);
+	}
+	
+	@Test
+	public void TestgetFeatureFeatureInFeatures(){
+		world.setFeature(50, 50, 1);
+		assertEquals(world.getFeature(50, 50), 
+					world.getFeatures().get(world.getHash(world.getTilePos(50), world.getTilePos(50))));
+	}
+	
+	@Test
+	public void TestgetFeatureFeatureNotInFeatures(){
+		assertEquals(world.getFeature(50, 50), Feature.air);
+	}
+	
+	@Test
+	public void TestsetFeatureGroundMagmaAndWater(){
+		world.setFeature(150, 160, 1);
+		assertEquals(world.getFeature(150, 160), Feature.ground);
+		world.setFeature(150, 160, 2);
+		assertEquals(world.getFeature(150, 160), Feature.water);
+		world.setFeature(150, 160, 3);
+		assertEquals(world.getFeature(150, 160), Feature.magma);
+	}
+	
+	@Test
+	public void TestsetFeatureAir(){
+		world.setFeature(150, 160, 0);
+		assertEquals(world.getFeature(150, 160), Feature.air);
+		world.setFeature(150, 160, -5);
+		assertEquals(world.getFeature(150, 160), Feature.air);
+		world.setFeature(150, 160, 7);
+		assertEquals(world.getFeature(150, 160), Feature.air);
 	}
 	
 	
