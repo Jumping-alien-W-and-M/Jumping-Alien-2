@@ -670,9 +670,9 @@ public class Mazub extends GameObject {
 	 *			| return true
 	 */
 	private boolean canstand() {
-		int currentheigth = getCurrentSprite().getHeight();
-		int standingheigth = getHeightWhenNotDucking();
-		for(int height = currentheigth; height < standingheigth; height++) {
+		int currentheight = getCurrentSprite().getHeight();
+		int standingheight = getHeightWhenNotDucking();
+		for(int height = currentheight; height < standingheight; height++) {
 			
 			List<List<List<Object>>> collisions = getWorld().collisionDetect(this, height);
 			

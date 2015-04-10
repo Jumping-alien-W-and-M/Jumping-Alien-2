@@ -670,8 +670,10 @@ public class World {
 	 * 			| result = ((int) Math.pow(10, getHashDigitsAmount()))*x + y
 	 */
 	public int getHash(int x, int y) {
-		assert( x <= getWorldWidth()/getTileSize());
-		assert( y <= getWorldHeight()/getTileSize());
+		assert(x >= 0);
+		assert(y >= 0);
+		assert(x < getWorldWidth()/getTileSize());
+		assert(y < getWorldHeight()/getTileSize());
 		return ((int) Math.pow(10, getHashDigitsAmount()))*x + y;
 	}
 	
