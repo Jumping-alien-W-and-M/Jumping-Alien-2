@@ -943,7 +943,7 @@ public class World {
 		boolean has_central_collision = true;
 		for(int i = 0; i < overlaps.length; i++) {
 			if (overlaps[i] == 1) {
-				if (!(overlaps[(i + 1)%4] == 1)) collisionAdd(collision_objects, i, index, object2);
+				if (!(overlaps[(i + 1)%4] == 1) || (index == 0)) collisionAdd(collision_objects, i, index, object2);
 				else collisionAdd(collision_objects, i + 4, index, object2);
 				
 				has_central_collision = false;
