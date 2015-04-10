@@ -12,9 +12,12 @@ public class MazubTest {
 
 	@Before
 	public void setUp() throws Exception {
+		world = new World(10, 200, 200, 200, 200, 19, 0);
 		this.player = new Mazub(0, 0, JumpingAlienSprites.ALIEN_SPRITESET);
+		world.setMazub(player);
 	}
 	
+	private World world;
 	private Mazub player;
 	
 	@After
@@ -30,6 +33,7 @@ public class MazubTest {
 		assertEquals(player.getVxmax(), 3, Util.DEFAULT_EPSILON);
 		assertEquals(player.getVy(), 0, Util.DEFAULT_EPSILON);
 		assertEquals(player.getAx(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(player.getAxi(), 0.9, Util.DEFAULT_EPSILON);
 		assertEquals(player.getAy(), 0, Util.DEFAULT_EPSILON);
 
 		assertEquals(player.getLastMove(), 0, Util.DEFAULT_EPSILON);
@@ -51,7 +55,7 @@ public class MazubTest {
 					alien.setX(alien.getX());
 				} catch (IllegalArgumentException exc3) {
 					try {
-						Mazub alien = new Mazub(0, 1000, JumpingAlienSprites.ALIEN_SPRITESET);
+						Mazub alien = new Mazub(0, world.getWorldHeight() - 100, JumpingAlienSprites.ALIEN_SPRITESET);
 						alien.setX(alien.getX());
 					} catch (IllegalArgumentException exc4) {
 						assert(true);
@@ -76,10 +80,10 @@ public class MazubTest {
 		player.setY(0);
 		assertEquals(player.getY(),0, Util.DEFAULT_EPSILON);
 		
-		player.setX(1023);
-		assertEquals(player.getX(), 1023, Util.DEFAULT_EPSILON);
-		player.setY(767);
-		assertEquals(player.getY(), 767, Util.DEFAULT_EPSILON);
+		player.setX(world.getWorldWidth() - 1);
+		assertEquals(player.getX(), world.getWorldWidth() - 1, Util.DEFAULT_EPSILON);
+		player.setY(world.getWorldHeight() - 1);
+		assertEquals(player.getY(), world.getWorldHeight() - 1, Util.DEFAULT_EPSILON);
 		
 	}
 	
@@ -90,13 +94,13 @@ public class MazubTest {
 			player.setX(-1);
 		} catch (IllegalArgumentException exc1) {
 			try {
-				player.setX(1024);
+				player.setX(world.getWorldWidth());
 			} catch (IllegalArgumentException exc2) {
 				try {
 					player.setY(-1);
 				} catch (IllegalArgumentException exc3) {
 					try {
-						player.setY(768);
+						player.setY(world.getWorldHeight());
 					} catch (IllegalArgumentException exc4) {
 						assert(true);
 						return;
@@ -113,13 +117,13 @@ public class MazubTest {
 		
 		assertEquals(player.isValidX(-1), false);
 		assertEquals(player.isValidX(0), true);
-		assertEquals(player.isValidX(1023), true);
-		assertEquals(player.isValidX(1024), false);
+		assertEquals(player.isValidX(world.getWorldWidth() - 1), true);
+		assertEquals(player.isValidX(world.getWorldWidth()), false);
 		
 		assertEquals(player.isValidY(-1), false);
 		assertEquals(player.isValidY(0), true);
-		assertEquals(player.isValidY(767), true);
-		assertEquals(player.isValidY(768), false);
+		assertEquals(player.isValidY(world.getWorldHeight() - 1), true);
+		assertEquals(player.isValidY(world.getWorldHeight()), false);
 		
 	}
 	
@@ -270,6 +274,8 @@ public class MazubTest {
 	@Test
 	public void TestDucking() {
 		
+		// MOET AANGEPAST WORDEN
+		
 		player.startDuck();
 		assertEquals(player.getDucking(), true);
 		player.endDuck();
@@ -385,8 +391,10 @@ public class MazubTest {
 		}
 		
 		player.endMove();
-	}@Test
-	public void TestsetAxcorrectparameters(){
+	}
+	
+	@Test
+	public void TestsetAxcorrectparameters() {
 		player.setAx(player.getAxi());
 		assertEquals(player.getAx(),player.getAxi(),Util.DEFAULT_EPSILON);
 		player.setAx(-player.getAxi());
@@ -431,7 +439,7 @@ public class MazubTest {
 	}
 	
 	@Test
-	public void TestsetAYcorrectparameters(){
+	public void TestsetAyCorrectparameters(){
 		player.setAy(0);
 		assertEquals(player.getAy(),0,Util.DEFAULT_EPSILON);
 		player.setAy(-10);
@@ -439,7 +447,7 @@ public class MazubTest {
 	}
 	
 	@Test
-	public void TestsetAYillegalparameters(){
+	public void TestsetAyIllegalparameters(){
 		try {
 			player.setAy(0.1);
 		} catch (IllegalArgumentException exc1) {
@@ -467,14 +475,6 @@ public class MazubTest {
 	@Test
 	public void TestisValidAyillegalAy(){
 		assert(!player.isValidAy(5));
-	}
-	
-	@Test
-	public void TestsetDuckingcorrectparameter(){
-		player.setDucking(true);
-		assert(player.getDucking());
-		player.setDucking(false);
-		assert(!player.getDucking());
 	}
 	
 	@Test

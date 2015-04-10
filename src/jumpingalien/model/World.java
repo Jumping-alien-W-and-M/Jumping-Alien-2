@@ -777,7 +777,7 @@ public class World {
 		
 		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
 		
-		for(int i = 0; i < 4; i++) {
+		for(int i = 0; i < 9; i++) {
 			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
 			for(int j = 0; j < 2; j++) {
 				inner_collisions.add(new ArrayList<Object>());
@@ -932,7 +932,7 @@ public class World {
 			my2 += custom_height;
 		}
 		
-		// Returns collisions in order: left, up, right, down
+		// Returns collisions in order: left, up, right, down, upperleft, upperright, bottomright, bottomleft, central
 		int[] overlaps = {sx2 - mx1, my2 - sy1, mx2 - sx1, sy2 - my1};
 		for(int i = 0; i < 4; i++) {
 			if (overlaps[i] < 1) {
@@ -941,18 +941,26 @@ public class World {
 		}
 		// Direction-dependent collisions
 		boolean has_central_collision = true;
-		for(int i = 0; i < 4; i++) {
-			if ((overlaps[i] == 1) && !(collision_objects.get(i).get(index).contains(object2))) {
-				collision_objects.get(i).get(index).add(object2);
+		for(int i = 0; i < overlaps.length; i++) {
+			if (overlaps[i] == 1) {
+				if (!(overlaps[(i + 1)%4] == 1)) collisionAdd(collision_objects, i, index, object2);
+				else collisionAdd(collision_objects, i + 4, index, object2);
+				
 				has_central_collision = false;
 			}
 		}
 
 		// Direction-independent collisions
-		if ((has_central_collision) && !(collision_objects.get(0).get(index).contains(object2))) {
-			collision_objects.get(0).get(index).add(object2);
+		if (has_central_collision) {
+			collisionAdd(collision_objects, 8, index, object2);
 		}
 		
+	}
+	
+	private static void collisionAdd(List<List<List<Object>>> list, int i, int j, Object object) {
+		if (!list.get(i).get(j).contains(object) || object instanceof GameObject) {
+			list.get(i).get(j).add(object);
+		}
 	}
 	
 }

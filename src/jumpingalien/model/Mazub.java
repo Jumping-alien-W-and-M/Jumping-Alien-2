@@ -585,7 +585,7 @@ public class Mazub extends GameObject {
 		if(getWorld() == null)
 			return true;
 		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
-		if(collisions.get(3).get(0).size() != 0 || collisions.get(3).get(1).contains(Feature.ground))
+		if(!listEmptyOrPlants(collisions.get(3).get(0)) || collisions.get(3).get(1).contains(Feature.ground))
 			return true;
 		
 		return false;
@@ -643,14 +643,14 @@ public class Mazub extends GameObject {
 	 *			|		return false
 	 *			| return true
 	 */
-	private boolean canstand(){
+	private boolean canstand() {
 		int currentheigth = getCurrentSprite().getHeight();
 		int standingheigth = getHeightWhenNotDucking();
-		for(int heigth = currentheigth; heigth <=  standingheigth; heigth ++) {
+		for(int height = currentheigth; height < standingheigth; height++) {
 			
-			List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
+			List<List<List<Object>>> collisions = getWorld().collisionDetect(this, height);
 			
-			if (collisions.get(1).get(0).size() > 0 || collisions.get(1).get(1).contains(Feature.ground)) 
+			if (listEmptyOrPlants(collisions.get(1).get(0)) || collisions.get(1).get(1).contains(Feature.ground)) 
 				return false;			
 		}
 		return true;

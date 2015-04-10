@@ -851,7 +851,7 @@ public abstract class GameObject {
 	@Model
 	protected void collisionHandle(List<List<List<Object>>> collisions, double time) {
 	
-		for(int i = 0; i < 4; i++) {
+		for(int i = 0; i < collisions.size(); i++) {
 			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
 			
 			for(Object object : collision_objects) {
@@ -872,7 +872,7 @@ public abstract class GameObject {
 		boolean touched_water = false;
 		boolean touched_magma = false;
 		
-		for(int i = 0; i < 4; i++) {
+		for(int i = 0; i < collisions.size(); i++) {
 			ArrayList<Object> collision_features = (ArrayList<Object>) collisions.get(i).get(1);
 		
 			if ((collision_features.contains(Feature.air)) && !(touched_air)) {
