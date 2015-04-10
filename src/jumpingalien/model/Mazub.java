@@ -206,6 +206,27 @@ public class Mazub extends GameObject {
 	}
 	
 	/**
+	 * Checks whether or not this Mazub is currently jumping.
+	 */
+	public boolean getJumping() {
+		return this.jumping;
+	}
+	
+	/**
+	 * Sets whether or not this Mazub is currently jumping.
+	 * 
+	 * @param jumping
+	 * 			Whether or not this Mazub should be jumping.
+	 * @post	If jumping is true, this Mazub will be jumping, otherwise this Mazub won't.
+	 * 			| (getJumping() == jumping)
+	 */
+	protected void setJumping(boolean jumping) {
+		this.jumping = jumping;
+	}
+	
+	private boolean jumping = false;
+	
+	/**
 	 * Sets the hitpoints of this Mazub.
 	 * 
 	 * @param hitpoints
@@ -291,9 +312,12 @@ public class Mazub extends GameObject {
 				endDuck();
 			}			
 		}
-
+		
 		if (getWorld() != null) {
 			List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
+			if (listEmptyOrPlants(collisions.get(3).get(0)) && !(collisions.get(3).get(1).contains(Feature.ground))) {
+				setJumping(false);
+			}
 			collisionHandle(collisions, dt);
 		}
 	}
@@ -556,8 +580,10 @@ public class Mazub extends GameObject {
 	 * 			|	new.getVy() = 8
 	 */
 	public void startJump() {
-		if (canJump()) 
+		if (canJump()) {
 			setVy(8);
+			setJumping(true);
+		}
 	}
 	
 	/**
@@ -723,7 +749,7 @@ public class Mazub extends GameObject {
 			// Everything which happens if Mazub's moving right.
 			
 			if (!getDucking()) {
-				if (getAy() < 0) {
+				if (getJumping()) {
 					return getImages()[4];
 				} else {
 					return getImages()[8 + getCurrentFrameIndex()];
@@ -735,7 +761,7 @@ public class Mazub extends GameObject {
 			// Everything which happens if Mazub's moving left.
 			
 			if (!getDucking()) {
-				if (getAy() < 0) {
+				if (getJumping()) {
 					return getImages()[5];
 				} else {
 					return getImages()[8 + getFramesAmount() + getCurrentFrameIndex()];

@@ -699,7 +699,9 @@ public class World {
 			case 1: feature = Feature.ground; break;
 			case 2: feature = Feature.water; break;
 			case 3: feature = Feature.magma; break;
-			default: feature = Feature.air;
+			default:
+				getFeatures().remove(getHash(getTilePos(x), getTilePos(y)));
+				return;
 		}
 		
 		getFeatures().put(getHash(getTilePos(x), getTilePos(y)), feature);
@@ -779,7 +781,7 @@ public class World {
 		
 		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
 		
-		for(int i = 0; i < 9; i++) {
+		for(int i = 0; i < 8; i++) {
 			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
 			for(int j = 0; j < 2; j++) {
 				inner_collisions.add(new ArrayList<Object>());
@@ -934,7 +936,8 @@ public class World {
 			my2 += custom_height;
 		}
 		
-		// Collisions: left and central, up, right and central, down, upperleft, upperright, bottomright, bottomleft
+		// Collisions: left, up, right, down, upperleft, upperright, bottomright, bottomleft
+		// Central collisions can be anywhere
 		int[] overlaps = {sx2 - mx1, my2 - sy1, mx2 - sx1, sy2 - my1};
 		for(int i = 0; i < 4; i++) {
 			if (overlaps[i] < 1) {
@@ -960,7 +963,7 @@ public class World {
 	}
 	
 	private static void collisionAdd(List<List<List<Object>>> list, int i, int j, Object object) {
-		if (!list.get(i).get(j).contains(object) || object instanceof GameObject) {
+		if (!list.get(i).get(j).contains(object)) {
 			list.get(i).get(j).add(object);
 		}
 	}

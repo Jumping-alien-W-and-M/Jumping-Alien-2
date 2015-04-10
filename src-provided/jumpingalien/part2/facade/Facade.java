@@ -127,7 +127,11 @@ public class Facade implements IFacadePart2 {
 
 	@Override
 	public void advanceTime(World world, double dt) {
-		world.advanceTime(dt);
+		try {
+			world.advanceTime(dt);
+		} catch (IllegalArgumentException exc) {
+			throw new ModelException(exc);
+		}
 	}
 
 	@Override

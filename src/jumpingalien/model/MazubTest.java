@@ -327,10 +327,7 @@ public class MazubTest {
 		assertEquals(player.getCurrentSprite(), player.getImages()[3]);
 		player.advanceTime(0.1);
 		assertNotEquals(player.getCurrentSprite(), player.getImages()[3]);
-
-		for(int i = 0; i < 20; i++) {
-			player.advanceTime(0.15);
-		}
+		
 		player.startMove("right");
 		player.startJump();
 		player.advanceTime(0.1);
@@ -385,7 +382,6 @@ public class MazubTest {
 		
 		player.endDuck();
 		
-		System.out.println(player.getY());
 		assertEquals((int) player.getY() > world.getTileSize() - 1, false);
 		assertEquals(player.getDucking(), false);
 		
