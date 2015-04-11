@@ -976,10 +976,13 @@ public class World {
 		// Direction-dependent collisions
 		boolean has_central_collision = true;
 		for(int i = 0; i < overlaps.length; i++) {
+			int j = i - 1;
+			if(j < 0)
+				j = 3;
 			if (overlaps[i] == 1) {
-				if (!(overlaps[(i + 1)%4] == 1) && !(overlaps[(i - 1)%4] == 1)) collisionAdd(collision_objects, i, index, object2);
-				else if(overlaps[(i - 1)%4] == 1)
-					collisionAdd(collision_objects, (i - 1)%4 + 4, index, object2);
+				if (!(overlaps[(i + 1)%4] == 1) && !(overlaps[j] == 1)) collisionAdd(collision_objects, i, index, object2);
+				else if(overlaps[j] == 1)
+					collisionAdd(collision_objects, j + 4, index, object2);
 				else if(overlaps[(i + 1)%4] == 1)
 					collisionAdd(collision_objects, i + 4, index, object2);
 				
