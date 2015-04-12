@@ -1018,7 +1018,389 @@ public class WorldTest {
 		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
+		}		
+	}
+	
+	@Test
+	public void TestcollisionDetectPlantObjectsLeft(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}		
+		Plant plant = new Plant(0, 0, sprites);
+		world.addPlant(plant);
+		plant.setX(world.getWorldWidth() - 5);
+		player.setX(plant.getX() - player.getWidth() + 1);
+		Shark shark = new Shark(0, 0, sprites);
+		shark.setX(plant.getX() - shark.getWidth() + 1);
+		world.addShark(shark);
+		Plant plant1 = new Plant(0, 0 , sprites);
+		plant1.setX(plant.getX() - plant1.getWidth() + 1);
+		world.addPlant(plant1);
+		collisions.get(0).get(0).add(player);
+		collisions.get(0).get(0).add(plant1);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
-		
+	}
+	
+	@Test
+	public void TestcollisionDetectPlantObjectsRight(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}		
+		Plant plant = new Plant(0, 0, sprites);
+		world.addPlant(plant);
+		player.setX(plant.getX() + plant.getWidth() - 1);
+		Shark shark = new Shark(plant.getX() + plant.getWidth() - 1, 0, sprites);
+		world.addShark(shark);
+		Plant plant1 = new Plant(plant.getX() + plant.getWidth() - 1, 0 , sprites);
+		world.addPlant(plant1);
+		collisions.get(2).get(0).add(player);
+		collisions.get(2).get(0).add(plant1);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
+		}
+	}
+	
+	@Test
+	public void TestcollisionDetectPlantObjectsUp(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}		
+		Plant plant = new Plant(0, 0, sprites);
+		world.addPlant(plant);
+		player.setY(plant.getY() + plant.getHeight() - 1);
+		Shark shark = new Shark(0, plant.getY() + plant.getHeight() - 1, sprites);
+		world.addShark(shark);
+		Plant plant1 = new Plant(0, plant.getY() + plant.getHeight() - 1, sprites);
+		world.addPlant(plant1);
+		collisions.get(1).get(0).add(player);
+		collisions.get(1).get(0).add(plant1);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
+		}	
+	}
+	
+	@Test
+	public void TestcollisionDetectPlansObjectsUnder(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}		
+		Plant plant = new Plant(0, 0, sprites);
+		world.addPlant(plant);
+		plant.setY(world.getWorldHeight() - 5);
+		player.setY(plant.getY() - player.getHeight() + 1);
+		Shark shark = new Shark(0, 0, sprites);
+		shark.setY(plant.getY() - shark.getHeight() + 1);
+		world.addShark(shark);
+		Plant plant1 = new Plant(0, 0, sprites);
+		plant1.setY(plant.getY() - plant1.getHeight() + 1);
+		world.addPlant(plant1);
+		collisions.get(3).get(0).add(player);
+		collisions.get(3).get(0).add(plant1);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
+		}	
+	}
+	
+	@Test
+	public void TestcollisionDetectPlantObjectsUpperRight(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}		
+		Plant plant = new Plant(0, 0, sprites);
+		world.addPlant(plant);
+		player.setY(plant.getY() + plant.getHeight() - 1);
+		player.setX(plant.getX() + plant.getWidth() - 1);
+		Shark shark = new Shark(plant.getX() + plant.getWidth() - 1, plant.getY() + plant.getHeight() - 1, sprites);
+		world.addShark(shark);
+		Plant plant1 = new Plant(plant.getX() + plant.getWidth() - 1, plant.getY() + plant.getHeight() - 1, sprites);
+		world.addPlant(plant1);
+		collisions.get(5).get(0).add(player);
+		collisions.get(5).get(0).add(plant1);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
+		}	
+	}
+	
+	@Test
+	public void TestcollisionDetectPlantObjectsBottomRight(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}		
+		Plant plant = new Plant(0, 0, sprites);
+		world.addPlant(plant);
+		plant.setY(world.getWorldHeight() - 5);
+		player.setY(plant.getY() - player.getHeight() + 1);
+		player.setX(plant.getX() + plant.getWidth() - 1);
+		Shark shark = new Shark(plant.getX() + plant.getWidth() - 1, 0, sprites);
+		shark.setY(plant.getY() - shark.getHeight() + 1);
+		world.addShark(shark);
+		Plant plant1 = new Plant(plant.getX() + plant.getWidth() - 1, 0, sprites);
+		plant1.setY(plant.getY() - plant1.getHeight() + 1);
+		world.addPlant(plant1);
+		collisions.get(6).get(0).add(player);
+		collisions.get(6).get(0).add(plant1);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
+		}	
+	}
+	
+	@Test
+	public void TestcollisionDetectPlantObjectsUpperLeft(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}		
+		Plant plant = new Plant(0, 0, sprites);
+		world.addPlant(plant);
+		plant.setX(world.getWorldWidth() - 5);
+		player.setY(plant.getY() + plant.getHeight() - 1);
+		player.setX(plant.getX() - player.getWidth() + 1);
+		Shark shark = new Shark(0, plant.getY() + plant.getHeight() - 1, sprites);
+		shark.setX(plant.getX() - shark.getWidth() + 1);
+		world.addShark(shark);
+		Plant plant1 = new Plant(0, plant.getY() + plant.getHeight() - 1, sprites);
+		plant1.setX(plant.getX() - plant1.getWidth() + 1);
+		world.addPlant(plant1);
+		collisions.get(4).get(0).add(player);
+		collisions.get(4).get(0).add(plant1);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
+		}	
+	}
+	
+	@Test
+	public void TestcollisionDetectPlantObjectsBottomLeft(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}		
+		Plant plant = new Plant(0, 0, sprites);
+		world.addPlant(plant);
+		plant.setX(world.getWorldWidth() - 5);
+		plant.setY(world.getWorldHeight() - 5);
+		player.setY(plant.getY() - player.getHeight() + 1);
+		player.setX(plant.getX() - player.getWidth() + 1);
+		Shark shark = new Shark(0, 0, sprites);
+		shark.setX(plant.getX() - shark.getWidth() + 1);
+		shark.setY(plant.getY() - shark.getHeight() + 1);
+		world.addShark(shark);
+		Plant plant1 = new Plant(0, 0, sprites);
+		plant1.setX(plant.getX() - plant1.getWidth() + 1);
+		plant1.setY(plant.getY() - plant1.getHeight() + 1);
+		world.addPlant(plant1);
+		collisions.get(7).get(0).add(player);
+		collisions.get(7).get(0).add(plant1);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
+		}	
+	}
+	
+	@Test
+	public void TestcollisionDetectGameObjectFeatureLeft(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}
+		player.setX(9);
+		collisions.get(0).get(1).add(Feature.air);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
+		}	
+	}
+	
+	@Test
+	public void TestcollisionDetectGameObjectFeatureRight(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}
+		player.setX(100 - player.getWidth() + 1);
+		collisions.get(0).get(1).add(Feature.air);
+		collisions.get(2).get(1).add(Feature.air);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
+		}	
+	}
+	
+	@Test
+	public void TestcollisionDetectGameObjectFeatureUp(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}
+		player.setY(100 - player.getHeight() + 1);
+		collisions.get(0).get(1).add(Feature.air);
+		collisions.get(1).get(1).add(Feature.air);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
+		}	
+	}
+	
+	@Test
+	public void TestcollisionDetectGameObjectFeatureUnders(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}
+		player.setY(9);
+		collisions.get(0).get(1).add(Feature.air);
+		collisions.get(3).get(1).add(Feature.air);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
+		}	
+	}
+	
+	@Test
+	public void TestcollisionDetectGameObjectFeatureUpperRight(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}
+		player.setX(100 - player.getWidth() + 1);
+		player.setY(100 - player.getHeight() + 1);
+		collisions.get(0).get(1).add(Feature.air);
+		collisions.get(5).get(1).add(Feature.air);
+		collisions.get(1).get(1).add(Feature.air);
+		collisions.get(2).get(1).add(Feature.air);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
+		}	
+	}
+	
+	@Test
+	public void TestcollisionDetectGameObjectFeatureBottomRight(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}
+		player.setX(100 - player.getWidth() + 1);
+		player.setY(9);
+		collisions.get(0).get(1).add(Feature.air);
+		collisions.get(6).get(1).add(Feature.air);
+		collisions.get(3).get(1).add(Feature.air);
+		collisions.get(2).get(1).add(Feature.air);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
+		}	
+	}
+	
+	@Test
+	public void TestcollisionDetectGameObjectFeatureUpperLeft(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}
+		player.setX(9);
+		player.setY(100 - player.getHeight() + 1);
+		collisions.get(0).get(1).add(Feature.air);
+		collisions.get(1).get(1).add(Feature.air);
+		collisions.get(4).get(1).add(Feature.air);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
+		}	
+	}
+	
+	@Test
+	public void TestcollisionDetectGameObjectFeatureBottomLeft(){
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}
+		player.setX(9);
+		player.setY(9);
+		collisions.get(0).get(1).add(Feature.air);
+		collisions.get(3).get(1).add(Feature.air);
+		collisions.get(7).get(1).add(Feature.air);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		for( int i = 0; i < 8; i++){
+			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
+		}	
 	}
 }
