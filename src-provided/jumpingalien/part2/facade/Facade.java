@@ -136,7 +136,8 @@ public class Facade implements IFacadePart2 {
 
 	@Override
 	public int[] getVisibleWindow(World world) {
-		int[] window = {world.getWindowWidth(), world.getWindowHeight()};
+		int[] window = {world.getXWindow(), world.getYWindow(), world.getXWindow() + world.getWindowWidth() - 1
+						, world.getYWindow() + world.getWindowHeight() - 1};
 		return window;
 	}
 
