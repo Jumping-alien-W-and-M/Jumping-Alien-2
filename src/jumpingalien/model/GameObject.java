@@ -572,9 +572,16 @@ public abstract class GameObject {
 		setVx(advanceVx(timestep));
 		
 		collisions = getCollisions();
-		if ((listEmptyOrPlants(collisions.get(1).get(0)) && !(collisions.get(1).get(1).contains(Feature.ground)) && (getVy() > 0))
-				|| ((listEmptyOrPlants(collisions.get(3).get(0)) && !(collisions.get(3).get(1).contains(Feature.ground)) && (getVy() < 0)))) 
+		if (listEmptyOrPlants(collisions.get(3).get(0)) && !(collisions.get(3).get(1).contains(Feature.ground)) && (getVy() < 0))
 			advanceY(timestep);
+		else if (getVy() > 0) {
+			boolean should_advance = true;
+			for(int i = 0; i < 3; i++) {
+				if (!listEmptyOrPlants(collisions.get(i).get(0)) || collisions.get(i).get(1).contains(Feature.ground))
+					should_advance = false;
+			}
+			if (should_advance) advanceY(timestep);
+		}
 
 		setVy(advanceVy(timestep));
 		setAy(advanceAy());
@@ -830,11 +837,11 @@ public abstract class GameObject {
 					return 0;
 				}
 			}
-			if ((collisions.get(3).get(0).size() != 0) || (collisions.get(3).get(1).contains(Feature.ground))) {
-				if (!(getJustJumped())) return 0;
-			} else {
-				setJustJumped(false);
-			}
+		}
+		if ((collisions.get(3).get(0).size() != 0) || (collisions.get(3).get(1).contains(Feature.ground))) {
+			if (!(getJustJumped())) return 0;
+		} else {
+			setJustJumped(false);
 		}
 		
 		double newvy = getVy() + getAy()*dt;

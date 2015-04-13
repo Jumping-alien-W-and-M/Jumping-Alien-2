@@ -669,15 +669,26 @@ public class Mazub extends GameObject {
 	 *			| return true
 	 */
 	private boolean canstand() {
-		int currentheight = getCurrentSprite().getHeight();
-		int standingheight = getHeightWhenNotDucking();
-		for(int height = currentheight; height < standingheight; height++) {
+		int currentwidth = getCurrentSprite().getHeight();
+		int futurewidth = getWidthWhenNotDucking();
+		for(int width = currentwidth; width < futurewidth; width++) {
 			
-			List<List<List<Object>>> collisions = getWorld().collisionDetect(this, height);
+			List<List<List<Object>>> collisions = getWorld().collisionDetect(this, width, 0);
+			
+			if (!listEmptyOrPlants(collisions.get(2).get(0)) || collisions.get(2).get(1).contains(Feature.ground)) 
+				return false;			
+		}
+		
+		int currentheight = getCurrentSprite().getHeight();
+		int futureheight = getHeightWhenNotDucking();
+		for(int height = currentheight; height < futureheight; height++) {
+			
+			List<List<List<Object>>> collisions = getWorld().collisionDetect(this, futurewidth, height);
 			
 			if (!listEmptyOrPlants(collisions.get(1).get(0)) || collisions.get(1).get(1).contains(Feature.ground)) 
 				return false;			
 		}
+		
 		return true;
 	}
 	
@@ -686,7 +697,7 @@ public class Mazub extends GameObject {
 	 * 
 	 * @return	The height this Mazub has while not ducking, in its current state.
 	 * 			| setDucking(false)
-	 * 			| result = height
+	 * 			| result = getHeight()
 	 * 			| setDucking(true);
 	 */
 	private int getHeightWhenNotDucking(){
@@ -695,6 +706,23 @@ public class Mazub extends GameObject {
 		int height = getHeight();
 		setDucking(true);
 		return height;
+		
+	}
+	
+	/**
+	 * Gets the width of this Mazub if it wasn't ducking.
+	 * 
+	 * @return	The width this Mazub has while not ducking, in its current state.
+	 * 			| setDucking(false)
+	 * 			| result = getWidth()
+	 * 			| setDucking(true);
+	 */
+	private int getWidthWhenNotDucking(){
+		
+		setDucking(false);
+		int width = getWidth();
+		setDucking(true);
+		return width;
 		
 	}
 	
