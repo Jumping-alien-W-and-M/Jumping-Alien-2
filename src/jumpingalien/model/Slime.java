@@ -128,11 +128,11 @@ public class Slime extends Enemy {
 	private void switchSchool(School school) {
 		assert(school != null);
 		
-		// Hand over one hitpoint to all slimes of old school
+		int transfer = school.getNbOfSlimes() - (getSchool().getNbOfSlimes() - 1);
+		// Add one hitpoint to all slimes of old school
 		for(Slime slime : getSchool().getSlimes()) {
 			if (slime != this) {
 				slime.setHitpoints(getHitpoints() + 1);
-				this.setHitpoints(getHitpoints() - 1);
 			}
 		}
 		
@@ -140,13 +140,13 @@ public class Slime extends Enemy {
 		getSchool().removeSlime(this);
 		school.addSlime(this);
 		
-		// Get one hitpoint from all slimes of new school
+		// Subtract one hitpoint from all slimes of new school
 		for(Slime slime : getSchool().getSlimes()) {
 			if (slime != this) {
-				this.setHitpoints(getHitpoints() + 1);
 				slime.setHitpoints(getHitpoints() - 1);
 			}
 		}
+		this.setHitpoints(getHitpoints() + transfer);
 		
 	}
 	

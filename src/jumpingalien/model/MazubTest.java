@@ -552,13 +552,13 @@ public class MazubTest {
 	@Test
 	public void Testgetcurrentframeindexanimationtimedivisiblebyframetime(){
 		player.setAnimationTime(Mazub.getFrameTime() *3);
-		assert(player.getAnimationTime() == 3);
+		assertEquals(3, player.getCurrentFrameIndex());
 	}
 	
 	@Test
 	public void Testgetcurrentframeindexanimationtimenotdivisiblebyframetime(){
 		player.setAnimationTime(Mazub.getFrameTime()*2.5);
-		assert(player.getAnimationTime() == 2);
+		assertEquals(2, player.getCurrentFrameIndex());
 	}
 	
 	@Test
@@ -575,11 +575,12 @@ public class MazubTest {
 	}
 	
 	@Test
-	public void TestadvanceTimeupdatingxpositionnewxwithinbounds(){
+	public void TestadvanceTimeupdatingxpositionnewxwithinbounds() {
+		
 		player.setVx(1);
 		player.advanceTime(0.1);
-		assert(player.getX() == 
-				 (player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2)));
+		assertEquals(player.getX() + 100*(player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2)),
+				player.getX(), Util.DEFAULT_EPSILON);
 	}
 	
 	@Test

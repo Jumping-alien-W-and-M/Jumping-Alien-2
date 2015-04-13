@@ -304,7 +304,6 @@ public class Mazub extends GameObject {
 		for(double time_passed = 0; time_passed < dt; time_passed += timestep) {
 			timestep = getTimestep(dt, time_passed);
 			super.advanceTimeStep(timestep);
-		
 			setLastMove(advanceLastMove(timestep));
 			setAnimationTime(advanceAnimationTime(timestep));
 			

@@ -270,7 +270,10 @@ public class Shark extends Enemy {
 		setVy(2);
 		setAy(-10);
 		setNonJumpingPeriods(0);
-		setJustJumped(true);
+
+		List<List<List<Object>>> collisions = getCollisions();
+		if (!(listEmptyOrPlants(collisions.get(3).get(0))) && (collisions.get(3).get(1).contains(Feature.ground)))
+			setJustJumped(true);
 	}
 	
 	/**
@@ -283,10 +286,11 @@ public class Shark extends Enemy {
 	 *			| return false
 	 */
 	private boolean canDiveOrRise(){
-		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
-		if(collisions.get(3).get(1).contains(Feature.water) || submerged(collisions))
-			return true;
-		return false;
+		List<List<List<Object>>> collisions = getCollisions();
+		for(Object feature : collisions.get(3).get(1)) {
+			if ((Feature) feature != Feature.water) return false;
+		}
+		return submerged(collisions);
 	}
 	
 	/**
@@ -300,9 +304,10 @@ public class Shark extends Enemy {
 	 *			| return false
 	 */
 	private boolean submerged(List<List<List<Object>>> collisions){
-		if( collisions.get(1).get(1).contains(Feature.water))
-			return true;
-		return false;
+		for(Object feature : collisions.get(1).get(1)) {
+			if ((Feature) feature != Feature.water) return false;
+		}
+		return true;
 	}
 	
 	/**
