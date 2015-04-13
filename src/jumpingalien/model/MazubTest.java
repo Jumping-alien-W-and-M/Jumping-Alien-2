@@ -27,7 +27,7 @@ public class MazubTest {
 	public void generateGroundLayer() {
 		player.setX(world.getWorldWidth()/2);
 		player.setY(world.getTileSize() - 1);
-		for(int x = 0; x < world.getWorldWidth(); x += world.getTileSize()) {
+		for(int x = 0; x < world.getWorldWidth()/world.getTileSize(); x += world.getTileSize()) {
 			world.setFeature(x, 0, 1);
 		}
 	}
@@ -202,7 +202,7 @@ public class MazubTest {
 		
 		player.advanceTime(0.1);
 		
-		player.endMove();
+		player.endMove("left");
 		
 		assertEquals(player.getVx(), 0, Util.DEFAULT_EPSILON);
 		assertEquals(player.getAx(), 0, Util.DEFAULT_EPSILON);
@@ -217,7 +217,7 @@ public class MazubTest {
 		
 		player.advanceTime(0.1);
 		
-		player.endMove();
+		player.endMove("right");
 
 		assertEquals(player.getVx(), 0, Util.DEFAULT_EPSILON);
 		assertEquals(player.getAx(), 0, Util.DEFAULT_EPSILON);
@@ -295,7 +295,7 @@ public class MazubTest {
 		
 		player.startMove("right");
 		player.advanceTime(0.1);
-		player.endMove();
+		player.endMove("right");
 		assertEquals(player.getCurrentSprite(), player.getImages()[2]);
 		for(int i = 0; i < 9; i++) {
 			player.advanceTime(0.1);
@@ -306,7 +306,7 @@ public class MazubTest {
 		
 		player.startMove("left");
 		player.advanceTime(0.1);
-		player.endMove();
+		player.endMove("left");
 		assertEquals(player.getCurrentSprite(), player.getImages()[3]);
 		for(int i = 0; i < 9; i++) {
 			player.advanceTime(0.1);
@@ -325,7 +325,7 @@ public class MazubTest {
 		}
 		assertEquals(player.getCurrentSprite(), player.getImages()[4]);
 		player.endJump();
-		player.endMove();
+		player.endMove("right");
 		
 		for(int i = 0; i < 100; i++) {
 			player.advanceTime(0.15);
@@ -340,7 +340,7 @@ public class MazubTest {
 		}
 		assertEquals(player.getCurrentSprite(), player.getImages()[5]);
 		player.endJump();
-		player.endMove();
+		player.endMove("left");
 		for(int i = 0; i < 10; i++) {
 			player.advanceTime(0.1);
 		}
@@ -350,7 +350,7 @@ public class MazubTest {
 		player.startMove("right");
 		player.advanceTime(0.1);
 		assertEquals(player.getCurrentSprite(), player.getImages()[6]);
-		player.endMove();
+		player.endMove("right");
 		for(int i = 0; i < 9; i++) {
 			player.advanceTime(0.1);
 		}
@@ -361,7 +361,7 @@ public class MazubTest {
 		player.startMove("left");
 		player.advanceTime(0.1);
 		assertEquals(player.getCurrentSprite(), player.getImages()[7]);
-		player.endMove();
+		player.endMove("left");
 		for(int i = 0; i < 9; i++) {
 			player.advanceTime(0.1);
 		}
@@ -381,7 +381,7 @@ public class MazubTest {
 			player.advanceTime(0.075);
 		}
 		
-		player.endMove();
+		player.endMove("right");
 		
 		player.startMove("left");
 		player.advanceTime(0.01);
@@ -392,7 +392,7 @@ public class MazubTest {
 			player.advanceTime(0.075);
 		}
 		
-		player.endMove();
+		player.endMove("left");
 	}
 	
 	@Test
@@ -930,11 +930,11 @@ public class MazubTest {
 		assertEquals(player.getVxi(), player.getVx(), Util.DEFAULT_EPSILON);
 		assertEquals("left", player.getPrevMove());
 		
-		player.endMove();
+		player.endMove("right");
 		assertEquals(-player.getVxi(), player.getVx(), Util.DEFAULT_EPSILON);
 		assertEquals("", player.getPrevMove());
 		
-		player.endMove();
+		player.endMove("left");
 		assertEquals(0, player.getVx(), Util.DEFAULT_EPSILON);
 		assertEquals("", player.getPrevMove());
 	}
@@ -952,11 +952,11 @@ public class MazubTest {
 		assertEquals(-player.getVxi(), player.getVx(), Util.DEFAULT_EPSILON);
 		assertEquals("right", player.getPrevMove());
 		
-		player.endMove();
+		player.endMove("left");
 		assertEquals(player.getVxi(), player.getVx(), Util.DEFAULT_EPSILON);
 		assertEquals("", player.getPrevMove());
 		
-		player.endMove();
+		player.endMove("right");
 		assertEquals(0, player.getVx(), Util.DEFAULT_EPSILON);
 		assertEquals("", player.getPrevMove());
 	}

@@ -364,7 +364,6 @@ public class Shark extends Enemy {
 	protected void terminate() {
 		assert(this.getWorld() != null);
 		this.getWorld().removeShark(this);
-		this.setWorld(null);		
 	}	
 	
 

@@ -271,7 +271,6 @@ public class Mazub extends GameObject {
 		assert(getWorld() != null);
 		
 		getWorld().setMazub(null);
-		setWorld(null);
 	}
 	
 	/**
@@ -305,6 +304,8 @@ public class Mazub extends GameObject {
 			timestep = getTimestep(dt, time_passed);
 			super.advanceTimeStep(timestep);
 			
+			if (getWorld() == null) return;
+			
 			setLastMove(advanceLastMove(timestep));
 			setAnimationTime(advanceAnimationTime(timestep));
 			
@@ -313,9 +314,7 @@ public class Mazub extends GameObject {
 			}
 		}
 		
-		if (getWorld() != null) {
-			collisionHandle(getCollisions(), dt);
-		}
+		collisionHandle(getCollisions(), dt);
 	}
 	
 	/**
@@ -558,13 +557,21 @@ public class Mazub extends GameObject {
 	 * @post	vx and ax are set to 0.
 	 * 			| new.getVx() == 0 && new.getAx()  == 0
 	 */
-	public void endMove() {
+	public void endMove(String direction) {
 		
 		if (getPrevMove() == "") {
 			setVx(0);
 			setAx(0);
 		} else {
-			startMove(getPrevMove());
+			if (getPrevMove() != direction) {
+				if (direction == "left") {
+					startMove("right");
+					setPrevMove("");
+				} else {
+					startMove("left");
+					setPrevMove("");
+				}
+			}
 			setPrevMove("");
 		}
 	}

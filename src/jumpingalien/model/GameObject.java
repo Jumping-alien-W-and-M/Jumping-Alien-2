@@ -832,13 +832,13 @@ public abstract class GameObject {
 		List<List<List<Object>>> collisions = getCollisions();
 		if (getVy() > 0) {
 			for(int i = 0; i < 3; i++) {
-				if ((collisions.get(i).get(0).size() != 0) || (collisions.get(i).get(1).contains(Feature.ground))) {
+				if (!listEmptyOrPlants(collisions.get(i).get(0)) || (collisions.get(i).get(1).contains(Feature.ground))) {
 					setJustJumped(false);
 					return 0;
 				}
 			}
 		}
-		if ((collisions.get(3).get(0).size() != 0) || (collisions.get(3).get(1).contains(Feature.ground))) {
+		if (!listEmptyOrPlants(collisions.get(3).get(0)) || (collisions.get(3).get(1).contains(Feature.ground))) {
 			if (!(getJustJumped())) return 0;
 		} else {
 			setJustJumped(false);
@@ -903,6 +903,7 @@ public abstract class GameObject {
 				if (object instanceof Shark) collisionHandleShark((Shark) object, i);
 				if (object instanceof Plant) collisionHandlePlant((Plant) object, i);
 				if (object instanceof Slime) collisionHandleSlime((Slime) object, i);
+				if (getWorld() == null) return;
 			}
 		}
 		

@@ -236,6 +236,11 @@ public class World {
 	
 	private static final int window_margin = 200;
 	
+	public void updateWindow() {
+		setXWindow(getXWindow());
+		setYWindow(getYWindow());
+	}
+	
 	/**
 	 * Gets the window width of this game world's window.
 	 */

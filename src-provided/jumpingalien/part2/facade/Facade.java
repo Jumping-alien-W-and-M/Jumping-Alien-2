@@ -64,7 +64,7 @@ public class Facade implements IFacadePart2 {
 
 	@Override
 	public void endMoveLeft(Mazub alien) {
-		alien.endMove();
+		alien.endMove("left");
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class Facade implements IFacadePart2 {
 
 	@Override
 	public void endMoveRight(Mazub alien) {
-		alien.endMove();
+		alien.endMove("right");
 	}
 
 	@Override
@@ -136,6 +136,7 @@ public class Facade implements IFacadePart2 {
 
 	@Override
 	public int[] getVisibleWindow(World world) {
+		world.updateWindow();
 		int[] window = {world.getXWindow(), world.getYWindow(), world.getXWindow() + world.getWindowWidth() - 1
 						, world.getYWindow() + world.getWindowHeight() - 1};
 		return window;

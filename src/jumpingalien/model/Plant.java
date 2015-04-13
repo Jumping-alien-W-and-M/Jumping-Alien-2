@@ -99,10 +99,12 @@ public class Plant extends GameObject {
 		for(double time_passed = 0; time_passed < dt; time_passed += timestep) {
 			if (getVx() != 0) timestep = Math.min(0.01/Math.abs(getVx()), dt - time_passed);
 			else timestep = dt - time_passed;
-			
 			super.advanceTimeStep(timestep);
-			advanceDeathTime(timestep);
+			if (getWorld() == null) return;
+			
 			advanceMovementTime(timestep);
+			advanceDeathTime(timestep);
+			if (getWorld() == null) return;
 		}
 		List<List<List<Object>>> collisions = getCollisions();
 		collisionHandle(collisions, dt);
@@ -208,7 +210,6 @@ public class Plant extends GameObject {
 	protected void terminate() {
 		assert(getWorld() != null);
 		getWorld().removePlant(this);
-		setWorld(null);
 	}
 	
 	/**

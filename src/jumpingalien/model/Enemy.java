@@ -92,6 +92,8 @@ public abstract class Enemy extends GameObject {
 			timestep = getTimestep(dt, time_passed);
 			super.advanceTimeStep(timestep);
 			
+			if (getWorld() == null) return;
+			
 			advanceActionTime(timestep);
 		}
 		
