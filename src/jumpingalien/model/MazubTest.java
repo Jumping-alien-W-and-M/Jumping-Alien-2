@@ -48,31 +48,12 @@ public class MazubTest {
 	}
 	
 	@Test
-	public void TestConstructorIllegalCoordinates() {
+	public void TestIsValidXYIllegalCoordinates() {
 		
-		try {
-			Mazub alien = new Mazub(-5, 0, JumpingAlienSprites.ALIEN_SPRITESET);
-			alien.setX(alien.getX());
-		} catch (IllegalArgumentException exc1) {
-			try {
-				Mazub alien = new Mazub(1500, 0, JumpingAlienSprites.ALIEN_SPRITESET);
-				alien.setX(alien.getX());
-			} catch (IllegalArgumentException exc2) {
-				try {
-					Mazub alien = new Mazub(0, -10, JumpingAlienSprites.ALIEN_SPRITESET);
-					alien.setX(alien.getX());
-				} catch (IllegalArgumentException exc3) {
-					try {
-						Mazub alien = new Mazub(0, world.getWorldHeight() - 100, JumpingAlienSprites.ALIEN_SPRITESET);
-						alien.setX(alien.getX());
-					} catch (IllegalArgumentException exc4) {
-						assert(true);
-						return;
-					}
-				}
-			}
-		}
-		assert(false);
+		assertEquals(false, player.isValidX(-1));
+		assertEquals(false, player.isValidX(world.getWorldWidth()));
+		assertEquals(false, player.isValidY(-1));
+		assertEquals(false, player.isValidY(world.getWorldHeight()));
 	}
 	
 	@Test
@@ -425,26 +406,16 @@ public class MazubTest {
 	}
 	
 	@Test
-	public void TestsetAxillegalparameters(){
-		try {
-			player.setAx(0.1);
-		} catch (IllegalArgumentException exc1) {
-			try {
-				player.setAx(-0.1);
-			} catch (IllegalArgumentException exc2) {
-				try {
-					player.setAx(1);
-				} catch (IllegalArgumentException exc3) {
-					try {
-						player.setAx(-1);
-					} catch (IllegalArgumentException exc4) {
-						assert(true);
-						return;
-					}
-				}
-			}
-		}
-		assert(false);
+	public void TestsetAxillegalparameters() {
+		
+		player.setAx(0.1);
+		assertEquals(0, player.getAx(), Util.DEFAULT_EPSILON);
+		player.setAx(-0.1);
+		assertEquals(0, player.getAx(), Util.DEFAULT_EPSILON);
+		player.setAx(1);
+		assertEquals(0, player.getAx(), Util.DEFAULT_EPSILON);
+		player.setAx(-1);
+		assertEquals(0, player.getAx(), Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -505,10 +476,10 @@ public class MazubTest {
 	public void TestsetLastMoveillegalparameters(){
 		try {
 			player.setLastMove(50);
-		} catch (IllegalArgumentException exc1) {
+		} catch (AssertionError exc1) {
 			try {
-				player.setAx(-50);
-			} catch (IllegalArgumentException exc4) {
+				player.setLastMove(-50);
+			} catch (AssertionError exc4) {
 						assert(true);
 						return;					
 			}
@@ -581,15 +552,14 @@ public class MazubTest {
 		player.setVx(-1);
 		player.setAx(-1);
 		player.advanceTime(0.1);
-		assert(player.getX() == 0);
-		assert(player.getWorld() == null);
+		assertEquals(0, player.getX(), Util.DEFAULT_EPSILON);
+		assertEquals(null, player.getWorld());
 		player.setX(world.getWorldWidth() - 1);
 		world.setMazub(player);
 		player.setVx(1);
 		player.setAx(1);
 		player.advanceTime(0.1);
-		assert(player.getX() == world.getWorldWidth()-1);
-		assert(player.getWorld() == null);
+		assertEquals(null, player.getWorld());
 	}
 	
 	@Test
@@ -619,9 +589,9 @@ public class MazubTest {
 			double pos = player.getY();
 			player.startJump();
 			player.advanceTime(0.1);
-			assertEquals(pos + 100*(8*0.1 + 1/2*-10*Math.pow(0.1, 2)),
+			assertEquals(pos + 100*(8*0.1 + 0.5*(-10)*Math.pow(0.1, 2)),
 					player.getY(), Util.DEFAULT_EPSILON);
-		}		
+		}
 	
 	@Test
 	public void TestadvanceTimeupdatingypositionnewyoutsidebounds(){
@@ -649,11 +619,14 @@ public class MazubTest {
 	
 	@Test
 	public void TestadvanceTimeupdatingverticalacceleration(){
+		
+		generateGroundLayer();
+		
 		player.advanceTime(0.1);
-		assert(player.getAy() == 0);
-		player.setY(5);
+		assertEquals(0, player.getAy(), Util.DEFAULT_EPSILON);
+		player.setY(20);
 		player.advanceTime(0.1);
-		assert(player.getAx() == -10);
+		assertEquals(-10, player.getAy(), Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -713,11 +686,12 @@ public class MazubTest {
 	public void TestadvanceTimeillegalparameter(){
 		try{
 			player.advanceTime(0.2);
-		} catch (IllegalArgumentException exc){
-			try{
+		} catch(IllegalArgumentException exc) {
+			try {
 				player.advanceTime(0);
-			}catch(IllegalArgumentException exc1){
+			} catch(IllegalArgumentException exc1) {
 				assert(true);
+				return;
 			}
 		}
 		assert(false);

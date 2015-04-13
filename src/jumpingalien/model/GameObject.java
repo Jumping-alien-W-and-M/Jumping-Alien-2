@@ -11,7 +11,9 @@ import jumpingalien.util.Sprite;
 
 public abstract class GameObject {
 	
-	protected GameObject(double x, double y, Sprite[] images, double axi, double vxi, double vxmax){
+	protected GameObject(double x, double y, Sprite[] images, double axi, double vxi, double vxmax) {
+		assert(isValidX(x));
+		assert(isValidX(y));
 		setX(x);
 		setY(y);
 		this.images = images;
