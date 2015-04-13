@@ -922,14 +922,17 @@ public abstract class GameObject {
 		
 			if ((collision_features.contains(Feature.air)) && !(touched_air)) {
 				collisionHandleAir(time);
+				if (getWorld() == null) return;
 				touched_air = true;
 			}
 			if ((collision_features.contains(Feature.water)) && !(touched_water)) {
 				collisionHandleWater(time);
+				if (getWorld() == null) return;
 				touched_water = true;
 			}
 			if ((collision_features.contains(Feature.magma)) && !(touched_magma)) {
 				collisionHandleMagma(time);
+				if (getWorld() == null) return;
 				touched_magma = true;
 			}
 		}
