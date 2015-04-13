@@ -602,7 +602,7 @@ public class WorldTest {
 		collisions.get(0).get(0).add(shark);
 		collisions.get(0).get(0).add(shark1);
 		collisions.get(0).get(0).add(plant);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -628,7 +628,7 @@ public class WorldTest {
 		collisions.get(2).get(0).add(shark);
 		collisions.get(2).get(0).add(shark1);
 		collisions.get(2).get(0).add(plant);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -653,7 +653,7 @@ public class WorldTest {
 		collisions.get(1).get(0).add(shark);
 		collisions.get(1).get(0).add(shark1);
 		collisions.get(1).get(0).add(plant);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -681,7 +681,7 @@ public class WorldTest {
 		collisions.get(3).get(0).add(shark);
 		collisions.get(3).get(0).add(shark1);
 		collisions.get(3).get(0).add(plant);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -706,7 +706,7 @@ public class WorldTest {
 		collisions.get(5).get(0).add(shark);
 		collisions.get(5).get(0).add(shark1);
 		collisions.get(5).get(0).add(plant);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -734,7 +734,7 @@ public class WorldTest {
 		collisions.get(6).get(0).add(shark);
 		collisions.get(6).get(0).add(shark1);
 		collisions.get(6).get(0).add(plant);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -762,7 +762,7 @@ public class WorldTest {
 		collisions.get(4).get(0).add(shark);
 		collisions.get(4).get(0).add(shark1);
 		collisions.get(4).get(0).add(plant);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -793,7 +793,7 @@ public class WorldTest {
 		collisions.get(7).get(0).add(shark);
 		collisions.get(7).get(0).add(shark1);
 		collisions.get(7).get(0).add(plant);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -821,7 +821,7 @@ public class WorldTest {
 		world.addPlant(plant);
 		collisions.get(0).get(0).add(player);
 		collisions.get(0).get(0).add(shark1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -846,7 +846,7 @@ public class WorldTest {
 		world.addPlant(plant);
 		collisions.get(2).get(0).add(player);
 		collisions.get(2).get(0).add(shark1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -871,7 +871,7 @@ public class WorldTest {
 		world.addPlant(plant);
 		collisions.get(1).get(0).add(player);
 		collisions.get(1).get(0).add(shark1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -899,7 +899,7 @@ public class WorldTest {
 		world.addPlant(plant);
 		collisions.get(3).get(0).add(player);
 		collisions.get(3).get(0).add(shark1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -925,7 +925,7 @@ public class WorldTest {
 		world.addPlant(plant);
 		collisions.get(5).get(0).add(player);
 		collisions.get(5).get(0).add(shark1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -954,7 +954,7 @@ public class WorldTest {
 		world.addPlant(plant);
 		collisions.get(6).get(0).add(player);
 		collisions.get(6).get(0).add(shark1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -983,7 +983,7 @@ public class WorldTest {
 		world.addPlant(plant);
 		collisions.get(4).get(0).add(player);
 		collisions.get(4).get(0).add(shark1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -1015,7 +1015,7 @@ public class WorldTest {
 		world.addPlant(plant);
 		collisions.get(7).get(0).add(player);
 		collisions.get(7).get(0).add(shark1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(shark, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}		
@@ -1043,7 +1043,7 @@ public class WorldTest {
 		world.addPlant(plant1);
 		collisions.get(0).get(0).add(player);
 		collisions.get(0).get(0).add(plant1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -1068,7 +1068,7 @@ public class WorldTest {
 		world.addPlant(plant1);
 		collisions.get(2).get(0).add(player);
 		collisions.get(2).get(0).add(plant1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}
@@ -1093,7 +1093,7 @@ public class WorldTest {
 		world.addPlant(plant1);
 		collisions.get(1).get(0).add(player);
 		collisions.get(1).get(0).add(plant1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}	
@@ -1121,7 +1121,7 @@ public class WorldTest {
 		world.addPlant(plant1);
 		collisions.get(3).get(0).add(player);
 		collisions.get(3).get(0).add(plant1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}	
@@ -1147,7 +1147,7 @@ public class WorldTest {
 		world.addPlant(plant1);
 		collisions.get(5).get(0).add(player);
 		collisions.get(5).get(0).add(plant1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}	
@@ -1176,7 +1176,7 @@ public class WorldTest {
 		world.addPlant(plant1);
 		collisions.get(6).get(0).add(player);
 		collisions.get(6).get(0).add(plant1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}	
@@ -1205,7 +1205,7 @@ public class WorldTest {
 		world.addPlant(plant1);
 		collisions.get(4).get(0).add(player);
 		collisions.get(4).get(0).add(plant1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}	
@@ -1237,7 +1237,7 @@ public class WorldTest {
 		world.addPlant(plant1);
 		collisions.get(7).get(0).add(player);
 		collisions.get(7).get(0).add(plant1);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(plant, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(0), collisions.get(i).get(0));
 		}	
@@ -1255,7 +1255,7 @@ public class WorldTest {
 		}
 		player.setX(9);
 		collisions.get(0).get(1).add(Feature.air);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
 		}	
@@ -1274,7 +1274,7 @@ public class WorldTest {
 		player.setX(100 - player.getWidth() + 1);
 		collisions.get(0).get(1).add(Feature.air);
 		collisions.get(2).get(1).add(Feature.air);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
 		}	
@@ -1293,7 +1293,7 @@ public class WorldTest {
 		player.setY(100 - player.getHeight() + 1);
 		collisions.get(0).get(1).add(Feature.air);
 		collisions.get(1).get(1).add(Feature.air);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
 		}	
@@ -1312,7 +1312,7 @@ public class WorldTest {
 		player.setY(9);
 		collisions.get(0).get(1).add(Feature.air);
 		collisions.get(3).get(1).add(Feature.air);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
 		}	
@@ -1334,7 +1334,7 @@ public class WorldTest {
 		collisions.get(5).get(1).add(Feature.air);
 		collisions.get(1).get(1).add(Feature.air);
 		collisions.get(2).get(1).add(Feature.air);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
 		}	
@@ -1356,7 +1356,7 @@ public class WorldTest {
 		collisions.get(6).get(1).add(Feature.air);
 		collisions.get(3).get(1).add(Feature.air);
 		collisions.get(2).get(1).add(Feature.air);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
 		}	
@@ -1377,7 +1377,7 @@ public class WorldTest {
 		collisions.get(0).get(1).add(Feature.air);
 		collisions.get(1).get(1).add(Feature.air);
 		collisions.get(4).get(1).add(Feature.air);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
 		}	
@@ -1398,7 +1398,7 @@ public class WorldTest {
 		collisions.get(0).get(1).add(Feature.air);
 		collisions.get(3).get(1).add(Feature.air);
 		collisions.get(7).get(1).add(Feature.air);
-		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(player, 0, 0);
 		for( int i = 0; i < 8; i++){
 			assertEquals(collisionsresult.get(i).get(1), collisions.get(i).get(1));
 		}	

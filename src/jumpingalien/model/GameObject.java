@@ -591,7 +591,7 @@ public abstract class GameObject {
 	protected List<List<List<Object>>> getCollisions() {
 		List<List<List<Object>>> collisions;
 		if(getWorld() != null)
-			collisions = getWorld().collisionDetect(this, 0);
+			collisions = getWorld().collisionDetect(this, 0, 0);
 		else
 			collisions = new ArrayList<List<List<Object>>>(
 							Collections.nCopies(4, Collections.nCopies(2, new ArrayList<Object>())));

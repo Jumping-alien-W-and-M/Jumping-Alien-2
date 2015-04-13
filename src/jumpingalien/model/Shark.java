@@ -66,7 +66,7 @@ public class Shark extends Enemy {
 	protected double advanceAy() {
 		if(getAy() >= -0.2 && getAy() <= 0.2 && canDiveOrRise())
 			return(getAy());
-		else if(getAy() == -10 && ! canJump() && ! submerged(getWorld().collisionDetect(this,0)))
+		else if(getAy() == -10 && ! canJump() && !submerged(getCollisions()))
 			return(getAy());
 		return 0;			
 	}
@@ -340,7 +340,7 @@ public class Shark extends Enemy {
 	 */
 	@Override
 	public boolean canJump(){
-		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
+		List<List<List<Object>>> collisions = getCollisions();
 		
 		if(collisions.get(3).get(1).contains(Feature.ground) || collisions.get(3).get(1).contains(Feature.water)
 				|| collisions.get(3).get(0).size() != 0)

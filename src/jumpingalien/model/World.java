@@ -787,7 +787,7 @@ public class World {
 	 * 			|
 	 * 			| result = collisions
 	 */
-	protected List<List<List<Object>>> collisionDetect(GameObject object, int custom_height) {
+	protected List<List<List<Object>>> collisionDetect(GameObject object, int custom_width, int custom_height) {
 		
 		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
 		
@@ -800,18 +800,18 @@ public class World {
 		}
 		
 		// Checks collisions with the player, sharks, slimes and plants
-		if (getMazub() != null)	collisionDetectObject(object, getMazub(), custom_height, collisions);
+		if (getMazub() != null)	collisionDetectObject(object, getMazub(), custom_width, custom_height, collisions);
 		if (!(object instanceof Plant)) {
 			for(Shark shark : getSharks()) {
-				collisionDetectObject(object, shark, custom_height, collisions);
+				collisionDetectObject(object, shark, custom_width, custom_height, collisions);
 			}
 			for(Slime slime : getSlimes()) {
-				collisionDetectObject(object, slime, custom_height, collisions);
+				collisionDetectObject(object, slime, custom_width, custom_height, collisions);
 			}
 		}
 		if ((object instanceof Mazub) || (object instanceof Plant)) {
 			for(Plant plant : getPlants()) {
-				collisionDetectObject(object, plant, custom_height, collisions);
+				collisionDetectObject(object, plant, custom_width, custom_height, collisions);
 			}
 		}
 		
@@ -825,7 +825,7 @@ public class World {
 					(int) object.getX() + object.getWidth(), (int) object.getY() + custom_height);
 		}
 		for(int[] tile : tile_pos) {
-			collisionDetectFeature(object, tile[0]*getTileSize(), tile[1]*getTileSize(), custom_height, collisions);
+			collisionDetectFeature(object, tile[0]*getTileSize(), tile[1]*getTileSize(), custom_width, custom_height, collisions);
 		}
 		
 		return collisions; 
@@ -852,7 +852,7 @@ public class World {
 	 * 			|
 	 * 			| collisionDetectBasic(object1, x1, y1, x2, y2, object2, 0, custom_height, collision_objects)
 	 */
-	private void collisionDetectObject(GameObject object1, GameObject object2, int custom_height, 
+	private void collisionDetectObject(GameObject object1, GameObject object2, int custom_width, int custom_height, 
 			List<List<List<Object>>> collision_objects)  {
 		
 		if (object1 == object2) {
@@ -865,7 +865,7 @@ public class World {
 		int x2 = x1 + object2.getWidth();
 		int y2 = y1 + object2.getHeight();
 		
-		collisionDetectBasic(object1, x1, y1, x2, y2, object2, 0, custom_height, collision_objects);
+		collisionDetectBasic(object1, x1, y1, x2, y2, object2, 0, custom_width, custom_height, collision_objects);
 		
 	}
 	
@@ -887,12 +887,13 @@ public class World {
 	 * 			| collisionDetectBasic(object, x, y, x + getTileSize(), y + getTileSize(), feature, 1, custom_height,
 	 * 			|							collision_objects)
 	 */
-	private void collisionDetectFeature(GameObject object, int x, int y, int custom_height, 
+	private void collisionDetectFeature(GameObject object, int x, int y, int custom_width, int custom_height, 
 			List<List<List<Object>>> collision_objects)  {
 		
 		Feature feature = getFeature(x, y);
 		
-		collisionDetectBasic(object, x, y, x + getTileSize(), y + getTileSize(), feature, 1, custom_height, collision_objects);
+		collisionDetectBasic(object, x, y, x + getTileSize(), y + getTileSize(), feature, 1,
+							custom_width, custom_height, collision_objects);
 		
 	}
 	
@@ -940,12 +941,17 @@ public class World {
 	 * 			| }
 	 */
 	private void collisionDetectBasic(GameObject object1, int sx1, int sy1, int sx2, int sy2, Object object2, int index,
-										int custom_height, List<List<List<Object>>> collision_objects) {
+			 							int custom_width, int custom_height, List<List<List<Object>>> collision_objects) {
 		
 		// Defining temporary variables
 		int mx1 = (int) object1.getX();
 		int my1 = (int) object1.getY();
-		int mx2 = mx1 + object1.getWidth();
+		int mx2 = mx1;
+		if (custom_height == 0) {
+			mx2 += object1.getWidth();
+		} else {
+			mx2 += custom_width;
+		}
 		int my2 = my1;
 		if (custom_height == 0) {
 			my2 += object1.getHeight();
