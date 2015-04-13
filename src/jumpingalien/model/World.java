@@ -747,7 +747,8 @@ public class World {
 			throw new IllegalArgumentException();
 		}
 		
-		player.advanceTime(dt);
+		getMazub().advanceTime(dt);
+		if (getMazub() == null) return;
 		for(Shark shark : getSharks()) {
 			shark.advanceTime(dt);
 		}
