@@ -469,21 +469,14 @@ public class MazubTest {
 	
 	@Test
 	public void TestsetAyIllegalparameters(){
-		try {
-			player.setAy(0.1);
-		} catch (IllegalArgumentException exc1) {
-			try {
-				player.setAy(-0.1);
-			} catch (IllegalArgumentException exc2) {
-				try {
-					player.setAy(100);
-				}catch (IllegalArgumentException exc4) {
-						assert(true);
-						return;					
-				}
-			}
-		}
-		assert(false);
+		player.setAy(0.1);
+		assertEquals(0, player.getAy(), Util.DEFAULT_EPSILON);
+		
+		player.setAy(-0.1);
+		assertEquals(0, player.getAy(), Util.DEFAULT_EPSILON);
+		
+		player.setAy(100);
+		assertEquals(0, player.getAy(), Util.DEFAULT_EPSILON);
 		
 	}
 	
@@ -579,7 +572,7 @@ public class MazubTest {
 		
 		player.setVx(1);
 		player.advanceTime(0.1);
-		assertEquals(player.getX() + 100*(player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2)),
+		assertEquals(100*(player.getVx()*0.1 + 1/2*player.getAx()*Math.pow(0.1, 2)),
 				player.getX(), Util.DEFAULT_EPSILON);
 	}
 	
@@ -620,10 +613,14 @@ public class MazubTest {
 	
 	@Test
 	public void TestadvanceTimeupdatingypositionnewywithinbounds(){
-			player.setVy(6);
+			
+			generateGroundLayer();
+			
+			double pos = player.getY();
+			player.startJump();
 			player.advanceTime(0.1);
-			assert(player.getY() == 
-					player.getY() + player.getVy()*0.1 + 1/2*player.getAy()*Math.pow(0.1, 2));
+			assertEquals(pos + 100*(8*0.1 + 1/2*-10*Math.pow(0.1, 2)),
+					player.getY(), Util.DEFAULT_EPSILON);
 		}		
 	
 	@Test
@@ -637,16 +634,17 @@ public class MazubTest {
 		world.setMazub(player);
 		player.setVy(1);
 		player.advanceTime(0.1);
-		assert(player.getY() == world.getWorldHeight() - 1);
-		assert(player.getWorld() == null);
+		assertEquals(null, player.getWorld());
 	}
 	
 	@Test
 	public void TestadvanceTimeupdatingverticalvelocitynewvywithinbounds(){
-		player.setVy(7);
-		player.setAy(-10);
+		
+		generateGroundLayer();
+		
+		player.startJump();
 		player.advanceTime(0.1);
-		assert(player.getVy() == player.getVy() + player.getAy()*0.1);		
+		assertEquals(8 + player.getAy()*0.1, player.getVy(), Util.DEFAULT_EPSILON);
 	}
 	
 	@Test

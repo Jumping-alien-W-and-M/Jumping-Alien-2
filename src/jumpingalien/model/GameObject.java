@@ -572,9 +572,9 @@ public abstract class GameObject {
 		if ((listEmptyOrPlants(collisions.get(1).get(0)) && !(collisions.get(1).get(1).contains(Feature.ground)) && (getVy() > 0))
 				|| ((listEmptyOrPlants(collisions.get(3).get(0)) && !(collisions.get(3).get(1).contains(Feature.ground)) && (getVy() < 0)))) 
 			advanceY(timestep);
-		
-		setAy(advanceAy());
+
 		setVy(advanceVy(timestep));
+		setAy(advanceAy());
 
 		collisions = getCollisions();
 		if ((this instanceof Mazub) && !(getJustJumped()) &&
@@ -854,7 +854,7 @@ public abstract class GameObject {
 	@Model
 	protected double advanceAy() {
 		
-		if (canJump() || (int) getY() <= 0 ) {
+		if ((canJump() || (int) getY() <= 0) && !getJustJumped()) {
 			return 0;
 		} else {
 			return -10;
