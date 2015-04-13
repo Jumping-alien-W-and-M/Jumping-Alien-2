@@ -366,31 +366,19 @@ public class World {
 	public int[][] getTilePositionsIn(int x1, int y1, int x2, int y2) {
 		assert(x1 >= 0 && x1 < getWorldWidth());
 		assert(y1 >= 0 && y1 < getWorldHeight());
-		if(x2 >= getWorldWidth())
-			x2 = getWorldWidth() - 1;
-		if(y2 >= getWorldHeight())
-			y2 = getWorldHeight() - 1;
 		
-		int upperboundy = getTilePos(y1);
-		int upperboundx = getTilePos(x1);
-		int[][] positions = new int[1][2];
-		if((getTilePos(y2 - y1) != 0) && (getTilePos(x2 - x1) != 0)){
-			positions = new int[(getTilePos(x2) - getTilePos(x1) + 1) * (getTilePos(y2) - getTilePos(y1) + 1)][2];
-			upperboundy = getTilePos(y2);
-			upperboundx = getTilePos(x2);
-		}	
-		else if((getTilePos(y2 - y1) == 0) && (getTilePos(x2 - x1) != 0)){
-			positions = new int[(getTilePos(x2) - getTilePos(x1) + 1)][2];
-			upperboundx = getTilePos(x2);
-		}
-		else if((getTilePos(y2 - y1) != 0) &(getTilePos(x2 - x1) == 0)){
-			positions = new int[(getTilePos(y2) - getTilePos(y1) + 1)][2];
-			upperboundy = getTilePos(y2);
-		}
+		x2 = Math.max(0, Math.min(getWorldWidth() - 1, x2));
+		y2 = Math.max(0, Math.min(getWorldHeight() - 1, y2));
+		
+		int lowerboundx = getTilePos(x1);
+		int lowerboundy = getTilePos(y1);
+		int upperboundx = getTilePos(x2);
+		int upperboundy = getTilePos(y2);
+		int[][] positions = new int[(upperboundx - lowerboundx + 1)*(upperboundy - lowerboundy + 1)][2];
 		
 		int index = 0;
-		for(int y = getTilePos(y1); y <= upperboundy; y++) {
-			for(int x = getTilePos(x1); x <= upperboundx; x++) {
+		for(int y = lowerboundy; y <= upperboundy; y++) {
+			for(int x = lowerboundx; x <= upperboundx; x++) {
 				int[] position = {x, y};
 				positions[index] = position;
 				index++;
