@@ -74,7 +74,7 @@ public class Slime extends Enemy {
 	@Override
 	protected void setWorld(World world) {
 		assert(getSchool() != null);
-		assert(getSchool().getWorld() == world);
+		assert((getSchool().getWorld() == world) || (world == null));
 		
 		super.setWorld(world);
 	}
