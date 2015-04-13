@@ -270,6 +270,7 @@ public class Shark extends Enemy {
 		setVy(2);
 		setAy(-10);
 		setNonJumpingPeriods(0);
+		setJustJumped(true);
 	}
 	
 	/**

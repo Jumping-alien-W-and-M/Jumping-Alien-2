@@ -337,6 +337,27 @@ public abstract class GameObject {
 	}
 	
 	/**
+	 * Checks whether or not this game object just started a jump, without hitting ground above or to its sides.
+	 */
+	public boolean getJustJumped() {
+		return this.just_jumped;
+	}
+	
+	/**
+	 * Sets whether or not this game object just started a jump, without hitting ground above or to its sides.
+	 * 
+	 * @param just_jumped
+	 * 			Whether or or not this game object just started a jump without hitting ground above or to its sides.
+	 * @post	The new just_jumped variable will be equal to the given just_jumped parameter.
+	 * 			| ((new.getJustJumped()) == just_jumped)
+	 */
+	protected void setJustJumped(boolean just_jumped) {
+		this.just_jumped = just_jumped;
+	}
+	
+	private boolean just_jumped = false;
+	
+	/**
 	 * Gets the image array of this game object.
 	 */
 	@Basic @Immutable
@@ -552,22 +573,19 @@ public abstract class GameObject {
 				|| ((listEmptyOrPlants(collisions.get(3).get(0)) && !(collisions.get(3).get(1).contains(Feature.ground)) && (getVy() < 0)))) 
 			advanceY(timestep);
 		
-		collisions = getCollisions();
-		if (getVy() > 0) {
-			for(int i = 0; i < 4; i++) {
-				if ((collisions.get(i).get(0).size() != 0) || (collisions.get(i).get(1).contains(Feature.ground))) {
-					setVy(0);
-					break;
-				}
-			}
-		}
-
 		setAy(advanceAy());
 		setVy(advanceVy(timestep));
+
+		collisions = getCollisions();
+		if ((this instanceof Mazub) && !(getJustJumped()) &&
+				((collisions.get(3).get(0).size() != 0) || (collisions.get(3).get(1).contains(Feature.ground)))) {
+			((Mazub) this).setJumping(false);
+		}
+		
 		setTimeInvincible(advanceTimeInvincible(timestep));
 	}
 	
-	private List<List<List<Object>>> getCollisions() {
+	protected List<List<List<Object>>> getCollisions() {
 		List<List<List<Object>>> collisions;
 		if(getWorld() != null)
 			collisions = getWorld().collisionDetect(this, 0);
@@ -800,9 +818,23 @@ public abstract class GameObject {
 		if (getY() <= 0) {
 			return 0;
 		}
+
+		List<List<List<Object>>> collisions = getCollisions();
+		if (getVy() > 0) {
+			for(int i = 0; i < 3; i++) {
+				if ((collisions.get(i).get(0).size() != 0) || (collisions.get(i).get(1).contains(Feature.ground))) {
+					setJustJumped(false);
+					return 0;
+				}
+			}
+			if ((collisions.get(3).get(0).size() != 0) || (collisions.get(3).get(1).contains(Feature.ground))) {
+				if (!(getJustJumped())) return 0;
+			} else {
+				setJustJumped(false);
+			}
+		}
 		
 		double newvy = getVy() + getAy()*dt;
-		
 		if (newvy == Double.NEGATIVE_INFINITY) {
 			throw new IllegalStateException();
 		}

@@ -139,7 +139,7 @@ public class Mazub extends GameObject {
 	 * @post	This Mazub's previous move will be equal to the given previous move.
 	 * 			| (getPrevMove() == prev_move)
 	 */
-	public void setPrevMove(String prev_move) {
+	private void setPrevMove(String prev_move) {
 		assert((prev_move == "") || (prev_move == "left") || (prev_move == "right"));
 		
 		this.prev_move = prev_move;
@@ -310,15 +310,11 @@ public class Mazub extends GameObject {
 			
 			if (getTryStand()) {
 				endDuck();
-			}			
+			}
 		}
 		
 		if (getWorld() != null) {
-			List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
-			if (!listEmptyOrPlants(collisions.get(3).get(0)) || (collisions.get(3).get(1).contains(Feature.ground))) {
-				setJumping(false);
-			}
-			collisionHandle(collisions, dt);
+			collisionHandle(getCollisions(), dt);
 		}
 	}
 	
@@ -537,12 +533,14 @@ public class Mazub extends GameObject {
 	public void startMove(String direction){
 		assert(direction == "left" || direction == "right");
 		
-		if ((getAx() < 0) && (direction == "right")) {
-			setPrevMove("left");
-		} else if ((getAx() > 0) && (direction == "left")) {
-			setPrevMove("right");
+		if (getPrevMove() == "") {
+			if (getAx() < 0) {
+				setPrevMove("left");
+			} else if (getAx() > 0) {
+				setPrevMove("right");
+			}
 		}
-		
+			
 		if (direction == "left") {
 			setVx(-getVxi());
 			setAx(-getAxi());
@@ -566,9 +564,8 @@ public class Mazub extends GameObject {
 			setVx(0);
 			setAx(0);
 		} else {
-			String prev_move = getPrevMove();
+			startMove(getPrevMove());
 			setPrevMove("");
-			startMove(prev_move);
 		}
 	}
 	
@@ -583,6 +580,7 @@ public class Mazub extends GameObject {
 		if (canJump()) {
 			setVy(8);
 			setJumping(true);
+			setJustJumped(true);
 		}
 	}
 	
@@ -610,7 +608,7 @@ public class Mazub extends GameObject {
 	public boolean canJump() {
 		if(getWorld() == null)
 			return true;
-		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
+		List<List<List<Object>>> collisions = getCollisions();
 		if(!listEmptyOrPlants(collisions.get(3).get(0)) || collisions.get(3).get(1).contains(Feature.ground))
 			return true;
 		
@@ -726,7 +724,7 @@ public class Mazub extends GameObject {
 			
 			// Everything which happens if Mazub's not moving horizontally.
 			
-			if (getLastMove() == 0) {
+			if (Math.abs(getLastMove()) < Util.DEFAULT_EPSILON) {
 				// No last move
 				if (getDucking()) {
 					return getImages()[1];

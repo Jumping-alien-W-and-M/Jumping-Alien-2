@@ -294,8 +294,6 @@ public class MazubTest {
 	@Test
 	public void TestDucking() {
 		
-		// MOET AANGEPAST WORDEN
-		
 		player.startDuck();
 		assertEquals(player.getDucking(), true);
 		player.endDuck();
@@ -318,7 +316,7 @@ public class MazubTest {
 		player.advanceTime(0.1);
 		player.endMove();
 		assertEquals(player.getCurrentSprite(), player.getImages()[2]);
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < 9; i++) {
 			player.advanceTime(0.1);
 		}
 		assertEquals(player.getCurrentSprite(), player.getImages()[2]);
@@ -329,7 +327,7 @@ public class MazubTest {
 		player.advanceTime(0.1);
 		player.endMove();
 		assertEquals(player.getCurrentSprite(), player.getImages()[3]);
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < 9; i++) {
 			player.advanceTime(0.1);
 		}
 		assertEquals(player.getCurrentSprite(), player.getImages()[3]);
@@ -339,13 +337,7 @@ public class MazubTest {
 		player.setX(world.getWorldWidth()/2);
 		player.startMove("right");
 		player.startJump();
-		System.out.println(player.getY());
-		System.out.println(player.getVy());
-		System.out.println(player.getAy());
 		player.advanceTime(0.1);
-		System.out.println(player.getY());
-		System.out.println(player.getVy());
-		System.out.println(player.getAy());
 		assertEquals(player.getCurrentSprite(), player.getImages()[4]);
 		for(int i = 0; i < 10; i++) {
 			player.advanceTime(0.1);
@@ -378,7 +370,7 @@ public class MazubTest {
 		player.advanceTime(0.1);
 		assertEquals(player.getCurrentSprite(), player.getImages()[6]);
 		player.endMove();
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < 9; i++) {
 			player.advanceTime(0.1);
 		}
 		assertEquals(player.getCurrentSprite(), player.getImages()[6]);
@@ -389,7 +381,7 @@ public class MazubTest {
 		player.advanceTime(0.1);
 		assertEquals(player.getCurrentSprite(), player.getImages()[7]);
 		player.endMove();
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < 9; i++) {
 			player.advanceTime(0.1);
 		}
 		assertEquals(player.getCurrentSprite(), player.getImages()[7]);
@@ -403,7 +395,6 @@ public class MazubTest {
 		
 		player.startMove("right");
 		player.advanceTime(0.01);
-		
 		for(int i = 0; i < 25; i++) {
 			assertEquals(player.getCurrentSprite(), player.getImages()[8 + i%player.getFramesAmount()]);
 			player.advanceTime(0.075);
@@ -723,7 +714,7 @@ public class MazubTest {
 	public void TestadvanceTimeillegalparameter(){
 		try{
 			player.advanceTime(0.2);
-		}catch(IllegalArgumentException exc){
+		} catch (IllegalArgumentException exc){
 			try{
 				player.advanceTime(0);
 			}catch(IllegalArgumentException exc1){
@@ -732,4 +723,269 @@ public class MazubTest {
 		}
 		assert(false);
 	}
+	
+	@Test
+	public void advanceTimeBasicJumpingTest() {
+		
+		generateGroundLayer();
+
+		assertEquals(world.getTileSize() - 1, (int) player.getY());
+		assertEquals(false, player.getJumping());
+		assertEquals(false, player.getJustJumped());
+		
+		player.startJump();
+
+		assertEquals(world.getTileSize() - 1, (int) player.getY());
+		assertEquals(true, player.getJumping());
+		assertEquals(true, player.getJustJumped());
+		
+		player.advanceTime(0.001);
+
+		assertEquals(world.getTileSize() - 1, (int) player.getY());
+		assertEquals(true, player.getJumping());
+		assertEquals(true, player.getJustJumped());
+		
+		player.advanceTime(0.001);
+
+		assertEquals(world.getTileSize(), (int) player.getY());
+		assertEquals(true, player.getJumping());
+		assertEquals(false, player.getJustJumped());
+		
+		for(int i = 0; i < 20; i++) {
+			player.advanceTime(0.15);
+		}
+		
+		assertEquals(world.getTileSize() - 1, (int) player.getY());
+		assertEquals(false, player.getJumping());
+		assertEquals(false, player.getJustJumped());
+	}
+	
+	@Test
+	public void advanceTimeWallJumpingTest() {
+		
+		generateGroundLayer();
+		world.setFeature(100, 20, 1);
+		world.setFeature(100, 30, 1);
+		world.setFeature(100, 40, 1);
+		world.setFeature(100, 50, 1);
+		world.setFeature(100, 100, 1);
+		world.setFeature(120, 100, 1);
+		player.setX(109);
+
+		assertEquals(world.getTileSize() - 1, (int) player.getY());
+		assertEquals(false, player.getJumping());
+		assertEquals(false, player.getJustJumped());
+		
+		player.startJump();
+
+		assertEquals(world.getTileSize() - 1, (int) player.getY());
+		assertEquals(true, player.getJumping());
+		assertEquals(true, player.getJustJumped());
+		
+		player.advanceTime(0.001);
+
+		assertEquals(world.getTileSize() - 1, (int) player.getY());
+		assertEquals(false, player.getJumping());
+		assertEquals(false, player.getJustJumped());
+		
+		player.advanceTime(0.001);
+
+		assertEquals(world.getTileSize() - 1, (int) player.getY());
+		assertEquals(false, player.getJumping());
+		assertEquals(false, player.getJustJumped());
+	}
+	
+	@Test
+	public void canJumpHorizontalTest() {
+		world.setFeature(100, 0, 1);
+		player.setY(9);
+		
+		player.setX(10);
+		assertEquals(false, player.canJump());
+		
+		player.setX(100 - player.getWidth() + 1);
+		assertEquals(false, player.canJump());
+		
+		player.setX(100 - player.getWidth() + 2);
+		assertEquals(true, player.canJump());
+		
+		player.setX(90);
+		assertEquals(true, player.canJump());
+		
+		player.setX(100);
+		assertEquals(true, player.canJump());
+		
+		player.setX(105);
+		assertEquals(true, player.canJump());
+		
+		player.setX(100 + world.getTileSize() - 2);
+		assertEquals(true, player.canJump());
+		
+		player.setX(100 + world.getTileSize() - 1);
+		assertEquals(false, player.canJump());
+		
+		player.setX(200);
+		assertEquals(false, player.canJump());
+	}
+	
+	@Test
+	public void canJumpVerticalTest() {
+		world.setFeature(100, 0, 1);
+		player.setX(100);
+		
+		player.setY(0);
+		assertEquals(false, player.canJump());
+		
+		player.setY(5);
+		assertEquals(false, player.canJump());
+		
+		player.setY(9);
+		assertEquals(true, player.canJump());
+		
+		player.setY(10);
+		assertEquals(false, player.canJump());
+		
+		player.setY(20);
+		assertEquals(false, player.canJump());
+	}
+	
+	@Test
+	public void canJumpHorizontalObjectTest() {
+		Sprite[] sprites = {player.getImages()[0], player.getImages()[1]};
+		Shark shark = new Shark(100, 0, sprites);
+		world.addShark(shark);
+		player.setY(shark.getHeight() - 1);
+		
+		player.setX(10);
+		assertEquals(false, player.canJump());
+		
+		player.setX(100 - player.getWidth() + 1);
+		assertEquals(false, player.canJump());
+		
+		player.setX(100 - player.getWidth() + 2);
+		assertEquals(true, player.canJump());
+		
+		player.setX(90);
+		assertEquals(true, player.canJump());
+		
+		player.setX(100);
+		assertEquals(true, player.canJump());
+		
+		player.setX(105);
+		assertEquals(true, player.canJump());
+		
+		player.setX(100 + shark.getWidth() - 2);
+		assertEquals(true, player.canJump());
+		
+		player.setX(100 + shark.getWidth() - 1);
+		assertEquals(false, player.canJump());
+		
+		player.setX(200);
+		assertEquals(false, player.canJump());
+	}
+	
+	@Test
+	public void canJumpVerticalObjectTest() {
+		Sprite[] sprites = {player.getImages()[0], player.getImages()[1]};
+		Shark shark = new Shark(100, 0, sprites);
+		world.addShark(shark);
+		player.setX(100);
+		
+		player.setY(0);
+		assertEquals(false, player.canJump());
+		
+		player.setY(5);
+		assertEquals(false, player.canJump());
+		
+		player.setY(shark.getHeight() - 1);
+		assertEquals(true, player.canJump());
+		
+		player.setY(shark.getHeight());
+		assertEquals(false, player.canJump());
+		
+		player.setY(shark.getHeight()*2);
+		assertEquals(false, player.canJump());
+	}
+	
+	@Test
+	public void duckingBlockedTest() {
+		generateGroundLayer();
+		
+		world.setFeature(500, 80, 1);
+		player.setX(200);
+		player.setY(9);
+		player.startMove("right");
+		
+		for(int i = 0; i < 20; i++) {
+			player.advanceTime(0.15);
+		}
+		
+		assertEquals(500 - player.getWidth() + 1, (int) player.getX());
+		assertEquals(false, player.getDucking());
+		assertEquals(false, player.getTryStand());
+
+		player.startDuck();
+		assertEquals(true, player.getDucking());
+		assertEquals(false, player.getTryStand());
+		
+		for(int i = 0; i < 5; i++) {
+			player.advanceTime(0.10);
+		}
+		
+		player.endDuck();
+		assertEquals(true, player.getDucking());
+		assertEquals(true, player.getTryStand());
+		
+		for(int i = 0; i < 5; i++) {
+			player.advanceTime(0.10);
+		}
+		
+		assertEquals(false, player.getDucking());
+		assertEquals(false, player.getTryStand());
+	}
+
+	@Test
+	public void moveConflictTestLeft() {
+		assertEquals(0, player.getVx(), Util.DEFAULT_EPSILON);
+		assertEquals("", player.getPrevMove());
+		
+		player.startMove("left");
+		assertEquals(-player.getVxi(), player.getVx(), Util.DEFAULT_EPSILON);
+		assertEquals("", player.getPrevMove());
+		
+		player.startMove("right");
+		assertEquals(player.getVxi(), player.getVx(), Util.DEFAULT_EPSILON);
+		assertEquals("left", player.getPrevMove());
+		
+		player.endMove();
+		assertEquals(-player.getVxi(), player.getVx(), Util.DEFAULT_EPSILON);
+		assertEquals("", player.getPrevMove());
+		
+		player.endMove();
+		assertEquals(0, player.getVx(), Util.DEFAULT_EPSILON);
+		assertEquals("", player.getPrevMove());
+	}
+
+	@Test
+	public void moveConflictTestRight() {
+		assertEquals(0, player.getVx(), Util.DEFAULT_EPSILON);
+		assertEquals("", player.getPrevMove());
+		
+		player.startMove("right");
+		assertEquals(player.getVxi(), player.getVx(), Util.DEFAULT_EPSILON);
+		assertEquals("", player.getPrevMove());
+		
+		player.startMove("left");
+		assertEquals(-player.getVxi(), player.getVx(), Util.DEFAULT_EPSILON);
+		assertEquals("right", player.getPrevMove());
+		
+		player.endMove();
+		assertEquals(player.getVxi(), player.getVx(), Util.DEFAULT_EPSILON);
+		assertEquals("", player.getPrevMove());
+		
+		player.endMove();
+		assertEquals(0, player.getVx(), Util.DEFAULT_EPSILON);
+		assertEquals("", player.getPrevMove());
+	}
+	
 }
