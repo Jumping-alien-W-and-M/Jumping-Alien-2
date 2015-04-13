@@ -256,7 +256,7 @@ public class GameObjectTest {
 		player.setVy(3);
 		player.advanceTimeStep(0.1);
 		assertEquals (player.getAy(), -10, Util.DEFAULT_EPSILON); 
-		assertEquals(player.getVy(), player.getAy()*0.1, Util.DEFAULT_EPSILON);
+		assertEquals(player.getVy(), 0, Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -267,7 +267,7 @@ public class GameObjectTest {
 		player.setVy(3);
 		player.advanceTimeStep(0.1);
 		assertEquals(player.getAy(), -10, Util.DEFAULT_EPSILON);
-		assertEquals(player.getVy(), player.getAy()*0.1, Util.DEFAULT_EPSILON);
+		assertEquals(player.getVy(), 0, Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
@@ -278,7 +278,7 @@ public class GameObjectTest {
 		player.setVy(4);
 		player.advanceTimeStep(0.1);
 		assertEquals(player.getAy(), -10, Util.DEFAULT_EPSILON);
-		assertEquals(player.getVy(), player.getAy()*0.1, Util.DEFAULT_EPSILON);
+		assertEquals(player.getVy(), 0, Util.DEFAULT_EPSILON);
 	}
 	
 
