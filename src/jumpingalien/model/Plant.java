@@ -104,7 +104,6 @@ public class Plant extends GameObject {
 			advanceDeathTime(timestep);
 			advanceMovementTime(timestep);
 		}
-		
 		List<List<List<Object>>> collisions = getCollisions();
 		collisionHandle(collisions, dt);
 	}
