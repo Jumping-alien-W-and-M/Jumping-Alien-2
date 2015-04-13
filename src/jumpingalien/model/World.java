@@ -722,11 +722,11 @@ public class World {
 			case 2: feature = Feature.water; break;
 			case 3: feature = Feature.magma; break;
 			default:
-				getFeatures().remove(getHash(getTilePos(x), getTilePos(y)));
+				getFeatures().remove(getHash(x, y));
 				return;
 		}
 		
-		getFeatures().put(getHash(getTilePos(x), getTilePos(y)), feature);
+		getFeatures().put(getHash(x, y), feature);
 	}
 	
 	/**

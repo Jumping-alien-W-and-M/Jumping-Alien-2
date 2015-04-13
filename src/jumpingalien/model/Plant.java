@@ -108,7 +108,12 @@ public class Plant extends GameObject {
 		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0);
 		collisionHandle(collisions, dt);
 	}
-
+	
+	@Override
+	protected double advanceAy() {
+		return 0;
+	}
+	
 	/**
 	 * Advances the time this plant has been dead for with time.
 	 * 

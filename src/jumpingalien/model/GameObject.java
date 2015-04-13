@@ -25,6 +25,7 @@ public abstract class GameObject {
 		setVy(0);
 		setAx(0);
 		setAy(0);
+		setHitpoints(100);
 	}
 	
 	/**
@@ -856,7 +857,9 @@ public abstract class GameObject {
 	@Model
 	protected double advanceAy() {
 		
-		if ((canJump() || (int) getY() <= 0) && !getJustJumped()) {
+		List<List<List<Object>>> collisions = getCollisions();
+		if ((!listEmptyOrPlants(collisions.get(3).get(0)) || collisions.get(3).get(1).contains(Feature.ground)
+				|| (int) getY() <= 0) && !getJustJumped()) {
 			return 0;
 		} else {
 			return -10;
