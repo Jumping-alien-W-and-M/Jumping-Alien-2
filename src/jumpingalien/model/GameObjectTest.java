@@ -140,7 +140,7 @@ public class GameObjectTest {
 	
 	@Test
 	public void TestAdvanceTimeStepUpdatingXPositionWithCollisionRight(){
-		world.setFeature(100, 0, 1);
+		world.setFeature(10, 0, 1);
 		player.setVx(1);
 		player.setX(100 - player.getWidth());
 		player.advanceTimeStep(0.01);
@@ -149,7 +149,7 @@ public class GameObjectTest {
 	
 	@Test
 	public void TestAdvanceTimeStepUpdatingXPositionWithCollisionLeft(){
-		world.setFeature(100, 0, 1);
+		world.setFeature(10, 0, 1);
 		player.setX(100 + world.getTileSize() - 1);
 		player.setVx( -3);
 		player.advanceTimeStep(0.1);
@@ -211,7 +211,7 @@ public class GameObjectTest {
 	
 	@Test
 	public void TestadvanceTimeStepUpdatingYPositionWithCollisionUp(){
-		world.setFeature(0, 100, 1);
+		world.setFeature(0, 10, 1);
 		player.setY(100 - player.getHeight() + 1);
 		player.setVy(3);
 		player.advanceTimeStep(0.1);
@@ -220,7 +220,7 @@ public class GameObjectTest {
 	
 	@Test
 	public void TestadvanceTimeStepUpdatingYPositionWithCollisionUnder(){
-		world.setFeature(0, 100, 1);
+		world.setFeature(0, 10, 1);
 		player.setY(100 + world.getTileSize() -1);
 		player.setVy(-1);
 		player.advanceTimeStep(0.1);
@@ -250,29 +250,29 @@ public class GameObjectTest {
 	
 	@Test
 	public void TestadvanceTimeStepBreakCollisionFeatureRight(){
-		world.setFeature(100,35,1);
+		world.setFeature(10,3,1);
 		player.setX((100 - player.getWidth() + 1));
 		player.setAy(0);
 		player.setVy(3);
 		player.advanceTimeStep(0.1);
-		assertEquals (player.getAy(), -10, Util.DEFAULT_EPSILON); 
+		assertEquals (player.getAy(), 0, Util.DEFAULT_EPSILON); 
 		assertEquals(player.getVy(), 0, Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
 	public void TestadvanceTimeStepBreakCollisionFeatureLeft(){
-		world.setFeature(100,35,1);
+		world.setFeature(10,3,1);
 		player.setX(100 + world.getTileSize() - 1);
 		player.setAy(0);
 		player.setVy(3);
 		player.advanceTimeStep(0.1);
-		assertEquals(player.getAy(), -10, Util.DEFAULT_EPSILON);
+		assertEquals(player.getAy(), 0, Util.DEFAULT_EPSILON);
 		assertEquals(player.getVy(), 0, Util.DEFAULT_EPSILON);
 	}
 	
 	@Test
 	public void TestadvanceTimeStepBreakCollisionFeatureUp(){
-		world.setFeature(0, 100, 1);
+		world.setFeature(0, 10, 1);
 		player.setY(100 - player.getHeight() + 1);
 		player.setAy(0);
 		player.setVy(4);
