@@ -422,6 +422,7 @@ public class World {
 	 * 			| 	then player.setWorld(this)
 	 */
 	public void setMazub(Mazub player) {
+		if (getMazub() != null) getMazub().setWorld(null);
 		this.player = player;
 		if (player != null) player.setWorld(this);
 	}

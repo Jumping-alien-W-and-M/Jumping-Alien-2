@@ -567,19 +567,19 @@ public abstract class GameObject {
 		if (getDeathTime() > 0) return;
 		
 		List<List<List<Object>>> collisions = getCollisions();
-		if ((listEmptyOrPlants(collisions.get(0).get(0)) && !(collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0))
-			|| ((listEmptyOrPlants(collisions.get(2).get(0)) && !(collisions.get(2).get(1).contains(Feature.ground)) && (getVx() > 0)))) 
+		if ((noObjectMovementBlocking(collisions.get(0).get(0)) && !(collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0))
+			|| ((noObjectMovementBlocking(collisions.get(2).get(0)) && !(collisions.get(2).get(1).contains(Feature.ground)) && (getVx() > 0)))) 
 				advanceX(timestep);
 		
 		setVx(advanceVx(timestep));
 		
 		collisions = getCollisions();
-		if (listEmptyOrPlants(collisions.get(3).get(0)) && !(collisions.get(3).get(1).contains(Feature.ground)) && (getVy() < 0))
+		if (noObjectMovementBlocking(collisions.get(3).get(0)) && !(collisions.get(3).get(1).contains(Feature.ground)) && (getVy() < 0))
 			advanceY(timestep);
 		else if (getVy() > 0) {
 			boolean should_advance = true;
 			for(int i = 0; i < 3; i++) {
-				if (!listEmptyOrPlants(collisions.get(i).get(0)) || collisions.get(i).get(1).contains(Feature.ground))
+				if (!noObjectMovementBlocking(collisions.get(i).get(0)) || collisions.get(i).get(1).contains(Feature.ground))
 					should_advance = false;
 			}
 			if (should_advance) advanceY(timestep);
@@ -618,7 +618,9 @@ public abstract class GameObject {
 	 * 			|		then result = false
 	 * 			| result = true
 	 */
-	protected boolean listEmptyOrPlants(List<Object> list) {
+	protected boolean noObjectMovementBlocking(List<Object> list) {
+		if (this instanceof Plant) return true;
+		
 		for(Object element : list) {
 			if (!(element instanceof Plant)) {
 				return false;
@@ -834,13 +836,13 @@ public abstract class GameObject {
 		List<List<List<Object>>> collisions = getCollisions();
 		if (getVy() > 0) {
 			for(int i = 0; i < 3; i++) {
-				if (!listEmptyOrPlants(collisions.get(i).get(0)) || (collisions.get(i).get(1).contains(Feature.ground))) {
+				if (!noObjectMovementBlocking(collisions.get(i).get(0)) || (collisions.get(i).get(1).contains(Feature.ground))) {
 					setJustJumped(false);
 					return 0;
 				}
 			}
 		}
-		if (!listEmptyOrPlants(collisions.get(3).get(0)) || (collisions.get(3).get(1).contains(Feature.ground))) {
+		if (!noObjectMovementBlocking(collisions.get(3).get(0)) || (collisions.get(3).get(1).contains(Feature.ground))) {
 			if (!(getJustJumped())) return 0;
 		} else {
 			setJustJumped(false);
@@ -867,7 +869,7 @@ public abstract class GameObject {
 	protected double advanceAy() {
 		
 		List<List<List<Object>>> collisions = getCollisions();
-		if ((!listEmptyOrPlants(collisions.get(3).get(0)) || collisions.get(3).get(1).contains(Feature.ground)
+		if ((!noObjectMovementBlocking(collisions.get(3).get(0)) || collisions.get(3).get(1).contains(Feature.ground)
 				|| (int) getY() <= 0) && !getJustJumped()) {
 			return 0;
 		} else {

@@ -617,7 +617,7 @@ public class Mazub extends GameObject {
 		if(getWorld() == null)
 			return true;
 		List<List<List<Object>>> collisions = getCollisions();
-		if(!listEmptyOrPlants(collisions.get(3).get(0)) || collisions.get(3).get(1).contains(Feature.ground))
+		if(!noObjectMovementBlocking(collisions.get(3).get(0)) || collisions.get(3).get(1).contains(Feature.ground))
 			return true;
 		
 		return false;
@@ -682,7 +682,7 @@ public class Mazub extends GameObject {
 			
 			List<List<List<Object>>> collisions = getWorld().collisionDetect(this, width, 0);
 			
-			if (!listEmptyOrPlants(collisions.get(2).get(0)) || collisions.get(2).get(1).contains(Feature.ground)) 
+			if (!noObjectMovementBlocking(collisions.get(2).get(0)) || collisions.get(2).get(1).contains(Feature.ground)) 
 				return false;			
 		}
 		
@@ -692,7 +692,7 @@ public class Mazub extends GameObject {
 			
 			List<List<List<Object>>> collisions = getWorld().collisionDetect(this, futurewidth, height);
 			
-			if (!listEmptyOrPlants(collisions.get(1).get(0)) || collisions.get(1).get(1).contains(Feature.ground)) 
+			if (!noObjectMovementBlocking(collisions.get(1).get(0)) || collisions.get(1).get(1).contains(Feature.ground)) 
 				return false;			
 		}
 		

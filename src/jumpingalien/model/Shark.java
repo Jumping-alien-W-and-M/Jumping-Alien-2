@@ -271,7 +271,7 @@ public class Shark extends Enemy {
 		setNonJumpingPeriods(0);
 
 		List<List<List<Object>>> collisions = getCollisions();
-		if (!(listEmptyOrPlants(collisions.get(3).get(0))) && (collisions.get(3).get(1).contains(Feature.ground)))
+		if (!(noObjectMovementBlocking(collisions.get(3).get(0))) && (collisions.get(3).get(1).contains(Feature.ground)))
 			setJustJumped(true);
 	}
 	
