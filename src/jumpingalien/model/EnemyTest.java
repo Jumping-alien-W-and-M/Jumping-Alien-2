@@ -54,8 +54,8 @@ public class EnemyTest {
 			assertEquals(0, test_slime.getActionTime(), Util.DEFAULT_EPSILON);
 			test_slime.advanceTime(0.1);
 			double action_time = test_slime.getActionTime();
-			assert(action_time >= test_slime.getMinActionTime() - 0.1);
-			assert(action_time < test_slime.getMaxActionTime() - 0.1);
+			assertEquals(true, action_time >= test_slime.getMinActionTime() - 0.1);
+			assertEquals(true, action_time < test_slime.getMaxActionTime() - 0.1);
 			
 			for(double j = 0; (j < 10) && (action_time > 0.15); j++) {
 				action_time -= 0.15;
