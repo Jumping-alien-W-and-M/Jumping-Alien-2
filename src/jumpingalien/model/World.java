@@ -322,13 +322,22 @@ public class World {
 	 */
 	public boolean touchesTarget() {
 		
-		for(int x = (int) getMazub().getX(); x <= getMazub().getX() + getMazub().getWidth(); x += getMazub().getWidth()) {
-			for(int y = (int) getMazub().getY(); y <= getMazub().getY() + getMazub().getHeight(); y += getMazub().getHeight()) {
-				if ((getTilePos(x) == getXTarget())
-						&& (getTilePos(y) == getYTarget())) {
-					return true;
-				}
+		if (getMazub() == null) return false;
+		
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
 			}
+			collisions.add(inner_collisions);
+		}
+		
+		collisionDetectBasic(getMazub(), getXTarget()*getTileSize(), getYTarget()*getTileSize(),
+				(getXTarget() + 1)*getTileSize(), (getYTarget() + 1)*getTileSize(), 1, 0, 0, 0, collisions);
+		
+		for(int i = 0; i < collisions.size(); i++) {
+			if (collisions.get(i).get(0).contains(1)) return true;
 		}
 		
 		return false;

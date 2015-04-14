@@ -9,7 +9,7 @@ import jumpingalien.util.Sprite;
 public class Shark extends Enemy {
 
 	public Shark(double x, double y, Sprite[] images) {
-		super(x, y, images, 1.5, 0, 4, 1, 1.5, 100);
+		super(x, y, images, 1.5, 0, 4, 1, 4, 100);
 	}
 	
 	/**
@@ -170,7 +170,7 @@ public class Shark extends Enemy {
 	protected void collisionHandleSlime(Slime slime, int direction) {
 		assert(slime != null);
 		
-		if (this.getDeathTime() != 0 && slime.getDeathTime() != 0 && getTimeInvincible() == 0 && slime.getTimeInvincible() == 0) {
+		if (this.getDeathTime() == 0 && slime.getDeathTime() == 0 && getTimeInvincible() == 0 && slime.getTimeInvincible() == 0) {
 			if (direction != 1) {
 				slime.hit(50);
 				slime.setTimeInvincible(0.6);

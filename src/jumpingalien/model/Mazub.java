@@ -383,7 +383,7 @@ public class Mazub extends GameObject {
 	protected void collisionHandleSlime(Slime slime, int direction) {
 		assert(slime != null);
 		
-		if (slime.getDeathTime() != 0 && getTimeInvincible() == 0 && slime.getTimeInvincible() == 0) {
+		if (slime.getDeathTime() == 0 && getTimeInvincible() == 0 && slime.getTimeInvincible() == 0) {
 			if (direction != 1) {
 				slime.hit(50);
 				slime.setTimeInvincible(0.6);

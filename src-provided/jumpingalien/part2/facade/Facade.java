@@ -2,7 +2,6 @@ package jumpingalien.part2.facade;
 
 import java.util.Collection;
 
-import jumpingalien.common.sprites.JumpingAlienSprites;
 import jumpingalien.model.Mazub;
 import jumpingalien.model.Plant;
 import jumpingalien.model.School;
@@ -113,10 +112,25 @@ public class Facade implements IFacadePart2 {
 
 	@Override
 	public void startGame(World world) {
-		School school = new School();
-		Sprite[] sprites = {JumpingAlienSprites.ALIEN_SPRITESET[0], JumpingAlienSprites.ALIEN_SPRITESET[1]};
-		Slime slime = new Slime(500, 500, sprites, school);
-		world.addSchool(school);
+		boolean slimetest = true;
+		boolean planttest = false;
+		if (slimetest) {
+			School school1 = new School();
+			world.addSchool(school1);
+			School school2 = new School();
+			world.addSchool(school2);
+			Sprite[] sprites = {jumpingalien.part2.internal.Resources.SLIME_SPRITE_LEFT,
+					jumpingalien.part2.internal.Resources.SLIME_SPRITE_RIGHT};
+			new Slime(150, 500, sprites, school1);
+			new Slime(390, 500, sprites, school2);
+			new Slime(530, 500, sprites, school2);
+		}
+		if (planttest) {
+			Sprite[] sprites = {jumpingalien.part2.internal.Resources.PLANT_SPRITE_LEFT,
+					jumpingalien.part2.internal.Resources.PLANT_SPRITE_RIGHT};
+			Plant plant = new Plant(650, 200, sprites);
+			world.addPlant(plant);
+		}
 	}
 
 	@Override
