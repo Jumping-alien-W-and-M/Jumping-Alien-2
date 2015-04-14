@@ -341,7 +341,7 @@ public class Mazub extends GameObject {
 	protected void collisionHandleShark(Shark shark, int direction) {
 		assert(shark != null);
 		
-		if (shark.getDeathTime() != 0 && getTimeInvincible() == 0 && shark.getTimeInvincible() == 0) {
+		if (shark.getDeathTime() == 0 && getTimeInvincible() == 0 && shark.getTimeInvincible() == 0) {
 			if (direction != 1) {
 				shark.setHitpoints(shark.getHitpoints() - 50);
 				shark.setTimeInvincible(0.6);

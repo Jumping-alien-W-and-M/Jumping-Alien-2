@@ -534,7 +534,7 @@ public abstract class GameObject {
 		this.time_invincible = time;
 	}
 	
-	private double time_invincible;
+	private double time_invincible = 0;
 	 
 	protected abstract void terminate();
 	

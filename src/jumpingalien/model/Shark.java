@@ -9,7 +9,7 @@ import jumpingalien.util.Sprite;
 public class Shark extends Enemy {
 
 	public Shark(double x, double y, Sprite[] images) {
-		super(x, y, images, 1.5, 0, 4, 1, 4, 100);
+		super(x, y, images, 1.5, 0, 4, 1, 1.5, 100);
 	}
 	
 	/**
@@ -47,7 +47,7 @@ public class Shark extends Enemy {
 		this.non_jumping_periods = nonjumpingperiods;
 	}
 
-	private int non_jumping_periods;
+	private int non_jumping_periods = 5;
 	
 	/**
 	 * Gets the new vertical acceleration of this shark.
@@ -64,10 +64,11 @@ public class Shark extends Enemy {
 	 */
 	@Override
 	protected double advanceAy() {
-		if(getAy() >= -0.2 && getAy() <= 0.2 && canDiveOrRise())
+		List<List<List<Object>>> collisions = getCollisions();
+		if(getAy() >= -0.2 && getAy() <= 0.2  && canDiveOrRise())
 			return(getAy());
-		else if(getAy() == -10 && ! canJump() && !submerged(getCollisions()))
-			return(getAy());
+		else if( ! collisions.get(0).get(1).contains(Feature.water))    //!submerged(getCollisions()))
+			return(-10);
 		return 0;			
 	}
 	
@@ -110,8 +111,7 @@ public class Shark extends Enemy {
 		if (!isValidDt(time))
 			throw new IllegalArgumentException();
 		
-		if((! canDiveOrRise()) && (getAy() != -10))
-			setY(getY());
+		
 		super.advanceY(time);
 	}
 	
@@ -140,17 +140,11 @@ public class Shark extends Enemy {
 		setVy(0);
 		if(getAy() != -10)
 			setAy(0);
-		Random rand = new Random();
-		int nextaction;
-		if(getNonJumpingPeriods() > 4 && canJump())
-			nextaction = rand.nextInt(2);
-		else
-			nextaction = rand.nextInt(1);
-		
-		if(nextaction == 1){
+
+		if(getNonJumpingPeriods() > 4 && canJump()){
 			startJump();
-		}						
-		else if(canDiveOrRise())
+		}			
+		else 
 			startRiseOrDive();	
 	}
 	
@@ -268,7 +262,7 @@ public class Shark extends Enemy {
 	 */
 	private void startJump(){
 		setVy(2);
-		setAy(-10);
+
 		setNonJumpingPeriods(0);
 
 		List<List<List<Object>>> collisions = getCollisions();
@@ -325,7 +319,7 @@ public class Shark extends Enemy {
 	private void startRiseOrDive(){
 		Random rand = new Random(); 
 		setNonJumpingPeriods(getNonJumpingPeriods() + 1);
-		setAx(2*getAxi()*rand.nextDouble() - getAxi());
+		setAy(2*getAxi()*rand.nextDouble() - getAxi());
 	}
 	
 	/**
@@ -343,6 +337,7 @@ public class Shark extends Enemy {
 		List<List<List<Object>>> collisions = getCollisions();
 		
 		if(collisions.get(3).get(1).contains(Feature.ground) || collisions.get(3).get(1).contains(Feature.water)
+				|| collisions.get(0).get(1).contains(Feature.ground) || collisions.get(0).get(1).contains(Feature.water)
 				|| collisions.get(3).get(0).size() != 0)
 			return true;
 		
