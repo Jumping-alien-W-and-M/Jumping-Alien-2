@@ -71,11 +71,11 @@ public class Shark extends Enemy {
 	@Override
 	protected double advanceAy() {
 		List<List<List<Object>>> collisions = getCollisions();
+		if (canDive() && getAy() < 0 && getAy() > -getMaxRiseAy()) return getAy();
+		if (canRise() && getAy() > 0 && getAy() < getMaxRiseAy()) return getAy();
 		for(int i = 0; i < 2; i++) {
 			if (collisions.get(i).get(1).contains(Feature.air) || collisions.get(i).get(1).contains(Feature.magma)) return -10;
 		}
-		if (canDive()) return Math.min(0, getAy());
-		if (canRise()) return Math.max(0, getAy());
 		return 0;
 	}
 	
@@ -150,8 +150,7 @@ public class Shark extends Enemy {
 
 		if(getNonJumpingPeriods() > 4 && canJump()){
 			startJump();
-		}			
-		else 
+		} else 
 			startRiseOrDive();	
 	}
 	

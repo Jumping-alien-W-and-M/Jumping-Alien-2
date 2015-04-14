@@ -430,7 +430,7 @@ public abstract class GameObject {
 	 * @effect	The death time of this plant will we set to 0.6.
 	 * 			| setDeathTime(0.6)
 	 */
-	protected void kill(){
+	protected void kill() {
 		setDeathTime(0.6);
 	}
 	

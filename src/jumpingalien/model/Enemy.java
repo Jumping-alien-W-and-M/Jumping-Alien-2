@@ -149,10 +149,9 @@ public abstract class Enemy extends GameObject {
 	 *			| 	terminate();
 	 */
 	private void advanceDeathTime(double time){
-		if(! (getDeathTime() == 0)){
+		if(getDeathTime() != 0) {
 			this.setDeathTime(getDeathTime() - time);
-			if(getDeathTime() <= 0)
-				terminate();
+			if(getDeathTime() <= 0) terminate();
 		}
 	}
 	
