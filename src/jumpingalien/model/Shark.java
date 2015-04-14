@@ -22,7 +22,7 @@ public class Shark extends Enemy {
 	 */
 	@Override
 	public boolean isValidAy(double ay) {
-		return ((ay == 0) || (ay == -10) || (Math.abs(ay) <= 0.2));
+		return ((ay == 0) || (ay == -10) || (Math.abs(ay) <= getMaxRiseAy()));
 	}
 	
 	/**
@@ -53,7 +53,7 @@ public class Shark extends Enemy {
 		return Shark.max_rise_ay;
 	}
 	
-	private static final double max_rise_ay = 2;
+	private static final double max_rise_ay = 0.2;
 	
 	/**
 	 * Gets the new vertical acceleration of this shark.
@@ -71,11 +71,12 @@ public class Shark extends Enemy {
 	@Override
 	protected double advanceAy() {
 		List<List<List<Object>>> collisions = getCollisions();
-		if(getAy() >= -0.2 && getAy() <= 0.2  && canDiveOrRise())
-			return(getAy());
-		else if( ! collisions.get(0).get(1).contains(Feature.water))    //!submerged(getCollisions()))
-			return(-10);
-		return 0;			
+		for(int i = 0; i < 2; i++) {
+			if (collisions.get(i).get(1).contains(Feature.air) || collisions.get(i).get(1).contains(Feature.magma)) return -10;
+		}
+		if (canDive()) return Math.min(0, getAy());
+		if (canRise()) return Math.max(0, getAy());
+		return 0;
 	}
 	
 	/**
@@ -93,10 +94,10 @@ public class Shark extends Enemy {
 	 * 			| ! isValidDt(time)	
 	 */
 	@Override
-	protected double advanceVy(double time) throws IllegalArgumentException{
+	protected double advanceVy(double time) throws IllegalArgumentException {
 		if (!isValidDt(time))
 			throw new IllegalArgumentException();
-		if((! canDiveOrRise()) && (getAy() != -10))
+		if((getAy() > 0 && !canRise()) || (getAy() < 0 && getAy() > -getMaxRiseAy() && !canDive()))
 			return 0;
 		return(super.advanceVy(time));
 	}
@@ -284,26 +285,17 @@ public class Shark extends Enemy {
 	 *			|	return true
 	 *			| return false
 	 */
-	private boolean canDiveOrRise(){
-		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0, getHeight() + 1);
+	private boolean canDive(){
+		List<List<List<Object>>> collisions = getCollisions();
 		for(Object feature : collisions.get(3).get(1)) {
 			if ((Feature) feature != Feature.water) return false;
 		}
-		return submerged(collisions);
+		return true;
 	}
 	
-	/**
-	 * Checks whether or not this shark is submerged in water.
-	 * 
-	 * @param collisions
-	 * 			The result of the collisiondetect method in the class World.
-	 * @return	...
-	 * 			| if( collisions.get(1).get(1).contains(Feature.water))
-	 *			|	return true
-	 *			| return false
-	 */
-	private boolean submerged(List<List<List<Object>>> collisions){
-		for(Object feature : collisions.get(1).get(1)) {
+	private boolean canRise() {
+		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0, getHeight() + 1);
+		for(Object feature : collisions.get(3).get(1)) {
 			if ((Feature) feature != Feature.water) return false;
 		}
 		return true;
@@ -321,10 +313,15 @@ public class Shark extends Enemy {
 	 *			| else
 	 *			|	setAx(abs_value_ax);
 	 */
-	private void startRiseOrDive(){
+	private void startRiseOrDive() {
 		Random rand = new Random(); 
 		setNonJumpingPeriods(getNonJumpingPeriods() + 1);
-		setAy(2*getMaxRiseAy()*rand.nextDouble() - getMaxRiseAy());
+		double lowerbound = 0;
+		double upperbound = 0;
+		if (canDive()) lowerbound = -getMaxRiseAy();
+		if (canRise()) upperbound = getMaxRiseAy();
+		setAy(rand.nextDouble()*(upperbound - lowerbound) + lowerbound);
+		if (getAy() > 0) setJustJumped(true);
 	}
 	
 	/**
