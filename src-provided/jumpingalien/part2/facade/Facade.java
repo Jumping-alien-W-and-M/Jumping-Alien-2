@@ -112,8 +112,9 @@ public class Facade implements IFacadePart2 {
 
 	@Override
 	public void startGame(World world) {
-		boolean slimetest = true;
+		boolean slimetest = false;
 		boolean planttest = false;
+		boolean outofboundstest = false;
 		if (slimetest) {
 			School school1 = new School();
 			world.addSchool(school1);
@@ -130,6 +131,10 @@ public class Facade implements IFacadePart2 {
 					jumpingalien.part2.internal.Resources.PLANT_SPRITE_RIGHT};
 			Plant plant = new Plant(650, 200, sprites);
 			world.addPlant(plant);
+		}
+		if (outofboundstest) {
+			world.setFeature(0, 1, 0);
+			world.setFeature(0, 2, 0);
 		}
 	}
 

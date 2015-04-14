@@ -117,8 +117,8 @@ public class School {
 		assert(hasAsSlime(slime));
 		
 		slimes.remove(slime);
-		slime.setSchool(null);
 		slime.setWorld(null);
+		slime.setSchool(null);
 		
 		if (getNbOfSlimes() == 0) {
 			getWorld().removeSchool(this);
