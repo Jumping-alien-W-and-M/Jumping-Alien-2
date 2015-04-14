@@ -27,7 +27,7 @@ public class MazubTest {
 	public void generateGroundLayer() {
 		player.setX(world.getWorldWidth()/2);
 		player.setY(world.getTileSize() - 1);
-		for(int x = 0; x < world.getWorldWidth()/world.getTileSize(); x += world.getTileSize()) {
+		for(int x = 0; x < world.getWorldWidth()/world.getTileSize(); x++) {
 			world.setFeature(x, 0, 1);
 		}
 	}
@@ -750,7 +750,7 @@ public class MazubTest {
 		assertEquals(false, player.getJustJumped());
 		
 		player.startJump();
-
+		
 		assertEquals(world.getTileSize() - 1, (int) player.getY());
 		assertEquals(true, player.getJumping());
 		assertEquals(true, player.getJustJumped());
@@ -758,19 +758,19 @@ public class MazubTest {
 		player.advanceTime(0.001);
 
 		assertEquals(world.getTileSize() - 1, (int) player.getY());
-		assertEquals(false, player.getJumping());
-		assertEquals(false, player.getJustJumped());
+		assertEquals(true, player.getJumping());
+		assertEquals(true, player.getJustJumped());
 		
 		player.advanceTime(0.001);
 
-		assertEquals(world.getTileSize() - 1, (int) player.getY());
-		assertEquals(false, player.getJumping());
+		assertEquals(world.getTileSize(), (int) player.getY());
+		assertEquals(true, player.getJumping());
 		assertEquals(false, player.getJustJumped());
 	}
 	
 	@Test
 	public void canJumpHorizontalTest() {
-		world.setFeature(100, 0, 1);
+		world.setFeature(10, 0, 1);
 		player.setY(9);
 		
 		player.setX(10);
@@ -803,7 +803,7 @@ public class MazubTest {
 	
 	@Test
 	public void canJumpVerticalTest() {
-		world.setFeature(100, 0, 1);
+		world.setFeature(10, 0, 1);
 		player.setX(100);
 		
 		player.setY(0);
@@ -884,7 +884,7 @@ public class MazubTest {
 	public void duckingBlockedTest() {
 		generateGroundLayer();
 		
-		world.setFeature(500, 80, 1);
+		world.setFeature(50, 8, 1);
 		player.setX(200);
 		player.setY(9);
 		player.startMove("right");

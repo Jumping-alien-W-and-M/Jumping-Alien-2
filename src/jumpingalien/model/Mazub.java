@@ -614,8 +614,7 @@ public class Mazub extends GameObject {
 	 */
 	@Override
 	public boolean canJump() {
-		if(getWorld() == null)
-			return true;
+		if (getWorld() == null) return true;
 		List<List<List<Object>>> collisions = getCollisions();
 		if(!noObjectMovementBlocking(collisions.get(3).get(0)) || collisions.get(3).get(1).contains(Feature.ground))
 			return true;
