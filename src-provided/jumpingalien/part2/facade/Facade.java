@@ -2,6 +2,7 @@ package jumpingalien.part2.facade;
 
 import java.util.Collection;
 
+import jumpingalien.common.sprites.JumpingAlienSprites;
 import jumpingalien.model.Mazub;
 import jumpingalien.model.Plant;
 import jumpingalien.model.School;
@@ -112,7 +113,10 @@ public class Facade implements IFacadePart2 {
 
 	@Override
 	public void startGame(World world) {
-		
+		School school = new School();
+		Sprite[] sprites = {JumpingAlienSprites.ALIEN_SPRITESET[0], JumpingAlienSprites.ALIEN_SPRITESET[1]};
+		Slime slime = new Slime(500, 500, sprites, school);
+		world.addSchool(school);
 	}
 
 	@Override

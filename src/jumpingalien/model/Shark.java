@@ -294,7 +294,7 @@ public class Shark extends Enemy {
 	
 	private boolean canRise() {
 		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0, getHeight() + 1);
-		for(Object feature : collisions.get(3).get(1)) {
+		for(Object feature : collisions.get(1).get(1)) {
 			if ((Feature) feature != Feature.water) return false;
 		}
 		return true;

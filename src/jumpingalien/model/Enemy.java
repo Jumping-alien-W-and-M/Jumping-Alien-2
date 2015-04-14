@@ -29,7 +29,7 @@ public abstract class Enemy extends GameObject {
 	protected void setHitpoints(int hitpoints) {
 		this.hitpoints = hitpoints;
 		
-		if (getHitpoints() <= 0) {
+		if ((getHitpoints() <= 0) && (getDeathTime() == 0)) {
 			kill();
 		}
 	}
@@ -91,11 +91,11 @@ public abstract class Enemy extends GameObject {
 		for(double time_passed = 0; time_passed < dt; time_passed += timestep) {
 			timestep = getTimestep(dt, time_passed);
 			super.advanceTimeStep(timestep);
-			
 			if (getWorld() == null) return;
 			
 			advanceActionTime(timestep);
 			advanceDeathTime(timestep);
+			if (getWorld() == null) return;
 		}
 		
 		List<List<List<Object>>> collisions = getCollisions();
