@@ -8,7 +8,37 @@ import be.kuleuven.cs.som.annotate.Immutable;
 import jumpingalien.util.Sprite;
 
 public abstract class Enemy extends GameObject {
-
+	
+	/**
+	 * Creates an enemy.
+	 * 
+	 * @param x
+	 * 			The x-coordinate this enemy should be created at.
+	 * @param y
+	 * 			The y-coordinate this enemy should be created at.
+	 * @param images
+	 * 			The series of sprites which should be used to display this enemy.
+	 * @param axi
+	 * 			The magnitude of the horizontal acceleration this enemy will have when moving horizontally.
+	 * @param vxi
+	 * 			The magnitude of the horizontal velocity will initially have when it starts moving horizontally.
+	 * @param vxmax
+	 * 			The magnitude of the maximal horizontal velocity can have when moving horizontally.
+	 * @param min_action_time
+	 * 			The minimal time a random action for this enemy should take.
+	 * @param max_action_time
+	 * 			The maximal time a random action for this enemy should take.
+	 * @param hitpoints
+	 * 			The amount of hitpoints this enemy should start with.
+	 * @post	...
+	 * 			| (new.getMinActionTime() == min_action_time)
+	 * @post	...
+	 * 			| (new.getMaxActionTime() == max_action_time)
+	 * @effect	...
+	 * 			| super(x, y, images, axi, vxi, vxmax)
+	 * @effect	...
+	 * 			| setHitpoints(hitpoints)
+	 */
 	public Enemy(double x, double y, Sprite[] images, double axi, double vxi, double vxmax, double min_action_time,
 			double max_action_time, int hitpoints) {
 		super(x, y, images, axi, vxi, vxmax);
