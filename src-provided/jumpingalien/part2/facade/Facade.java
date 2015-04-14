@@ -122,7 +122,7 @@ public class Facade implements IFacadePart2 {
 			Sprite[] sprites = {jumpingalien.part2.internal.Resources.SLIME_SPRITE_LEFT,
 					jumpingalien.part2.internal.Resources.SLIME_SPRITE_RIGHT};
 			new Slime(150, 500, sprites, school1);
-			new Slime(390, 500, sprites, school2);
+			new Slime(390, 500, sprites, school1);
 			new Slime(530, 500, sprites, school2);
 		}
 		if (planttest) {

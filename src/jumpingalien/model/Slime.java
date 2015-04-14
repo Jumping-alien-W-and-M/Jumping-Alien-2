@@ -199,7 +199,8 @@ public class Slime extends Enemy {
 	 * 			|	then slime.switchSchool(this.getSchool())
 	 * 
 	 */
-	protected void collisionHandleSlime(Slime slime) {
+	@Override
+	protected void collisionHandleSlime(Slime slime, int direction) {
 		assert(slime != null);
 		
 		if (this.getDeathTime() != 0 || slime.getDeathTime() != 0) return;
