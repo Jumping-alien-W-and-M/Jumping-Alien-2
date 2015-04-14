@@ -49,6 +49,12 @@ public class Shark extends Enemy {
 
 	private int non_jumping_periods = 5;
 	
+	public static double getMaxRiseAy() {
+		return Shark.max_rise_ay;
+	}
+	
+	private static final double max_rise_ay = 2;
+	
 	/**
 	 * Gets the new vertical acceleration of this shark.
 	 * 
@@ -164,7 +170,7 @@ public class Shark extends Enemy {
 	protected void collisionHandleSlime(Slime slime, int direction) {
 		assert(slime != null);
 		
-		if (slime.getDeathTime() != 0 && getTimeInvincible() == 0 && slime.getTimeInvincible() == 0) {
+		if (this.getDeathTime() != 0 && slime.getDeathTime() != 0 && getTimeInvincible() == 0 && slime.getTimeInvincible() == 0) {
 			if (direction != 1) {
 				slime.hit(50);
 				slime.setTimeInvincible(0.6);
@@ -190,7 +196,6 @@ public class Shark extends Enemy {
 	@Override
 	protected void collisionHandleMazub(Mazub player, int direction) {
 		assert(player != null);
-		direction += 2;
 		player.collisionHandleShark(this, mirrorDirection(direction));
 	}
 	
@@ -280,7 +285,7 @@ public class Shark extends Enemy {
 	 *			| return false
 	 */
 	private boolean canDiveOrRise(){
-		List<List<List<Object>>> collisions = getCollisions();
+		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0, getHeight() + 1);
 		for(Object feature : collisions.get(3).get(1)) {
 			if ((Feature) feature != Feature.water) return false;
 		}
@@ -319,7 +324,7 @@ public class Shark extends Enemy {
 	private void startRiseOrDive(){
 		Random rand = new Random(); 
 		setNonJumpingPeriods(getNonJumpingPeriods() + 1);
-		setAy(2*getAxi()*rand.nextDouble() - getAxi());
+		setAy(2*getMaxRiseAy()*rand.nextDouble() - getMaxRiseAy());
 	}
 	
 	/**

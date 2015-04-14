@@ -564,6 +564,8 @@ public abstract class GameObject {
 	 */
 	public void advanceTimeStep(double timestep) {
 		
+		if (getDeathTime() > 0) return;
+		
 		List<List<List<Object>>> collisions = getCollisions();
 		if ((listEmptyOrPlants(collisions.get(0).get(0)) && !(collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0))
 			|| ((listEmptyOrPlants(collisions.get(2).get(0)) && !(collisions.get(2).get(1).contains(Feature.ground)) && (getVx() > 0)))) 

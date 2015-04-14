@@ -202,6 +202,8 @@ public class Slime extends Enemy {
 	protected void collisionHandleSlime(Slime slime) {
 		assert(slime != null);
 		
+		if (this.getDeathTime() != 0 || slime.getDeathTime() != 0) return;
+		
 		int size1 = this.getSchool().getNbOfSlimes();
 		int size2 = slime.getSchool().getNbOfSlimes();
 		

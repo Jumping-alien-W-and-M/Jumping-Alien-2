@@ -95,6 +95,7 @@ public abstract class Enemy extends GameObject {
 			if (getWorld() == null) return;
 			
 			advanceActionTime(timestep);
+			advanceDeathTime(timestep);
 		}
 		
 		List<List<List<Object>>> collisions = getCollisions();
@@ -133,6 +134,26 @@ public abstract class Enemy extends GameObject {
 		}
 		
 		performRandomAction();
+	}
+	
+	/**
+	 * Advances the time this plant has been dead for with time.
+	 * 
+	 * @param time
+	 * 			The time to decrease the death time of this plant with.
+	 * @post	If deathtime is not equal to zero it will be set to the currendeathtime min time.
+	 * 			| if(! (getDeathTime() == 0)){
+	 *			|	this.setDeathTime(getDeathTime() - time);
+	 * @effect	If the new deatthime is lower then or equal to zero this plant will be terminated.
+	 * 			| if(new.getDeathTime() <= 0)
+	 *			| 	terminate();
+	 */
+	private void advanceDeathTime(double time){
+		if(! (getDeathTime() == 0)){
+			this.setDeathTime(getDeathTime() - time);
+			if(getDeathTime() <= 0)
+				terminate();
+		}
 	}
 	
 	/**
