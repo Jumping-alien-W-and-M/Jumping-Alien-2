@@ -127,9 +127,9 @@ public abstract class Enemy extends GameObject {
 			return;
 		}
 		
-		while (getActionTime() < min_action_time) {
+		while (getActionTime() < 0) {
 			Random rand = new Random();
-			double new_value = min_action_time + (max_action_time - min_action_time)*rand.nextDouble();
+			double new_value = getMinActionTime() + (getMaxActionTime() - getMinActionTime())*rand.nextDouble();
 			setActionTime(getActionTime() + new_value);
 		}
 		
