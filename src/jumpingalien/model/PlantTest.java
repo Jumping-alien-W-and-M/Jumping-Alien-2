@@ -12,7 +12,7 @@ public class PlantTest {
 
 	@Before
 	public void setUp() throws Exception {
-		test_world = new World(10, 20, 20, 200, 200, 19, 0);
+		test_world = new World(10, 200, 200, 500, 500, 19, 0);
 		test_plant = new Plant(0, 0, sprites);
 		test_world.addPlant(test_plant);
 	}

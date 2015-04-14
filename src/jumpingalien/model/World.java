@@ -832,14 +832,12 @@ public class World {
 		}
 		
 		// Checks collisions with features
-		int[][] tile_pos;
-		if (custom_height == 0) {
-			tile_pos = getTilePositionsIn((int) object.getX(), (int) object.getY(),
-					(int) object.getX() + object.getWidth(), (int) object.getY() + object.getHeight());
-		} else {
-			tile_pos = getTilePositionsIn((int) object.getX(), (int) object.getY(),
-					(int) object.getX() + object.getWidth(), (int) object.getY() + custom_height);
-		}
+		int width = object.getWidth();
+		int height = object.getHeight();
+		if (custom_width != 0) width = custom_width;
+		if (custom_height != 0) height = custom_height;
+		int[][] tile_pos = getTilePositionsIn((int) object.getX(), (int) object.getY(),
+				(int) object.getX() + width, (int) object.getY() + height);
 		for(int[] tile : tile_pos) {
 			collisionDetectFeature(object, tile[0]*getTileSize(), tile[1]*getTileSize(), custom_width, custom_height, collisions);
 		}
