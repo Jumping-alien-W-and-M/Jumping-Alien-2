@@ -47,5 +47,22 @@ public class PlantTest {
 		}
 		
 	}
+	
+	@Test
+	public void deathTimeTest() {
+		test_plant = new Plant(1000, 0, sprites);
+		test_world.addPlant(test_plant);
+		test_plant.kill();
+		
+		for(double i = 0.6; Math.abs(i) > Util.DEFAULT_EPSILON; i -= 0.1) {
+			assertEquals(i, test_plant.getDeathTime(), Util.DEFAULT_EPSILON);
+			test_plant.advanceTime(0.1);
+		}
+		
+		assertEquals(0, test_plant.getDeathTime(), Util.DEFAULT_EPSILON);
+		test_plant.advanceTime(0.001);
+		assertEquals(false, test_world.hasAsPlant(test_plant));
+		assertEquals(null, test_plant.getWorld());
+	}
 
 }

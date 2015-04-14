@@ -66,5 +66,23 @@ public class EnemyTest {
 			test_school.removeSlime(test_slime);
 		}
 	}
+	
+	@Test
+	public void deathTimeTest() {
+		test_slime = new Slime(1000, 0, slime_sprites, test_school);
+		test_slime.setHitpoints(0);
+		
+		for(double i = 0.6; Math.abs(i) > Util.DEFAULT_EPSILON; i -= 0.1) {
+			assertEquals(i, test_slime.getDeathTime(), Util.DEFAULT_EPSILON);
+			test_slime.advanceTime(0.1);
+		}
+		
+		assertEquals(0, test_slime.getDeathTime(), Util.DEFAULT_EPSILON);
+		test_slime.advanceTime(0.001);
+		assertEquals(false, test_school.hasAsSlime(test_slime));
+		assertEquals(false, test_world.getSlimes().contains(test_slime));
+		assertEquals(null, test_slime.getSchool());
+		assertEquals(null, test_slime.getWorld());
+	}
 
 }
