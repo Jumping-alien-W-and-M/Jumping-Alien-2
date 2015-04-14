@@ -225,7 +225,7 @@ public class WorldTest {
 	@Test
 	public void TestTouchesTargetnotTouchingTarget(){
 		assert(! world.touchesTarget());
-		player.setX(189);
+		player.setX(189 - player.getWidth() + 1);
 		assert(! world.touchesTarget());
 		player.setY(10);
 		assert(! world.touchesTarget());
@@ -550,7 +550,7 @@ public class WorldTest {
 	
 	@Test
 	public void TestgetFeatureFeatureInFeatures(){
-		world.setFeature(50, 50, 1);
+		world.setFeature(5, 5, 1);
 		assertEquals(world.getFeature(50, 50), 
 					world.getFeatures().get(world.getHash(world.getTilePos(50), world.getTilePos(50))));
 	}
@@ -562,21 +562,21 @@ public class WorldTest {
 	
 	@Test
 	public void TestsetFeatureGroundMagmaAndWater(){
-		world.setFeature(150, 160, 1);
+		world.setFeature(15, 16, 1);
 		assertEquals(world.getFeature(150, 160), Feature.ground);
-		world.setFeature(150, 160, 2);
+		world.setFeature(15, 16, 2);
 		assertEquals(world.getFeature(150, 160), Feature.water);
-		world.setFeature(150, 160, 3);
+		world.setFeature(15, 16, 3);
 		assertEquals(world.getFeature(150, 160), Feature.magma);
 	}
 	
 	@Test
 	public void TestsetFeatureAir(){
-		world.setFeature(150, 160, 0);
+		world.setFeature(15, 16, 0);
 		assertEquals(world.getFeature(150, 160), Feature.air);
-		world.setFeature(150, 160, -5);
+		world.setFeature(15, 16, -5);
 		assertEquals(world.getFeature(150, 160), Feature.air);
-		world.setFeature(150, 160, 7);
+		world.setFeature(15, 16, 7);
 		assertEquals(world.getFeature(150, 160), Feature.air);
 	}
 	
