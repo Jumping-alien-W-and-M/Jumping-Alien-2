@@ -9,10 +9,6 @@ public enum Feature {
 	
 	 air(0), ground(1), water(2), magma(3);
 	
-	public boolean isPassable(){
-		return (this != ground);
-	}
-	
 	/**
 	 * Initialize this feature with a given number.
 	 * 

@@ -17,14 +17,6 @@ public class FeatureTest {
 	}
 
 	@Test
-	public void isPassableTest() {
-		assertEquals(Feature.air.isPassable(), true);
-		assertEquals(Feature.ground.isPassable(), false);
-		assertEquals(Feature.water.isPassable(), true);
-		assertEquals(Feature.magma.isPassable(), true);
-	}
-
-	@Test
 	public void numberTest() {
 		assertEquals(Feature.air.getNumber(), 0);
 		assertEquals(Feature.ground.getNumber(), 1);
