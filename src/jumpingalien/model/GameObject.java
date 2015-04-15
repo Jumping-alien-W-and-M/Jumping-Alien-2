@@ -184,6 +184,7 @@ public abstract class GameObject {
 	 * @post	The new horizontal velocity of this game object is equal to vx.
 	 * 			| new.getVx() = vx
 	 */
+	@Model
 	protected void setVx(double vx) {
 		assert isValidVx(vx);
 		this.vx = vx;
