@@ -5,6 +5,7 @@ import java.util.Random;
 
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
+import be.kuleuven.cs.som.annotate.Model;
 import jumpingalien.util.Sprite;
 
 /**
@@ -72,7 +73,7 @@ public abstract class Enemy extends GameObject {
 	 * 			| if ((getHitpoints() <= 0) && (getDeathTime() == 0))
 	 * 			| 	then kkill()
 	 */
-	@Override
+	@Model @Override
 	protected void setHitpoints(int hitpoints) {
 		this.hitpoints = hitpoints;
 		
@@ -161,7 +162,8 @@ public abstract class Enemy extends GameObject {
 	 * 			| }
 	 * 			| performRandomAction()
 	 */
-	protected void advanceActionTime(double time) {
+	@Model
+	private void advanceActionTime(double time) {
 		
 		setActionTime(getActionTime() - time);
 		
@@ -190,6 +192,7 @@ public abstract class Enemy extends GameObject {
 	 * 			| if(new.getDeathTime() <= 0)
 	 *			| 	terminate()
 	 */
+	@Model
 	private void advanceDeathTime(double time){
 		if(getDeathTime() != 0) {
 			this.setDeathTime(getDeathTime() - time);

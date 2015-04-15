@@ -577,7 +577,7 @@ public abstract class GameObject {
 	 
 	protected abstract void terminate();
 	
-	public abstract void advanceTime(double dt) throws IllegalArgumentException;
+	protected abstract void advanceTime(double dt) throws IllegalArgumentException;
 	
 	/**
 	 * Advances the time by a given timestep for this game object.
