@@ -708,11 +708,14 @@ public class Mazub extends GameObject {
 	 * 
 	 * @effect	This Mazub's ducking state will be set to true.
 	 * 			| setDucking(true)
+	 * @effect	This Mazub will not try to stand anymore.
+	 * 			| setTryStand(false)
 	 * @effect	This Mazub's maximal horizontal velocity will be set to 1.
 	 * 			| setVxmax(1)
 	 */
 	public void startDuck() {
 		setDucking(true);
+		setTryStand(false);
 		setVxmax(1);
 	}
 

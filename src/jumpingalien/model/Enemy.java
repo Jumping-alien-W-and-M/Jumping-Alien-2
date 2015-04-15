@@ -7,6 +7,13 @@ import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 import jumpingalien.util.Sprite;
 
+/**
+ * An enemy, which hits Mazub on contact.
+ * 
+ * @invar 	The amount of sprites is equal to two.
+ * 			| images.length == 2 
+ *
+ */
 public abstract class Enemy extends GameObject {
 	
 	/**

@@ -8,6 +8,8 @@ import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Model;
 
 /**
+ * An alien plant which can heal Mazub.
+ * 
  * @invar 	The amount of sprites is equal to two.
  * 			| images.length == 2 
  *

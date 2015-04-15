@@ -11,11 +11,6 @@ import be.kuleuven.cs.som.annotate.Immutable;
  * The world class, which stores general information about the state of the game, like the player character, enemies, the environment,
  * the position of the view, ...
  * 
- * @invar	...
- * 			| (getXWindow() == getProperXWindow(getXWindow()))
- * @invar	...
- * 			| (getYWindow() == getProperYWindow(getYWindow()))
- * 
  * @version 1.0
  *
  */
@@ -200,7 +195,7 @@ public class World {
 	 * 			| if(this.getMazub() != null)
 	 *			| 		x_player = getMazub().getX() 
 	 * 			| result = Math.max(0, Math.min(getWorldWidth() - getWindowWidth(),
-	 * 			| 	Math.max(x_player + window_margin - getWindowWidth(), Math.min(x_player - window_margin, x))
+	 * 			| 	Math.max(x_player + getWindowMargin() - getWindowWidth(), Math.min(x_player - window_margin, x))
 	 * 			| ))
 	 */
 	public int getProperXWindow(int x) {
@@ -208,12 +203,12 @@ public class World {
 		if(this.getMazub() != null)
 			x_player = getMazub().getX();
 		
-		if (x > x_player - window_margin) {
+		if (x > x_player - getWindowMargin()) {
 			// If Mazub is too close to the left wall.
-			x = (int) x_player - window_margin;
-		} else if (x + getWindowWidth() < x_player + window_margin) {
+			x = (int) x_player - getWindowMargin();
+		} else if (x + getWindowWidth() < x_player + getWindowMargin()) {
 			// If Mazub is too close to the right wall.
-			x = (int) x_player + window_margin - getWindowWidth();
+			x = (int) x_player + getWindowMargin() - getWindowWidth();
 		}
 		
 		return Math.max(0, Math.min(getWorldWidth() - getWindowWidth(), x));
@@ -230,7 +225,7 @@ public class World {
 	 *			| if(this.getMazub() != null)
 	 *			|		y_player = getMazub().getY()	
 	 * 			| result = Math.max(0, Math.min(getWorldHeight() - getWindowHeight(),
-	 * 			| 	Math.max(y_player + window_margin - getWindowHeight(), Math.min(y_player - window_margin, y))
+	 * 			| 	Math.max(y_player + getWindowMargin() - getWindowHeight(), Math.min(y_player - window_margin, y))
 	 * 			| ))
 	 */
 	public int getProperYWindow(int y) {
@@ -238,16 +233,24 @@ public class World {
 		if(this.getMazub() != null)
 			y_player = getMazub().getY();
 		
-		if (y > y_player - window_margin) {
+		if (y > y_player - getWindowMargin()) {
 			// If Mazub is too close to the left wall.
-			y = (int) y_player - window_margin;
-		} else if (y + getWindowHeight() < y_player + window_margin) {
+			y = (int) y_player - getWindowMargin();
+		} else if (y + getWindowHeight() < y_player + getWindowMargin()) {
 			// If Mazub is too close to the right wall.
-			y = (int) y_player + window_margin - getWindowHeight();
+			y = (int) y_player + getWindowMargin() - getWindowHeight();
 		}
 		
 		return Math.max(0, Math.min(getWorldHeight() - getWindowHeight(), y));
 		
+	}
+	
+	/**
+	 * Gets the minimal distance between Mazub and the edges of the window under normal circumstances.
+	 */
+	@Basic @Immutable
+	public static int getWindowMargin() {
+		return World.window_margin;
 	}
 	
 	private static final int window_margin = 200;
@@ -1051,7 +1054,7 @@ public class World {
 	 * 			| mx1 = (int) object1.getX()
 	 * 			| my1 = (int) object1.getY()
 	 * 			| mx2 = mx1
-	 * 			| if (custom_height == 0)
+	 * 			| if (custom_width == 0)
 	 * 			|	then mx2 += object1.getWidth()
 	 * 			| else
 	 * 			|	then mx2 += custom_width
@@ -1085,7 +1088,7 @@ public class World {
 		int mx1 = (int) object1.getX();
 		int my1 = (int) object1.getY();
 		int mx2 = mx1;
-		if (custom_height == 0) {
+		if (custom_width == 0) {
 			mx2 += object1.getWidth();
 		} else {
 			mx2 += custom_width;

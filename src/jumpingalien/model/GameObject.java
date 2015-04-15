@@ -639,7 +639,7 @@ public abstract class GameObject {
 			if (should_advance) advanceY(timestep);
 		}
 
-		setVy(advanceVy(timestep));
+		advanceVy(timestep);
 		setAy(advanceAy());
 
 		collisions = getCollisions();
@@ -883,21 +883,25 @@ public abstract class GameObject {
 	 * 
 	 * @param dt
 	 * 			The amount of seconds to be advanced.
-	 * @return	...	
-	 * 			| if(getY() <= 0) result = 0
-	 * @return	...
-	 * 			| List<List<List<Object>>> collisions = getCollisions();
+	 * @effect	...	
+	 * 			| if(getY() <= 0) setVy(0)
+	 * @effect	...
+	 * 			| List<List<List<Object>>> collisions = getCollisions()
 	 *			| if (getVy() > 0) {
 	 *			|	for(int i = 0; i < 3; i++) {
 	 *			| 		if (!noObjectMovementBlocking(collisions.get(i).get(0)) || (collisions.get(i).get(1).contains(Feature.ground))) 
 	 *			|			setJustJumped(false);
-	 *			|			result =  0;
+	 *			|			setVy(0)
+	 *			|			return
 	 *			| if (!noObjectMovementBlocking(collisions.get(3).get(0)) || (collisions.get(3).get(1).contains(Feature.ground))) 
-	 *			|	if (!(getJustJumped())) result =  0;
+	 *			|	if (!(getJustJumped())) {
+	 *			|		setVy(0)
+	 *			|		return
+	 *			|	}
 	 *			| else
-	 *			|	setJustJumped(false);
-	 * @return	...
-	 * 			| rsult = getVy() + getAy()*dt;
+	 *			|	setJustJumped(false)
+	 * @effect	...
+	 * 			| setVy(getVy() + getAy()*dt)
 	 * @throws IllegalArgumentException
 	 * 			If dt isn't a valid time interval to advance the time with.
 	 * 			| !isValidDt(dt)
@@ -906,13 +910,14 @@ public abstract class GameObject {
 	 * 			| newvy == Double.NEGATIVE_INFINITY
 	 */
 	@Model
-	protected double advanceVy(double dt) throws IllegalArgumentException, IllegalStateException {
+	protected void advanceVy(double dt) throws IllegalArgumentException, IllegalStateException {
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();
 		}
 		
 		if (getY() <= 0) {
-			return 0;
+			setVy(0);
+			return;
 		}
 
 		List<List<List<Object>>> collisions = getCollisions();
@@ -920,12 +925,16 @@ public abstract class GameObject {
 			for(int i = 0; i < 3; i++) {
 				if (!noObjectMovementBlocking(collisions.get(i).get(0)) || (collisions.get(i).get(1).contains(Feature.ground))) {
 					setJustJumped(false);
-					return 0;
+					setVy(0);
+					return;
 				}
 			}
 		}
 		if (!noObjectMovementBlocking(collisions.get(3).get(0)) || (collisions.get(3).get(1).contains(Feature.ground))) {
-			if (!(getJustJumped())) return 0;
+			if (!(getJustJumped())) {
+				setVy(0);
+				return;
+			}
 		} else {
 			setJustJumped(false);
 		}
@@ -934,7 +943,7 @@ public abstract class GameObject {
 		if (newvy == Double.NEGATIVE_INFINITY) {
 			throw new IllegalStateException();
 		}
-		return newvy;
+		setVy(newvy);
 	}
 	
 	/**

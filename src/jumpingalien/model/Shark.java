@@ -98,9 +98,9 @@ public class Shark extends Enemy {
 	 */
 	@Model @Override
 	protected double advanceAy() {
-		List<List<List<Object>>> collisions = getCollisions();
 		if (canDive() && getAy() < 0 && getAy() > -getMaxRiseAy()) return getAy();
 		if (canRise() && getAy() > 0 && getAy() < getMaxRiseAy()) return getAy();
+		List<List<List<Object>>> collisions = getCollisions();
 		for(int i = 0; i < 2; i++) {
 			if (collisions.get(i).get(1).contains(Feature.air) || collisions.get(i).get(1).contains(Feature.magma)) return -10;
 		}
@@ -121,29 +121,14 @@ public class Shark extends Enemy {
 	 * 			| ! isValidDt(time)	
 	 */
 	@Override
-	protected double advanceVy(double time) throws IllegalArgumentException {
+	protected void advanceVy(double time) throws IllegalArgumentException {
 		if (!isValidDt(time))
 			throw new IllegalArgumentException();
-		if((getAy() > 0 && !canRise()) || (getAy() < 0 && getAy() > -getMaxRiseAy() && !canDive()))
-			return 0;
-		return(super.advanceVy(time));
-	}
-	
-	/**
-	 * Advances the y-position of this shark over a given time interval.
-	 * 
-	 * @effect 	...
-	 * 			super.advanceY(time)
-	 * @throws IllegArgumentException
-	 * 			| ! isValidDt(time)	
-	 */
-	@Override
-	protected void advanceY(double time) throws IllegalArgumentException{
-		if (!isValidDt(time))
-			throw new IllegalArgumentException();
-		
-		
-		super.advanceY(time);
+		if((getAy() > 0 && !canRise()) || (getAy() < 0 && getAy() > -getMaxRiseAy() && !canDive())) {
+			setVy(0);
+			return;
+		}
+		super.advanceVy(time);
 	}
 	
 	/**
