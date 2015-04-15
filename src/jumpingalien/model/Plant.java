@@ -55,6 +55,7 @@ public class Plant extends GameObject {
 	 * @post 	The new movement time of this plant is equal to movement_time
 	 * 			| new.getMovementTime() = movement_time
 	 */
+	@Model
 	protected void setMovementTime(double movement_time){
 		this.movement_time = movement_time;
 	}
