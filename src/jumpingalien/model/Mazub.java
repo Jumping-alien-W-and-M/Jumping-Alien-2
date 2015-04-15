@@ -771,6 +771,7 @@ public class Mazub extends GameObject {
 	 * 			|		then result = false
 	 * 			| result = true
 	 */
+	@Model
 	private boolean canstand() {
 		int currentwidth = getCurrentSprite().getWidth();
 		int futurewidth = getWidthWhenNotDucking();
