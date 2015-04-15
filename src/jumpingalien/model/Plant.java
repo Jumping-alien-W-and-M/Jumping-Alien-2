@@ -5,6 +5,7 @@ import java.util.List;
 
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Model;
 
 /**
  * @invar 	The amount of sprites is equal to two.
@@ -22,13 +23,11 @@ public class Plant extends GameObject {
 	 * 			the y-position of the new plant
 	 * @param images
 	 * 			the new plant's array of sprites
-	 * @effect	This new plant will be initialized as a game object with the given position, 
-	 * 			the given array of sprites, an initial horizontal accelaration of 0 
-	 * 			and a initial horizontal velocity of 0.5.
+	 * @effect	...
 	 * 			| super(x,y,images, 0, 0.5)
-	 * @effect	This new plant's movement time will be set to zero.
+	 * @effect	...
 	 * 			| setMovementTime(0)
-	 * @effect	This new plant's horizontal movement is set to the initial horizontal velocity of this plant.
+	 * @effect	...
 	 * 			| setVx(getVxi())
 	 */
 	public Plant(double x, double y, Sprite[] images){
@@ -65,25 +64,19 @@ public class Plant extends GameObject {
 	 * 
 	 * @param dt
 	 * 			The amount of seconds to advance.
-	 * @effect	advances deatthime step by step 
-	 * 			| double timestep = 1 / Math.abs(getVx()/100); 
-	 *			| for(double time = timestep; timestep <= dt; time += timestep)
-	 * 			|   advanceDeathtime(time).
-	 * @effect	advances the x-position of this plant step by step 
-	 * 			if this plant hits a wall or the player it will not move in that direction.
-	 *  		| double timestep = 1 / Math.abs(getVx()/100); 
-	 *			| for(double time = timestep; timestep <= dt; time += timestep)
-	 * 			| 	ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this,0);
-	 *			| 	if (canmove(collisions)) 
-	 *			|		advanceX(time);	
-	 * @effect  step by step advances movement time 
-	 *  		| double timestep = 1 / Math.abs(getVx()/100); 
-	 *			| for(double time = timestep; timestep <= dt; time += timestep
-	 * 			| 	advanceMovementTime(time)
-	 * @effect  Checks and deals with collisions in each step.
-	 * 			| double timestep = 1 / Math.abs(getVx()/100); 
-	 *			| for(double time = timestep; timestep <= dt; time += timestep)
-	 *			|		collisionhandle(collisions);
+	 * @effect	...
+	 * 			| double timestep = 0		
+	 *			| for(double time_passed = 0; time_passed < dt; time_passed += timestep) 
+	 *			|	if (getVx() != 0) timestep = Math.min(0.01/Math.abs(getVx()), dt - time_passed)
+	 *			|	else timestep = dt - time_passed
+	 *			|	super.advanceTimeStep(timestep)
+	 *			|	if (getWorld() == null) return
+	 *			|	advanceMovementTime(timestep)
+	 *			|	advanceDeathTime(timestep)
+	 *			| 	if (getWorld() == null) return
+	 * @effect	...
+	 * 			| List<List<List<Object>>> collisions = getCollisions()
+	 *			| collisionHandle(collisions, dt)
 	 * @throws IllegalArgumentException
 	 * 			If dt is not a valid time interval to advance the time with.
 	 * 			| !isValidDt(dt)
@@ -110,7 +103,13 @@ public class Plant extends GameObject {
 		collisionHandle(collisions, dt);
 	}
 	
-	@Override
+	/**
+	 * Returns the new vertical acceleration of this plant.
+	 * 
+	 * @result	...
+	 * 			| result = 0
+	 */
+	@Model @Override
 	protected double advanceAy() {
 		return 0;
 	}
@@ -127,6 +126,7 @@ public class Plant extends GameObject {
 	 * 			| if(new.getDeathTime() <= 0)
 	 *			| 	terminate();
 	 */
+	@Model
 	private void advanceDeathTime(double time){
 		if(! (getDeathTime() == 0)){
 			this.setDeathTime(getDeathTime() - time);
@@ -148,6 +148,7 @@ public class Plant extends GameObject {
 	 *			| 	setMovementTime(getMovementTime() - 0.5);
 	 *			| 	changeDirection();			
 	 */
+	@Model
 	private void advanceMovementTime(double time){
 		setMovementTime(getMovementTime() + time);
 		while (getMovementTime() > 0.5) {
@@ -167,9 +168,9 @@ public class Plant extends GameObject {
 	 *			| 	ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
 	 *			| 	for(Object collision_object: collision_objects){
 	 *			|		if(collision_object instanceof Mazub)
-	 *			|			collisionhandleplayer((Mazub) collision_object);	
+	 *			|			collisionhandleplayer((Mazub) collision_object, i);	
 	 */
-	@Override
+	@Override @Model
 	protected void collisionHandle(List<List<List<Object>>> collisions, double time) {
 		for(int i = 0; i < 4; i++) {
 			ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0);
@@ -185,11 +186,8 @@ public class Plant extends GameObject {
 	 * 
 	 * @param player
 	 * 			The player this plant collides with.
-	 * @effect	If this plant is not dying, 
-	 * 			the hitpoints of player will be set to the current hitpoints plus 50.
-	 * 			| player.setHitpoints(player.getHitpoints() + 50)
-	 * @effect	This plant is killed if it wasn't already killed.
-	 * 			| this.kill()
+	 * @effect	...
+	 * 			| player.collisionHandlePlant(this, mirrorDirection(direction))
 	 */
 	@Override
 	protected void collisionHandleMazub(Mazub player, int direction){
@@ -203,8 +201,6 @@ public class Plant extends GameObject {
 	 * 			| getWorld() != null
 	 * @effect	This plant will be removed from the game world.
 	 * 			| getWorld().removePlant(this)
-	 * @effect  The world this plant belongs to will be set to null.
-	 * 			| setWorld(null)
 	 */
 	@Override
 	protected void terminate() {
@@ -215,8 +211,8 @@ public class Plant extends GameObject {
 	/**
 	 * Changes the direction in which this plant is moving.
 	 * 
-	 * @post	the new horizontal velocity is equal to the negative of the old horizontal velocity
-	 * 			| new.getVx() = -this.getVx()
+	 * @effect	...
+	 * 			| setVx(-getVx))
 	 */
 	private void changeDirection(){
 			setVx(-getVx());
