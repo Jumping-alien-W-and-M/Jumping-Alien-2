@@ -426,6 +426,7 @@ public abstract class GameObject {
 	 * @post	This game object is in the given world.
 	 * 			| (new.getWorld() == world)
 	 */
+	@Model
 	protected void setWorld(World world) {
 		this.world = world;
 	}

@@ -84,7 +84,7 @@ public class Plant extends GameObject {
 	 * 			If dt is not a valid time interval to advance the time with.
 	 * 			| !isValidDt(dt)
 	 */
-	@Override
+	@Model @Override
 	protected void advanceTime(double dt)throws IllegalArgumentException{
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();

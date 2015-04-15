@@ -6,6 +6,7 @@ import java.util.List;
 
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
+import be.kuleuven.cs.som.annotate.Model;
 
 /**
  * The world class, which stores general information about the state of the game, like the player character, enemies, the environment,
@@ -157,6 +158,7 @@ public class World {
 	 * @post	...
 	 * 			| new.getXWindow() == getProperXWindow(x)
 	 */
+	@Model
 	private void setXWindow(int x) {
 		this.x_window = getProperXWindow(x);
 	}
@@ -179,6 +181,7 @@ public class World {
 	 * @post	...
 	 * 			| new.getYWindow() == getProperYWindow(y)
 	 */
+	@Model
 	private void setYWindow(int y) {
 		this.y_window = getProperYWindow(y);
 	}
@@ -979,6 +982,7 @@ public class World {
 	 * 			|
 	 * 			| collisionDetectBasic(object1, x1, y1, x2, y2, object2, 0, custom width, custom_height, collision_objects)
 	 */
+	@Model
 	private void collisionDetectObject(GameObject object1, GameObject object2, int custom_width, int custom_height, 
 			List<List<List<Object>>> collision_objects)  {
 		
@@ -1016,6 +1020,7 @@ public class World {
 	 * 			| collisionDetectBasic(object, x, y, x + getTileSize(), y + getTileSize(), feature, 1, custom width, 
 	 * 			|			custom_height, collision_objects)
 	 */
+	@Model
 	private void collisionDetectFeature(GameObject object, int x, int y, int custom_width, int custom_height, 
 			List<List<List<Object>>> collision_objects)  {
 		
@@ -1081,6 +1086,7 @@ public class World {
 	 * 			| if (has_central_collision) {
 	 *			|	then collisionAdd(collision_objects, 0, index, object2);
 	 */
+	@Model
 	private void collisionDetectBasic(GameObject object1, int sx1, int sy1, int sx2, int sy2, Object object2, int index,
 			 							int custom_width, int custom_height, List<List<List<Object>>> collision_objects) {
 		

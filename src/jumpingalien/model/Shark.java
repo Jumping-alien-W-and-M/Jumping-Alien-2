@@ -295,6 +295,7 @@ public class Shark extends Enemy {
 	 *			|		if ((Feature) feature != Feature.water) result =  false
 	 *			| result = true;
 	 */
+	@Model
 	private boolean canDive(){
 		List<List<List<Object>>> collisions = getCollisions();
 		for(Object feature : collisions.get(3).get(1)) {
@@ -312,6 +313,7 @@ public class Shark extends Enemy {
 	 *			|		if ((Feature) feature != Feature.water) result =  false
 	 *			| result = true;
 	 */
+	@Model
 	private boolean canRise() {
 		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0, getHeight() + 1);
 		for(Object feature : collisions.get(1).get(1)) {
