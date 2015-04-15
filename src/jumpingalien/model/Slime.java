@@ -2,6 +2,7 @@ package jumpingalien.model;
 
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Model;
 
 /**
  * The slime class, an enemy which lives in schools.
@@ -72,7 +73,7 @@ public class Slime extends Enemy {
 	 * @effect	...
 	 * 			| super.setWorld(world)
 	 */
-	@Override
+	@Override @Model
 	protected void setWorld(World world) {
 		assert(getSchool() != null);
 		assert((getSchool().getWorld() == world) || (world == null));
@@ -120,6 +121,7 @@ public class Slime extends Enemy {
 	 * 			|		then slime.setHitpoints(getHitpoints() - 1)
 	 * 			| setHitpoints(getHitpoints() + transfer)
 	 */
+	@Model
 	private void switchSchool(School school) {
 		assert(school != null);
 		
