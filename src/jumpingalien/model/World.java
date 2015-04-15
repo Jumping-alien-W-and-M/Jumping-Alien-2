@@ -30,6 +30,14 @@ public class World {
 	 * 			The amount of tiles in the X-direction in this world.
 	 * @param tiles_y_amount
 	 * 			The amount of tiles in the Y-direction in this world.
+	 * @param window_width
+	 * 			The width of the visible window.
+	 * @param window_height
+	 * 			The height of the visible window.
+	 * @param x_target
+	 * 			The x-position of the target tile.
+	 * @param y_target
+	 * 			The y-position of the target tile
 	 * @pre		...
 	 * 			| (tile_size > 0)
 	 * @pre		...
@@ -37,23 +45,25 @@ public class World {
 	 * @pre		...
 	 * 			| (tiles_y_amount > 0)
 	 * @pre		...
-	 * 			| (x_target > 0)
+	 * 			| (x_target >= 0)
 	 * @pre		...
-	 * 			| (y_target > 0)
+	 * 			| (y_target >= 0)
 	 * @pre		...
-	 * 			| (x_target < tiles_x_amount)
+	 * 			| (x_target <= tiles_x_amount)
 	 * @pre		...
-	 * 			| (y_target < tiles_y_amount)
+	 * 			| (y_target <= tiles_y_amount)
 	 * @post	...
-	 * 			| (getTileSize() == tile_size)
+	 * 			| (new.getTileSize() == tile_size)
 	 * @post	...
-	 * 			| (getWorldWidth() == tiles_x_amount*getTileSize())
+	 * 			| (new.getWorldWidth() == tiles_x_amount*getTileSize())
 	 * @post	...
-	 * 			| (getWorldHeight() == tiles_y_amount*getTileSize())
+	 * 			| (new.getWorldHeight() == tiles_y_amount*getTileSize())
 	 * @post	...
-	 * 			| (getXTarget() == x_target)
+	 * 			| (new.getHashDigitsAmount() == (int) Math.floor(Math.log10(tiles_y_amount) + 1)
 	 * @post	...
-	 * 			| (getYTarget() == y_target)
+	 * 			| (new.getXTarget() == x_target)
+	 * @post	...
+	 * 			| (new.getYTarget() == y_target)
 	 * @effect	...
 	 * 			| setWindowWidth(window_width)
 	 * @effect	...
@@ -87,7 +97,7 @@ public class World {
 	}
 
 	/**
-	 * Gets the width of the game world.
+	 * Gets the width of this game world.
 	 */
 	@Basic @Immutable
 	public int getWorldWidth() {
@@ -97,7 +107,7 @@ public class World {
 	private final int world_width;
 	
 	/**
-	 * Gets the height of the game world.
+	 * Gets the height of this game world.
 	 */
 	@Basic @Immutable
 	public int getWorldHeight() {
@@ -137,7 +147,7 @@ public class World {
 	private final int y_target;
 	
 	/**
-	 * Gets the X-position of this game world's window.
+	 * Gets the X-position of this game world's window (in pixels).
 	 */
 	@Basic @Immutable
 	public int getXWindow() {
@@ -148,7 +158,7 @@ public class World {
 	 * Sets the X-position of this game world's window.
 	 * 
 	 * @param x
-	 * 			The new X-position of this game world's window.
+	 * 			The new X-position of this game world's window (in pixels).
 	 * @post	...
 	 * 			| new.getXWindow() == getProperXWindow(x)
 	 */
@@ -159,7 +169,7 @@ public class World {
 	private int x_window;
 	
 	/**
-	 * Gets the Y-position of this game world's window.
+	 * Gets the Y-position of this game world's window (in pixels).
 	 */
 	@Basic @Immutable
 	public int getYWindow() {
@@ -170,9 +180,9 @@ public class World {
 	 * Sets the Y-position of this game world's window.
 	 * 
 	 * @param y
-	 * 			The new Y-position of this game world's window.
+	 * 			The new Y-position of this game world's window (in pixels).
 	 * @post	...
-	 * 			| new.getXWindow() == getProperXWindow(y)
+	 * 			| new.getYWindow() == getProperYWindow(y)
 	 */
 	private void setYWindow(int y) {
 		this.y_window = getProperYWindow(y);
@@ -186,8 +196,11 @@ public class World {
 	 * @param x
 	 * 			The X-position which should be converted.
 	 * @return	...
+	 * 			| double x_player = 0
+	 * 			| if(this.getMazub() != null)
+	 *			| 		x_player = getMazub().getX() 
 	 * 			| result = Math.max(0, Math.min(getWorldWidth() - getWindowWidth(),
-	 * 			| 	Math.max(getMazub().getX() + window_margin - getWindowWidth(), Math.min(getMazub().getX() - window_margin, x))
+	 * 			| 	Math.max(x_player + window_margin - getWindowWidth(), Math.min(x_player - window_margin, x))
 	 * 			| ))
 	 */
 	public int getProperXWindow(int x) {
@@ -213,8 +226,11 @@ public class World {
 	 * @param y
 	 * 			The Y-position which should be converted.
 	 * @return	...
+	 * 			| double y_player = 0
+	 *			| if(this.getMazub() != null)
+	 *			|		y_player = getMazub().getY()	
 	 * 			| result = Math.max(0, Math.min(getWorldHeight() - getWindowHeight(),
-	 * 			| 	Math.max(getMazub().getY() + window_margin - getWindowHeight(), Math.min(getMazub().getY() - window_margin, y))
+	 * 			| 	Math.max(y_player + window_margin - getWindowHeight(), Math.min(y_player - window_margin, y))
 	 * 			| ))
 	 */
 	public int getProperYWindow(int y) {
@@ -236,6 +252,14 @@ public class World {
 	
 	private static final int window_margin = 200;
 	
+	/**
+	 * Updates the position of this window based on the player's position and on the boundaries of the world.
+	 * 
+	 * @effect	...
+	 * 			| setXWindow(getXWindow())
+	 * @effect	...
+	 * 			| setYWindow(getYWindow())
+	 */
 	public void updateWindow() {
 		setXWindow(getXWindow());
 		setYWindow(getYWindow());
@@ -252,7 +276,7 @@ public class World {
 	/**
 	 * Sets the window width of this game world's window.
 	 * 
-	 * @param y
+	 * @param window_width
 	 * 			The new window width of this game world's window.
 	 * @pre		...
 	 * 			| (window_width > 0)
@@ -280,7 +304,7 @@ public class World {
 	/**
 	 * Sets the window height of this game world's window.
 	 * 
-	 * @param y
+	 * @param window_height
 	 * 			The new window height of this game world's window.
 	 * @pre		...
 	 * 			| (window_height > 0)
@@ -313,12 +337,19 @@ public class World {
 	 * Checks whether or not this world's player is touching the target tile.
 	 * 
 	 * @return	...
-	 * 			| for(x = getMazub().getX(); x <= getMazub().getX() + getMazub().getWidth(); x += getMazub().getWidth())
-	 * 			|	for(y = getMazub().getY(); y <= getMazub().getY() + getMazub().getHeight(); y += getMazub().getHeight())
-	 * 			| 		if ((x >= getXTarget()) && (x < getXTarget() + getTileSize())
-	 * 			|			&& (y >= getYTarget()) && (y < getYTarget() + getTileSize()))
-	 * 			|			result = true
-	 * 			| result = false
+	 * 			| if (getMazub() == null) result = false		
+	 * @return 	...
+	 * 			| List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>()
+	 *			| for(int i = 0; i < 8; i++) {
+	 *			|		List<List<Object>> inner_collisions = new ArrayList<List<Object>>()
+	 *			|		for(int j = 0; j < 2; j++) 
+	 *			|			inner_collisions.add(new ArrayList<Object>())
+	 *			|		collisions.add(inner_collisions)
+	 *			| collisionDetectBasic(getMazub(), getXTarget()*getTileSize(), getYTarget()*getTileSize(),
+	 *			|	(getXTarget() + 1)*getTileSize(), (getYTarget() + 1)*getTileSize(), 1, 0, 0, 0, collisions)
+	 *			| for(int i = 0; i < collisions.size(); i++) 
+	 *			|		if (collisions.get(i).get(0).contains(1)) reult = true		
+	 *			| result = false
 	 */
 	public boolean touchesTarget() {
 		
@@ -349,7 +380,7 @@ public class World {
 	 * @param pos
 	 * 			The position which should be checked.
 	 * @return	...
-	 * 			| result = (int) Math.floor(pos/getTileSize())
+	 * 			| result = (int) pos/getTileSize()
 	 */
 	public int getTilePos(int pos) {
 		return (int) pos/getTileSize();
@@ -367,15 +398,25 @@ public class World {
 	 *            The x-coordinate of the right side of the rectangular region.
 	 * @param y2
 	 *            The y-coordinate of the top side of the rectangular region.
+	 * @pre		...
+	 * 			| (x1 >= 0 && x1 < getWorldWidth())
+	 * @pre		...
+	 * 			| (y1 >= 0 && y1 < getWorldHeight())
 	 * @return	...
-	 * 			| positions = new int[getTilePos(y2 - y1)*getTilePos(x2 - x1)][2]
-	 * 			| index = 0
-	 * 			| for(int y = getTilePos(y1); y <= getTilePos(y2); y += getTileSize())
-	 * 			| 	for(int x = getTilePos(x1); x <= getTilePos(x2); x += getTileSize())
-	 * 			| 		position = {x, y}
-	 * 			|		positions[index] = position
-	 * 			|		index++
-	 * 			| result = positions
+	 * 			| x2 = Math.max(0, Math.min(getWorldWidth() - 1, x2))
+  	 *			| y2 = Math.max(0, Math.min(getWorldHeight() - 1, y2))		
+	 *			| int lowerboundx = getTilePos(x1)
+	 *			| int lowerboundy = getTilePos(y1)
+	 *			| int upperboundx = getTilePos(x2)
+	 *			| int upperboundy = getTilePos(y2)
+	 *			| int[][] positions = new int[(upperboundx - lowerboundx + 1)*(upperboundy - lowerboundy + 1)][2]
+	 *			| int index = 0
+	 *			| for(int y = lowerboundy; y <= upperboundy; y++) 
+	 *			|		for(int x = lowerboundx; x <= upperboundx; x++) 
+	 *			|			int[] position = {x, y}
+	 *			|			positions[index] = position
+	 *			|			index++	
+	 *			| result = positions
 	 */
 	public int[][] getTilePositionsIn(int x1, int y1, int x2, int y2) {
 		assert(x1 >= 0 && x1 < getWorldWidth());
@@ -411,13 +452,16 @@ public class World {
 	}
 	
 	/**
-	 * Connects a given player with a this world, and vice versa.
+	 * Connects a given player with  this world, and vice versa.
 	 * 
 	 * @param player
 	 * 			The player which should be associated with the world.
 	 * @post	...
 	 * 			| (getMazub() == player)
+	 * @post	...
+	 * 			| new.getMazub() = player
 	 * @effect	...
+	 * 			| if (getMazub() != null) getMazub().setWorld(null)
 	 * 			| if (player != null)
 	 * 			| 	then player.setWorld(this)
 	 */
@@ -656,7 +700,7 @@ public class World {
 	/**
 	 * Gets the maximum amount of schools in any world.
 	 */
-	@Basic
+	@Basic @Immutable
 	public static int getMaxSchoolsAmount() {
 		return max_schools_amount;
 	}
@@ -687,6 +731,14 @@ public class World {
 	 * 			The X-position which should be converted to a hash.
 	 * @param y
 	 * 			The Y-position which should be converted to a hash.
+	 * @pre		...
+	 * 			| x >= 0
+	 * @pre		...
+	 * 			| y >= 0
+	 * @pre		...
+	 * 			| x < getWorldWidth()/getTileSize()
+	 * @pre		...
+	 * 			| y < getWorldHeight()/getTileSize()
 	 * @return	...
 	 * 			| result = ((int) Math.pow(10, getHashDigitsAmount()))*x + y
 	 */
@@ -706,7 +758,14 @@ public class World {
 	 * @param y
 	 * 			The Y-position which should be checked, in pixels.
 	 * @return	...
-	 * 			| result = getFeatures().get(getHash(getTilePos(x), getTilePos(y)))
+	 * 			| if(x >= getWorldWidth() || y >= getWorldHeight())
+	 *			|		result = Feature.air
+	 * @return	...
+	 * 			| feature = getFeatures().get(getHash(getTilePos(x), getTilePos(y)))
+	 * 			| if (feature != null) 
+	 *			|		result = feature
+	 *			| else
+	 *			|		result = Feature.air
 	 */
 	public Feature getFeature(int x, int y) {
 		if(x >= getWorldWidth() || y >= getWorldHeight())
@@ -718,6 +777,26 @@ public class World {
 		return Feature.air;
 	}
 	
+	/**
+	 * Sets the feature of the tile with the given position to the feature that fits id.
+	 * 
+	 * @param x
+	 * 			The x-position of the tile, in tiles.
+	 * @param y
+	 * 			The y-position of the tile, in tiles.
+	 * @param id
+	 * 			The id of the feature this tile will get.
+	 * @effect	...
+	 * 			| Feature feature = null;
+	 *			| switch (id) 
+	 *			|		case 1: feature = Feature.ground  break
+	 *			|		case 2: feature = Feature.water  break
+	 *			|		case 3: feature = Feature.magma  break
+	 *			|		default:
+	 *			|			getFeatures().remove(getHash(x, y))
+	 *			|			return
+	 *			| getFeatures().put(getHash(x, y), feature)
+	 */
 	public void setFeature(int x, int y, int id) {
 		Feature feature = null;
 		switch (id) {
@@ -752,6 +831,28 @@ public class World {
 	
 	private final int hashDigitsAmount;
 	
+	/**
+	 * Advances this world with a given time.
+	 * 
+	 * @param dt
+	 * 			The time to advance this world with.
+	 * @effect	...
+	 * 			| getMazub().advanceTime(dt)
+	 * @effect	...
+	 * 			| for(Shark shark : getSharks()) 
+	 *			|		shark.advanceTime(dt)
+	 * @effect	...
+	 * 			| for(School school : getSchools()) 
+	 *			|		for(Slime slime : school.getSlimes()) 
+	 *			|			slime.advanceTime(dt)
+	 * @effect	...
+	 * 			| for(Plant plant : getPlants())
+	 *			|		plant.advanceTime(dt)
+	 * 			
+	 * @throws IllegalArgumentException
+	 * 			...
+	 * 			| !GameObject.isValidDt(dt)
+	 */
 	public void advanceTime(double dt) throws IllegalArgumentException {
 		if (!GameObject.isValidDt(dt)) {
 			throw new IllegalArgumentException();
@@ -777,30 +878,37 @@ public class World {
 	 * 
 	 * @param object
 	 * 			The object whose collisions with other objects and features should be checked.
+	 * @param custom_width
+	 * 			An optional custom widht of object. If 0, object.getWidth() will be used.
 	 * @param custom_height
 	 * 			An optional custom height of object. If 0, object.getHeight() will be used.
 	 * @return	...
-	 * 			| collisions = new ArrayList<List<List<Object>>>(
-	 * 			| 							Collections.nCopies(4, 
-	 * 			| 							Collections.nCopies(2, new ArrayList<Object>()))
-	 * 			|						)
-	 * 			|
-	 * 			| collisionDetectObject(object, getMazub(), custom_height, collisions)
-	 * 			| if (!(object instanceof Plant)) {
-	 * 			|	for(Shark shark : sharks)
-	 * 			|		collisionDetectObject(object, shark, custom_height, collisions)
-	 * 			|	for(School school : schools)
-	 * 			|		for(Slime slime : school.getSlimes())
-	 * 			|			collisionDetectObject(object, slime, custom_height, collisions)
-	 * 			| }
+	 * 			| List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>()		
+	 *			|for(int i = 0; i < 8; i++) 
+	 *			|		List<List<Object>> inner_collisions = new ArrayList<List<Object>>()
+	 *			|		for(int j = 0; j < 2; j++) 
+	 *			|			inner_collisions.add(new ArrayList<Object>())
+	 *			|		collisions.add(inner_collisions)
+	 * 			| if (getMazub() != null)
+	 * 			| 		collisionDetectObject(object, getMazub(), custom_width, custom_height, collisions)
+	 * 			| if (!(object instanceof Plant)) 
+	 * 			|		for(Shark shark : getSharks())
+	 * 			|			collisionDetectObject(object, shark, custom_width, custom_height, collisions)
+	 * 			|		for(Slime slime : getSlimes())
+	 * 			|			collisionDetectObject(object, slime, custom_width, custom_height, collisions)
+	 * 			| 
 	 * 			| if ((object instanceof Mazub) || (object instanceof Plant))
-	 * 			|	for(Plant plant : plants)
-	 * 			|		collisionDetectObject(object, plant, custom_height, collisions)
+	 * 			|		for(Plant plant : getPlants())
+	 * 			|			collisionDetectObject(object, plant, custom_width, custom_height, collisions)
 	 *			|
-	 *			| for(int i = 0; i < getWorldWidth(); i += getTileSize())
-	 *			|	for(int j = 0; j < getWorldHeight(); j += getTileSize())
-	 *			|		collisionDetectFeature(object, i, j, custom_height, collisions)
-	 * 			|
+	 *			| int width = object.getWidth()
+	 *			| int height = object.getHeight()
+	 *			| if (custom_width != 0) width = custom_width
+	 *			| if (custom_height != 0) height = custom_height;
+	 *			| int[][] tile_pos = getTilePositionsIn((int) object.getX(), (int) object.getY(),
+	 *			| 	(int) object.getX() + width, (int) object.getY() + height)
+	 *			| for(int[] tile : tile_pos) 
+	 *			|		collisionDetectFeature(object, tile[0]*getTileSize(), tile[1]*getTileSize(), custom_width, custom_height, collisions)
 	 * 			| result = collisions
 	 */
 	protected List<List<List<Object>>> collisionDetect(GameObject object, int custom_width, int custom_height) {
@@ -846,12 +954,14 @@ public class World {
 	}
 	
 	/**
-	 * Checks the collisions in between two given objects.
+	 * Checks the collisions  between two given objects.
 	 * 
 	 * @param object1
 	 * 			The first object whose collisions with the second object should be checked.
 	 * @param object2
 	 * 			The second object whose collisions with the first object should be checked.
+	 * @param custom_width
+	 * 			An optional custom width of object1. If 0, objec1.getWidth() will be used.
 	 * @param custom_height
 	 * 			An optional custom height of object1. If 0, object1.getHeight() will be used.
 	 * @param collision_objects
@@ -864,7 +974,7 @@ public class World {
 	 * 			|	y2 = y1 + object2.getHeight()
 	 * 			| }
 	 * 			|
-	 * 			| collisionDetectBasic(object1, x1, y1, x2, y2, object2, 0, custom_height, collision_objects)
+	 * 			| collisionDetectBasic(object1, x1, y1, x2, y2, object2, 0, custom width, custom_height, collision_objects)
 	 */
 	private void collisionDetectObject(GameObject object1, GameObject object2, int custom_width, int custom_height, 
 			List<List<List<Object>>> collision_objects)  {
@@ -884,7 +994,7 @@ public class World {
 	}
 	
 	/**
-	 * Checks the collisions in between a given object and given feature.
+	 * Checks the collisions in between a given object and a given feature.
 	 * 
 	 * @param object
 	 * 			The object whose collisions with the feature should be checked.
@@ -892,14 +1002,16 @@ public class World {
 	 * 			The x-position of the feature whose collisions with the object should be checked.
 	 * @param y
 	 * 			The y-position of the feature whose collisions with the object should be checked.
+	 * @param custom_width
+	 * 			An optional custom width of object. If 0, object.getWidth() will be used.
 	 * @param custom_height
 	 * 			An optional custom height of object. If 0, object.getHeight() will be used.
 	 * @param collision_objects
 	 * 			The 3-dimensional arraylist which stores the collisions of object.
 	 * @effect	...
 	 * 			| feature = getFeature(x, y)
-	 * 			| collisionDetectBasic(object, x, y, x + getTileSize(), y + getTileSize(), feature, 1, custom_height,
-	 * 			|							collision_objects)
+	 * 			| collisionDetectBasic(object, x, y, x + getTileSize(), y + getTileSize(), feature, 1, custom width, 
+	 * 			|			custom_height, collision_objects)
 	 */
 	private void collisionDetectFeature(GameObject object, int x, int y, int custom_width, int custom_height, 
 			List<List<List<Object>>> collision_objects)  {
@@ -929,6 +1041,8 @@ public class World {
 	 * @param index
 	 * 			Indicates whether the given object2 is a Game object or a Feature.
 	 * 			0 represents Game object, 1 represents Feature.
+	 * @param custom_width
+	 * 			An optional custom width of object1. If 0, object1.getWidth() will be used.
 	 * @param custom_height
 	 * 			An optional custom height of object1. If 0, object1.getHeight() will be used.
 	 * @param collision_objects
@@ -936,23 +1050,33 @@ public class World {
 	 * @effect	...
 	 * 			| mx1 = (int) object1.getX()
 	 * 			| my1 = (int) object1.getY()
-	 * 			| mx2 = mx1 + object1.getWidth()
-	 * 			| my2 = my1
+	 * 			| mx2 = mx1
 	 * 			| if (custom_height == 0)
-	 * 			|	then my2 += object1.getHeight()
+	 * 			|	then mx2 += object1.getWidth()
 	 * 			| else
-	 * 			|	then my2 += custom_height
+	 * 			|	then mx2 += custom_width
+	 * 			| my2 = my1
+	 * 			| if (custom_height == 0) 
+	 *			|	then my2 += object1.getHeight();
+	 *			| else 
+	 *			|	then my2 += custom_height;
 	 * 			| 
-	 * 			| overlaps = {sx2 - mx1, mx2 - sx1, sy2 - my1, my2 - sy1}
-	 * 			| if ((overlaps[0] >= 1) && (overlaps[1] >= 1) && (overlaps[2] >= 1) && (overlaps[3] >= 1)) {
-	 * 			|	has_central_collision = true
-	 * 			|	for(int i = 0; i < 4; i++) {
-	 * 			|		collision_objects.get(i).get(index).add(object2)
-	 * 			|		has_central_collision = false
-	 * 			|	}
-	 * 			|	if (has_central_collision)
-	 * 			|		then collision_objects.get(0).get(1).add(object2)
-	 * 			| }
+	 * 			| overlaps = {sx2 - mx1, my2 - sy1,mx2 - sx1, sy2 - my1}
+	 * 			| for(int i = 0; i < overlaps.length; i++) 
+	 *			|		int j = i - 1
+	 *			|		if(j < 0)
+	 *			|			then j = 3
+	 *			|		if (overlaps[i] == 1) {
+	 *			|			if (!(overlaps[(i + 1)%4] == 1) && !(overlaps[j] == 1)) collisionAdd(collision_objects, i, index, object2);
+	 *			|			else if(overlaps[j] == 1)
+	 *			|				collisionAdd(collision_objects, j + 4, index, object2);
+	 *			|			else if(overlaps[(i + 1)%4] == 1)
+	 *			|				collisionAdd(collision_objects, i + 4, index, object2);
+	 *			|			has_central_collision = false;
+	 *			|		}
+	 * 			|
+	 * 			| if (has_central_collision) {
+	 *			|	then collisionAdd(collision_objects, 0, index, object2);
 	 */
 	private void collisionDetectBasic(GameObject object1, int sx1, int sy1, int sx2, int sy2, Object object2, int index,
 			 							int custom_width, int custom_height, List<List<List<Object>>> collision_objects) {
@@ -1005,6 +1129,21 @@ public class World {
 		
 	}
 	
+	/**
+	 * Adds an object to a give 3 dimensional list at a given place.
+	 * 
+	 * @param list
+	 * 			The 3 dimensional list object should be added to.
+	 * @param i
+	 * 			The first index of the place object should be added to.
+	 * @param j
+	 * 			The second indes of the place object should be added to.
+	 * @param object
+	 * 			The object to add to list.
+	 * @effect	...
+	 * 			| if (!list.get(i).get(j).contains(object)) 
+	 *			|		list.get(i).get(j).add(object)
+	 */
 	private static void collisionAdd(List<List<List<Object>>> list, int i, int j, Object object) {
 		if (!list.get(i).get(j).contains(object)) {
 			list.get(i).get(j).add(object);
