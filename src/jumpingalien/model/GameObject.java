@@ -1,6 +1,7 @@
 package jumpingalien.model;
 
 import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -9,8 +10,54 @@ import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Model;
 import jumpingalien.util.Sprite;
 
+/**
+ * All the game objects that can appear in the game.
+ */
+
 public abstract class GameObject {
 	
+	/**
+	 * Creates a new game object.
+	 * 
+	 * @param x
+	 * 			The x-position of the new game object.
+	 * @param y
+	 * 			The y-position of the new game object.
+	 * @param images
+	 * 			The array of sprite of the new game object.
+	 * @param axi
+	 * 			The initial horizontal acceleration of the new game object.
+	 * @param vxi
+	 * 			The initial horizontal velocity of the new game object.
+	 * @param vxmax
+	 * 			The maximum horizontal velocity of the new game object.
+	 * @pre		...
+	 * 			| isValidx(x)
+	 * @pre		...
+	 * 			| isValidy(y)
+	 * @post	...
+	 * 			| new.getImages() = images
+	 * @post	...
+	 * 			| new.getAxi() = axi
+	 * @post	...
+	 * 			| new.getVxi() = vxi
+	 * @effect	...
+	 * 			| setX(x)
+	 * @effect	...
+	 * 			| setY(y)
+	 * @effect	...
+	 * 			| setVxmax(vxmax)
+	 * @effect	...
+	 * 			| setVx(0)
+	 * @effect	...
+	 * 			| setVy(0)
+	 * @effect	...
+	 * 			| setAx(0)
+	 * @effect	...
+	 * 			| setAy(0)
+	 * @effect	...
+	 * 			| setHitpoints(100)
+	 */
 	protected GameObject(double x, double y, Sprite[] images, double axi, double vxi, double vxmax) {
 		assert(isValidX(x));
 		assert(isValidX(y));
@@ -44,7 +91,7 @@ public abstract class GameObject {
 	 * @post	This game object's new x-position will be equal to the given x.
 	 * 			| new.getX() == x
 	 * @throws	IllegalArgumentException
-	 * 			Throws an exception if x is outside the game world.
+	 * 			Throws an exception if x is not a valid x-position.
 	 * 			| !isValidX(x)
 	 */
 	protected void setX(double x) throws IllegalArgumentException {
@@ -55,15 +102,16 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Checks if the given x is a valid x-position for this game object in the game world.
+	 * Checks if the given x is a valid x-position for this game object.
 	 * 
 	 * @param x
 	 * 			The x-position in pixels which should be checked.
 	 * @return	If this game object is in a world, whether or not the given x is within the game world.
 	 * 			else it returns whether or not the given x is larger then or equal to zero.
 	 * 			| if(getWorld() != null)
-	 *			|	return (x >= 0 && x < getWorld().getWorldWidth());
-	 *			| return x >= 0;
+	 *			|	result = (x >= 0 && x < getWorld().getWorldWidth())
+	 *			| else
+	 *			| 	result =  (x >= 0)
 	*/
 	public boolean isValidX(double x) {
 		if(getWorld() != null)
@@ -89,7 +137,7 @@ public abstract class GameObject {
 	 * @post	This game object's new y-position will be equal to the given y.
 	 * 			| new.getY() == y
 	 * @throws	IllegalArgumentException
-	 * 			If y is outside the game world.
+	 * 			If y is not a valid y-position.
 	 * 			| !isValidY(y)
 	 */
 	protected void setY(double y) throws IllegalArgumentException {
@@ -100,7 +148,7 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Checks if the given y is a valid y-position for this game object in the game world.
+	 * Checks if the given y is a valid y-position for this game object.
 	 * 
 	 * @param y
 	 * 			The y-position in pixels which should be checked.
@@ -131,7 +179,7 @@ public abstract class GameObject {
 	 * 
 	 * @param vx
 	 * 			The new horizontal velocity of this game object in meters per second (1m = 100 pixels).
-	 * @pre		The given vx must be in between -vxmax and vxmax.
+	 * @pre		Vx is a valid horizontal velocity for this game object.
 	 * 			| isValidVx(vx)
 	 * @post	The new horizontal velocity of this game object is equal to vx.
 	 * 			| new.getVx() = vx
@@ -145,8 +193,7 @@ public abstract class GameObject {
 	 * Checks if the given vx is a valid horizontal velocity.
 	 * 
 	 * @param vx
-	 * @return Whether or not the magnitude of vx is equal to 0 or not smaller than the initial horizontal velocity and not larger than
-	 * 			the maximal horizontal velocity.
+	 * @return 	...
 	 * 			| result = ((-vxmax <= vx && vx <= -vxi) || (vx == 0) || (vxi <= vx && vx <= vxmax))
 	 */
 	public boolean isValidVx(double vx) {
@@ -155,13 +202,10 @@ public abstract class GameObject {
 				|| (getVxi() <= vx && vx <= getVxmax()));
 	}
 	
-	private double vx;
-	
-
-	 
+	private double vx;	 
 	
 	/**
-	 * Gets the magnitude of the initial horizontal velocity any Mazub starts with when they start moving.
+	 * Gets the magnitude of the initial horizontal velocity a game object starts with when they start moving.
 	 */
 	@Basic @Immutable
 	public double getVxi() {
@@ -205,13 +249,8 @@ public abstract class GameObject {
 	 * 
 	 * @param vy
 	 * 			This game object's new vertical velocity in meters per second (1m = 100 pixels),
-	 * 			which has to be smaller than or equal to 8 meters per second.
-	 * @post	This game object's new vertical velocity will be equal to the given vy, unless it's larger than 8 meters per second,
-	 * 			in which case the new vertical velocity will be equal to 8 meters per second.
-	 * 			| if (vy <= 8)
-	 * 			| 	then new.getVy() = vy
-	 *			| else
-	 *			|	then new.getVy() = 8
+	 * @post	This game object's new vertical velocity will be equal to the given vy.
+	 * 			| new.getVy() = vy
 	 *
 	 */
 	protected void setVy(double vy) {
@@ -267,7 +306,7 @@ public abstract class GameObject {
 	/**
 	 * Gets the horizontal initial acceleration.
 	 */
-	@Basic
+	@Basic @Immutable
 	protected double getAxi() {
 		return this.axi;
 	}
@@ -340,7 +379,7 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Checks whether or not this game object just started a jump, without hitting ground above or to its sides.
+	 * Gets whether or not this game object just started a jump, without hitting ground above or to its sides.
 	 */
 	public boolean getJustJumped() {
 		return this.just_jumped;
@@ -384,7 +423,7 @@ public abstract class GameObject {
 	 * @param world
 	 * 			The world this game object should be in.
 	 * @post	This game object is in the given world.
-	 * 			| (getWorld() == world)
+	 * 			| (new.getWorld() == world)
 	 */
 	protected void setWorld(World world) {
 		this.world = world;
@@ -405,7 +444,7 @@ public abstract class GameObject {
 	protected int hitpoints;
 	
 	/**
-	 * Gets the time this game object has been dead for.
+	 * Gets 0.6 min the time this game object has been dead for or zero if this game object is alive.
 	 */
 	@Basic
 	public double getDeathTime(){
@@ -413,11 +452,11 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Sets the time this game object has been dead for.
+	 * Sets the death time of this game object.
 	 * 
 	 * @param deathtime
-	 * 			The new time this game object has been dead for.
-	 * @post	The new time this game object has been dead for is equal to the given death time.
+	 * 			The new death time of this game object
+	 * @post	The new time  deathtim of this game object is equal to the given death time.
 	 * 			| new.getDeathTime() = deathtime 
 	 */	
 	protected void setDeathTime(double deathtime){
@@ -425,9 +464,9 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Terminates this plant with a delay of 0.6 seconds.
+	 * Terminates this game object with a delay of 0.6 seconds.
 	 * 
-	 * @effect	The death time of this plant will we set to 0.6.
+	 * @effect	The death time of this game object will we set to 0.6.
 	 * 			| setDeathTime(0.6)
 	 */
 	protected void kill() {
@@ -447,7 +486,7 @@ public abstract class GameObject {
 	/**
 	 * Sets this game object's time in air.
 	 * 
-	 * @param timeinmagma
+	 * @param timeinair
 	 * 			The new time in air of this game object.
 	 * @pre		The timeinair parameter must be larger then or equal to zero.
 	 * 			| (timeinair >= 0)
@@ -474,10 +513,10 @@ public abstract class GameObject {
 	 * 
 	 * @param timeinwater
 	 * 			The new time in water of this game object.
-	 * @post	The timeinwater variable of this game object will be equal to the given timeinwater.
-	 * 			| (new.getTimeinwater() = timeinwater)
 	 * @pre		The timeinwater parameter must be larger than or equal to zero.
 	 * 			| (timeinwater >= 0)
+	 * @post	The timeinwater variable of this game object will be equal to the given timeinwater.
+	 * 			| (new.getTimeinwater() = timeinwater)
 	 */
 	protected void setTimeInWater(double timeinwater) {
 		assert(timeinwater >= 0);
@@ -499,10 +538,10 @@ public abstract class GameObject {
 	 * 
 	 * @param timeinmagma
 	 * 			The new time in magma of this game object.
-	 * @post	The timeinmagma variable of this game object will be equal to the given timeinmagma.
-	 * 			| (new.getTimeinmagma() = timeinmagma)
 	 * @pre		The timeinmagma parameter must be larger then or equal to zero.
 	 * 			| (timeinmagma >= 0)
+	 * @post	The timeinmagma variable of this game object will be equal to the given timeinmagma.
+	 * 			| (new.getTimeinmagma() = timeinmagma)
 	 */
 	protected void setTimeInMagma(double timeinmagma){
 		assert(timeinmagma >= 0);
@@ -512,7 +551,7 @@ public abstract class GameObject {
 	private double time_in_magma;
 	
 	/**
-	 * Gets how long this Mazub will be invincible.
+	 * Gets the time this game object will be invincible for.
 	 */
 	@Basic
 	public double getTimeInvincible(){
@@ -520,14 +559,14 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Sets the time that this Mazub will stay invincible for to the given time.
+	 * Sets the time that this game object will stay invincible for to the given time.
 	 * 
 	 * @param time
-	 * 			The new time that Mazub is invincible for 
-	 * @post	This Mazub's new time he will be invincible for, will be equal to time
-	 * 			| (new.getTimeInvincible() = time)
+	 * 			The new time that this game object is invincible for 
 	 * @pre		The time parameter must be larger then or equal to zero.
 	 * 			| (time >= 0)
+	 * @post	This game object's new time he will be invincible for, will be equal to time
+	 * 			| (new.getTimeInvincible() = time)
 	 */
 	protected void setTimeInvincible(double time){
 		assert(time >= 0);
@@ -545,22 +584,37 @@ public abstract class GameObject {
 	 * 
 	 * @param timestep
 	 * 			The amount of seconds to be advanced.
-	 * @effect	The x-position will be advanced using the given time.
-	 * 			| setX(advanceX(timestep))
-	 * @effect	The horizontal velocity will be advanced using the given time.
+	 * @effect	...
+	 * 			| if (getDeathTime() > 0)
+	 * 			|		return
+	 * @effect	...
+	 * 			| List<List<List<Object>>> collisions = getCollisions();
+	 *			| if ((noObjectMovementBlocking(collisions.get(0).get(0)) && !(collisions.get(0).get(1).contains(Feature.ground)) && (getVx() < 0))
+	 *			|	|| ((noObjectMovementBlocking(collisions.get(2).get(0)) && !(collisions.get(2).get(1).contains(Feature.ground)) && (getVx() > 0)))) 
+	 *			|		then advanceX(timestep)
+	 * @effect	...
 	 * 			| setVx(advanceVx(timestep))
-	 * @effect	The y-position will be advanced using the given time.
-	 * 			| setY(advanceY(timestep))
-	 * @effect	The vertical velocity will be advanced using the given time.
+	 * @effect	...
+	 * 			| collisions = getCollisions()
+	 *			| if (noObjectMovementBlocking(collisions.get(3).get(0)) && !(collisions.get(3).get(1).contains(Feature.ground)) && (getVy() < 0))
+	 *			|		advanceY(timestep);
+	 *			| else if (getVy() > 0) 
+	 *			|		boolean should_advance = true
+	 *			|		for(int i = 0; i < 3; i++) 
+	 *			|			if (!noObjectMovementBlocking(collisions.get(i).get(0)) || collisions.get(i).get(1).contains(Feature.ground))
+	 *			|				should_advance = false
+	 *			| 		if (should_advance) advanceY(timestep);
+	 * @effect	...
 	 * 			| setVy(advanceVy(timestep))
-	 * @effect	The vertical acceleration will be equal to -10 if this game object is in mid-air, else it will be 0.
+	 * @effect	...
 	 * 			| setAy(advanceAy())
-	 * @effect	The last movement time will be equal to -1 if this game object is moving to the left,
-	 * 			1 if this game object is moving to the right, and if this game object is standing still the absolute value of the
-	 * 			previous last movement time will be decreased by timestep, unless it hits 0, in which case it will stick to 0.
-	 * 			| setLastMove(advanceLastMove(timestep))
-	 * @effect	The animation time will be increased by timestep.
-	 * 			| setAnimationTime(getAnimationTime() + timestep))
+	 * @effect	...
+	 * 			| collisions = getCollisions();
+	 *			| if ((this instanceof Mazub) && !(getJustJumped()) &&
+	 *  		|	((collisions.get(3).get(0).size() != 0) || (collisions.get(3).get(1).contains(Feature.ground)))) 
+	 *			|		then ((Mazub) this).setJumping(false)
+	 * @effect	...
+	 * 			| setTimeInvincible(advanceTimeInvincible(timestep))
 	 */
 	public void advanceTimeStep(double timestep) {
 		
@@ -597,27 +651,40 @@ public abstract class GameObject {
 		setTimeInvincible(advanceTimeInvincible(timestep));
 	}
 	
+	/**
+	 * Gets the collisions of this with other game objects and features.
+	 * 
+	 * @return 	...
+	 *			| if(getWorld() != null)
+	 *			| 		result =  getWorld().collisionDetect(this, 0, 0);
+	 * @return 	...
+	 * 			| if(getWorld() == null)
+	 * 			| result =  new ArrayList<List<List<Object>>>(
+	 *			|				Collections.nCopies(4, Collections.nCopies(2, new ArrayList<Object>())))
+	 */
+	@Model
 	protected List<List<List<Object>>> getCollisions() {
-		List<List<List<Object>>> collisions;
 		if(getWorld() != null)
-			collisions = getWorld().collisionDetect(this, 0, 0);
+			return getWorld().collisionDetect(this, 0, 0);
 		else
-			collisions = new ArrayList<List<List<Object>>>(
+			return new ArrayList<List<List<Object>>>(
 							Collections.nCopies(4, Collections.nCopies(2, new ArrayList<Object>())));
-		return collisions;
 	}
 	
 	/**
-	 * Checks whether the given (array)list is empty or only contains plants.
+	 * Checks whether or not the given (array)list (of collisions) blocks the movement of this game object.
 	 * 
 	 * @param list
 	 * 			The (array)list which should be checked.
 	 * @return	...
-	 * 			| for(Object element : list)
-	 * 			|	if (!(element instanceof Plant))
-	 * 			|		then result = false
-	 * 			| result = true
+	 * 			| if (this instanceof Plant) result = true
+	 * 			| else
+	 * 			| 	for(Object element : list)
+	 * 			|		if (!(element instanceof Plant))
+	 * 			|			then result = false
+	 * 			| 	result = true
 	 */
+	@Model
 	protected boolean noObjectMovementBlocking(List<Object> list) {
 		if (this instanceof Plant) return true;
 		
@@ -644,16 +711,12 @@ public abstract class GameObject {
 	/**
 	 * Gets the timestep necessary to move this game object pixel by pixel.
 	 * 
-	 * @return	If this game object's ax and ay are equal to zero, the result will be the minimum of 4 formulas.
-	 * 			1) 1 divided by the absolute value of, this Mazub's horizontal velocity divided by 100.
-	 * 			2) 1 divided by the absolute value of, this Mazub's vertical velocity divide by 100.
-	 * 			3) the result of computeformula(v,a) with as parameters 
-	 * 				this game object's horizontal acceleration and velocity.
-	 * 			4) the result of computeformula(v,a) with as parameters 
-	 * 				this game object's vertical acceleration and velocity.
-	 * 			| result =  Math.min(computeformula(getVx,getAx)
-	 * 			|				Math.min(computeformula(getVy,getAy),
-	 * 			|					Math.min( 1/Math.abs(getVx()/100),1/Math.abs(getVy()/100)))
+	 * @return	...
+	 * 			| if ((getVx() == 0) && (getVy() == 0) && (getAx() == 0) && (getAy() == 0))
+	 *			|	then result = dt - time_passed;
+	 *			| else
+	 * 			| 	then result =  Math.min(0.01/(Math.sqrt(Math.pow(getVx(), 2) + Math.pow(getVy(), 2)) +
+	 *			|				Math.sqrt(Math.pow(getAx(), 2) + Math.pow(getAy(), 2))*dt), dt - time_passed)
 	 */
 	public double getTimestep(double dt, double time_passed) {
 		if ((getVx() == 0) && (getVy() == 0) && (getAx() == 0) && (getAy() == 0))
@@ -663,14 +726,15 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Returns the new x-position after a given time has passed.
+	 * Advnaces the x-position of this game object over a given time interval.
 	 * 
 	 * @param dt
 	 * 			The amount of seconds to be advanced.
-	 * @return	The new x-position after dt time has passed.
+	 * @effect	...
 	 * 			| max_s = maxAdvanceX(dt)
 	 * 			| actual_s = maxAdvanceX(dt)
-	 * 			| result = getXWithinBounds(getX() + (int) Math.round(Math.min(max_s, actual_s)))
+	 * 			| double newx = getX() + Math.min(max_s, actual_s)
+	 *			| setXWithinBounds(newx)
 	 * @throws IllegalArgumentException
 	 * 			If dt isn't a valid time interval to advance the time with.
 	 * 			| !isValidDt(dt)
@@ -690,13 +754,15 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Gets an x-position within the bounds of the game world.
+	 * Sets this game objects x-position to x after x is converted to a valid x-position.
 	 * 
 	 * @param x
-	 * 			The x-position which should be converted to a valid one.
-	 * @return	The new x-position. If it's already within the bounds, this will be equal to the given x.
-	 * 			If it's too small or too large, it will be set to the smallest or largest possible value, respectively.
-	 * 			| result = Math.max(0, Math.min(getWorldWidth() - 1, x))
+	 * 			The new x-position which is first converted to a valid one.
+	 * @effect	...
+	 * 			| if (getWorld() != null && (x < 0 || x >= getWorld().getWorldWidth()))
+	 *			|		terminate()
+	 * @effect	...
+	 * 			| setX(Math.max(x,0))
 	 */
 	protected void setXWithinBounds(double x) {
 		if (getWorld() != null && (x < 0 || x >= getWorld().getWorldWidth()))
@@ -706,7 +772,6 @@ public abstract class GameObject {
 
 	/**
 	 * Calculates the maximal change in x-position within a given period of time.
-	 * Currently also used to calculate the actual change in x-position within a given period of time.
 	 * 
 	 * @param dt
 	 * 			The period of time which should be advanced.
@@ -716,6 +781,7 @@ public abstract class GameObject {
 	 * 			If dt isn't a valid time interval to advance the time with.
 	 * 			| !isValidDt(dt)
 	 */
+	@Model
 	private double maxAdvanceX(double dt) throws IllegalArgumentException {
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();
@@ -748,14 +814,15 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Returns the new y-position after a given time has passed.
+	 * Advances this game objects y-position over a given time interval.
 	 * 
 	 * @param dt
 	 * 			The amount of seconds to be advanced.
-	 * @return	The new y-position after dt time has passed.
+	 * @effect	...
 	 * 			| max_s = maxAdvanceX(dt)
 	 * 			| actual_s = maxAdvanceX(dt)
-	 * 			| result = getYWithinBounds(getY() + (int) Math.round(Math.min(max_s, actual_s)))
+	 * 			| double newy = getY() + Math.min(max_s, actual_s)		
+	 *			| setYWithinBounds(newy)
 	 * @throws IllegalArgumentException
 	 * 			If dt isn't a valid time interval to advance the time with.
 	 * 			| !isValidDt(dt)
@@ -775,13 +842,15 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Gets an y-position within the bounds of the game world.
+	 * Sets this game objects y-position to y after y is converted to a valid y-position.
 	 * 
 	 * @param y
-	 * 			The y-position which should be converted to a valid one.
-	 * @return	The new y-position. If it's already within the bounds, this will be equal to the given y.
-	 * 			If it's too small or too large, it will be set to the smallest or largest possible value, respectively.
-	 * 			| result = Math.max(0, Math.min(getWorldHeight() - 1, y))
+	 * 			The new y-position which is first converted to a valid one.
+	 * @effect	...
+	 * 			| if (getWorld() != null && (y < 0 || y >= getWorld().getWorldHeight()))
+	 * 			| terminate()
+	 * @effect	...
+	 * 			| setY(Math.max(y, 0))
 	 */
 	protected void setYWithinBounds(double y) {
 		if (getWorld() != null && (y < 0 || y >= getWorld().getWorldHeight()))
@@ -791,7 +860,6 @@ public abstract class GameObject {
 	
 	/**
 	 * Calculates the maximal change in y-position within a given period of time.
-	 * Currently also used to calculate the actual change in y-position within a given period of time.
 	 * 
 	 * @param dt
 	 * 			The period of time which should be advanced.
@@ -801,6 +869,7 @@ public abstract class GameObject {
 	 * 			If dt isn't a valid time interval to advance the time with.
 	 * 			| !isValidDt(dt)
 	 */
+	@Model
 	private double maxAdvanceY(double dt) throws IllegalArgumentException {
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();
@@ -814,14 +883,27 @@ public abstract class GameObject {
 	 * 
 	 * @param dt
 	 * 			The amount of seconds to be advanced.
-	 * @return	The new vertical velocity after dt time has passed in meters per second.
-	 * 			| result = getVy() + getAy()*dt
+	 * @return	...	
+	 * 			| if(getY() <= 0) result = 0
+	 * @return	...
+	 * 			| List<List<List<Object>>> collisions = getCollisions();
+	 *			| if (getVy() > 0) {
+	 *			|	for(int i = 0; i < 3; i++) {
+	 *			| 		if (!noObjectMovementBlocking(collisions.get(i).get(0)) || (collisions.get(i).get(1).contains(Feature.ground))) 
+	 *			|			setJustJumped(false);
+	 *			|			result =  0;
+	 *			| if (!noObjectMovementBlocking(collisions.get(3).get(0)) || (collisions.get(3).get(1).contains(Feature.ground))) 
+	 *			|	if (!(getJustJumped())) result =  0;
+	 *			| else
+	 *			|	setJustJumped(false);
+	 * @return	...
+	 * 			| rsult = getVy() + getAy()*dt;
 	 * @throws IllegalArgumentException
 	 * 			If dt isn't a valid time interval to advance the time with.
 	 * 			| !isValidDt(dt)
 	 * @throws IllegalStateException
-	 * 			If the vertical velocity after updating overflows negatively.
-	 * 			| (newvy == Double.NEGATIVE_INFINITY)
+	 * 			...
+	 * 			| newvy == Double.NEGATIVE_INFINITY
 	 */
 	@Model
 	protected double advanceVy(double dt) throws IllegalArgumentException, IllegalStateException {
@@ -856,14 +938,15 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Returns the new vertical acceleration at this game object's current y-position.
+	 * Returns the new vertical acceleration of this game object.
 	 * 
-	 * @return	The new vertical acceleration at this game object's current y-position has passed in meters per second squared.
-	 * 			This will be -10 if this game object's y-position is larger than 0, else it'll be 0.
-	 * 			| if (getY() == 0)
-	 * 			| 	then result = -10
-	 * 			| else
-	 * 			|	result = getAy()
+	 * @return	...
+	 * 			| List<List<List<Object>>> collisions = getCollisions()
+	 *			| if ((!noObjectMovementBlocking(collisions.get(3).get(0)) || collisions.get(3).get(1).contains(Feature.ground)
+	 *			|	|| (int) getY() <= 0) && !getJustJumped()) 
+	 *			|		result =  0
+	 *			| else 
+	 *			|	result = -10
 	 */
 	@Model
 	protected double advanceAy() {
@@ -881,9 +964,9 @@ public abstract class GameObject {
 	 * Return the new time this mazub will be invincible for.
 	 * 
 	 * @param dt
-	 * 			The period of time wich should be advance, in seconds.
+	 * 			The period of time wich should be advanced, in seconds.
 	 * @return	The current time this mazub will be invinceble for min the given dt 
-	 * 			if this is bigger then or equal to 0 else 0 is returned.
+	 * 			if this is bigger then 0 else 0 is returned.
 	 * 			| result = Math.max(0, getTimeInvincible()-dt)
 	 */
 	@Model
@@ -895,6 +978,20 @@ public abstract class GameObject {
 	 * Handles the collisions
 	 * 
 	 * @param collisions
+	 * 			The result of the collisionDetect mehotd of World.
+	 * @param time
+	 * 			The time to (if necessary) advance this game objects time in a feature with.
+	 * @effect	...
+	 * 			| for(int i = 0; i < collisions.size(); i++) 
+	 *			|	ArrayList<Object> collision_objects = (ArrayList<Object>) collisions.get(i).get(0)
+	 *			|	for(Object object : collision_objects) 
+	 *			|		if (object instanceof Mazub) collisionHandleMazub((Mazub) object, i)
+	 *			|		if (object instanceof Shark) collisionHandleShark((Shark) object, i)
+	 *			|		if (object instanceof Plant) collisionHandlePlant((Plant) object, i)
+	 *			|		if (object instanceof Slime) collisionHandleSlime((Slime) object, i)
+	 *			|		if (getWorld() == null) return
+	 * @effect	...
+	 * 			| collisionHandleFeature(collisions, time)
 	 */
 	@Model
 	protected void collisionHandle(List<List<List<Object>>> collisions, double time) {
@@ -915,6 +1012,35 @@ public abstract class GameObject {
 
 	}
 	
+	/**
+	 * Handles collisions between this game object and feature.
+	 * 
+	 * @param collisions
+	 * 			The result of the collisionDetect method of World.
+	 * @param time
+	 * 			The time to (if necessary) advance this game object's time in a feature with.
+	 * @effect	...
+	 * 			| boolean touched_air = false
+	 *			| boolean touched_water = false
+	 * 			| boolean touched_magma = false		
+	 *			| for(int i = 0; i < collisions.size(); i++) 
+	 *			|		ArrayList<Object> collision_features = (ArrayList<Object>) collisions.get(i).get(1)
+	 *			|		if ((collision_features.contains(Feature.air)) && !(touched_air)) 
+	 *			|			collisionHandleAir(time)
+	 *			|			if (getWorld() == null) return
+	 *			|			touched_air = true
+	 *			|		if ((collision_features.contains(Feature.water)) && !(touched_water)) 
+	 *			|			collisionHandleWater(time)
+	 *			|			if (getWorld() == null) return
+	 *			|			touched_water = true
+	 *			|		if ((collision_features.contains(Feature.magma)) && !(touched_magma)) 
+	 *			|			collisionHandleMagma(time)
+	 *			|			if (getWorld() == null) return
+	 *			|			touched_magma = true
+	 *			| if (!(touched_air)) setTimeInAir(0)
+	 *			| if (!(touched_water)) setTimeInWater(0)
+	 *			| if (!(touched_magma)) setTimeInMagma(0)		
+	 */
 	protected void collisionHandleFeature(List<List<List<Object>>> collisions, double time) {
 		
 		boolean touched_air = false;
@@ -974,7 +1100,7 @@ public abstract class GameObject {
 	 * 			| if (this.getVx() <= 0)
 	 * 			| 	then result = getImages()[0]
 	 * 			| else
-	 * 			| 	then getImages()[1]
+	 * 			| 	then result = getImages()[1]
 	 */
 	public Sprite getCurrentSprite() {
 		if (this.getVx() <= 0) {
@@ -983,6 +1109,17 @@ public abstract class GameObject {
 		return getImages()[1];
 	}
 	
+	/**
+	 * Returns the opposite direction of the given direction.
+	 * 
+	 * @param direction
+	 * 			The direction that should ber mirrored.
+	 * @return	...
+	 * 			| if (direction < 4) 
+	 *			|	then result (direction + 2)%4
+	 *			| else
+	 *			| 	then result = (direction + 2)%4 + 4
+	 */
 	protected int mirrorDirection(int direction) {
 		if (direction < 4) {
 			return (direction + 2)%4;
