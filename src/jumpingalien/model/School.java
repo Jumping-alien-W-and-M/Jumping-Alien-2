@@ -18,11 +18,11 @@ public class School {
 	 * Sets the world this school is in.
 	 * 
 	 * @param world
-	 * 			The world this game object should be in.
+	 * 			The world this school should be in.
 	 * @post	...
-	 * 			| (getWorld() == world)
+	 * 			| (new.getWorld() == world)
 	 * @effect	...
-	 * 			| for(Slime slime : slimes)
+	 * 			| for(slime : slimes)
 	 * 			|	slime.setWorld(world)
 	 */
 	public void setWorld(World world) {
@@ -60,7 +60,7 @@ public class School {
 	 * @effect	...
 	 * 			| slime.setWorld(this.getWorld())
 	 */
-	public void addSlime(Slime slime) {
+	protected void addSlime(Slime slime) {
 		assert(slime != null);
 		assert(!(hasAsSlime(slime)));
 		
@@ -96,7 +96,7 @@ public class School {
 	}
 	
 	/**
-	 * Removes the given slime from this school list of slimes.
+	 * Removes a given slime from this school's list of slimes.
 	 * 
 	 * @param slime
 	 * 			The slime which should be removed.
@@ -108,6 +108,8 @@ public class School {
 	 * 			| slimes.remove(slime)
 	 * @effect	...
 	 * 			| slime.setWorld(null)
+	 * @effect	...
+	 * 			| slime.setSchool(null)
 	 * @effect	...
 	 * 			| if (getNbOfSlimes() == 0)
 	 * 			| 	then getWorld().removeSchool(this)
