@@ -4,10 +4,27 @@ import java.util.List;
 import java.util.Random;
 
 import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Immutable;
+import be.kuleuven.cs.som.annotate.Model;
 import jumpingalien.util.Sprite;
 
+/**
+ * A class of shark, which are enemies that live in the water.
+ */
 public class Shark extends Enemy {
-
+	
+	/**
+	 * Creates a new shark.
+	 * 
+	 * @param x
+	 * 			The x-position of the new shark.
+	 * @param y
+	 * 			The y-position of the new shark.
+	 * @param images
+	 * 			The array of sprites of the new shark.
+	 * @effect	...
+	 * 			| super(x, y, images, 1.5, 0, 4, 1, 4, 100) 
+	 */
 	public Shark(double x, double y, Sprite[] images) {
 		super(x, y, images, 1.5, 0, 4, 1, 4, 100);
 	}
@@ -17,8 +34,8 @@ public class Shark extends Enemy {
 	 * 
 	 * @param ay
 	 * 			the value to be checked
-	 * @result	True if and only if ay is equal to 0 or -10.
-	 * 			| result = ((ay == 0) || (ay == -10))
+	 * @result	...
+	 * 			| result = ((ay == 0) || (ay == -10) || (Math.abs(ay) <= getMaxRiseAy()))
 	 */
 	@Override
 	public boolean isValidAy(double ay) {
@@ -44,11 +61,16 @@ public class Shark extends Enemy {
 	 * 			| new.getNonJumpingPeriods() = nonjumpinperiods
 	 */
 	private void setNonJumpingPeriods(int nonjumpingperiods) {
+		assert(nonjumpingperiods >= 0);
 		this.non_jumping_periods = nonjumpingperiods;
 	}
 
 	private int non_jumping_periods = 5;
 	
+	/**
+	 * Gets the absolute value of the maximum vertical acceleration this shark can rise or dive with.
+	 */
+	@Basic @Immutable
 	public static double getMaxRiseAy() {
 		return Shark.max_rise_ay;
 	}
@@ -59,16 +81,22 @@ public class Shark extends Enemy {
 	 * Gets the new vertical acceleration of this shark.
 	 * 
 	 * @result	...
-	 * 			| if(getAy() >= -0.2 && getAy() <= 0.2 && canDiveOrRise())
+	 * 			| if((canDive() && getAy() < 0 && getAy() > -getMaxRiseAy()))
 	 *			|	result = getAy()
+	 * @result 	...
+	 * 			| if (canRise() && getAy() > 0 && getAy() < getMaxRiseAy())
+	 * 			|	 result = getAy()
 	 * @result	...
-	 *			| else if(getAy() == -10 && (! canJump() && ! submerged(getWorld().collisionDetect(this,0))))
-	 *			|	result = getAy()
+	 *			| List<List<List<Object>>> collisions = getCollisions()
+	 *			| for(int i = 0; i < 2; i++) 
+	 *			|	if (collisions.get(i).get(1).contains(Feature.air)
+	 *			|	   || collisions.get(i).get(1).contains(Feature.magma)) 
+	 *			|		result = -10
 	 * @result	...
 	 *			| else
 	 *			| 	result = 0 
 	 */
-	@Override
+	@Model @Override
 	protected double advanceAy() {
 		List<List<List<Object>>> collisions = getCollisions();
 		if (canDive() && getAy() < 0 && getAy() > -getMaxRiseAy()) return getAy();
@@ -83,10 +111,9 @@ public class Shark extends Enemy {
 	 *  Gets the new vertical speed of this shark.
 	 *  
 	 * @param time
-	 *  		The time to calculate the vertical speed of this shark with.
-	 *  
+	 *  		The time to calculate the vertical speed of this shark with.  
 	 * @result	...
-	 *  		| if((! canDiveOrRise()) && (getAy() != -10))
+	 *  		| if((getAy() > 0 && !canRise()) || (getAy() < 0 && getAy() > -getMaxRiseAy() && !canDive()))
 	 *			|	result =  0
 	 * @result	...
 	 *			| result = super.advaceVy(time)
@@ -105,9 +132,6 @@ public class Shark extends Enemy {
 	/**
 	 * Advances the y-position of this shark over a given time interval.
 	 * 
-	 * @effect	...
-	 * 			| if((! canDiveOrRise()) && (getAy() != -10))
-	 *			|	setY(getY())
 	 * @effect 	...
 	 * 			super.advanceY(time)
 	 * @throws IllegArgumentException
@@ -130,17 +154,11 @@ public class Shark extends Enemy {
 	 * @effect 	...
 	 * 			| if(getAy() != -10)
 	 *			|	setAy(0);
-	 *			| Random rand = new Random()
-	 *			| int nextaction;
+	 * @effect	...			
 	 *			| if(getNonJumpingPeriods() > 4 && canJump())
-	 *			|	nextaction = rand.nextInt(2)
-	 *			| else
-	 *			| 	nextaction = rand.nextInt(1)
-	 *	
-	 *			| if(nextaction == 1)
-	 *			|	startJump()						
-	 * 			| else if(canDiveOrRise())
-	 *			|	startRiseOrDive()	
+	 *			|	startJump()
+	 *			| else 
+	 *			|	startRiseOrDive()
 	 */
 	@Override
 	protected void performRandomVerticalAction() {
@@ -162,9 +180,13 @@ public class Shark extends Enemy {
 	 * @pre		...
 	 * 			| slime != null
 	 * @effect	...
-	 * 			| this.setHitpoints(getHitpoints() - 50)
-	 * @effect 	...
-	 * 			| slime.setHitpoints(getHitpoints() - 50)
+	 * 			| if (this.getDeathTime() == 0 && slime.getDeathTime() == 0 && getTimeInvincible() == 0 && slime.getTimeInvincible() == 0) 
+	 *			|	if (direction != 1) 
+	 *			|		slime.hit(50)
+	 *			|		slime.setTimeInvincible(0.6)
+	 *			| 	if (direction != 3) {
+	 *			|		setHitpoints(getHitpoints() - 50);
+	 *			|		setTimeInvincible(0.6)
 	 */
 	@Override
 	protected void collisionHandleSlime(Slime slime, int direction) {
@@ -191,7 +213,7 @@ public class Shark extends Enemy {
 	 * @pre		...	
 	 * 			| player != null
 	 * @effect	...
-	 * 			| player.collisionHandleShark(this)
+	 * 			| player.collisionHandleShark(this, mirroDirection(direction))
 	 */
 	@Override
 	protected void collisionHandleMazub(Mazub player, int direction) {
@@ -261,10 +283,14 @@ public class Shark extends Enemy {
 	 * @effect	...
 	 * 			| setVy(2)
 	 * @effect	...
-	 * 			| setAy(-10)
-	 * @effect	...
 	 * 			| setNonJumpingPeriods(0)
+	 * @effect	...
+	 * 			| List<List<List<Object>>> collisions = getCollisions()
+	 *			| if (!(noObjectMovementBlocking(collisions.get(3).get(0))) 
+	 *			|	&& (collisions.get(3).get(1).contains(Feature.ground)))
+	 *			|		setJustJumped(true)
 	 */
+	@Model
 	private void startJump(){
 		setVy(2);
 
@@ -276,13 +302,13 @@ public class Shark extends Enemy {
 	}
 	
 	/**
-	 * Checks whether or not this shark can dive or rise.
+	 * Checks whether or not this shark can dive.
 	 * 
 	 * @return	...
-	 * 			| ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0)
-	 *			| if(collisions.get(3).get(1).contains(Feature.water) || submerged(collisions))
-	 *			|	return true
-	 *			| return false
+	 * 			| ArrayList<List<List<Object>>> collisions = getCollisions()
+	 *			| for(Object feature : collisions.get(3).get(1)) 
+	 *			|		if ((Feature) feature != Feature.water) result =  false
+	 *			| result = true;
 	 */
 	private boolean canDive(){
 		List<List<List<Object>>> collisions = getCollisions();
@@ -292,6 +318,15 @@ public class Shark extends Enemy {
 		return true;
 	}
 	
+	/**
+	 * Checks whether or not this shark can rive.
+	 * 
+	 * @return	...
+	 * 			| ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0, getHeight() + 1)
+	 *			| for(Object feature : collisions.get(1).get(1)) 
+	 *			|		if ((Feature) feature != Feature.water) result =  false
+	 *			| result = true;
+	 */
 	private boolean canRise() {
 		List<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0, getHeight() + 1);
 		for(Object feature : collisions.get(1).get(1)) {
@@ -304,14 +339,18 @@ public class Shark extends Enemy {
 	 * Start a dive or a rise for this shark.
 	 * 
 	 * @effect	...
-	 * 			| Random rand = new Random(); 
-	 *			| setNonJumpingPeriods(getNonJumpingPeriods() + 1);
-	 *			| double abs_value_ax = getAxi()*rand.nextDouble();
-	 *			| if(rand.nextInt(2) == 0)
-	 *			|	setAx(-abs_value_ax);
-	 *			| else
-	 *			|	setAx(abs_value_ax);
+	 * 			| setNonJumpingPeriods(getNonJumpingPeriods() + 1);
+	 * @effect	...
+	 * 			| Random rand = new Random()
+	 * 			| double lowerbound = 0
+	 *			| double upperbound = 0
+	 *			| if (canDive()) lowerbound = -getMaxRiseAy()
+	 *			| if (canRise()) upperbound = getMaxRiseAy()
+	 *			| setAy(rand.nextDouble()*(upperbound - lowerbound) + lowerbound)
+	 *			| if (getAy() > 0) setJustJumped(true)
+	 *		
 	 */
+	@Model
 	private void startRiseOrDive() {
 		Random rand = new Random(); 
 		setNonJumpingPeriods(getNonJumpingPeriods() + 1);
@@ -327,11 +366,12 @@ public class Shark extends Enemy {
 	 * Checks whether or not this shark can jump.
 	 * 
 	 * @effect 	...
-	 * 			| ArrayList<List<List<Object>>> collisions = getWorld().collisionDetect(this, 0)		
-	 *			|	if(collisions.get(3).get(1).contains(Feature.ground) || 
-	 *			|		collisions.get(3).get(1).contains(Feature.water) || collisions.get(3).get(0).size() != 0)
-	 *			|		return true		
-	 *			| return false
+	 * 			| ArrayList<List<List<Object>>> collisions = getcollisions()		
+	 *			|	if(collisions.get(3).get(1).contains(Feature.ground) || collisions.get(3).get(1).contains(Feature.water) 
+	 *			|	  || collisions.get(0).get(1).contains(Feature.ground) || collisions.get(0).get(1).contains(Feature.water)
+	 *			|	  || collisions.get(3).get(0).size() != 0)
+	 *			|		result =  true		
+	 *			| result =  false
 	 */
 	@Override
 	public boolean canJump(){
@@ -353,8 +393,6 @@ public class Shark extends Enemy {
 	 * 			| this.getWorld() != null
 	 * @effect	...
 	 * 			| this.getWorld().removeShark(this)
-	 * @effect	...
-	 * 			| this.setWorld(null)
 	 */
 	@Override
 	protected void terminate() {
