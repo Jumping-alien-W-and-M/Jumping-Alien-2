@@ -22,11 +22,12 @@ public class Slime extends Enemy {
 	 * 			The series of sprites of the new slime.
 	 * @param school
 	 * 			The school the new sprite should be part of.
+	 * @pre		...
+	 * 			| (school != null)
 	 * @effect	...
 	 * 			| super(x, y, images, 0.7, 0, 2, 6)
 	 * @effect	...
-	 * 			| if (school != null)
-	 * 			|	then school.addSlime(this)
+	 * 			| school.addSlime(this)
 	 */
 	public Slime(double x, double y, Sprite[] images, School school) {
 		super(x, y, images, 0.7, 0, 2.5, 2, 6, 100);
@@ -43,7 +44,7 @@ public class Slime extends Enemy {
 	 * @pre		...
 	 * 			| (hitpoints >= 0)
 	 * @effect	...
-	 * 			| for (Slime slime : getSchool().getSlimes())
+	 * 			| for (slime : getSchool().getSlimes())
 	 * 			| 	if (slime != this)
 	 * 			|		then setHitpoints(getHitpoints() - 1)
 	 * @effect	...
@@ -60,14 +61,14 @@ public class Slime extends Enemy {
 	}
 	
 	/**
-	 * Sets the world this game object is in.
+	 * Sets the world this slime is in.
 	 * 
 	 * @param world
-	 * 			The world this game object should be in.
+	 * 			The world this slime should be in.
 	 * @pre		...
 	 * 			| (getSchool() != null)
 	 * @pre		...
-	 * 			| (getSchool().getWorld() == world)
+	 * 			| ((getSchool().getWorld() == world) || (world == null))
 	 * @effect	...
 	 * 			| super.setWorld(world)
 	 */
@@ -92,9 +93,8 @@ public class Slime extends Enemy {
 	 * 
 	 * @param school
 	 * 			The new school this slime should be linked to.
-	 * @post	The slime's old school shall no longer contain this slime, if this slime had an old school.
-	 * 			| if (getSchool() != null)
-	 * 			|	then (new.(this.getSchool()).hasAsSlime(this)) == false)
+	 * @post	..
+	 * 			| (new.getSchool() == school)
 	 */
 	protected void setSchool(School school) {
 		this.school = school;
@@ -109,21 +109,16 @@ public class Slime extends Enemy {
 	 * @pre		...
 	 * 			| (school != null)
 	 * @effect	...
-	 * 			| for(Slime slime : getSchool().getSlimes())
-	 * 			| 	if (slime != this) {
-	 * 			|		slime.setHitpoints(getHitpoints() + 1)
-	 * 			|		this.setHitpoints(getHitpoints() - 1)
-	 * 			|	}
-	 * @effect	...
+	 * 			| transfer = school.getNbOfSlimes() - (getSchool().getNbOfSlimes() - 1)
+	 * 			| for(slime : getSchool().getSlimes())
+	 * 			| 	if (slime != this)
+	 * 			|		then slime.setHitpoints(getHitpoints() + 1)
 	 * 			| getSchool().removeSlime(this)
-	 * @effect	...
 	 * 			| school.addSlime(this)
-	 * @effect	...
 	 * 			| for(Slime slime : getSchool().getSlimes())
-	 * 			| 	if (slime != this) {
-	 * 			|		this.setHitpoints(getHitpoints() + 1)
-	 * 			|		slime.setHitpoints(getHitpoints() - 1)
-	 * 			|	}
+	 * 			| 	if (slime != this)
+	 * 			|		then slime.setHitpoints(getHitpoints() - 1)
+	 * 			| setHitpoints(getHitpoints() + transfer)
 	 */
 	private void switchSchool(School school) {
 		assert(school != null);
@@ -131,9 +126,7 @@ public class Slime extends Enemy {
 		int transfer = school.getNbOfSlimes() - (getSchool().getNbOfSlimes() - 1);
 		// Add one hitpoint to all slimes of old school
 		for(Slime slime : getSchool().getSlimes()) {
-			if (slime != this) {
-				slime.setHitpoints(getHitpoints() + 1);
-			}
+			if (slime != this) slime.setHitpoints(getHitpoints() + 1);
 		}
 		
 		// Change school
@@ -142,9 +135,7 @@ public class Slime extends Enemy {
 		
 		// Subtract one hitpoint from all slimes of new school
 		for(Slime slime : getSchool().getSlimes()) {
-			if (slime != this) {
-				slime.setHitpoints(getHitpoints() - 1);
-			}
+			if (slime != this) slime.setHitpoints(getHitpoints() - 1);
 		}
 		this.setHitpoints(getHitpoints() + transfer);
 		
@@ -160,7 +151,7 @@ public class Slime extends Enemy {
 	 * @pre		...
 	 * 			| (player != null)
 	 * @effect	...
-	 * 			| collisionHandleEnemy()
+	 * 			| player.collisionHandleSlime(this, mirrorDirection(direction))
 	 */
 	@Override
 	protected void collisionHandleMazub(Mazub player, int direction) {
@@ -176,7 +167,7 @@ public class Slime extends Enemy {
 	 * @pre		...
 	 * 			| (shark != null)
 	 * @effect	...
-	 * 			| collisionHandleEnemy()
+	 * 			| shark.collisionHandleSlime(this, mirrorDirection(direction))
 	 */
 	@Override
 	protected void collisionHandleShark(Shark shark, int direction) {
@@ -192,12 +183,11 @@ public class Slime extends Enemy {
 	 * @pre		...
 	 * 			| (slime != null)
 	 * @effect	...
-	 * 			| if (this.getSchool().getNbOfSlimes() < slime.getSchool().getNbOfSlimes())
-	 * 			|	then this.switchSchool(slime.getSchool())
-	 * @effect	...
-	 * 			| if (this.getSchool().getNbOfSlimes() > slime.getSchool().getNbOfSlimes())
-	 * 			|	then slime.switchSchool(this.getSchool())
-	 * 
+	 * 			| if (this.getDeathTime() == 0 && slime.getDeathTime() == 0)
+	 * 			|	if (this.getSchool().getNbOfSlimes() < slime.getSchool().getNbOfSlimes())
+	 * 			|		then this.switchSchool(slime.getSchool())
+	 * 			|	else if (this.getSchool().getNbOfSlimes() > slime.getSchool().getNbOfSlimes())
+	 * 			|		then slime.switchSchool(this.getSchool())
 	 */
 	@Override
 	protected void collisionHandleSlime(Slime slime, int direction) {
@@ -227,7 +217,7 @@ public class Slime extends Enemy {
 	 * 			| setTimeInWater(getTimeInWater() + time)
 	 * @effect	...
 	 * 			| while (getTimeInWater() >= 0.2) {
-	 * 			|	hit(20)
+	 * 			|	hit(2)
 	 * 			|	setTimeInWater(getTimeInWater() - 0.2)
 	 * 			| }
 	 */
@@ -252,12 +242,12 @@ public class Slime extends Enemy {
 	 * 			| (time > 0)
 	 * @effect	...
 	 * 			| if (getTimeInMagma() == 0)
-	 * 			| 	then hit(20)
+	 * 			| 	then hit(50)
 	 * @effect	...
 	 * 			| setTimeInMagma(getTimeInMagma() + time)
 	 * @effect	...
 	 * 			| while (getTimeInMagma() >= 0.2) {
-	 * 			|	hit(20)
+	 * 			|	hit(50)
 	 * 			|	setTimeInMagma(getTimeInMagma() - 0.2)
 	 * 			| }
 	 */
