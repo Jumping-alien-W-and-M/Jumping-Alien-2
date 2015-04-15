@@ -30,6 +30,10 @@ public abstract class Enemy extends GameObject {
 	 * 			The maximal time a random action for this enemy should take.
 	 * @param hitpoints
 	 * 			The amount of hitpoints this enemy should start with.
+	 * @pre		...
+	 * 			| (max_action_time >= min_action_time)
+	 * @pre		...
+	 * 			| (hitpoints > 0)
 	 * @post	...
 	 * 			| (new.getMinActionTime() == min_action_time)
 	 * @post	...
@@ -42,6 +46,9 @@ public abstract class Enemy extends GameObject {
 	public Enemy(double x, double y, Sprite[] images, double axi, double vxi, double vxmax, double min_action_time,
 			double max_action_time, int hitpoints) {
 		super(x, y, images, axi, vxi, vxmax);
+		
+		assert(max_action_time >= min_action_time);
+		assert(hitpoints > 0);
 		this.min_action_time = min_action_time;
 		this.max_action_time = max_action_time;
 		setHitpoints(hitpoints);
@@ -52,8 +59,11 @@ public abstract class Enemy extends GameObject {
 	 * 
 	 * @param hitpoints
 	 * 			The amount of hitpoints this enemy should have.
-	 * @post	The amount of hitpoints of this enemy is equal to the given hitpoints.
+	 * @post	...
 	 * 			| (new.getHitpoints() == hitpoints)
+	 * @effect	...
+	 * 			| if ((getHitpoints() <= 0) && (getDeathTime() == 0))
+	 * 			| 	then kkill()
 	 */
 	@Override
 	protected void setHitpoints(int hitpoints) {
@@ -87,26 +97,23 @@ public abstract class Enemy extends GameObject {
 	private double action_time = 0;
 	
 	/**
-	 * Advances the time by a given time.
+	 * Advances the time by a given time for this enemy.
 	 * 
 	 * @param dt
 	 * 			The amount of seconds to be advanced.
-	 * @effect	The x-position will be advanced using the given time.
-	 * 			| setX(advanceX(dt))
-	 * @effect	The horizontal velocity will be advanced using the given time.
-	 * 			| setVx(advanceVx(dt))
-	 * @effect	The y-position will be advanced using the given time.
-	 * 			| setY(advanceY(dt))
-	 * @effect	The vertical velocity will be advanced using the given time.
-	 * 			| setVy(advanceVy(dt))
-	 * @effect	The vertical acceleration will be equal to -10 if this Mazub is in mid-air, else it will be 0.
-	 * 			| setAy(advanceAy())
-	 * @effect	The last movement time will be equal to -1 if this Mazub is moving to the left,
-	 * 			1 if this Mazub is moving to the right, and if this Mazub is standing still the absolute value of the
-	 * 			previous last movement time will be decreased by dt, unless it hits 0, in which case it will stick to 0.
-	 * 			| setLastMove(advanceLastMove(dt))
-	 * @effect	The animation time will be increased by dt.
-	 * 			| setAnimationTime(getAnimationTime() + dt))
+	 * @effect	...
+	 * 			| timestep = getTimestep(dt, 0)
+	 * 			| for(time_passed = 0; time_passed < dt; time_passed += timestep) {
+	 * 			|	if (getWorld() != null) {
+	 * 			|		timestep = getTimestep(dt, time_passed)
+	 * 			| 		super.advanceTimeStep(timestep)
+	 * 			|	}
+	 * 			|	if (getWorld() != null) {
+	 * 			|		advanceActionTime(timestep)
+	 * 			| 		advanceDeathTime(timestep)
+	 * 			|	}
+	 * 			| }
+	 * 			| collisionHandle(getCollisions(), dt)
 	 * @throws IllegalArgumentException
 	 * 			If dt isn't a valid time interval to advance the time with.
 	 * 			| !isValidDt(dt)
@@ -140,14 +147,12 @@ public abstract class Enemy extends GameObject {
 	 * @effect	...
 	 * 			| setActionTime(getActionTime() - time)
 	 * @effect	...
-	 * 			| if (getActionTime() <= 0) {
-	 * 			|	while (getActionTime() < min_action_time) {
-	 * 			|		rand = new Random()
-	 * 			|		new_value = min_action_time + (max_action_time - min_action_time)*rand.nextDouble()
-	 * 			|		setActionTime(getActionTime() + new_value)
-	 * 			|	}
-	 * 			|	performRandomAction()
+	 * 			| while (getActionTime() < 0) {
+	 * 			|	rand = new Random();
+	 * 			|	new_value = getMinActionTime() + (getMaxActionTime() - getMinActionTime())*rand.nextDouble()
+	 * 			|	setActionTime(getActionTime() + new_value)
 	 * 			| }
+	 * 			| performRandomAction()
 	 */
 	protected void advanceActionTime(double time) {
 		
@@ -167,16 +172,16 @@ public abstract class Enemy extends GameObject {
 	}
 	
 	/**
-	 * Advances the time this plant has been dead for with time.
+	 * Advances the time this enemy has been dead for by a given time.
 	 * 
 	 * @param time
-	 * 			The time to decrease the death time of this plant with.
-	 * @post	If deathtime is not equal to zero it will be set to the currendeathtime min time.
-	 * 			| if(! (getDeathTime() == 0)){
+	 * 			The time to decrease the death time of this enemy with.
+	 * @post	...
+	 * 			| if((getDeathTime() != 0)){
 	 *			|	this.setDeathTime(getDeathTime() - time);
-	 * @effect	If the new deatthime is lower then or equal to zero this plant will be terminated.
+	 * @effect	...
 	 * 			| if(new.getDeathTime() <= 0)
-	 *			| 	terminate();
+	 *			| 	terminate()
 	 */
 	private void advanceDeathTime(double time){
 		if(getDeathTime() != 0) {
@@ -205,13 +210,21 @@ public abstract class Enemy extends GameObject {
 	
 	protected final double max_action_time;
 	
+	/**
+	 * Starts a random action for this enemy.
+	 * 
+	 * @effect	...
+	 * 			| performRandomHorizontalAction()
+	 * @effect	...
+	 * 			| performRandomVerticalAction()
+	 */
 	protected void performRandomAction() {
 		performRandomHorizontalAction();
 		performRandomVerticalAction();
 	}
 
 	/**
-	 * Start a random horizontal movement for this enemy.
+	 * Starts a random horizontal action for this enemy.
 	 * 
 	 * @effect	...
 	 * 			| setVx(0)
@@ -231,5 +244,8 @@ public abstract class Enemy extends GameObject {
 			setAx(-getAxi());	
 	}
 	
+	/**
+	 * Starts a random vertical action for this enemy.
+	 */
 	protected void performRandomVerticalAction() { }
 }
