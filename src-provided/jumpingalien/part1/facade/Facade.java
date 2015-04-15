@@ -88,10 +88,10 @@ public class Facade implements IFacade {
 
 	@Override
 	public void advanceTime(Mazub alien, double dt) {
-		try {
+		/** try {
 			alien.advanceTime(dt);
 		} catch(IllegalArgumentException exc) {
 			throw new ModelException(exc);
-		}
+		}**/
 	}
 }

@@ -306,7 +306,7 @@ public class Mazub extends GameObject {
 	 * 			If dt isn't a valid time interval to advance the time with.
 	 * 			| !isValidDt(dt)
 	 */
-	@Override
+	@Override @Model
 	protected void advanceTime(double dt) throws IllegalArgumentException {
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();

@@ -127,7 +127,7 @@ public abstract class Enemy extends GameObject {
 	 * 			| !isValidDt(dt)
 	 */
 	@Override
-	public void advanceTime(double dt) throws IllegalArgumentException {
+	protected void advanceTime(double dt) throws IllegalArgumentException {
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();
 		}
