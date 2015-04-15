@@ -62,7 +62,8 @@ public class Mazub extends GameObject {
 	 * @post	If ducking is true, this Mazub will be ducking, else it won't be.
 	 * 			| (new.getDucking() == ducking)
 	 */
-	protected void setDucking(boolean ducking) {
+	@Model
+	private void setDucking(boolean ducking) {
 		this.ducking = ducking;
 	}
 	
@@ -84,6 +85,7 @@ public class Mazub extends GameObject {
 	 * @post	If try_stand is true, this Mazub will have tried to stand up, but couldn't at the time. False if otherwise.
 	 * 			| (new.getTryStand() = try_stand)
 	 */
+	@Model
 	private void setTryStand(boolean try_stand) {
 		this.try_stand = try_stand;
 	}
@@ -110,6 +112,7 @@ public class Mazub extends GameObject {
 	 * @post	The last move variable will be equal to the given last_move.
 	 * 			| (new.getLastMove() == last_move)
 	 */
+	@Model
 	protected void setLastMove(double last_move) {
 		assert(last_move >= -1 && last_move <= 1);
 		this.last_move = last_move;
@@ -137,6 +140,7 @@ public class Mazub extends GameObject {
 	 * @post	This Mazub's previous move will be equal to the given prev_move.
 	 * 			| (new.getPrevMove() == prev_move)
 	 */
+	@Model
 	private void setPrevMove(String prev_move) {
 		assert((prev_move == "") || (prev_move == "left") || (prev_move == "right"));
 		
@@ -173,6 +177,7 @@ public class Mazub extends GameObject {
 	 * 			animation time to make sure it's in the right interval.
 	 * 			| (new.getAnimationTime() == getAnimationTime()%(getFramesAmount()*getFrameTime()))
 	 */
+	@Model
 	protected void setAnimationTime(double animation_time) {
 		this.animation_time = animation_time;
 		while (getAnimationTime() >= getFramesAmount()*getFrameTime()) {
@@ -218,6 +223,7 @@ public class Mazub extends GameObject {
 	 * @post	If jumping is true, this Mazub will be jumping, otherwise it won't.
 	 * 			| (new.getJumping() == jumping)
 	 */
+	@Model
 	protected void setJumping(boolean jumping) {
 		this.jumping = jumping;
 	}
@@ -301,7 +307,7 @@ public class Mazub extends GameObject {
 	 * 			| !isValidDt(dt)
 	 */
 	@Override
-	public void advanceTime(double dt) throws IllegalArgumentException {
+	protected void advanceTime(double dt) throws IllegalArgumentException {
 		if (!isValidDt(dt)) {
 			throw new IllegalArgumentException();
 		}
