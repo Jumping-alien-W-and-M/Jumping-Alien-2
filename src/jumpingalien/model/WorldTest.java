@@ -21,7 +21,7 @@ public class WorldTest {
 	@Before
 	public void setUp() throws Exception {
 		world = new World(10, 20, 20, 200, 200, 19, 0);
-		player = new Mazub(0, 0, JumpingAlienSprites.ALIEN_SPRITESET);
+		player = new Mazub(0, 0, JumpingAlienSprites.ALIEN_SPRITESET, null);
 		world.setMazub(player);
 	}
 	
@@ -278,7 +278,7 @@ public class WorldTest {
 	
 	@Test
 	public void TestaddSharkValidshark(){
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		world.addShark(shark);
 		assert(world.getSharks().contains(shark));
 		assertEquals(shark.getWorld(), world);
@@ -297,7 +297,7 @@ public class WorldTest {
 	
 	@Test
 	public void TestaddSharksharkIsDouble(){
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		world.addShark(shark);
 		try{
 			world.addShark(shark);
@@ -310,7 +310,7 @@ public class WorldTest {
 	
 	@Test
 	public void TesthasAsSharksharkIsNotnull(){
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		assert(! world.hasAsShark(shark));
 		
 		world.addShark(shark);
@@ -330,7 +330,7 @@ public class WorldTest {
 	
 	@Test
 	public void TestaddPlantValidplant(){
-		Plant plant = new Plant(0, 0, sprites);
+		Plant plant = new Plant(0, 0, sprites, null);
 		world.addPlant(plant);
 		assert(world.getPlants().contains(plant));
 		assertEquals(plant.getWorld(), world);
@@ -349,7 +349,7 @@ public class WorldTest {
 	
 	@Test
 	public void TestaddPlantplantIsDouble(){
-		Plant plant = new Plant(0, 0, sprites);
+		Plant plant = new Plant(0, 0, sprites, null);
 		world.addPlant(plant);
 		try{
 			world.addPlant(plant);
@@ -362,7 +362,7 @@ public class WorldTest {
 	
 	@Test
 	public void TesthasAsPlantplantIsNotnull(){
-		Plant plant = new Plant(0, 0, sprites);
+		Plant plant = new Plant(0, 0, sprites, null);
 		assert(! world.hasAsPlant(plant));
 		
 		world.addPlant(plant);
@@ -469,9 +469,9 @@ public class WorldTest {
 	public void TestgetSlimesOneSchool(){
 		School school = new School();
 		world.addSchool(school);
-		Slime slime1 = new Slime(0, 0, sprites, school);
-		Slime slime2 = new Slime(0, 0, sprites, school);
-		Slime slime3 = new Slime(0, 0, sprites, school);
+		Slime slime1 = new Slime(0, 0, sprites, school, null);
+		Slime slime2 = new Slime(0, 0, sprites, school, null);
+		Slime slime3 = new Slime(0, 0, sprites, school, null);
 		ArrayList<Slime> slimes = new ArrayList<Slime>();
 		slimes.add(slime1);
 		slimes.add(slime2);
@@ -483,21 +483,21 @@ public class WorldTest {
 	public void TestgetSlimesMultipleSchools(){
 		School school1 = new School();
 		world.addSchool(school1);
-		Slime slime1 = new Slime(0, 0, sprites, school1);
-		Slime slime2 = new Slime(0, 0, sprites, school1);
-		Slime slime3 = new Slime(0, 0, sprites, school1);
+		Slime slime1 = new Slime(0, 0, sprites, school1, null);
+		Slime slime2 = new Slime(0, 0, sprites, school1, null);
+		Slime slime3 = new Slime(0, 0, sprites, school1, null);
 
 		School school2 = new School();
 		world.addSchool(school2);
-		Slime slime4= new Slime(0, 0, sprites, school2);
-		Slime slime5 = new Slime(0, 0, sprites, school2);
-		Slime slime6 = new Slime(0, 0, sprites, school2);
+		Slime slime4= new Slime(0, 0, sprites, school2, null);
+		Slime slime5 = new Slime(0, 0, sprites, school2, null);
+		Slime slime6 = new Slime(0, 0, sprites, school2, null);
 		
 		School school3 = new School();
 		world.addSchool(school3);
-		Slime slime7= new Slime(0, 0, sprites, school3);
-		Slime slime8 = new Slime(0, 0, sprites, school3);
-		Slime slime9 = new Slime(0, 0, sprites, school3);
+		Slime slime7= new Slime(0, 0, sprites, school3, null);
+		Slime slime8 = new Slime(0, 0, sprites, school3, null);
+		Slime slime9 = new Slime(0, 0, sprites, school3, null);
 		
 		ArrayList<Slime> slimes = new ArrayList<Slime>();
 		slimes.add(slime1);
@@ -591,12 +591,12 @@ public class WorldTest {
 			collisions.add(inner_collisions);
 		}
 		player.setX(world.getWorldWidth() - 5);
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		shark.setX(player.getX() - shark.getWidth() + 1);
 		world.addShark(shark);
-		Shark shark1 = new Shark(shark.getX(), 0, sprites);
+		Shark shark1 = new Shark(shark.getX(), 0, sprites, null);
 		world.addShark(shark1);
-		Plant plant = new Plant(0, 0 , sprites);
+		Plant plant = new Plant(0, 0 , sprites, null);
 		plant.setX(player.getX() - plant.getWidth() + 1);
 		world.addPlant(plant);
 		collisions.get(0).get(0).add(shark);
@@ -619,11 +619,11 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}
-		Shark shark = new Shark(player.getX() + player.getWidth() - 1, 0, sprites);
+		Shark shark = new Shark(player.getX() + player.getWidth() - 1, 0, sprites, null);
 		world.addShark(shark);
-		Shark shark1 = new Shark(player.getX() + player.getWidth() - 1, 0, sprites);
+		Shark shark1 = new Shark(player.getX() + player.getWidth() - 1, 0, sprites, null);
 		world.addShark(shark1);
-		Plant plant = new Plant(player.getX() + player.getWidth() - 1, 0, sprites);
+		Plant plant = new Plant(player.getX() + player.getWidth() - 1, 0, sprites, null);
 		world.addPlant(plant);
 		collisions.get(2).get(0).add(shark);
 		collisions.get(2).get(0).add(shark1);
@@ -644,11 +644,11 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}
-		Shark shark = new Shark(0, player.getY() + player.getHeight() - 1, sprites);
+		Shark shark = new Shark(0, player.getY() + player.getHeight() - 1, sprites, null);
 		world.addShark(shark);
-		Shark shark1 = new Shark(0, player.getY() + player.getHeight() - 1, sprites);
+		Shark shark1 = new Shark(0, player.getY() + player.getHeight() - 1, sprites, null);
 		world.addShark(shark1);
-		Plant plant = new Plant(0, player.getY() + player.getHeight() - 1, sprites);
+		Plant plant = new Plant(0, player.getY() + player.getHeight() - 1, sprites, null);
 		world.addPlant(plant);
 		collisions.get(1).get(0).add(shark);
 		collisions.get(1).get(0).add(shark1);
@@ -670,12 +670,12 @@ public class WorldTest {
 			collisions.add(inner_collisions);
 		}
 		player.setY(world.getWorldHeight() - 5 );
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		shark.setY(player.getY() - shark.getHeight() + 1);
 		world.addShark(shark);
-		Shark shark1 = new Shark(0, shark.getY(), sprites);
+		Shark shark1 = new Shark(0, shark.getY(), sprites, null);
 		world.addShark(shark1);
-		Plant plant = new Plant(0, 0, sprites);
+		Plant plant = new Plant(0, 0, sprites, null);
 		plant.setY(player.getY() - plant.getHeight() + 1);
 		world.addPlant(plant);
 		collisions.get(3).get(0).add(shark);
@@ -697,11 +697,11 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}
-		Shark shark = new Shark(player.getX() + player.getWidth() - 1, player.getY() + player.getHeight() - 1, sprites);
+		Shark shark = new Shark(player.getX() + player.getWidth() - 1, player.getY() + player.getHeight() - 1, sprites, null);
 		world.addShark(shark);
-		Shark shark1 = new Shark(player.getX() + player.getWidth() - 1, player.getY() + player.getHeight() - 1, sprites);
+		Shark shark1 = new Shark(player.getX() + player.getWidth() - 1, player.getY() + player.getHeight() - 1, sprites, null);
 		world.addShark(shark1);
-		Plant plant = new Plant(player.getX() + player.getWidth() - 1,  player.getY() + player.getHeight() - 1, sprites);
+		Plant plant = new Plant(player.getX() + player.getWidth() - 1,  player.getY() + player.getHeight() - 1, sprites, null);
 		world.addPlant(plant);
 		collisions.get(5).get(0).add(shark);
 		collisions.get(5).get(0).add(shark1);
@@ -723,12 +723,12 @@ public class WorldTest {
 			collisions.add(inner_collisions);
 		}
 		player.setY(world.getWorldHeight() - 5);
-		Shark shark = new Shark(player.getX() + player.getWidth() - 1, 0, sprites);
+		Shark shark = new Shark(player.getX() + player.getWidth() - 1, 0, sprites, null);
 		shark.setY(player.getY() - shark.getHeight() + 1);
 		world.addShark(shark);
-		Shark shark1 = new Shark(player.getX() + player.getWidth() - 1, shark.getY(), sprites);
+		Shark shark1 = new Shark(player.getX() + player.getWidth() - 1, shark.getY(), sprites, null);
 		world.addShark(shark1);
-		Plant plant = new Plant(player.getX() + player.getWidth() - 1, 0, sprites);
+		Plant plant = new Plant(player.getX() + player.getWidth() - 1, 0, sprites, null);
 		plant.setY( player.getY() - plant.getHeight() +1 );
 		world.addPlant(plant);
 		collisions.get(6).get(0).add(shark);
@@ -751,12 +751,12 @@ public class WorldTest {
 			collisions.add(inner_collisions);
 		}
 		player.setX(world.getWorldWidth() - 5);
-		Shark shark = new Shark(0, player.getY() + player.getHeight() - 1, sprites);
+		Shark shark = new Shark(0, player.getY() + player.getHeight() - 1, sprites, null);
 		shark.setX(player.getX() - shark.getWidth() + 1);
 		world.addShark(shark);
-		Shark shark1 = new Shark(shark.getX(), player.getY() + player.getHeight() - 1, sprites);
+		Shark shark1 = new Shark(shark.getX(), player.getY() + player.getHeight() - 1, sprites, null);
 		world.addShark(shark1);
-		Plant plant = new Plant(0, player.getY() + player.getHeight() - 1, sprites);
+		Plant plant = new Plant(0, player.getY() + player.getHeight() - 1, sprites, null);
 		plant.setX( player.getX() - plant.getWidth() +1 );
 		world.addPlant(plant);
 		collisions.get(4).get(0).add(shark);
@@ -780,13 +780,13 @@ public class WorldTest {
 		}
 		player.setX(world.getWorldWidth() - 5);
 		player.setY(world.getWorldHeight() - 5);
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		shark.setX(player.getX() - shark.getWidth() + 1);
 		shark.setY(player.getY() - shark.getHeight() + 1);
 		world.addShark(shark);
-		Shark shark1 = new Shark(shark.getX(), shark.getY(), sprites);
+		Shark shark1 = new Shark(shark.getX(), shark.getY(), sprites, null);
 		world.addShark(shark1);
-		Plant plant = new Plant(0, 0, sprites);
+		Plant plant = new Plant(0, 0, sprites, null);
 		plant.setX( player.getX() - plant.getWidth() +1 );
 		plant.setY(player.getY() - plant.getHeight() + 1);
 		world.addPlant(plant);
@@ -809,14 +809,14 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		shark.setX(world.getWorldWidth() - 5);
 		world.addShark(shark);
 		player.setX(shark.getX() - player.getWidth() + 1);
-		Shark shark1 = new Shark(0, 0, sprites);
+		Shark shark1 = new Shark(0, 0, sprites, null);
 		shark1.setX(shark.getX() - shark1.getWidth() + 1);
 		world.addShark(shark1);
-		Plant plant = new Plant(0, 0 , sprites);
+		Plant plant = new Plant(0, 0 , sprites, null);
 		plant.setX(shark.getX() - plant.getWidth() + 1);
 		world.addPlant(plant);
 		collisions.get(0).get(0).add(player);
@@ -837,12 +837,12 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		world.addShark(shark);
 		player.setX(shark.getX() + shark.getWidth() - 1);
-		Shark shark1 = new Shark(shark.getX() + shark.getWidth() - 1, 0, sprites);
+		Shark shark1 = new Shark(shark.getX() + shark.getWidth() - 1, 0, sprites, null);
 		world.addShark(shark1);
-		Plant plant = new Plant(shark.getX() + shark.getWidth() - 1, 0 , sprites);
+		Plant plant = new Plant(shark.getX() + shark.getWidth() - 1, 0 , sprites, null);
 		world.addPlant(plant);
 		collisions.get(2).get(0).add(player);
 		collisions.get(2).get(0).add(shark1);
@@ -862,12 +862,12 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		world.addShark(shark);
 		player.setY(shark.getY() + shark.getHeight() - 1);
-		Shark shark1 = new Shark(0, shark.getY() + shark.getHeight() - 1, sprites);
+		Shark shark1 = new Shark(0, shark.getY() + shark.getHeight() - 1, sprites, null);
 		world.addShark(shark1);
-		Plant plant = new Plant(0, shark.getY() + shark.getHeight() - 1 , sprites);
+		Plant plant = new Plant(0, shark.getY() + shark.getHeight() - 1 , sprites, null);
 		world.addPlant(plant);
 		collisions.get(1).get(0).add(player);
 		collisions.get(1).get(0).add(shark1);
@@ -887,14 +887,14 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		world.addShark(shark);
 		shark.setY(world.getWorldHeight() - 5);
 		player.setY(shark.getY() - player.getHeight() + 1);
-		Shark shark1 = new Shark(0, 0, sprites);
+		Shark shark1 = new Shark(0, 0, sprites, null);
 		shark1.setY(shark.getY() - shark1.getHeight() + 1);
 		world.addShark(shark1);
-		Plant plant = new Plant(0, 0, sprites);
+		Plant plant = new Plant(0, 0, sprites, null);
 		plant.setY(shark.getY() - plant.getHeight() + 1);
 		world.addPlant(plant);
 		collisions.get(3).get(0).add(player);
@@ -915,13 +915,13 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		world.addShark(shark);
 		player.setY(shark.getY() + shark.getHeight() - 1);
 		player.setX(shark.getX() + shark.getWidth() - 1);
-		Shark shark1 = new Shark(shark.getX() + shark.getWidth() - 1, shark.getY() + shark.getHeight() - 1, sprites);
+		Shark shark1 = new Shark(shark.getX() + shark.getWidth() - 1, shark.getY() + shark.getHeight() - 1, sprites, null);
 		world.addShark(shark1);
-		Plant plant = new Plant(shark.getX() + shark.getWidth() - 1, shark.getY() + shark.getHeight() - 1, sprites);
+		Plant plant = new Plant(shark.getX() + shark.getWidth() - 1, shark.getY() + shark.getHeight() - 1, sprites, null);
 		world.addPlant(plant);
 		collisions.get(5).get(0).add(player);
 		collisions.get(5).get(0).add(shark1);
@@ -941,15 +941,15 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		world.addShark(shark);
 		shark.setY(world.getWorldHeight() - 5);
 		player.setY(shark.getY() - player.getHeight() + 1);
 		player.setX(shark.getX() + shark.getWidth() - 1);
-		Shark shark1 = new Shark(shark.getX() + shark.getWidth() - 1, 0, sprites);
+		Shark shark1 = new Shark(shark.getX() + shark.getWidth() - 1, 0, sprites, null);
 		shark1.setY(shark.getY() - shark1.getHeight() + 1);
 		world.addShark(shark1);
-		Plant plant = new Plant(shark.getX() + shark.getWidth() - 1, 0, sprites);
+		Plant plant = new Plant(shark.getX() + shark.getWidth() - 1, 0, sprites, null);
 		plant.setY(shark.getY() - plant.getHeight() + 1);
 		world.addPlant(plant);
 		collisions.get(6).get(0).add(player);
@@ -970,15 +970,15 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		world.addShark(shark);
 		shark.setX(world.getWorldWidth() - 5);
 		player.setY(shark.getY() + shark.getHeight() - 1);
 		player.setX(shark.getX() - player.getWidth() + 1);
-		Shark shark1 = new Shark(0, shark.getY() + shark.getHeight() - 1, sprites);
+		Shark shark1 = new Shark(0, shark.getY() + shark.getHeight() - 1, sprites, null);
 		shark1.setX(shark.getX() - shark1.getWidth() + 1);
 		world.addShark(shark1);
-		Plant plant = new Plant(0, shark.getY() + shark.getHeight() - 1, sprites);
+		Plant plant = new Plant(0, shark.getY() + shark.getHeight() - 1, sprites, null);
 		plant.setX(shark.getX() - plant.getWidth() + 1);
 		world.addPlant(plant);
 		collisions.get(4).get(0).add(player);
@@ -999,17 +999,17 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		world.addShark(shark);
 		shark.setX(world.getWorldWidth() - 5);
 		shark.setY(world.getWorldHeight() - 5);
 		player.setY(shark.getY() - player.getHeight() + 1);
 		player.setX(shark.getX() - player.getWidth() + 1);
-		Shark shark1 = new Shark(0, 0, sprites);
+		Shark shark1 = new Shark(0, 0, sprites, null);
 		shark1.setX(shark.getX() - shark1.getWidth() + 1);
 		shark1.setY(shark.getY() - shark1.getHeight() + 1);
 		world.addShark(shark1);
-		Plant plant = new Plant(0, 0, sprites);
+		Plant plant = new Plant(0, 0, sprites, null);
 		plant.setX(shark.getX() - plant.getWidth() + 1);
 		plant.setY(shark.getY() - plant.getHeight() + 1);
 		world.addPlant(plant);
@@ -1031,14 +1031,14 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Plant plant = new Plant(0, 0, sprites);
+		Plant plant = new Plant(0, 0, sprites, null);
 		world.addPlant(plant);
 		plant.setX(world.getWorldWidth() - 5);
 		player.setX(plant.getX() - player.getWidth() + 1);
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		shark.setX(plant.getX() - shark.getWidth() + 1);
 		world.addShark(shark);
-		Plant plant1 = new Plant(0, 0 , sprites);
+		Plant plant1 = new Plant(0, 0 , sprites, null);
 		plant1.setX(plant.getX() - plant1.getWidth() + 1);
 		world.addPlant(plant1);
 		collisions.get(0).get(0).add(player);
@@ -1059,12 +1059,12 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Plant plant = new Plant(0, 0, sprites);
+		Plant plant = new Plant(0, 0, sprites, null);
 		world.addPlant(plant);
 		player.setX(plant.getX() + plant.getWidth() - 1);
-		Shark shark = new Shark(plant.getX() + plant.getWidth() - 1, 0, sprites);
+		Shark shark = new Shark(plant.getX() + plant.getWidth() - 1, 0, sprites, null);
 		world.addShark(shark);
-		Plant plant1 = new Plant(plant.getX() + plant.getWidth() - 1, 0 , sprites);
+		Plant plant1 = new Plant(plant.getX() + plant.getWidth() - 1, 0 , sprites, null);
 		world.addPlant(plant1);
 		collisions.get(2).get(0).add(player);
 		collisions.get(2).get(0).add(plant1);
@@ -1084,12 +1084,12 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Plant plant = new Plant(0, 0, sprites);
+		Plant plant = new Plant(0, 0, sprites, null);
 		world.addPlant(plant);
 		player.setY(plant.getY() + plant.getHeight() - 1);
-		Shark shark = new Shark(0, plant.getY() + plant.getHeight() - 1, sprites);
+		Shark shark = new Shark(0, plant.getY() + plant.getHeight() - 1, sprites, null);
 		world.addShark(shark);
-		Plant plant1 = new Plant(0, plant.getY() + plant.getHeight() - 1, sprites);
+		Plant plant1 = new Plant(0, plant.getY() + plant.getHeight() - 1, sprites, null);
 		world.addPlant(plant1);
 		collisions.get(1).get(0).add(player);
 		collisions.get(1).get(0).add(plant1);
@@ -1109,14 +1109,14 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Plant plant = new Plant(0, 0, sprites);
+		Plant plant = new Plant(0, 0, sprites, null);
 		world.addPlant(plant);
 		plant.setY(world.getWorldHeight() - 5);
 		player.setY(plant.getY() - player.getHeight() + 1);
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		shark.setY(plant.getY() - shark.getHeight() + 1);
 		world.addShark(shark);
-		Plant plant1 = new Plant(0, 0, sprites);
+		Plant plant1 = new Plant(0, 0, sprites, null);
 		plant1.setY(plant.getY() - plant1.getHeight() + 1);
 		world.addPlant(plant1);
 		collisions.get(3).get(0).add(player);
@@ -1137,13 +1137,13 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Plant plant = new Plant(0, 0, sprites);
+		Plant plant = new Plant(0, 0, sprites, null);
 		world.addPlant(plant);
 		player.setY(plant.getY() + plant.getHeight() - 1);
 		player.setX(plant.getX() + plant.getWidth() - 1);
-		Shark shark = new Shark(plant.getX() + plant.getWidth() - 1, plant.getY() + plant.getHeight() - 1, sprites);
+		Shark shark = new Shark(plant.getX() + plant.getWidth() - 1, plant.getY() + plant.getHeight() - 1, sprites, null);
 		world.addShark(shark);
-		Plant plant1 = new Plant(plant.getX() + plant.getWidth() - 1, plant.getY() + plant.getHeight() - 1, sprites);
+		Plant plant1 = new Plant(plant.getX() + plant.getWidth() - 1, plant.getY() + plant.getHeight() - 1, sprites, null);
 		world.addPlant(plant1);
 		collisions.get(5).get(0).add(player);
 		collisions.get(5).get(0).add(plant1);
@@ -1163,15 +1163,15 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Plant plant = new Plant(0, 0, sprites);
+		Plant plant = new Plant(0, 0, sprites, null);
 		world.addPlant(plant);
 		plant.setY(world.getWorldHeight() - 5);
 		player.setY(plant.getY() - player.getHeight() + 1);
 		player.setX(plant.getX() + plant.getWidth() - 1);
-		Shark shark = new Shark(plant.getX() + plant.getWidth() - 1, 0, sprites);
+		Shark shark = new Shark(plant.getX() + plant.getWidth() - 1, 0, sprites, null);
 		shark.setY(plant.getY() - shark.getHeight() + 1);
 		world.addShark(shark);
-		Plant plant1 = new Plant(plant.getX() + plant.getWidth() - 1, 0, sprites);
+		Plant plant1 = new Plant(plant.getX() + plant.getWidth() - 1, 0, sprites, null);
 		plant1.setY(plant.getY() - plant1.getHeight() + 1);
 		world.addPlant(plant1);
 		collisions.get(6).get(0).add(player);
@@ -1192,15 +1192,15 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Plant plant = new Plant(0, 0, sprites);
+		Plant plant = new Plant(0, 0, sprites, null);
 		world.addPlant(plant);
 		plant.setX(world.getWorldWidth() - 5);
 		player.setY(plant.getY() + plant.getHeight() - 1);
 		player.setX(plant.getX() - player.getWidth() + 1);
-		Shark shark = new Shark(0, plant.getY() + plant.getHeight() - 1, sprites);
+		Shark shark = new Shark(0, plant.getY() + plant.getHeight() - 1, sprites, null);
 		shark.setX(plant.getX() - shark.getWidth() + 1);
 		world.addShark(shark);
-		Plant plant1 = new Plant(0, plant.getY() + plant.getHeight() - 1, sprites);
+		Plant plant1 = new Plant(0, plant.getY() + plant.getHeight() - 1, sprites, null);
 		plant1.setX(plant.getX() - plant1.getWidth() + 1);
 		world.addPlant(plant1);
 		collisions.get(4).get(0).add(player);
@@ -1221,17 +1221,17 @@ public class WorldTest {
 			}
 			collisions.add(inner_collisions);
 		}		
-		Plant plant = new Plant(0, 0, sprites);
+		Plant plant = new Plant(0, 0, sprites, null);
 		world.addPlant(plant);
 		plant.setX(world.getWorldWidth() - 5);
 		plant.setY(world.getWorldHeight() - 5);
 		player.setY(plant.getY() - player.getHeight() + 1);
 		player.setX(plant.getX() - player.getWidth() + 1);
-		Shark shark = new Shark(0, 0, sprites);
+		Shark shark = new Shark(0, 0, sprites, null);
 		shark.setX(plant.getX() - shark.getWidth() + 1);
 		shark.setY(plant.getY() - shark.getHeight() + 1);
 		world.addShark(shark);
-		Plant plant1 = new Plant(0, 0, sprites);
+		Plant plant1 = new Plant(0, 0, sprites, null);
 		plant1.setX(plant.getX() - plant1.getWidth() + 1);
 		plant1.setY(plant.getY() - plant1.getHeight() + 1);
 		world.addPlant(plant1);

@@ -13,7 +13,7 @@ public class MazubTest {
 	@Before
 	public void setUp() throws Exception {
 		world = new World(10, 200, 200, 200, 200, 19, 0);
-		this.player = new Mazub(0, 0, JumpingAlienSprites.ALIEN_SPRITESET);
+		this.player = new Mazub(0, 0, JumpingAlienSprites.ALIEN_SPRITESET, null);
 		world.setMazub(player);
 	}
 	
@@ -825,7 +825,7 @@ public class MazubTest {
 	@Test
 	public void canJumpHorizontalObjectTest() {
 		Sprite[] sprites = {player.getImages()[0], player.getImages()[1]};
-		Shark shark = new Shark(100, 0, sprites);
+		Shark shark = new Shark(100, 0, sprites, null);
 		world.addShark(shark);
 		player.setY(shark.getHeight() - 1);
 		
@@ -860,7 +860,7 @@ public class MazubTest {
 	@Test
 	public void canJumpVerticalObjectTest() {
 		Sprite[] sprites = {player.getImages()[0], player.getImages()[1]};
-		Shark shark = new Shark(100, 0, sprites);
+		Shark shark = new Shark(100, 0, sprites, null);
 		world.addShark(shark);
 		player.setX(100);
 		

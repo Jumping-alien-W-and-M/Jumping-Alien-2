@@ -20,7 +20,7 @@ public class SharkTest {
 
 	@Before
 	public void setUp() throws Exception {
-		shark = new Shark(0, 0, sprites);
+		shark = new Shark(0, 0, sprites, null);
 	}
 
 	@Test

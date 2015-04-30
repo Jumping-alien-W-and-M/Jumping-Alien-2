@@ -16,7 +16,7 @@ public class GameObjectTest {
 
 	@Before
 	public void setUp() throws Exception {
-		player = new Mazub(0, 0, JumpingAlienSprites.ALIEN_SPRITESET);
+		player = new Mazub(0, 0, JumpingAlienSprites.ALIEN_SPRITESET, null);
 		world = new World(10, 20, 20, 200, 200, 19, 0);
 		world.setMazub((Mazub) player);
 	}
@@ -331,7 +331,7 @@ public class GameObjectTest {
 	@Test
 	public void TestgetCurrentSprite(){
 		Sprite[] sprites = {JumpingAlienSprites.ALIEN_SPRITESET[0], JumpingAlienSprites.ALIEN_SPRITESET[1]};
-		Plant plant = new Plant(0 , 0, sprites);
+		Plant plant = new Plant(0 , 0, sprites, null);
 		assertEquals(plant.getCurrentSprite(), JumpingAlienSprites.ALIEN_SPRITESET[1]);
 		plant.setVx(- plant.getVxi());
 		assertEquals(plant.getCurrentSprite(), JumpingAlienSprites.ALIEN_SPRITESET[0]);

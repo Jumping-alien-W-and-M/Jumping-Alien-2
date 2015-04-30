@@ -2,6 +2,7 @@ package jumpingalien.model;
 
 import java.util.List;
 
+import program.Program;
 import jumpingalien.util.*;
 import jumpingalien.model.GameObject;
 import be.kuleuven.cs.som.annotate.Basic;
@@ -40,8 +41,8 @@ public class Mazub extends GameObject {
 	 * @effect	This Mazub's last movement will be "standing still".
 	 * 			| setLastMove(0)
 	 */
-	public Mazub(double x, double y, Sprite[] images) {
-		super(x, y, images, 0.9, 1, 3);
+	public Mazub(double x, double y, Sprite[] images, Program program) {
+		super(x, y, images, 0.9, 1, 3, program);
 		
 		setLastMove(0);
 	}

@@ -1,5 +1,6 @@
 package jumpingalien.model;
 
+import program.Program;
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Model;
@@ -30,8 +31,8 @@ public class Slime extends Enemy {
 	 * @effect	...
 	 * 			| school.addSlime(this)
 	 */
-	public Slime(double x, double y, Sprite[] images, School school) {
-		super(x, y, images, 0.7, 0, 2.5, 2, 6, 100);
+	public Slime(double x, double y, Sprite[] images, School school, Program program) {
+		super(x, y, images, 0.7, 0, 2.5, 2, 6, 100, program);
 		
 		assert(school != null);
 		school.addSlime(this);

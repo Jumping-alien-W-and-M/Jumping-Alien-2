@@ -47,11 +47,11 @@ public class SchoolTest {
 		
 		for(int i = 0; i < 25; i++) {
 			assertEquals(test_school.getNbOfSlimes(), i);
-			Slime slime = new Slime(100, 100, slime_sprites, null_school);
+			Slime slime = new Slime(100, 100, slime_sprites, null_school, null);
 			test_school.addSlime(slime);
 			assertEquals(test_school.hasAsSlime(slime), true);
 		}
-		Slime extra_slime = new Slime(100, 100, slime_sprites, null_school);
+		Slime extra_slime = new Slime(100, 100, slime_sprites, null_school, null);
 		assertEquals(test_school.hasAsSlime(extra_slime), false);
 		assertEquals(test_school.getNbOfSlimes(), 25);
 		

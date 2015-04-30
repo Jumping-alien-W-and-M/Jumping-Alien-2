@@ -3,6 +3,7 @@ package jumpingalien.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import program.Program;
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Model;
@@ -32,8 +33,8 @@ public class Plant extends GameObject {
 	 * @effect	...
 	 * 			| setVx(getVxi())
 	 */
-	public Plant(double x, double y, Sprite[] images){
-		super(x, y, images, 0, 0.5, 0.5);
+	public Plant(double x, double y, Sprite[] images, Program program) {
+		super(x, y, images, 0, 0.5, 0.5, program);
 		
 		setMovementTime(0);
 		setVx(getVxi());

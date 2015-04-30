@@ -18,7 +18,7 @@ public class SlimeTest {
 		slime_sprites[1] = JumpingAlienSprites.ALIEN_SPRITESET[1];
 
 		null_school = new School();
-		test_slime = new Slime(100, 200, slime_sprites, null_school);
+		test_slime = new Slime(100, 200, slime_sprites, null_school, null);
 		test_school = new School();
 	}
 

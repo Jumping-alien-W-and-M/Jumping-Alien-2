@@ -1,10 +1,10 @@
 package jumpingalien.model;
 
 import java.util.ArrayList;
-
 import java.util.Collections;
 import java.util.List;
 
+import program.Program;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Model;
@@ -58,7 +58,7 @@ public abstract class GameObject {
 	 * @effect	...
 	 * 			| setHitpoints(100)
 	 */
-	protected GameObject(double x, double y, Sprite[] images, double axi, double vxi, double vxmax) {
+	protected GameObject(double x, double y, Sprite[] images, double axi, double vxi, double vxmax, Program program) {
 		assert(isValidX(x));
 		assert(isValidX(y));
 		setX(x);

@@ -3,6 +3,7 @@ package jumpingalien.model;
 import java.util.List;
 import java.util.Random;
 
+import program.Program;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Model;
@@ -25,8 +26,8 @@ public class Shark extends Enemy {
 	 * @effect	...
 	 * 			| super(x, y, images, 1.5, 0, 4, 1, 4, 100) 
 	 */
-	public Shark(double x, double y, Sprite[] images) {
-		super(x, y, images, 1.5, 0, 4, 1, 4, 100);
+	public Shark(double x, double y, Sprite[] images, Program program) {
+		super(x, y, images, 1.5, 0, 4, 1, 4, 100, program);
 	}
 	
 	/**

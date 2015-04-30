@@ -3,6 +3,7 @@ package jumpingalien.model;
 import java.util.List;
 import java.util.Random;
 
+import program.Program;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Model;
@@ -52,8 +53,8 @@ public abstract class Enemy extends GameObject {
 	 * 			| setHitpoints(hitpoints)
 	 */
 	public Enemy(double x, double y, Sprite[] images, double axi, double vxi, double vxmax, double min_action_time,
-			double max_action_time, int hitpoints) {
-		super(x, y, images, axi, vxi, vxmax);
+			double max_action_time, int hitpoints, Program program) {
+		super(x, y, images, axi, vxi, vxmax, program);
 		
 		assert(max_action_time >= min_action_time);
 		assert(hitpoints > 0);

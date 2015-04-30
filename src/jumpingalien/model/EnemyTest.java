@@ -22,7 +22,7 @@ public class EnemyTest {
 		test_school = new School();
 		test_world.addSchool(test_school);
 		
-		test_slime = new Slime(100, 200, slime_sprites, test_school);
+		test_slime = new Slime(100, 200, slime_sprites, test_school, null);
 	}
 
 	@After
@@ -40,7 +40,7 @@ public class EnemyTest {
 		assertEquals(6, test_slime.getMaxActionTime(), Util.DEFAULT_EPSILON);
 		assertEquals(100, test_slime.getHitpoints());
 		
-		Shark shark = new Shark(100, 200, slime_sprites);
+		Shark shark = new Shark(100, 200, slime_sprites, null);
 		assertEquals(1, shark.getMinActionTime(), Util.DEFAULT_EPSILON);
 		assertEquals(4, shark.getMaxActionTime(), Util.DEFAULT_EPSILON);
 		assertEquals(100, shark.getHitpoints());
@@ -49,7 +49,7 @@ public class EnemyTest {
 	@Test
 	public void actionTimeTest() {
 		for(int i = 0; i < 100; i++) {
-			test_slime = new Slime(1000, 0, slime_sprites, test_school);
+			test_slime = new Slime(1000, 0, slime_sprites, test_school, null);
 			
 			assertEquals(0, test_slime.getActionTime(), Util.DEFAULT_EPSILON);
 			test_slime.advanceTime(0.1);
@@ -69,7 +69,7 @@ public class EnemyTest {
 	
 	@Test
 	public void deathTimeTest() {
-		test_slime = new Slime(1000, 0, slime_sprites, test_school);
+		test_slime = new Slime(1000, 0, slime_sprites, test_school, null);
 		test_slime.setHitpoints(0);
 		
 		for(double i = 0.6; Math.abs(i) > Util.DEFAULT_EPSILON; i -= 0.1) {
