@@ -458,7 +458,7 @@ public class World {
 	}
 	
 	/**
-	 * Connects a given player with  this world, and vice versa.
+	 * Connects a given player with this world, and vice versa.
 	 * 
 	 * @param player
 	 * 			The player which should be associated with the world.
@@ -472,12 +472,43 @@ public class World {
 	 * 			| 	then player.setWorld(this)
 	 */
 	public void setMazub(Mazub player) {
+		assert(!(player instanceof Buzam));
 		if (getMazub() != null) getMazub().setWorld(null);
 		this.player = player;
 		if (player != null) player.setWorld(this);
 	}
 	
 	private Mazub player;
+	
+	/**
+	 * Gets the Buzam inhabiting this world.
+	 */
+	@Basic
+	public Mazub getBuzam() {
+		return this.buzam;
+	}
+	
+	/**
+	 * Connects a given Buzam with this world, and vice versa.
+	 * 
+	 * @param player
+	 * 			The player which should be associated with the world.
+	 * @post	...
+	 * 			| (getMazub() == player)
+	 * @post	...
+	 * 			| new.getMazub() = player
+	 * @effect	...
+	 * 			| if (getMazub() != null) getMazub().setWorld(null)
+	 * 			| if (player != null)
+	 * 			| 	then player.setWorld(this)
+	 */
+	public void setBuzam(Buzam buzam) {
+		if (getBuzam() != null) getBuzam().setWorld(null);
+		this.buzam = buzam;
+		if (buzam != null) buzam.setWorld(this);
+	}
+	
+	private Buzam buzam;
 	
 	/**
 	 * Gets the list of sharks in this world.
@@ -931,6 +962,7 @@ public class World {
 		
 		// Checks collisions with the player, sharks, slimes and plants
 		if (getMazub() != null)	collisionDetectObject(object, getMazub(), custom_width, custom_height, collisions);
+		if (getBuzam() != null)	collisionDetectObject(object, getBuzam(), custom_width, custom_height, collisions);
 		if (!(object instanceof Plant)) {
 			for(Shark shark : getSharks()) {
 				collisionDetectObject(object, shark, custom_width, custom_height, collisions);
