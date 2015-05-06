@@ -298,6 +298,8 @@ public class Mazub extends GameObject {
 			}
 		}
 		
+		if (getProgram() != null) executeProgram(dt);
+		
 		collisionHandle(getCollisions(), dt);
 	}
 	
