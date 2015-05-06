@@ -3,7 +3,6 @@ package jumpingalien.model;
 import java.util.List;
 import java.util.Random;
 
-import program.Program;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Model;
@@ -276,8 +275,8 @@ public class Shark extends Enemy {
 	 *			|	&& (collisions.get(3).get(1).contains(Feature.ground)))
 	 *			|		setJustJumped(true)
 	 */
-	@Model
-	private void startJump(){
+	@Model @Override
+	protected void startJump(){
 		setVy(2);
 
 		setNonJumpingPeriods(0);

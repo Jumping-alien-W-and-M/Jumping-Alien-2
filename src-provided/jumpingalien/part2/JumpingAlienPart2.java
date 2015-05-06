@@ -14,4 +14,5 @@ public class JumpingAlienPart2 {
 
 		new JumpingAlienGUIPart2(game).start();
 	}
+
 }

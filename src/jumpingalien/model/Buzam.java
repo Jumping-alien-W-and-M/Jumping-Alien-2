@@ -1,6 +1,5 @@
 package jumpingalien.model;
 
-import program.Program;
 import jumpingalien.util.Sprite;
 
 public class Buzam extends Mazub {

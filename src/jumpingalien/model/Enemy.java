@@ -3,7 +3,6 @@ package jumpingalien.model;
 import java.util.List;
 import java.util.Random;
 
-import program.Program;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Model;
@@ -166,19 +165,23 @@ public abstract class Enemy extends GameObject {
 	@Model
 	private void advanceActionTime(double time) {
 		
-		setActionTime(getActionTime() - time);
-		
-		if (getActionTime() > 0) {
-			return;
+		if (getProgram() == null) {
+			setActionTime(getActionTime() - time);
+			
+			if (getActionTime() > 0) {
+				return;
+			}
+			
+			while (getActionTime() < 0) {
+				Random rand = new Random();
+				double new_value = getMinActionTime() + (getMaxActionTime() - getMinActionTime())*rand.nextDouble();
+				setActionTime(getActionTime() + new_value);
+			}
+			
+			performRandomAction();
+		} else {
+			executeProgram(time);
 		}
-		
-		while (getActionTime() < 0) {
-			Random rand = new Random();
-			double new_value = getMinActionTime() + (getMaxActionTime() - getMinActionTime())*rand.nextDouble();
-			setActionTime(getActionTime() + new_value);
-		}
-		
-		performRandomAction();
 	}
 	
 	/**

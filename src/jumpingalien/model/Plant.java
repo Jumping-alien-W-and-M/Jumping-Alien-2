@@ -3,7 +3,6 @@ package jumpingalien.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import program.Program;
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Model;

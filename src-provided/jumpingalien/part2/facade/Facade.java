@@ -15,7 +15,7 @@ public class Facade implements IFacadePart2 {
 
 	@Override
 	public Mazub createMazub(int pixelLeftX, int pixelBottomY, Sprite[] sprites) {
-		return new Mazub(pixelLeftX, pixelBottomY, sprites);
+		return new Mazub(pixelLeftX, pixelBottomY, sprites, null);
 	}
 
 	@Override
@@ -122,14 +122,14 @@ public class Facade implements IFacadePart2 {
 			world.addSchool(school2);
 			Sprite[] sprites = {jumpingalien.part2.internal.Resources.SLIME_SPRITE_LEFT,
 					jumpingalien.part2.internal.Resources.SLIME_SPRITE_RIGHT};
-			new Slime(150, 500, sprites, school1);
-			new Slime(390, 500, sprites, school1);
-			new Slime(530, 500, sprites, school2);
+			new Slime(150, 500, sprites, school1, null);
+			new Slime(390, 500, sprites, school1, null);
+			new Slime(530, 500, sprites, school2, null);
 		}
 		if (planttest) {
 			Sprite[] sprites = {jumpingalien.part2.internal.Resources.PLANT_SPRITE_LEFT,
 					jumpingalien.part2.internal.Resources.PLANT_SPRITE_RIGHT};
-			Plant plant = new Plant(650, 200, sprites);
+			Plant plant = new Plant(650, 200, sprites, null);
 			world.addPlant(plant);
 		}
 		if (outofboundstest) {
@@ -202,7 +202,7 @@ public class Facade implements IFacadePart2 {
 
 	@Override
 	public Plant createPlant(int x, int y, Sprite[] sprites) {
-		return new Plant(x, y, sprites);
+		return new Plant(x, y, sprites, null);
 	}
 
 	@Override
@@ -228,7 +228,7 @@ public class Facade implements IFacadePart2 {
 
 	@Override
 	public Shark createShark(int x, int y, Sprite[] sprites) {
-		return new Shark(x, y, sprites);
+		return new Shark(x, y, sprites, null);
 	}
 
 	@Override
@@ -259,7 +259,7 @@ public class Facade implements IFacadePart2 {
 
 	@Override
 	public Slime createSlime(int x, int y, Sprite[] sprites, School school) {
-		return new Slime(x, y, sprites, school);
+		return new Slime(x, y, sprites, school, null);
 	}
 
 	@Override

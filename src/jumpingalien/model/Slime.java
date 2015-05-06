@@ -1,6 +1,5 @@
 package jumpingalien.model;
 
-import program.Program;
 import jumpingalien.util.Sprite;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Model;

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import program.Program;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Model;
@@ -61,12 +60,15 @@ public abstract class GameObject {
 	protected GameObject(double x, double y, Sprite[] images, double axi, double vxi, double vxmax, Program program) {
 		assert(isValidX(x));
 		assert(isValidX(y));
+		assert((program != null) || ((this instanceof Mazub) && !(this instanceof Buzam)));
+		
 		setX(x);
 		setY(y);
 		this.images = images;
 		this.axi = axi;
 		this.vxi = vxi;
 		setVxmax(vxmax);
+		this.program = program;
 		
 		setVx(0);
 		setVy(0);
@@ -576,7 +578,42 @@ public abstract class GameObject {
 	}
 	
 	private double time_invincible = 0;
-	 
+	
+	protected Program getProgram() {
+		return this.program;
+	}
+	
+	private final Program program;
+	
+	/**
+	 * Gets the previous move of this Mazub. This is an empty string if only one movement is currently going on,
+	 * and the first invoked movement otherwise.
+	 */
+	@Basic
+	public String getPrevMove() {
+		return prev_move;
+	}
+	
+	/**
+	 * Sets the previous move of this Mazub.
+	 * 
+	 * @param prev_move
+	 * 			The previous move of this Mazub. This should be an empty string if only one movement is currently going on,
+	 * 			and the first invoked movement otherwise.
+	 * @pre		The given previous move is either an empty string, "left" or "right".
+	 * 			| ((prev_move == "") || (prev_move == "left") || (prev_move == "right"))
+	 * @post	This Mazub's previous move will be equal to the given prev_move.
+	 * 			| (new.getPrevMove() == prev_move)
+	 */
+	@Model
+	private void setPrevMove(String prev_move) {
+		assert((prev_move == "") || (prev_move == "left") || (prev_move == "right"));
+		
+		this.prev_move = prev_move;
+	}
+	
+	private String prev_move = "";
+	
 	protected abstract void terminate();
 	
 	protected abstract void advanceTime(double dt) throws IllegalArgumentException;
@@ -1092,6 +1129,88 @@ public abstract class GameObject {
 	protected void collisionHandleAir(double time) { }
 	protected void collisionHandleWater(double time) { }
 	protected void collisionHandleMagma(double time) { }
+	
+	protected void startMove(String direction) {
+		assert(direction == "left" || direction == "right");
+		
+		if (getPrevMove() == "") {
+			if (getAx() < 0) {
+				setPrevMove("left");
+			} else if (getAx() > 0) {
+				setPrevMove("right");
+			}
+		}
+			
+		if (direction == "left") {
+			setVx(-getVxi());
+			setAx(-getAxi());
+		} else {
+			setVx(getVxi());
+			setAx(getAxi());
+		}
+	}
+	
+	/**
+	 * Stops the horizontal movement of this Mazub.
+	 * 
+	 * @effect	If there is no previous movement, this Mazub's horizontal velocity and acceleration will be set to zero.
+	 * 			| if (getPrevMove() == "") {
+	 * 			|	setVx(0)
+	 * 			|	setAx(0)
+	 * 			| }
+	 * @effect	If there is previous movement, this Mazub's new movement will be this previous movement and the previous
+	 * 			movement will be removed.
+	 * 			| if (getPrevMove() != "") {
+	 * 			|	if (getPrevMove() != direction) {
+	 * 			|		if (direction == "left")
+	 * 			|			then startMove("right")
+	 * 			|		else
+	 * 			|			then startMove("left")
+	 * 			|	}
+	 * 			|	setPrevMove("")
+	 * 			| }
+	 */
+	public void endMove(String direction) {
+		
+		if (getPrevMove() == "") {
+			setVx(0);
+			setAx(0);
+		} else {
+			if (getPrevMove() != direction) {
+				if (direction == "left")
+					startMove("right");
+				else
+					startMove("left");
+			}
+			setPrevMove("");
+		}
+	}
+	
+	protected void startJump() {
+		
+	}
+
+	/**
+	 * Ends a jump for this Mazub.
+	 * 
+	 * @effect	This Mazub's vertical velocity will be set to 0 if it's positive.
+	 * 			| setVy(Math.min(0, getVy()))
+	 */
+	public void endJump() {
+		setVy(Math.min(0, getVy()));
+	}
+	
+	protected void startDuck() {
+		
+	}
+	
+	protected void endDuck() {
+		
+	}
+	
+	protected void executeProgram(double time) {
+		
+	}
 	
 	/**
 	 * Checks whether or not this game object can jump.

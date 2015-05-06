@@ -2,7 +2,6 @@ package jumpingalien.model;
 
 import java.util.List;
 
-import program.Program;
 import jumpingalien.util.*;
 import jumpingalien.model.GameObject;
 import be.kuleuven.cs.som.annotate.Basic;
@@ -120,35 +119,6 @@ public class Mazub extends GameObject {
 	}
 	
 	private double last_move;
-	
-	/**
-	 * Gets the previous move of this Mazub. This is an empty string if only one movement is currently going on,
-	 * and the first invoked movement otherwise.
-	 */
-	@Basic
-	public String getPrevMove() {
-		return prev_move;
-	}
-	
-	/**
-	 * Sets the previous move of this Mazub.
-	 * 
-	 * @param prev_move
-	 * 			The previous move of this Mazub. This should be an empty string if only one movement is currently going on,
-	 * 			and the first invoked movement otherwise.
-	 * @pre		The given previous move is either an empty string, "left" or "right".
-	 * 			| ((prev_move == "") || (prev_move == "left") || (prev_move == "right"))
-	 * @post	This Mazub's previous move will be equal to the given prev_move.
-	 * 			| (new.getPrevMove() == prev_move)
-	 */
-	@Model
-	private void setPrevMove(String prev_move) {
-		assert((prev_move == "") || (prev_move == "left") || (prev_move == "right"));
-		
-		this.prev_move = prev_move;
-	}
-	
-	private String prev_move = "";
 	
 	/**
 	 * Gets the amount of frames in this Mazub's running left/right animation.
@@ -596,62 +566,10 @@ public class Mazub extends GameObject {
 	 * @effect	This Mazub's animation time will be set to 0.
 	 * 			| setAnimationTime(0)
 	 */
-	public void startMove(String direction){
-		assert(direction == "left" || direction == "right");
-		
-		if (getPrevMove() == "") {
-			if (getAx() < 0) {
-				setPrevMove("left");
-			} else if (getAx() > 0) {
-				setPrevMove("right");
-			}
-		}
-			
-		if (direction == "left") {
-			setVx(-getVxi());
-			setAx(-getAxi());
-		} else {
-			setVx(getVxi());
-			setAx(getAxi());
-		}
-		
+	@Override
+	public void startMove(String direction) {
+		super.startMove(direction);
 		setAnimationTime(0);
-	}
-	
-	/**
-	 * Stops the horizontal movement of this Mazub.
-	 * 
-	 * @effect	If there is no previous movement, this Mazub's horizontal velocity and acceleration will be set to zero.
-	 * 			| if (getPrevMove() == "") {
-	 * 			|	setVx(0)
-	 * 			|	setAx(0)
-	 * 			| }
-	 * @effect	If there is previous movement, this Mazub's new movement will be this previous movement and the previous
-	 * 			movement will be removed.
-	 * 			| if (getPrevMove() != "") {
-	 * 			|	if (getPrevMove() != direction) {
-	 * 			|		if (direction == "left")
-	 * 			|			then startMove("right")
-	 * 			|		else
-	 * 			|			then startMove("left")
-	 * 			|	}
-	 * 			|	setPrevMove("")
-	 * 			| }
-	 */
-	public void endMove(String direction) {
-		
-		if (getPrevMove() == "") {
-			setVx(0);
-			setAx(0);
-		} else {
-			if (getPrevMove() != direction) {
-				if (direction == "left")
-					startMove("right");
-				else
-					startMove("left");
-			}
-			setPrevMove("");
-		}
 	}
 	
 	/**
@@ -670,6 +588,7 @@ public class Mazub extends GameObject {
 	 * 			| if (canJump())
 	 * 			|	then setJustJumped(true)
 	 */
+	@Override
 	public void startJump() {
 		if (canJump()) {
 			setVy(8);
@@ -677,16 +596,6 @@ public class Mazub extends GameObject {
 			setJumping(true);
 			setJustJumped(true);
 		}
-	}
-	
-	/**
-	 * Ends a jump for this Mazub.
-	 * 
-	 * @effect	This Mazub's vertical velocity will be set to 0 if it's positive.
-	 * 			| setVy(Math.min(0, getVy()))
-	 */
-	public void endJump() {
-		setVy(Math.min(0, getVy()));
 	}
 	
 	/**
@@ -720,6 +629,7 @@ public class Mazub extends GameObject {
 	 * @effect	This Mazub's maximal horizontal velocity will be set to 1.
 	 * 			| setVxmax(1)
 	 */
+	@Override
 	public void startDuck() {
 		setDucking(true);
 		setTryStand(false);
@@ -742,6 +652,7 @@ public class Mazub extends GameObject {
 	 * 			| if (!(canstand()))
 	 * 			|	then setTryStand(true)
 	 */
+	@Override
 	public void endDuck() {
 		if (canstand()) {
 			setDucking(false);

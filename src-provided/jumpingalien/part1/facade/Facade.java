@@ -9,11 +9,11 @@ public class Facade implements IFacade {
 	@Override
 	public Mazub createMazub(int pixelLeftX, int pixelBottomY, Sprite[] sprites)throws ModelException {
 		try{
-			new Mazub(pixelLeftX,pixelBottomY,sprites);
+			new Mazub(pixelLeftX,pixelBottomY,sprites, null);
 		}catch(IllegalArgumentException exc){
 			throw new ModelException(exc);
 		}
-		return new Mazub(pixelLeftX,pixelBottomY,sprites);
+		return new Mazub(pixelLeftX,pixelBottomY,sprites, null);
 		
 	}
 
