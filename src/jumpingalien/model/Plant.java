@@ -98,12 +98,15 @@ public class Plant extends GameObject {
 			super.advanceTimeStep(timestep);
 			if (getWorld() == null) return;
 			
-			advanceMovementTime(timestep);
+			if (getProgram() == null) advanceMovementTime(timestep);
 			advanceDeathTime(timestep);
 			if (getWorld() == null) return;
 		}
+		
 		List<List<List<Object>>> collisions = getCollisions();
 		collisionHandle(collisions, dt);
+		
+		if (getProgram() != null) executeProgram(dt);
 	}
 	
 	/**

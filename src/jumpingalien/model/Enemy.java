@@ -138,13 +138,15 @@ public abstract class Enemy extends GameObject {
 			super.advanceTimeStep(timestep);
 			if (getWorld() == null) return;
 			
-			advanceActionTime(timestep);
+			if (getProgram() == null) advanceActionTime(timestep);
 			advanceDeathTime(timestep);
 			if (getWorld() == null) return;
 		}
 		
 		List<List<List<Object>>> collisions = getCollisions();
 		collisionHandle(collisions, dt);
+		
+		if (getProgram() != null) executeProgram(dt);
 	}
 	
 	/**
@@ -165,23 +167,20 @@ public abstract class Enemy extends GameObject {
 	@Model
 	private void advanceActionTime(double time) {
 		
-		if (getProgram() == null) {
-			setActionTime(getActionTime() - time);
-			
-			if (getActionTime() > 0) {
-				return;
-			}
-			
-			while (getActionTime() < 0) {
-				Random rand = new Random();
-				double new_value = getMinActionTime() + (getMaxActionTime() - getMinActionTime())*rand.nextDouble();
-				setActionTime(getActionTime() + new_value);
-			}
-			
-			performRandomAction();
-		} else {
-			executeProgram(time);
+		setActionTime(getActionTime() - time);
+		
+		if (getActionTime() > 0) {
+			return;
 		}
+		
+		while (getActionTime() < 0) {
+			Random rand = new Random();
+			double new_value = getMinActionTime() + (getMaxActionTime() - getMinActionTime())*rand.nextDouble();
+			setActionTime(getActionTime() + new_value);
+		}
+		
+		performRandomAction();
+		
 	}
 	
 	/**

@@ -11,40 +11,33 @@ import jumpingalien.program.type.Type;
 public class ProgramFactory implements IProgramFactory<Expression, Statement, Type, Program> {
 
 	@Override
-	public Expression createReadVariable(String variableName, Type variableType,
-			SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+	public Expression createReadVariable(String variableName, Type variableType, SourceLocation sourceLocation) {
+		return new ReadVariable(variableName, variableType, sourceLocation);
 	}
 
 	@Override
 	public Expression createDoubleConstant(double value, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new DoubleConstant(value, sourceLocation);
 	}
 
 	@Override
 	public Expression createTrue(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new True(sourceLocation);
 	}
 
 	@Override
 	public Expression createFalse(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new False(sourceLocation);
 	}
 
 	@Override
 	public Expression createNull(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Null(sourceLocation);
 	}
 
 	@Override
 	public Expression createSelf(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Self(sourceLocation);
 	}
 
 	@Override
@@ -57,26 +50,22 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Ty
 
 	@Override
 	public Expression createAddition(Expression left, Expression right, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Addition(left, right, sourceLocation);
 	}
 
 	@Override
 	public Expression createSubtraction(Expression left, Expression right, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Subtraction(left, right, sourceLocation);
 	}
 
 	@Override
 	public Expression createMultiplication(Expression left, Expression right, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Multiplication(left, right, sourceLocation);
 	}
 
 	@Override
 	public Expression createDivision(Expression left, Expression right, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Division(left, right, sourceLocation);
 	}
 
 	@Override
@@ -93,14 +82,12 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Ty
 
 	@Override
 	public Expression createAnd(Expression left, Expression right, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new And(left, right, sourceLocation);
 	}
 
 	@Override
 	public Expression createOr(Expression left, Expression right, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Or(left, right, sourceLocation);
 	}
 
 	@Override
@@ -111,40 +98,32 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Ty
 
 	@Override
 	public Expression createLessThan(Expression left, Expression right, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new LessThan(left, right, sourceLocation);
 	}
 
 	@Override
-	public Expression createLessThanOrEqualTo(Expression left, Expression right,
-			SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+	public Expression createLessThanOrEqualTo(Expression left, Expression right, SourceLocation sourceLocation) {
+		return new LessThanOrEqualTo(left, right, sourceLocation);
 	}
 
 	@Override
 	public Expression createGreaterThan(Expression left, Expression right, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new GreaterThan(left, right, sourceLocation);
 	}
 
 	@Override
-	public Expression createGreaterThanOrEqualTo(Expression left, Expression right,
-			SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+	public Expression createGreaterThanOrEqualTo(Expression left, Expression right, SourceLocation sourceLocation) {
+		return new GreaterThanOrEqualTo(left, right, sourceLocation);
 	}
 
 	@Override
 	public Expression createEquals(Expression left, Expression right, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Equals(left, right, sourceLocation);
 	}
 
 	@Override
 	public Expression createNotEquals(Expression left, Expression right, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new NotEquals(left, right, sourceLocation);
 	}
 
 	@Override
@@ -251,8 +230,7 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Ty
 
 	@Override
 	public Expression createIsMoving(Expression expr, Expression direction, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IsMoving(expr, direction, sourceLocation);
 	}
 
 	@Override
