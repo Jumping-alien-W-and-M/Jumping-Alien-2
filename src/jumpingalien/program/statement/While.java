@@ -1,31 +1,25 @@
 package jumpingalien.program.statement;
 
 import jumpingalien.part3.programs.SourceLocation;
+import jumpingalien.program.expression.Expression;
 
-public class While<E, S> extends Statement {
+public class While extends Statement {
 	
-	public While(E condition, S body, SourceLocation sourceLocation) {
+	public While(Expression condition, Statement body, SourceLocation sourceLocation) {
+		super(sourceLocation);
 		this.condition = condition;
 		this.body = body;
-		this.sourceLocation = sourceLocation;
 	}
 	
-	public E getCondition() {
+	public Expression getCondition() {
 		return this.condition;
 	}
 	
-	private final E condition;
+	private final Expression condition;
 	
-	public S getBody() {
+	public Statement getBody() {
 		return this.body;
 	}
 	
-	private final S body;
-	
-	public SourceLocation getSourceLocation() {
-		return this.sourceLocation;
-	}
-	
-	private final SourceLocation sourceLocation;
-	
+	private final Statement body;	
 }

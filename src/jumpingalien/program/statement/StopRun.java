@@ -1,22 +1,17 @@
 package jumpingalien.program.statement;
 
 import jumpingalien.part3.programs.SourceLocation;
+import jumpingalien.program.expression.Expression;
 
-public class StopRun<E> extends Statement {
+public class StopRun extends Statement {
 
-	public StopRun(E direction, SourceLocation sourceLocation){
+	public StopRun(Expression direction, SourceLocation sourceLocation){
+		super(sourceLocation);
 		this.direction = direction;
-		this.sourceLocation = sourceLocation;
 	}
 	
-	public E getDirection(){
+	public Expression getDirection(){
 		return this.direction;
 	}
-	private final E direction;
-	
-	public SourceLocation getSourceLocation() {
-		return this.sourceLocation;
-	}
-	
-	private final SourceLocation sourceLocation;
+	private final Expression direction;
 }

@@ -275,7 +275,6 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Ty
 
 	@Override
 	public Statement createWhile(Expression condition, Statement body, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
 		return new While(condition, body, sourceLocation);
 	}
 
@@ -287,51 +286,43 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Ty
 			Expression sort,
 			jumpingalien.part3.programs.IProgramFactory.SortDirection sortDirection,
 			Statement body, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
 		return new ForEach(variableName, variableKind, where, sort, sortDirection, body, sourceLocation);
 	}
 
 	@Override
 	public Statement createBreak(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Break(sourceLocation);
 	}
 
 	@Override
 	public Statement createIf(Expression condition, Statement ifBody, Statement elseBody,
 			SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new If(condition, ifBody, elseBody, sourceLocation);
 	}
 
 	@Override
 	public Statement createPrint(Expression value, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Print(value, sourceLocation);
 	}
 
 	@Override
 	public Statement createStartRun(Expression direction, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new StartRun(direction, sourceLocation);
 	}
 
 	@Override
 	public Statement createStopRun(Expression direction, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new StopRun(direction, sourceLocation);
 	}
 
 	@Override
 	public Statement createStartJump(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new StartJump(sourceLocation);
 	}
 
 	@Override
 	public Statement createStopJump(SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new StopJump(sourceLocation);
 	}
 
 	@Override

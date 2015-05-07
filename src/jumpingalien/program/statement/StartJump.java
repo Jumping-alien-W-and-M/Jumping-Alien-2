@@ -2,14 +2,8 @@ package jumpingalien.program.statement;
 
 import jumpingalien.part3.programs.SourceLocation;
 
-public class StartJump {
+public class StartJump extends Statement {
 	public StartJump(SourceLocation sourceLocation){
-		this.sourceLocation = sourceLocation;
+		super(sourceLocation);
 	}
-	
-	public SourceLocation getSourceLocation() {
-		return this.sourceLocation;
-	}
-	
-	private final SourceLocation sourceLocation;
 }

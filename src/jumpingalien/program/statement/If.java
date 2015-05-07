@@ -1,36 +1,31 @@
 package jumpingalien.program.statement;
 
 import jumpingalien.part3.programs.SourceLocation;
+import jumpingalien.program.expression.Expression;
 
-public class If<E, S> extends Statement {
-	public If(E condition, S ifBody, S elseBody, SourceLocation sourceLocation){
+public class If extends Statement {
+	public If(Expression condition, Statement ifBody, Statement elseBody, SourceLocation sourceLocation){
+		super(sourceLocation);
 		this.condition = condition;
 		this.ifBody = ifBody;
 		this.elseBody = elseBody;
-		this.sourceLocation = sourceLocation;
 	}
 	
-	public E getCondition(){
+	public Expression getCondition(){
 		return this.condition;
 	}
 	
-	private final E condition;
+	private final Expression condition;
 	
-	public S getIfBody(){
+	public Statement getIfBody(){
 		return this.ifBody;
 	}
 	
-	private final S ifBody;
+	private final Statement ifBody;
 	
-	public S getElseBody(){
+	public Statement getElseBody(){
 		return this.elseBody;
 	}
 	
-	private final S elseBody;
-	
-	public SourceLocation getSourceLocation() {
-		return this.sourceLocation;
-	}
-	
-	private final SourceLocation sourceLocation;
+	private final Statement elseBody;
 }

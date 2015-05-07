@@ -1,23 +1,18 @@
 package jumpingalien.program.statement;
 
 import jumpingalien.part3.programs.SourceLocation;
+import jumpingalien.program.expression.Expression;
 
-public class Print<E> extends Statement {
+public class Print extends Statement {
 	
-	public Print(E value, SourceLocation sourceLocation){
+	public Print(Expression value, SourceLocation sourceLocation){
+		super(sourceLocation);
 		this.value = value;
-		this.sourceLocation = sourceLocation;
 	}
 	
-	public E getValue(){
+	public Expression getValue(){
 		return this.value;
 	}
 	
-	private final E value;
-	
-	public SourceLocation getSourceLocation() {
-		return this.sourceLocation;
-	}
-	
-	private final SourceLocation sourceLocation;
+	private final Expression value;
 }

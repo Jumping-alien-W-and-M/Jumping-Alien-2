@@ -3,18 +3,19 @@ package jumpingalien.program.statement;
 import jumpingalien.part3.programs.IProgramFactory.Kind;
 import jumpingalien.part3.programs.IProgramFactory.SortDirection;
 import jumpingalien.part3.programs.SourceLocation;
+import jumpingalien.program.expression.Expression;
 
-public class ForEach<E, S> extends Statement {
+public class ForEach extends Statement {
 	
-	public ForEach(String variableName, Kind variableKind, E where, E sort, SortDirection sortDirection, S body,
+	public ForEach(String variableName, Kind variableKind, Expression where, Expression sort, SortDirection sortDirection, Statement body,
 			SourceLocation sourceLocation) {
+		super(sourceLocation);
 		this.variableName = variableName;
 		this.variableKind = variableKind;
 		this.where = where;
 		this.sort = sort;
 		this.sortDirection = sortDirection;
 		this.body = body;
-		this.sourceLocation = sourceLocation;
 	}
 	
 	public String getVariableName() {
@@ -29,17 +30,17 @@ public class ForEach<E, S> extends Statement {
 	
 	private final Kind variableKind;
 	
-	public E getWhere() {
+	public Expression getWhere() {
 		return this.where;
 	}
 	
-	private final E where;
+	private final Expression where;
 	
-	public E getSort() {
+	public Expression getSort() {
 		return this.sort;
 	}
 	
-	private final E sort;
+	private final Expression sort;
 	
 	public SortDirection getSortDirection() {
 		return this.sortDirection;
@@ -47,16 +48,9 @@ public class ForEach<E, S> extends Statement {
 	
 	private final SortDirection sortDirection;
 	
-	public S getBody() {
+	public Statement getBody() {
 		return this.body;
 	}
 	
-	private final S body;
-	
-	public SourceLocation getSourceLocation() {
-		return this.sourceLocation;
-	}
-	
-	private final SourceLocation sourceLocation;
-	
+	private final Statement body;	
 }
