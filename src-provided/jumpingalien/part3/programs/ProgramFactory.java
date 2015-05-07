@@ -41,11 +41,9 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Ty
 	}
 
 	@Override
-	public Expression createDirectionConstant(
-			jumpingalien.part3.programs.IProgramFactory.Direction value,
+	public Expression createDirectionConstant(jumpingalien.part3.programs.IProgramFactory.Direction value,
 			SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new DirectionConstant(value, sourceLocation);
 	}
 
 	@Override
@@ -151,8 +149,7 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Ty
 
 	@Override
 	public Expression createGetTile(Expression x, Expression y, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new GetTile(x, y, sourceLocation);
 	}
 
 	@Override
