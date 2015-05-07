@@ -1,14 +1,17 @@
 package jumpingalien.program.statement;
 
 import jumpingalien.part3.programs.SourceLocation;
+import jumpingalien.program.expression.Expression;
+import jumpingalien.program.type.Type;
 
-public class Assignment<T, E> extends Statement {
+public class Assignment extends Statement {
 	
-	public Assignment(String variableName, T variableType, E value, SourceLocation sourceLocation) {
+	public Assignment(String variableName, Type variableType, Expression value, SourceLocation sourceLocation) {
+		super(sourceLocation);
+		
 		this.variableName = variableName;
 		this.variableType = variableType;
 		this.value = value;
-		this.sourceLocation = sourceLocation;
 	}
 	
 	public String getVariableName() {
@@ -17,22 +20,16 @@ public class Assignment<T, E> extends Statement {
 	
 	private final String variableName;
 	
-	public T getVariableType() {
+	public Type getVariableType() {
 		return this.variableType;
 	}
 	
-	private final T variableType;
+	private final Type variableType;
 	
-	public E getValue() {
+	public Expression getValue() {
 		return this.value;
 	}
 	
-	private final E value;
-	
-	public SourceLocation getSourceLocation() {
-		return this.sourceLocation;
-	}
-	
-	private final SourceLocation sourceLocation;
+	private final Expression value;
 	
 }
