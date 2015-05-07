@@ -2,8 +2,8 @@ package jumpingalien.model;
 
 import java.util.Map;
 
+import jumpingalien.program.Type;
 import jumpingalien.program.statement.Statement;
-import jumpingalien.program.type.Type;
 
 public class Program {
 	

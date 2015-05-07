@@ -1,8 +1,8 @@
 package jumpingalien.program.statement;
 
 import jumpingalien.part3.programs.SourceLocation;
+import jumpingalien.program.Type;
 import jumpingalien.program.expression.Expression;
-import jumpingalien.program.type.Type;
 
 public class Assignment extends Statement {
 	
