@@ -68,8 +68,7 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Ty
 
 	@Override
 	public Expression createSqrt(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Sqrt(expr, sourceLocation);
 	}
 
 	@Override
