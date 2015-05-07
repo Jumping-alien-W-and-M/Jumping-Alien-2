@@ -2,9 +2,9 @@ package jumpingalien.program.expression;
 
 import jumpingalien.part3.programs.SourceLocation;
 
-public abstract class UnaryEpression extends Expression {
+public abstract class UnaryExpression extends Expression {
 	
-	public UnaryEpression(Expression expression, SourceLocation sourceLocation) {
+	public UnaryExpression(Expression expression, SourceLocation sourceLocation) {
 		super(sourceLocation);
 		
 		this.expression = expression;
