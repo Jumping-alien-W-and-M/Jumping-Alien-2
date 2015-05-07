@@ -9,7 +9,7 @@ public class ReadVariable extends Expression {
 		super(sourceLocation);
 		
 		this.variableName = variableName;
-		this.variableType = variableType;
+		setType(variableType);
 	}
 	
 	public String getVariableName() {
@@ -17,11 +17,5 @@ public class ReadVariable extends Expression {
 	}
 	
 	private final String variableName;
-	
-	public Type getVariableType() {
-		return this.variableType;
-	}
-	
-	private final Type variableType;
 	
 }
