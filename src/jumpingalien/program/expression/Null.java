@@ -8,7 +8,7 @@ public class Null extends Expression {
 	public Null(SourceLocation sourceLocation) {
 		super(sourceLocation);
 		
-		setType(Type.GAMEOBJECT);
+		setType(Type.OBJECT);
 	}
 	
 }

@@ -318,7 +318,7 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Ty
 
 	@Override
 	public Type getGameObjectType() {
-		return Type.GAMEOBJECT;
+		return Type.OBJECT;
 	}
 
 	@Override

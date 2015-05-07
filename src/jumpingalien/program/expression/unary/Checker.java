@@ -11,6 +11,6 @@ public abstract class Checker extends UnaryExpression{
 		super(expr, sourceLocation);
 		
 		setType(Type.BOOL);
-		if(expr.getType() != Type.GAMEOBJECT) Program.printTypeCheckError(sourceLocation);
+		if(expr.getType() != Type.OBJECT) Program.printTypeCheckError(sourceLocation);
 	}
 }

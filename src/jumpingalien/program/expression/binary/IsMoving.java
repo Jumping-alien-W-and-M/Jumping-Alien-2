@@ -11,7 +11,7 @@ public class IsMoving extends BinaryExpression {
 		super(expr, direction, sourceLocation);
 		
 		setType(Type.BOOL);
-		if ((expr.getType() != Type.GAMEOBJECT) || (direction.getType() != Type.DIRECTION)) Program.printTypeCheckError(sourceLocation);
+		if ((expr.getType() != Type.OBJECT) || (direction.getType() != Type.DIRECTION)) Program.printTypeCheckError(sourceLocation);
 	}
 	
 }

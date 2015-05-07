@@ -8,7 +8,7 @@ public class Self extends Expression {
 	public Self(SourceLocation sourceLocation) {
 		super(sourceLocation);
 		
-		setType(Type.GAMEOBJECT);
+		setType(Type.OBJECT);
 	}
 	
 }
