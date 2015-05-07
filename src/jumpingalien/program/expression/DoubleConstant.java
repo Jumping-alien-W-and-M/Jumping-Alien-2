@@ -1,5 +1,7 @@
 package jumpingalien.program.expression;
 
+import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Immutable;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.Type;
 
@@ -13,8 +15,8 @@ public class DoubleConstant extends Expression {
 		this.value = value;
 	}
 	
-	@Override
-	public double getValue() {
+	@Basic @Immutable @Override
+	public Double getValue() {
 		return this.value;
 	}
 	
