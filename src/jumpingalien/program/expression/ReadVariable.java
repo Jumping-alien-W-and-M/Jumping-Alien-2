@@ -1,5 +1,7 @@
 package jumpingalien.program.expression;
 
+import be.kuleuven.cs.som.annotate.Basic;
+import be.kuleuven.cs.som.annotate.Immutable;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.Type;
 
@@ -17,5 +19,10 @@ public class ReadVariable extends Expression {
 	}
 	
 	private final String variableName;
+	
+	@Override
+	public Boolean getValue() {
+		return this.value;
+	}
 	
 }
