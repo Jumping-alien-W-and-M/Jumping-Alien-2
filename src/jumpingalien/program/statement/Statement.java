@@ -1,6 +1,6 @@
 package jumpingalien.program.statement;
 
-import jumpingalien.part3.programs.SourceLocation;
+import jumpingalien.part3.programs.*;
 
 public class Statement {
 
