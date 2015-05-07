@@ -2,6 +2,6 @@ package jumpingalien.program;
 
 public enum Type {
 	
-	DOUBLE, BOOL, GAMEOBJECT, DIRECTION;
+	DOUBLE, BOOL, OBJECT, DIRECTION;
 	
 }

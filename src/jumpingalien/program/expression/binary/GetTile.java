@@ -10,7 +10,7 @@ public class GetTile extends BinaryExpression {
 	public GetTile(Expression first, Expression second, SourceLocation sourceLocation) {
 		super(first, second, sourceLocation);
 		
-		setType(Type.GAMEOBJECT);
+		setType(Type.OBJECT);
 		if ((first.getType() != Type.DOUBLE) || (second.getType() != Type.DOUBLE)) Program.printTypeCheckError(sourceLocation);
 	}
 	

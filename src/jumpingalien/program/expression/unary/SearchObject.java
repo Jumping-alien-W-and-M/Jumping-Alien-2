@@ -10,7 +10,7 @@ public class SearchObject extends UnaryExpression {
 	public SearchObject(Expression direction, SourceLocation sourceLocation){
 		super(direction, sourceLocation);
 		
-		setType(Type.GAMEOBJECT);
+		setType(Type.OBJECT);
 		if(direction.getType() != Type.DIRECTION) Program.printTypeCheckError(sourceLocation);
 	}
 }
