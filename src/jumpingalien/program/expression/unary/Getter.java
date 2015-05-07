@@ -5,12 +5,12 @@ import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.Type;
 import jumpingalien.program.expression.Expression;
 
-public class Not extends UnaryExpression {
+public abstract class Getter extends UnaryExpression {
 	
-	public Not(Expression expr, SourceLocation sourceLocation) {
+	public Getter(Expression expr, SourceLocation sourceLocation){
 		super(expr, sourceLocation);
 		
-		setType(Type.BOOL);
-		if(expr.getType() != Type.BOOL) Program.printTypeCheckError(sourceLocation);;
+		setType(Type.DOUBLE);
+		if(expr.getType() != Type.GAMEOBJECT) Program.printTypeCheckError(sourceLocation);
 	}
 }
