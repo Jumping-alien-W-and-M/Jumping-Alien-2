@@ -87,8 +87,7 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Ty
 
 	@Override
 	public Expression createRandom(Expression maxValue, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Random(maxValue, sourceLocation);
 	}
 
 	@Override
@@ -105,8 +104,7 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Ty
 
 	@Override
 	public Expression createNot(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Not(expr, sourceLocation);
 	}
 
 	@Override
@@ -149,32 +147,27 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Ty
 
 	@Override
 	public Expression createGetX(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new GetX(expr, sourceLocation);
 	}
 
 	@Override
-	public Expression createGetY(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+	public Expression createGetY(Expression expr, SourceLocation sourceLocation) {		
+		return new GetY(expr, sourceLocation);
 	}
 
 	@Override
 	public Expression createGetWidth(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new GetWidth(expr, sourceLocation);
 	}
 
 	@Override
 	public Expression createGetHeight(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new GetHeight(expr, sourceLocation);
 	}
 
 	@Override
 	public Expression createGetHitPoints(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new GetHitpoints(expr, sourceLocation);
 	}
 
 	@Override
@@ -185,86 +178,73 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Ty
 
 	@Override
 	public Expression createSearchObject(Expression direction, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new SearchObject(direction, sourceLocation);
 	}
 
 	@Override
 	public Expression createIsMazub(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IsMazub(expr, sourceLocation);
 	}
 
 	@Override
 	public Expression createIsShark(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IsPassable(expr, sourceLocation);
 	}
 
 	@Override
 	public Expression createIsSlime(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IsSlime(expr, sourceLocation);
 	}
 
 	@Override
 	public Expression createIsPlant(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IsPlant(expr, sourceLocation);
 	}
 
 	@Override
 	public Expression createIsDead(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IsDead(expr, sourceLocation);
 	}
 
 	@Override
 	public Expression createIsTerrain(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IsTerrain(expr, sourceLocation);
 	}
 
 	@Override
 	public Expression createIsPassable(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IsPassable(expr, sourceLocation);
 	}
 
 	@Override
 	public Expression createIsWater(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IsWater(expr, sourceLocation);
 	}
 
 	@Override
 	public Expression createIsMagma(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IsMagma(expr, sourceLocation);
 	}
 
 	@Override
 	public Expression createIsAir(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IsAir(expr, sourceLocation);
 	}
 
 	@Override
 	public Expression createIsMoving(Expression expr, Expression direction, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
+		//TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Expression createIsDucking(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IsDucking(expr, sourceLocation);
 	}
 
 	@Override
 	public Expression createIsJumping(Expression expr, SourceLocation sourceLocation) {
-		// TODO Auto-generated method stub
-		return null;
+		return new IsJumping(expr, sourceLocation);
 	}
 
 	@Override
