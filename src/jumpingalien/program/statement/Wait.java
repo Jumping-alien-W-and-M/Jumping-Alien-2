@@ -1,9 +1,7 @@
 package jumpingalien.program.statement;
 
 import jumpingalien.part3.programs.SourceLocation;
-import jumpingalien.program.statement.*;
 import jumpingalien.program.expression.*;
-import jumpingalien.program.type.Type;
 
 public class Wait extends Statement {
 	

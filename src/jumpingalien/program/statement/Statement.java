@@ -1,17 +1,12 @@
 package jumpingalien.program.statement;
 
-import jumpingalien.part3.programs.*;
+import jumpingalien.part3.programs.SourceLocation;
+import jumpingalien.program.ParserObject;
 
-public class Statement {
+public abstract class Statement extends ParserObject {
 
 	public Statement(SourceLocation sourceLocation) {
-		this.sourceLocation = sourceLocation;
+		super(sourceLocation);
 	}
-	
-	public SourceLocation getSourceLocation() {
-		return this.sourceLocation;
-	}
-	
-	private final SourceLocation sourceLocation;
 	
 }

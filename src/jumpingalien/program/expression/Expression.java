@@ -1,8 +1,12 @@
 package jumpingalien.program.expression;
 
-public class Expression {
-	
-	public Expression() {
-		
+import jumpingalien.part3.programs.SourceLocation;
+import jumpingalien.program.ParserObject;
+
+public abstract class Expression extends ParserObject {
+
+	public Expression(SourceLocation sourceLocation) {
+		super(sourceLocation);
 	}
+	
 }
