@@ -13,4 +13,11 @@ public class Not extends UnaryExpression {
 		setType(Type.BOOL);
 		if(expr.getType() != Type.BOOL) Program.printTypeCheckError(sourceLocation);;
 	}
+
+	@Override
+	public Boolean getValue() {
+		return ! ((boolean) getExpression().getValue());
+	}
+	
+	
 }

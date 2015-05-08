@@ -7,4 +7,12 @@ public class Random extends MathUnaryExpression {
 	public Random(Expression maxValue, SourceLocation sourceLocation){
 		super(maxValue, sourceLocation);
 	}
+
+	@Override
+	public Double getValue() {
+		double random = new java.util.Random().nextDouble();
+		return (random * (double) getExpression().getValue());
+	}
+	
+	
 }

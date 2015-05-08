@@ -68,6 +68,29 @@ public class Shark extends Enemy {
 	private int non_jumping_periods = 5;
 	
 	/**
+	 * Returns wether or not this shark is jumping.
+	 */
+	@Basic 
+	public boolean getIsJumping(){
+		return this.is_jumping;
+	}
+	
+	/**
+	 * Sets wether or not this Shark is jumping.
+	 * 
+	 * @param is_jumping
+	 * 			Wether or not this shark is jumping.
+	 * 
+	 * @post	...
+	 * 			| new.getIsJumping() = is_jumping
+	 */
+	protected void setIsJumping(boolean is_jumping){
+		this.is_jumping = is_jumping;
+	}
+	
+	private boolean is_jumping = false;
+	
+	/**
 	 * Gets the absolute value of the maximum vertical acceleration this shark can rise or dive with.
 	 */
 	@Basic @Immutable
@@ -147,6 +170,7 @@ public class Shark extends Enemy {
 	 */
 	@Override
 	protected void performRandomVerticalAction() {
+		setIsJumping(false);
 		setVy(0);
 		if(getAy() != -10)
 			setAy(0);
@@ -277,6 +301,8 @@ public class Shark extends Enemy {
 	 */
 	@Model @Override
 	protected void startJump(){
+		setIsJumping(true);
+		
 		setVy(2);
 
 		setNonJumpingPeriods(0);
