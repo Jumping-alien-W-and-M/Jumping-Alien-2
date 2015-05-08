@@ -11,15 +11,11 @@ public class False extends Expression {
 		super(sourceLocation);
 		
 		setType(Type.BOOL);
-		
-		this.value = false;
 	}
 	
 	@Basic @Immutable @Override
 	public Boolean getValue() {
-		return this.value;
+		return false;
 	}
-	
-	private final boolean value;
 	
 }
