@@ -1,7 +1,6 @@
 package jumpingalien.model;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import jumpingalien.part3.programs.IProgramFactory.Direction;

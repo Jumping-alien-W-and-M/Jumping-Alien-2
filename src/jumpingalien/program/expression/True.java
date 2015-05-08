@@ -11,14 +11,10 @@ public class True extends Expression {
 		super(sourceLocation);
 		
 		setType(Type.BOOL);
-		
-		this.value = true;
 	}
 	
 	@Basic @Immutable @Override
 	public Boolean getValue() {
-		return this.value;
+		return true;
 	}
-	
-	private final boolean value;
 }

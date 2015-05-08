@@ -579,7 +579,7 @@ public abstract class GameObject {
 	
 	private double time_invincible = 0;
 	
-	protected Program getProgram() {
+	public Program getProgram() {
 		return this.program;
 	}
 	

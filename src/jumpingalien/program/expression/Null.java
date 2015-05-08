@@ -11,15 +11,11 @@ public class Null extends Expression {
 		super(sourceLocation);
 		
 		setType(Type.OBJECT);
-		
-		this.value = null;
 	}
 	
 	@Basic @Immutable @Override
 	public Object getValue() {
-		return this.value;
+		return null;
 	}
-	
-	private final Object value;
 	
 }
