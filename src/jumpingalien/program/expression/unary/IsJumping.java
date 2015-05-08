@@ -13,12 +13,15 @@ public class IsJumping extends Checker {
 	}
 
 	@Override
-	public Object getValue() {
+	public Boolean getValue() {
 		if(getExpression().getValue() instanceof Mazub){
 			return ((Mazub) getExpression().getValue()).getJumping();
 		}
 		else if(getExpression().getValue() instanceof Shark){
-			return((Shark) getExpression().getValue()).getAy;
+			return((Shark) getExpression().getValue()).getIsJumping();
+		}
+		else{
+			return false;
 		}
 	}
 }
