@@ -9,4 +9,9 @@ public class Addition extends MathBinaryExpression {
 		super(left, right, sourceLocation);
 	}
 	
+	@Override
+	public Double getValue() {
+		return (double) getFirstExpression().getValue() + (double) getSecondExpression().getValue();
+	}
+	
 }

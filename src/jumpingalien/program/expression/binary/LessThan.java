@@ -9,4 +9,9 @@ public class LessThan extends CompBinaryExpression {
 		super(left, right, sourceLocation);
 	}
 	
+	@Override
+	public Boolean getValue() {
+		return (double) getFirstExpression().getValue() < (double) getSecondExpression().getValue();
+	}
+	
 }

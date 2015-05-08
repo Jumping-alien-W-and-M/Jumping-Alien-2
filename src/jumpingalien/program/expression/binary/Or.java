@@ -9,4 +9,9 @@ public class Or extends BoolBinaryExpression {
 		super(left, right, sourceLocation);
 	}
 	
+	@Override
+	public Boolean getValue() {
+		return (boolean) getFirstExpression().getValue() || (boolean) getSecondExpression().getValue();
+	}
+	
 }
