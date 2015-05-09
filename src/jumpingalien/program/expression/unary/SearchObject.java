@@ -3,9 +3,11 @@ package jumpingalien.program.expression.unary;
 import java.util.List;
 
 import jumpingalien.common.sprites.JumpingAlienSprites;
+import jumpingalien.model.Feature;
 import jumpingalien.model.GameObject;
 import jumpingalien.model.Program;
 import jumpingalien.model.Shark;
+import jumpingalien.part3.programs.IProgramFactory.Direction;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.ProgramExecutor;
 import jumpingalien.program.Type;
@@ -22,19 +24,99 @@ public class SearchObject extends UnaryExpression {
 	}
 
 	@Override
-	public Object getValue() {
-		GameObject startobject = ProgramExecutor.getExecutingObject();
-		
+	public Object getValue() {		
+		Direction dir = (Direction) getExpression().getValue();
+		if(dir == Direction.RIGHT) return getValueRight();
+		else if(dir == Direction.LEFT) return getValueLeft();
+		else if(dir == Direction.UP) return getValueUp();
+		else if(dir == Direction.DOWN) return getValueDown();
+		else return null;
+	}
+	
+	private Object getValueRight(){
+		GameObject startobject = ProgramExecutor.getExecutingObject();		
 		
 		Sprite[] sprites = {JumpingAlienSprites.ALIEN_SPRITESET[0], JumpingAlienSprites.ALIEN_SPRITESET[1]};
 		Shark searchobject = new Shark(startobject.getX(), startobject.getY(), sprites, null);
+		startobject.getWorld().addShark(searchobject);
 		
-		boolean found = false;
-		List<List<List<Object>>> collisions
+		List<List<List<Object>>> collisions;
 		while((searchobject.getX() + startobject.getWidth()) < startobject.getWorld().getWorldWidth()){
-			collisions = searchobject.getWorld.getCollisions();
+			collisions = searchobject.getWorld().collisionDetect(searchobject, startobject.getWidth(), startobject.getHeight());
+			
+			if(collisions.get(2).get(0) != null)
+				return collisions.get(2).get(0).get(0);
+			else if(collisions.get(2).get(1).contains(Feature.ground))
+				return Feature.ground;
+			
+			searchobject.setX(searchobject.getX() + 1);
 		}
+		return null;
 	}
+	
+	private Object getValueLeft(){
+		GameObject startobject = ProgramExecutor.getExecutingObject();		
+		
+		Sprite[] sprites = {JumpingAlienSprites.ALIEN_SPRITESET[0], JumpingAlienSprites.ALIEN_SPRITESET[1]};
+		Shark searchobject = new Shark(startobject.getX(), startobject.getY(), sprites, null);
+		startobject.getWorld().addShark(searchobject);
+		
+		List<List<List<Object>>> collisions;
+		while(searchobject.getX() > 0){
+			collisions = searchobject.getWorld().collisionDetect(searchobject, startobject.getWidth(), startobject.getHeight());
+			
+			if(collisions.get(0).get(0) != null)
+				return collisions.get(0).get(0).get(0);
+			else if(collisions.get(0).get(1).contains(Feature.ground))
+				return Feature.ground;
+			
+			searchobject.setX(searchobject.getX() - 1);
+		}
+		return null;
+	}
+	
+	private Object getValueUp(){
+		GameObject startobject = ProgramExecutor.getExecutingObject();		
+		
+		Sprite[] sprites = {JumpingAlienSprites.ALIEN_SPRITESET[0], JumpingAlienSprites.ALIEN_SPRITESET[1]};
+		Shark searchobject = new Shark(startobject.getX(), startobject.getY(), sprites, null);
+		startobject.getWorld().addShark(searchobject);
+		
+		List<List<List<Object>>> collisions;
+		while((searchobject.getY() + startobject.getHeight()) < startobject.getWorld().getWorldHeight()){
+			collisions = searchobject.getWorld().collisionDetect(searchobject, startobject.getWidth(), startobject.getHeight());
+			
+			if(collisions.get(1).get(0) != null)
+				return collisions.get(1).get(0).get(0);
+			else if(collisions.get(1).get(1).contains(Feature.ground))
+				return Feature.ground;
+			
+			searchobject.setY(searchobject.getY() + 1);
+		}
+		return null;
+	}
+	
+	private Object getValueDown(){
+		GameObject startobject = ProgramExecutor.getExecutingObject();		
+		
+		Sprite[] sprites = {JumpingAlienSprites.ALIEN_SPRITESET[0], JumpingAlienSprites.ALIEN_SPRITESET[1]};
+		Shark searchobject = new Shark(startobject.getX(), startobject.getY(), sprites, null);
+		startobject.getWorld().addShark(searchobject);
+		
+		List<List<List<Object>>> collisions;
+		while(searchobject.getY() > 0){
+			collisions = searchobject.getWorld().collisionDetect(searchobject, startobject.getWidth(), startobject.getHeight());
+			
+			if(collisions.get(3).get(0) != null)
+				return collisions.get(3).get(0).get(0);
+			else if(collisions.get(3).get(1).contains(Feature.ground))
+				return Feature.ground;
+			
+			searchobject.setY(searchobject.getY() - 1);
+		}
+		return null;
+	}
+	
 	
 	
 }

@@ -96,7 +96,7 @@ public abstract class GameObject {
 	 * 			Throws an exception if x is not a valid x-position.
 	 * 			| !isValidX(x)
 	 */
-	protected void setX(double x) throws IllegalArgumentException {
+	public void setX(double x) throws IllegalArgumentException {
 		if (!isValidX(x)) {
 			throw new IllegalArgumentException();
 		}
@@ -142,7 +142,7 @@ public abstract class GameObject {
 	 * 			If y is not a valid y-position.
 	 * 			| !isValidY(y)
 	 */
-	protected void setY(double y) throws IllegalArgumentException {
+	public void setY(double y) throws IllegalArgumentException {
 		if (!isValidY(y)) {
 			throw new IllegalArgumentException();
 		}

@@ -948,7 +948,7 @@ public class World {
 	 *			|		collisionDetectFeature(object, tile[0]*getTileSize(), tile[1]*getTileSize(), custom_width, custom_height, collisions)
 	 * 			| result = collisions
 	 */
-	protected List<List<List<Object>>> collisionDetect(GameObject object, int custom_width, int custom_height) {
+	public List<List<List<Object>>> collisionDetect(GameObject object, int custom_width, int custom_height) {
 		
 		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
 		
