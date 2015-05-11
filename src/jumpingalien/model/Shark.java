@@ -300,7 +300,7 @@ public class Shark extends Enemy {
 	 *			|		setJustJumped(true)
 	 */
 	@Model @Override
-	protected void startJump(){
+	public void startJump(){
 		setIsJumping(true);
 		
 		setVy(2);
