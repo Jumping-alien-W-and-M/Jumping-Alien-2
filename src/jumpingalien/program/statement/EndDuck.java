@@ -10,10 +10,12 @@ public class EndDuck extends Statement {
 		super(sourceLocation);
 	}
 	
-	public void execute() {
+	@Override
+	public boolean execute() {
 		Object executing_object =  ProgramExecutor.getExecutingObject();
 		if(executing_object instanceof GameObject)
 			((GameObject) executing_object).endDuck();
+		return true;
 	}		
 	
 }

@@ -40,6 +40,13 @@ public class Program {
 		return globalDirections.get(name);
 	}
 	
+	public void setVariableValue(String name, Type type, Object value){
+		if (type == Type.DOUBLE) globalDoubles.put(name, (double) value);
+		else if(type == Type.BOOL) globalBools.put(name, (Boolean) value);
+		else if(type == Type.OBJECT) globalObjects.put(name, value);
+		else if(type == Type.DIRECTION) globalDirections.put(name, (Direction) value);
+	}
+	
 	public static void printTypeCheckError(SourceLocation sourceLocation) throws IllegalArgumentException {
 		System.out.println("The parser encountered an expression violating the typing rules!");
 		System.out.println("line: " + sourceLocation.getLine() + ", column: " + sourceLocation.getColumn());
