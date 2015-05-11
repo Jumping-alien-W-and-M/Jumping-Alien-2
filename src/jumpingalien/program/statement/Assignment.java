@@ -1,5 +1,6 @@
 package jumpingalien.program.statement;
 
+import jumpingalien.model.Program;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.ProgramExecutor;
 import jumpingalien.program.Type;
@@ -10,6 +11,8 @@ public class Assignment extends Statement {
 	public Assignment(String variableName, Type variableType, Expression value, SourceLocation sourceLocation) {
 		super(sourceLocation);
 		
+		if(value.getType() != variableType) Program.printTypeCheckError(sourceLocation);
+			
 		this.variableName = variableName;
 		this.variableType = variableType;
 		this.expression = value;
