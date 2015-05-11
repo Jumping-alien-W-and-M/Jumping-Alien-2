@@ -1130,7 +1130,7 @@ public abstract class GameObject {
 	protected void collisionHandleWater(double time) { }
 	protected void collisionHandleMagma(double time) { }
 	
-	protected void startMove(String direction) {
+	public void startMove(String direction) {
 		assert(direction == "left" || direction == "right");
 		
 		if (getPrevMove() == "") {
@@ -1186,7 +1186,7 @@ public abstract class GameObject {
 		}
 	}
 	
-	protected void startJump() {
+	public void startJump() {
 		
 	}
 

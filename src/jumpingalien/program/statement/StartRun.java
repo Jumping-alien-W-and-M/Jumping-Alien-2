@@ -1,17 +1,33 @@
 package jumpingalien.program.statement;
 
+import jumpingalien.model.GameObject;
+import jumpingalien.model.Program;
+import jumpingalien.part3.programs.IProgramFactory.Direction;
 import jumpingalien.part3.programs.SourceLocation;
+import jumpingalien.program.ProgramExecutor;
+import jumpingalien.program.Type;
 import jumpingalien.program.expression.Expression;
 
 public class StartRun extends Statement {
 
-	public StartRun(Expression direction, SourceLocation sourceLocation){
+	public StartRun(Expression direction, SourceLocation sourceLocation) {
 		super(sourceLocation);
 		this.direction = direction;
+		
+		if(direction.getType() != Type.DIRECTION) Program.printTypeCheckError(sourceLocation);
 	}
 	
-	public Expression getDirection(){
+	public Expression getDirection() {
 		return this.direction;
 	}
 	private final Expression direction;
+	
+	public void execute() {
+		Object self = ProgramExecutor.getExecutingObject();
+		
+		if (self instanceof GameObject) {
+			if (direction.getValue() == Direction.LEFT) ((GameObject) self).startMove("left");
+			if (direction.getValue() == Direction.RIGHT) ((GameObject) self).startMove("right");
+		}
+	}
 }
