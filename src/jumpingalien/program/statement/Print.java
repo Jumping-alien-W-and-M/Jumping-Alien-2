@@ -15,4 +15,11 @@ public class Print extends Statement {
 	}
 	
 	private final Expression value;
+	
+	@Override
+	public boolean execute() {
+		
+		System.out.println(getValue().getValue());
+		return true;
+	}
 }
