@@ -15,7 +15,5 @@ public class StartDuck extends Statement {
 		Object executing_object =  ProgramExecutor.getExecutingObject();
 		if(executing_object instanceof GameObject)
 			((GameObject) executing_object).startDuck();
-	}
-	
-		
+	}		
 }
