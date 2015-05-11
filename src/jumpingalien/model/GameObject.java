@@ -1200,7 +1200,7 @@ public abstract class GameObject {
 		setVy(Math.min(0, getVy()));
 	}
 	
-	protected void startDuck() {
+	public void startDuck() {
 		
 	}
 	
