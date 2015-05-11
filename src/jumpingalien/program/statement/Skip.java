@@ -8,4 +8,9 @@ public class Skip extends Statement {
 		super(sourceLocation);
 	}
 	
+	@Override
+	public boolean execute() {
+		return true;
+	}
+	
 }

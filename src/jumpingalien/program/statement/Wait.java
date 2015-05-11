@@ -17,4 +17,18 @@ public class Wait extends Statement {
 	
 	private final Expression duration;
 	
+	public double getDurationLeft() {
+		return this.duration_left;
+	}
+	
+	private double duration_left;
+	
+	@Override
+	public boolean execute() {
+		
+		
+		
+		return true;
+	}
+	
 }
