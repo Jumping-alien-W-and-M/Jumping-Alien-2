@@ -36,7 +36,8 @@ public class Sequence extends Statement {
 	@Override
 	public ExecutionState execute() {
 		while (ProgramExecutor.getStatementsLeft() > 0) {
-			ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() - 1);
+			if (!(getStatements().get(getCurrentStatement()) instanceof Sequence))
+				ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() - 1);
 			ExecutionState state = getStatements().get(getCurrentStatement()).execute();
 			if (state == ExecutionState.BREAK) return ExecutionState.BREAK;
 			if (state == ExecutionState.DONE) {

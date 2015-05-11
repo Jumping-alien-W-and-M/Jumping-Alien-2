@@ -1,6 +1,7 @@
 package jumpingalien.program.statement;
 
 import jumpingalien.part3.programs.SourceLocation;
+import jumpingalien.program.ProgramExecutor;
 import jumpingalien.program.expression.Expression;
 
 public class While extends Statement {
@@ -21,5 +22,42 @@ public class While extends Statement {
 		return this.body;
 	}
 	
-	private final Statement body;	
+	private final Statement body;
+	
+	public boolean getInBody()  {
+		return this.in_body;
+	}
+	
+	private void setInBody(boolean in_body) {
+		this.in_body = in_body;
+	}
+	
+	private boolean in_body = false;
+	
+	@Override
+	public ExecutionState execute() {
+		
+		ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() + 1);
+		
+		while(ProgramExecutor.getStatementsLeft() > 0) {
+			
+			if (!getInBody()) {
+				setInBody((boolean) getCondition().getValue());
+				ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() - 1);
+			}
+			
+			if (!getInBody()) return ExecutionState.DONE;
+			
+			if (!(getBody() instanceof Sequence)) ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() - 1);
+			
+			ExecutionState state = getBody().execute();
+			if (state == ExecutionState.DONE) setInBody(false);
+			if (state == ExecutionState.BREAK) {
+				setInBody(false);
+				return ExecutionState.DONE;
+			}
+		}
+		
+		return ExecutionState.NOTDONE;
+	}
 }
