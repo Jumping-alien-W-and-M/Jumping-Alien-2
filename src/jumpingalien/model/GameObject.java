@@ -1204,7 +1204,7 @@ public abstract class GameObject {
 		
 	}
 	
-	protected void endDuck() {
+	public void endDuck() {
 		
 	}
 	
