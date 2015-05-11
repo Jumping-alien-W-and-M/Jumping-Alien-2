@@ -34,20 +34,21 @@ public class Sequence extends Statement {
 	private int current_statement = 0;
 
 	@Override
-	public boolean execute() {
+	public ExecutionState execute() {
 		while (ProgramExecutor.getStatementsLeft() > 0) {
 			ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() - 1);
-			boolean done = getStatements().get(getCurrentStatement()).execute();
-			if (done) {
+			ExecutionState state = getStatements().get(getCurrentStatement()).execute();
+			if (state == ExecutionState.BREAK) return ExecutionState.BREAK;
+			if (state == ExecutionState.DONE) {
 				setCurrentStatement(getCurrentStatement() + 1);
 				if (getCurrentStatement() == getStatements().size()) {
 					setCurrentStatement(0);
-					return true;
+					return ExecutionState.DONE;
 				}
 			}
 		}
 		
-		return false;
+		return ExecutionState.NOTDONE;
 	}
 	
 }
