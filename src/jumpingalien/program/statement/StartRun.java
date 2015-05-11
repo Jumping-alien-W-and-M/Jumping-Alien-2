@@ -22,12 +22,15 @@ public class StartRun extends Statement {
 	}
 	private final Expression direction;
 	
-	public void execute() {
+	@Override
+	public boolean execute() {
 		Object self = ProgramExecutor.getExecutingObject();
 		
 		if (self instanceof GameObject) {
 			if (direction.getValue() == Direction.LEFT) ((GameObject) self).startMove("left");
 			if (direction.getValue() == Direction.RIGHT) ((GameObject) self).startMove("right");
 		}
+		
+		return true;
 	}
 }

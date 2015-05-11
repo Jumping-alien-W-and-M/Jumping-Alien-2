@@ -9,6 +9,6 @@ public abstract class Statement extends ParserObject {
 		super(sourceLocation);
 	}
 	
-	public abstract void execute();
+	public abstract boolean execute();
 	
 }
