@@ -92,4 +92,5 @@ public class ForEach extends Statement {
 			objects.addAll(ProgramExecutor.getExecutingObject().getWorld().getFeatures().values());
 		return objects;
 	}
+	
 }
