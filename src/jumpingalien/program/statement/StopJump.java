@@ -10,10 +10,10 @@ public class StopJump extends Statement{
 	}
 	
 	@Override
-	public boolean execute() {
+	public ExecutionState execute() {
 		Object self = ProgramExecutor.getExecutingObject();
 		if (self instanceof GameObject) ((GameObject) self).endJump();
 		
-		return true;
+		return ExecutionState.DONE;
 	}
 }

@@ -23,7 +23,7 @@ public class StartRun extends Statement {
 	private final Expression direction;
 	
 	@Override
-	public boolean execute() {
+	public ExecutionState execute() {
 		Object self = ProgramExecutor.getExecutingObject();
 		
 		if (self instanceof GameObject) {
@@ -31,6 +31,6 @@ public class StartRun extends Statement {
 			if (direction.getValue() == Direction.RIGHT) ((GameObject) self).startMove("right");
 		}
 		
-		return true;
+		return ExecutionState.DONE;
 	}
 }

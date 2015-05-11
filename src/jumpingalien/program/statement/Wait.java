@@ -36,7 +36,7 @@ public class Wait extends Statement {
 	private double duration_left = 0;
 	
 	@Override
-	public boolean execute() {
+	public ExecutionState execute() {
 		
 		if (getDurationLeft() <= 0) {
 			setDurationLeft((double) getDuration().getValue());
@@ -47,7 +47,8 @@ public class Wait extends Statement {
 			setDurationLeft(getDurationLeft() - 0.001);
 		}
 		
-		return (getDurationLeft() <= 0);
+		if (getDurationLeft() <= 0) return ExecutionState.DONE;
+		else return ExecutionState.NOTDONE;
 	}
 	
 }
