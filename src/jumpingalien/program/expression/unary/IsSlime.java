@@ -1,6 +1,5 @@
 package jumpingalien.program.expression.unary;
 
-import jumpingalien.model.Plant;
 import jumpingalien.model.Slime;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.expression.Expression;
