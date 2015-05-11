@@ -9,8 +9,8 @@ public class Skip extends Statement {
 	}
 	
 	@Override
-	public boolean execute() {
-		return true;
+	public ExecutionState execute() {
+		return ExecutionState.DONE;
 	}
 	
 }

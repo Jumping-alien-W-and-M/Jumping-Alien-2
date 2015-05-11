@@ -36,10 +36,10 @@ public class Assignment extends Statement {
 	
 	private final Expression expression;
 	
-	public boolean execute(){
+	public ExecutionState execute(){
 		ProgramExecutor.getExecutingObject().getProgram().setVariableValue(getVariableName(), 
 				getVariableType(), getExpression().getValue());
-		return true;
+		return ExecutionState.DONE;
 	}
 	
 }

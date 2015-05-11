@@ -11,11 +11,11 @@ public class EndDuck extends Statement {
 	}
 	
 	@Override
-	public boolean execute() {
+	public ExecutionState execute() {
 		Object executing_object =  ProgramExecutor.getExecutingObject();
 		if(executing_object instanceof GameObject)
 			((GameObject) executing_object).endDuck();
-		return true;
+		return ExecutionState.DONE;
 	}		
 	
 }
