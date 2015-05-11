@@ -11,10 +11,10 @@ public class StartDuck extends Statement {
 	}
 
 	@Override
-	public boolean execute() {
+	public ExecutionState execute() {
 		Object executing_object =  ProgramExecutor.getExecutingObject();
 		if(executing_object instanceof GameObject)
 			((GameObject) executing_object).startDuck();
-		return true;
+		return ExecutionState.DONE;
 	}		
 }

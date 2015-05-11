@@ -10,10 +10,10 @@ public class StartJump extends Statement {
 	}
 	
 	@Override
-	public boolean execute() {
+	public ExecutionState execute() {
 		Object self = ProgramExecutor.getExecutingObject();
 		if (self instanceof GameObject) ((GameObject) self).startJump();
 		
-		return true;
+		return ExecutionState.DONE;
 	}
 }
