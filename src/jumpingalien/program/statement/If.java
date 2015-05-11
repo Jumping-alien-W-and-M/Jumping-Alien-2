@@ -59,6 +59,8 @@ public class If extends Statement {
 		if (getConditionValue() == 0) setConditionValue((boolean) getCondition().getValue() ? 1 : 2);
 		else ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() + 1);
 		
+		if (ProgramExecutor.getStatementsLeft() <= 0) return ExecutionState.NOTDONE;
+		
 		if (!(getCorrectBody() instanceof Sequence)) ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() - 1);
 		ExecutionState state = getCorrectBody().execute();
 		

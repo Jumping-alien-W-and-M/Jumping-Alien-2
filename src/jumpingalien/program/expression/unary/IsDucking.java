@@ -1,6 +1,5 @@
 package jumpingalien.program.expression.unary;
 
-import jumpingalien.model.GameObject;
 import jumpingalien.model.Mazub;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.expression.Expression;

@@ -1,5 +1,6 @@
 package jumpingalien.program.statement;
 
+import be.kuleuven.cs.som.annotate.Basic;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.ProgramExecutor;
 import jumpingalien.program.expression.Expression;
@@ -11,19 +12,22 @@ public class While extends Statement {
 		this.condition = condition;
 		this.body = body;
 	}
-	
+
+	@Basic
 	public Expression getCondition() {
 		return this.condition;
 	}
 	
 	private final Expression condition;
-	
+
+	@Basic
 	public Statement getBody() {
 		return this.body;
 	}
 	
 	private final Statement body;
 	
+	@Basic
 	public boolean getInBody()  {
 		return this.in_body;
 	}
@@ -47,6 +51,7 @@ public class While extends Statement {
 			}
 			
 			if (!getInBody()) return ExecutionState.DONE;
+			if (ProgramExecutor.getStatementsLeft() <= 0) return ExecutionState.NOTDONE;
 			
 			if (!(getBody() instanceof Sequence)) ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() - 1);
 			
