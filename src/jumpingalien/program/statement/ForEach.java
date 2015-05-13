@@ -20,8 +20,8 @@ public class ForEach extends Statement {
 			Statement body, SourceLocation sourceLocation) {
 		super(sourceLocation);
 		
-		if(where.getType() != Type.BOOL) Program.printTypeCheckError(sourceLocation); 
-		if(sort.getType() != Type.DOUBLE) Program.printTypeCheckError(sourceLocation); 
+		if((where != null) && (where.getType() != Type.BOOL)) Program.printTypeCheckError(sourceLocation); 
+		if((sort != null) && (sort.getType() != Type.DOUBLE)) Program.printTypeCheckError(sourceLocation); 
 		
 		this.variableName = variableName;
 		this.variableKind = variableKind;
