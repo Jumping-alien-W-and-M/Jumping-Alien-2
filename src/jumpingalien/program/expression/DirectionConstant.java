@@ -2,6 +2,7 @@ package jumpingalien.program.expression;
 
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
+import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.IProgramFactory.Direction;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.Type;
@@ -17,7 +18,7 @@ public class DirectionConstant extends Expression {
 	}
 	
 	@Basic @Immutable @Override
-	public Direction getValue() {
+	public Direction getValue(GameObject executingObject) {
 		return this.value;
 	}
 	

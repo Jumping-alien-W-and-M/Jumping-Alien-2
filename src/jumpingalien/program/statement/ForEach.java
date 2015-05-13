@@ -5,12 +5,12 @@ import java.util.stream.Stream;
 
 import be.kuleuven.cs.som.annotate.Basic;
 import jumpingalien.model.Buzam;
+import jumpingalien.model.GameObject;
 import jumpingalien.model.Mazub;
 import jumpingalien.model.Program;
 import jumpingalien.part3.programs.IProgramFactory.Kind;
 import jumpingalien.part3.programs.IProgramFactory.SortDirection;
 import jumpingalien.part3.programs.SourceLocation;
-import jumpingalien.program.ProgramExecutor;
 import jumpingalien.program.Type;
 import jumpingalien.program.expression.Expression;
 
@@ -107,31 +107,32 @@ public class ForEach extends Statement {
 	private boolean in_body = false;
 	
 	@Override
-	public ExecutionState execute() {
+	public ExecutionState execute(GameObject executingObject) {
 		
-		ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() + 1);
+		executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() + 1);
 		
 		if (getObjects() == null) {
-			setObjects(getCorrectObjects());
+			setObjects(getCorrectObjects(executingObject));
 			setCurrentIndex(0);
 		}
 		
-		while(ProgramExecutor.getStatementsLeft() > 0) {
+		while(executingObject.getProgram().getStatementsLeft() > 0) {
 			
 			if (!getInBody()) {
 				if (current_index == getObjects().length) {
 					setObjects(null);
 					return ExecutionState.DONE;
 				}
-				ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() - 1);
-				assign(getObjects()[current_index++]);
+				executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() - 1);
+				assign(getObjects()[current_index++], executingObject);
 				setInBody(true);
 			}
 			
-			if (ProgramExecutor.getStatementsLeft() <= 0) return ExecutionState.NOTDONE;
-			if (!(getBody() instanceof Sequence)) ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() - 1);
+			if (executingObject.getProgram().getStatementsLeft() <= 0) return ExecutionState.NOTDONE;
+			if (!(getBody() instanceof Sequence))
+				executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() - 1);
 			
-			ExecutionState state = getBody().execute();
+			ExecutionState state = getBody().execute(executingObject);
 			if (state == ExecutionState.DONE) setInBody(false);
 			if (state == ExecutionState.BREAK) {
 				setInBody(false);
@@ -144,37 +145,37 @@ public class ForEach extends Statement {
 		
 	}
 
-	private Object[] getCorrectObjects() {
+	private Object[] getCorrectObjects(GameObject executingObject) {
 		
 		ArrayList<Object> objects = new ArrayList<Object>();
 		
 		if(getVariableKind() == Kind.MAZUB || getVariableKind() == Kind.ANY){
-			Mazub player = ProgramExecutor.getExecutingObject().getWorld().getMazub();
+			Mazub player = executingObject.getWorld().getMazub();
 			if(player != null) objects.add(player);
 		}
 		if(getVariableKind() == Kind.BUZAM || getVariableKind() == Kind.ANY){
-			Buzam buzam = (Buzam) ProgramExecutor.getExecutingObject().getWorld().getBuzam();
+			Buzam buzam = (Buzam) executingObject.getWorld().getBuzam();
 			if(buzam != null) objects.add(buzam);
 		}
 		if(getVariableKind() == Kind.SLIME || getVariableKind() == Kind.ANY)
-			objects.addAll(ProgramExecutor.getExecutingObject().getWorld().getSlimes());
+			objects.addAll(executingObject.getWorld().getSlimes());
 		if(getVariableKind() == Kind.SHARK || getVariableKind() == Kind.ANY)
-			objects.addAll(ProgramExecutor.getExecutingObject().getWorld().getSharks());
+			objects.addAll(executingObject.getWorld().getSharks());
 		if(getVariableKind() == Kind.PLANT || getVariableKind() == Kind.ANY)
-			objects.addAll(ProgramExecutor.getExecutingObject().getWorld().getPlants());
+			objects.addAll(executingObject.getWorld().getPlants());
 		if(getVariableKind() == Kind.TERRAIN || getVariableKind() == Kind.ANY)
-			objects.addAll(ProgramExecutor.getExecutingObject().getWorld().getFeatures().values());
+			objects.addAll(executingObject.getWorld().getFeatures().values());
 		
 		Stream<Object> stream = objects.stream();
 		if (getWhere() != null) stream = stream.filter(object -> {
-			assign(object);
-			return ((boolean) getWhere().getValue());
+			assign(object, executingObject);
+			return ((boolean) getWhere().getValue(executingObject));
 		});
 		if (getSort() != null) stream = stream.sorted((object1, object2) -> {
-			assign(object1);
-			double value1 = (double) getWhere().getValue();
-			assign(object2);
-			double value2 = (double) getWhere().getValue();
+			assign(object1, executingObject);
+			double value1 = (double) getWhere().getValue(executingObject);
+			assign(object2, executingObject);
+			double value2 = (double) getWhere().getValue(executingObject);
 			if (getSortDirection() == SortDirection.ASCENDING) return Double.compare(value1, value2);
 			return -Double.compare(value1, value2);
 		});
@@ -182,8 +183,8 @@ public class ForEach extends Statement {
 		return stream.toArray();
 	}
 	
-	private void assign(Object object) {
-		ProgramExecutor.getExecutingObject().getProgram().setVariableValue(getVariableName(), Type.OBJECT, object);
+	private void assign(Object object, GameObject executingObject) {
+		executingObject.getProgram().setVariableValue(getVariableName(), Type.OBJECT, object);
 	}
 	
 }

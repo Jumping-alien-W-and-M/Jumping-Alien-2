@@ -1,9 +1,9 @@
 package jumpingalien.program.statement;
 
 import be.kuleuven.cs.som.annotate.Basic;
+import jumpingalien.model.GameObject;
 import jumpingalien.model.Program;
 import jumpingalien.part3.programs.SourceLocation;
-import jumpingalien.program.ProgramExecutor;
 import jumpingalien.program.Type;
 import jumpingalien.program.expression.Expression;
 
@@ -54,15 +54,16 @@ public class If extends Statement {
 	private int condition_value = 0;
 	
 	@Override
-	public ExecutionState execute() {
+	public ExecutionState execute(GameObject executingObject) {
 		
-		if (getConditionValue() == 0) setConditionValue((boolean) getCondition().getValue() ? 1 : 2);
-		else ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() + 1);
+		if (getConditionValue() == 0) setConditionValue((boolean) getCondition().getValue(executingObject) ? 1 : 2);
+		else executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() + 1);
 		
-		if (ProgramExecutor.getStatementsLeft() <= 0) return ExecutionState.NOTDONE;
+		if (executingObject.getProgram().getStatementsLeft() <= 0) return ExecutionState.NOTDONE;
 		
-		if (!(getCorrectBody() instanceof Sequence)) ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() - 1);
-		ExecutionState state = getCorrectBody().execute();
+		if (!(getCorrectBody() instanceof Sequence))
+			executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() - 1);
+		ExecutionState state = getCorrectBody().execute(executingObject);
 		
 		if (state == ExecutionState.DONE) setConditionValue(0);
 		

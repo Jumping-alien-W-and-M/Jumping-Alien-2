@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import be.kuleuven.cs.som.annotate.Basic;
+import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
-import jumpingalien.program.ProgramExecutor;
 
 public class Sequence extends Statement {
 	
@@ -38,11 +38,11 @@ public class Sequence extends Statement {
 	private int current_statement = 0;
 
 	@Override
-	public ExecutionState execute() {
-		while (ProgramExecutor.getStatementsLeft() > 0) {
+	public ExecutionState execute(GameObject executingObject) {
+		while (executingObject.getProgram().getStatementsLeft() > 0) {
 			if (!(getStatements().get(getCurrentStatement()) instanceof Sequence))
-				ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() - 1);
-			ExecutionState state = getStatements().get(getCurrentStatement()).execute();
+				executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() - 1);
+			ExecutionState state = getStatements().get(getCurrentStatement()).execute(executingObject);
 			if (state == ExecutionState.BREAK) return ExecutionState.BREAK;
 			if (state == ExecutionState.DONE) {
 				setCurrentStatement(getCurrentStatement() + 1);

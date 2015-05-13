@@ -1,5 +1,6 @@
 package jumpingalien.program.statement;
 
+import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.expression.Expression;
 
@@ -17,9 +18,9 @@ public class Print extends Statement {
 	private final Expression value;
 	
 	@Override
-	public ExecutionState execute() {
+	public ExecutionState execute(GameObject executingObject) {
 		
-		System.out.println(getValue().getValue());
+		System.out.println(getValue().getValue(executingObject));
 		return ExecutionState.DONE;
 	}
 }

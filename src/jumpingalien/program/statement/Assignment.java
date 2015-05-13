@@ -1,8 +1,8 @@
 package jumpingalien.program.statement;
 
+import jumpingalien.model.GameObject;
 import jumpingalien.model.Program;
 import jumpingalien.part3.programs.SourceLocation;
-import jumpingalien.program.ProgramExecutor;
 import jumpingalien.program.Type;
 import jumpingalien.program.expression.Expression;
 
@@ -36,9 +36,9 @@ public class Assignment extends Statement {
 	
 	private final Expression expression;
 	
-	public ExecutionState execute(){
-		ProgramExecutor.getExecutingObject().getProgram().setVariableValue(getVariableName(), 
-				getVariableType(), getExpression().getValue());
+	public ExecutionState execute(GameObject executingObject) {
+		executingObject.getProgram().setVariableValue(getVariableName(), 
+				getVariableType(), getExpression().getValue(executingObject));
 		return ExecutionState.DONE;
 	}
 	
