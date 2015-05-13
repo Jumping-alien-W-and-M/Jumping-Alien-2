@@ -61,6 +61,11 @@ public class If extends Statement {
 		
 		if (executingObject.getProgram().getStatementsLeft() <= 0) return ExecutionState.NOTDONE;
 		
+		if (getCorrectBody() == null) {
+			setConditionValue(0);
+			return ExecutionState.DONE;
+		}
+		
 		if (!(getCorrectBody() instanceof Sequence))
 			executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() - 1);
 		ExecutionState state = getCorrectBody().execute(executingObject);
