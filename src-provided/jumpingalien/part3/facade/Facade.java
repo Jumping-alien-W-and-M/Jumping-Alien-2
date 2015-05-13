@@ -124,6 +124,10 @@ public class Facade implements IFacadePart3 {
 		boolean slimetest = false;
 		boolean planttest = false;
 		boolean outofboundstest = false;
+		
+		boolean buzamslimetest = false;
+		boolean buzamsharktest = false;
+		
 		if (slimetest) {
 			School school1 = new School();
 			world.addSchool(school1);
@@ -144,6 +148,30 @@ public class Facade implements IFacadePart3 {
 		if (outofboundstest) {
 			world.setFeature(0, 1, 0);
 			world.setFeature(0, 2, 0);
+		}
+		
+		if (buzamslimetest) {
+			School school1 = new School();
+			world.addSchool(school1);
+			School school2 = new School();
+			world.addSchool(school2);
+			Sprite[] sprites = {jumpingalien.part2.internal.Resources.SLIME_SPRITE_LEFT,
+					jumpingalien.part2.internal.Resources.SLIME_SPRITE_RIGHT};
+			new Slime(800, 1300, sprites, school1, null);
+			new Slime(1200, 1300, sprites, school1, null);
+			new Slime(1100, 1300, sprites, school2, null);
+			world.getMazub().setX(1408);
+			world.getMazub().setY(1329);
+		}
+		
+		if (buzamsharktest) {
+			Sprite[] sprites = {jumpingalien.part2.internal.Resources.SHARK_SPRITE_LEFT,
+					jumpingalien.part2.internal.Resources.SHARK_SPRITE_RIGHT};
+			world.addShark(new Shark(800, 1300, sprites, null));
+			world.addShark(new Shark(1000, 1300, sprites, null));
+			world.addShark(new Shark(1200, 1300, sprites, null));
+			world.getMazub().setX(1408);
+			world.getMazub().setY(1329);
 		}
 	}
 
