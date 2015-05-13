@@ -335,8 +335,6 @@ public class World {
 	 */
 	public boolean isGameOver() {
 		return ((getMazub() == null) || (touchesTarget()));
-		
-
 	}
 	
 	/**
@@ -895,9 +893,10 @@ public class World {
 			throw new IllegalArgumentException();
 		}
 		
-		getMazub().advanceTime(dt);
-		getBuzam().advanceTime(dt);
 		if (getMazub() == null) return;
+		
+		getMazub().advanceTime(dt);
+		if (getBuzam() != null) getBuzam().advanceTime(dt);
 		for(Shark shark : getSharks()) {
 			shark.advanceTime(dt);
 		}

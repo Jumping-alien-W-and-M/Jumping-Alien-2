@@ -18,8 +18,8 @@ public class GetTile extends BinaryExpression {
 	@Override
 	public Object getValue(GameObject executingObject) {
 		return executingObject.getWorld().getFeature(
-				(int) getFirstExpression().getValue(executingObject)
-					, (int) getFirstExpression().getValue(executingObject));
+				(int) (double) getFirstExpression().getValue(executingObject),
+				(int) (double) getSecondExpression().getValue(executingObject));
 	}
 	
 }

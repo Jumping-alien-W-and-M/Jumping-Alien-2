@@ -246,7 +246,10 @@ public class Mazub extends GameObject {
 	protected void terminate() {
 		assert(getWorld() != null);
 		
-		getWorld().setMazub(null);
+		if (this instanceof Buzam)
+			getWorld().setBuzam(null);
+		else
+			getWorld().setMazub(null);
 	}
 	
 	/**
