@@ -896,6 +896,7 @@ public class World {
 		}
 		
 		getMazub().advanceTime(dt);
+		getBuzam().advanceTime(dt);
 		if (getMazub() == null) return;
 		for(Shark shark : getSharks()) {
 			shark.advanceTime(dt);
