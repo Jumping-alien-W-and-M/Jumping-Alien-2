@@ -2,8 +2,8 @@ package jumpingalien.program.expression;
 
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
+import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
-import jumpingalien.program.ProgramExecutor;
 import jumpingalien.program.Type;
 
 public class ReadVariable extends Expression {
@@ -23,8 +23,8 @@ public class ReadVariable extends Expression {
 	private final String variableName;
 	
 	@Override
-	public Object getValue() {
-		return ProgramExecutor.getExecutingObject().getProgram().getVariableValue(getVariableName(), getType());
+	public Object getValue(GameObject executingObject) {
+		return executingObject.getProgram().getVariableValue(getVariableName(), getType());
 	}
 	
 }
