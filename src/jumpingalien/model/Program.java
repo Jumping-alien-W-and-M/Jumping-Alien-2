@@ -56,6 +56,14 @@ public class Program {
 	private final Map<String, Boolean> globalBools = new HashMap<String, Boolean>();
 	private final Map<String, Object> globalObjects = new HashMap<String, Object>();
 	private final Map<String, Direction> globalDirections = new HashMap<String, Direction>();
+
+
+	protected void initializeVariables() {
+		for(String key : globalDoubles.keySet()) globalDoubles.put(key, 0.0);
+		for(String key : globalBools.keySet()) globalBools.put(key, false);
+		for(String key : globalObjects.keySet()) globalObjects.put(key, null);
+		for(String key : globalDirections.keySet()) globalDirections.put(key, Direction.LEFT);
+	}
 	
 	public Object getVariableValue(String name, Type type) {
 		if (type == Type.DOUBLE) return globalDoubles.get(name);

@@ -7,6 +7,7 @@ import java.util.List;
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Model;
+import jumpingalien.program.statement.ExecutionState;
 import jumpingalien.util.Sprite;
 
 /**
@@ -1209,7 +1210,11 @@ public abstract class GameObject {
 	}
 	
 	protected void executeProgram(double time) {
+		getProgram().setStatementsLeft((int) Math.ceil(time*1000));
 		
+		while (getProgram().getMainStatement().execute(this) == ExecutionState.DONE) {
+			getProgram().initializeVariables();
+		}
 	}
 	
 	/**
