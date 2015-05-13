@@ -3,6 +3,7 @@ package jumpingalien.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import be.kuleuven.cs.som.annotate.Basic;
 import jumpingalien.part3.programs.IProgramFactory.Direction;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.Type;
@@ -39,6 +40,17 @@ public class Program {
 	}
 	
 	private final Statement mainStatement;
+	
+	@Basic
+	public int getStatementsLeft() {
+		return statements_left;
+	}
+	
+	public void setStatementsLeft(int statements_left) {
+		this.statements_left = statements_left;
+	}
+	
+	private int statements_left = 0;
 	
 	private final Map<String, Double> globalDoubles = new HashMap<String, Double>();
 	private final Map<String, Boolean> globalBools = new HashMap<String, Boolean>();

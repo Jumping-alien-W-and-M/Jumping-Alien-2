@@ -1,6 +1,7 @@
 package jumpingalien.program.expression;
 
 import be.kuleuven.cs.som.annotate.Basic;
+import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.ParserObject;
 import jumpingalien.program.Type;
@@ -11,7 +12,7 @@ public abstract class Expression extends ParserObject {
 		super(sourceLocation);
 	}
 	
-	public abstract Object getValue();
+	public abstract Object getValue(GameObject executingObject);
 	
 	@Basic
 	public Type getType() {
