@@ -14,9 +14,11 @@ public class NotEquals extends CompBinaryExpression {
 	@Override
 	public Boolean getValue(GameObject executingObject) {
 		if (getFirstExpression().getType() == Type.DOUBLE)
-			return !getFirstExpression().getValue(executingObject).equals(getSecondExpression().getValue(executingObject));
-		return (Double.compare((double) getFirstExpression().getValue(executingObject)
-					, (double) getSecondExpression().getValue(executingObject)) != 0);
+			return (Double.compare((double) getFirstExpression().getValue(executingObject),
+					(double) getSecondExpression().getValue(executingObject)) != 0);
+		if (getFirstExpression().getValue(executingObject) == null)
+			return (getSecondExpression().getValue(executingObject) != null);
+		return !getFirstExpression().getValue(executingObject).equals(getSecondExpression().getValue(executingObject));
 	}
 	
 }
