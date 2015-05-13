@@ -4,7 +4,7 @@ import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.ProgramExecutor;
 
-public class StartDuck extends Statement {
+public class StartDuck extends ActionStatement {
 	
 	public StartDuck(SourceLocation sourceLocation) {
 		super(sourceLocation);
@@ -16,5 +16,5 @@ public class StartDuck extends Statement {
 		if(executing_object instanceof GameObject)
 			((GameObject) executing_object).startDuck();
 		return ExecutionState.DONE;
-	}		
+	}
 }

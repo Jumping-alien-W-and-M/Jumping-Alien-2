@@ -20,6 +20,10 @@ public class Sequence extends Statement {
 		return new ArrayList<Statement>(statements);
 	}
 	
+	public void removeStatement(Statement statement) {
+		statements.remove(statement);
+	}
+	
 	private final List<Statement> statements;
 	
 	@Basic

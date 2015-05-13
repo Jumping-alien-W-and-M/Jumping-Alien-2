@@ -7,7 +7,7 @@ import jumpingalien.program.ProgramExecutor;
 import jumpingalien.program.Type;
 import jumpingalien.program.expression.*;
 
-public class Wait extends Statement {
+public class Wait extends ActionStatement {
 	
 	public Wait(Expression duration, SourceLocation sourceLocation) {
 		super(sourceLocation);

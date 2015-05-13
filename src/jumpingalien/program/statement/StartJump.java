@@ -4,7 +4,7 @@ import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.ProgramExecutor;
 
-public class StartJump extends Statement {
+public class StartJump extends ActionStatement {
 	public StartJump(SourceLocation sourceLocation){
 		super(sourceLocation);
 	}

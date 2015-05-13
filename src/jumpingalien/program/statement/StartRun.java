@@ -8,7 +8,7 @@ import jumpingalien.program.ProgramExecutor;
 import jumpingalien.program.Type;
 import jumpingalien.program.expression.Expression;
 
-public class StartRun extends Statement {
+public class StartRun extends ActionStatement {
 
 	public StartRun(Expression direction, SourceLocation sourceLocation) {
 		super(sourceLocation);

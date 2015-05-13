@@ -288,7 +288,7 @@ public class ProgramFactory implements IProgramFactory<Expression, Statement, Ty
 
 	@Override
 	public Statement createStopDuck(SourceLocation sourceLocation) {
-		return new EndDuck(sourceLocation);
+		return new StopDuck(sourceLocation);
 	}
 
 	@Override

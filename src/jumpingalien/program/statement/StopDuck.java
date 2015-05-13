@@ -4,9 +4,9 @@ import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.ProgramExecutor;
 
-public class EndDuck extends Statement {
+public class StopDuck extends ActionStatement {
 	
-	public EndDuck(SourceLocation sourceLocation) {
+	public StopDuck(SourceLocation sourceLocation) {
 		super(sourceLocation);
 	}
 	
