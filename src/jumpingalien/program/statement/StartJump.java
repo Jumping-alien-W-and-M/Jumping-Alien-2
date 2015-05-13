@@ -2,7 +2,6 @@ package jumpingalien.program.statement;
 
 import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
-import jumpingalien.program.ProgramExecutor;
 
 public class StartJump extends ActionStatement {
 	public StartJump(SourceLocation sourceLocation){
@@ -10,8 +9,8 @@ public class StartJump extends ActionStatement {
 	}
 	
 	@Override
-	public ExecutionState execute() {
-		Object self = ProgramExecutor.getExecutingObject();
+	public ExecutionState execute(GameObject executingObject) {
+		Object self = executingObject;
 		if (self instanceof GameObject) ((GameObject) self).startJump();
 		
 		return ExecutionState.DONE;

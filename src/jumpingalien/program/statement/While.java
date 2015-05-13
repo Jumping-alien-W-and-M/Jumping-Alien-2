@@ -1,8 +1,8 @@
 package jumpingalien.program.statement;
 
 import be.kuleuven.cs.som.annotate.Basic;
+import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
-import jumpingalien.program.ProgramExecutor;
 import jumpingalien.program.expression.Expression;
 
 public class While extends Statement {
@@ -39,23 +39,24 @@ public class While extends Statement {
 	private boolean in_body = false;
 	
 	@Override
-	public ExecutionState execute() {
+	public ExecutionState execute(GameObject executingObject) {
 		
-		ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() + 1);
+		executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() + 1);
 		
-		while(ProgramExecutor.getStatementsLeft() > 0) {
+		while(executingObject.getProgram().getStatementsLeft() > 0) {
 			
 			if (!getInBody()) {
-				setInBody((boolean) getCondition().getValue());
-				ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() - 1);
+				setInBody((boolean) getCondition().getValue(executingObject));
+				executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() - 1);
 			}
 			
 			if (!getInBody()) return ExecutionState.DONE;
-			if (ProgramExecutor.getStatementsLeft() <= 0) return ExecutionState.NOTDONE;
+			if (executingObject.getProgram().getStatementsLeft() <= 0) return ExecutionState.NOTDONE;
 			
-			if (!(getBody() instanceof Sequence)) ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() - 1);
+			if (!(getBody() instanceof Sequence))
+				executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() - 1);
 			
-			ExecutionState state = getBody().execute();
+			ExecutionState state = getBody().execute(executingObject);
 			if (state == ExecutionState.DONE) setInBody(false);
 			if (state == ExecutionState.BREAK) {
 				setInBody(false);

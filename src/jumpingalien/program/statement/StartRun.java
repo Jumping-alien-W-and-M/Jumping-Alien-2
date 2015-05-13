@@ -4,7 +4,6 @@ import jumpingalien.model.GameObject;
 import jumpingalien.model.Program;
 import jumpingalien.part3.programs.IProgramFactory.Direction;
 import jumpingalien.part3.programs.SourceLocation;
-import jumpingalien.program.ProgramExecutor;
 import jumpingalien.program.Type;
 import jumpingalien.program.expression.Expression;
 
@@ -23,12 +22,12 @@ public class StartRun extends ActionStatement {
 	private final Expression direction;
 	
 	@Override
-	public ExecutionState execute() {
-		Object self = ProgramExecutor.getExecutingObject();
+	public ExecutionState execute(GameObject executingObject) {
+		Object self = executingObject;
 		
 		if (self instanceof GameObject) {
-			if (direction.getValue() == Direction.LEFT) ((GameObject) self).startMove("left");
-			if (direction.getValue() == Direction.RIGHT) ((GameObject) self).startMove("right");
+			if (direction.getValue(executingObject) == Direction.LEFT) ((GameObject) self).startMove("left");
+			if (direction.getValue(executingObject) == Direction.RIGHT) ((GameObject) self).startMove("right");
 		}
 		
 		return ExecutionState.DONE;

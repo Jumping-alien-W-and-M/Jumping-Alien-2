@@ -1,9 +1,9 @@
 package jumpingalien.program.statement;
 
 import be.kuleuven.cs.som.annotate.Basic;
+import jumpingalien.model.GameObject;
 import jumpingalien.model.Program;
 import jumpingalien.part3.programs.SourceLocation;
-import jumpingalien.program.ProgramExecutor;
 import jumpingalien.program.Type;
 import jumpingalien.program.expression.*;
 
@@ -36,14 +36,14 @@ public class Wait extends ActionStatement {
 	private double duration_left = 0;
 	
 	@Override
-	public ExecutionState execute() {
+	public ExecutionState execute(GameObject executingObject) {
 		
 		if (getDurationLeft() <= 0) {
-			setDurationLeft((double) getDuration().getValue());
+			setDurationLeft((double) getDuration().getValue(executingObject));
 		}
 		
-		while(ProgramExecutor.getStatementsLeft() > 0 && getDurationLeft() > 0) {
-			ProgramExecutor.setStatementsLeft(ProgramExecutor.getStatementsLeft() - 1);
+		while(executingObject.getProgram().getStatementsLeft() > 0 && getDurationLeft() > 0) {
+			executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() - 1);
 			setDurationLeft(getDurationLeft() - 0.001);
 		}
 		

@@ -2,7 +2,6 @@ package jumpingalien.program.statement;
 
 import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
-import jumpingalien.program.ProgramExecutor;
 
 public class StopDuck extends ActionStatement {
 	
@@ -11,8 +10,8 @@ public class StopDuck extends ActionStatement {
 	}
 	
 	@Override
-	public ExecutionState execute() {
-		Object executing_object =  ProgramExecutor.getExecutingObject();
+	public ExecutionState execute(GameObject executingObject) {
+		Object executing_object =  executingObject;
 		if(executing_object instanceof GameObject)
 			((GameObject) executing_object).endDuck();
 		return ExecutionState.DONE;
