@@ -1,8 +1,8 @@
 package jumpingalien.program.expression.binary;
 
+import jumpingalien.model.GameObject;
 import jumpingalien.model.Program;
 import jumpingalien.part3.programs.SourceLocation;
-import jumpingalien.program.ProgramExecutor;
 import jumpingalien.program.Type;
 import jumpingalien.program.expression.Expression;
 
@@ -16,9 +16,10 @@ public class GetTile extends BinaryExpression {
 	}
 	
 	@Override
-	public Object getValue() {
-		return ProgramExecutor.getExecutingObject().getWorld().getFeature(
-				(int) getFirstExpression().getValue(), (int) getFirstExpression().getValue());
+	public Object getValue(GameObject executingObject) {
+		return executingObject.getWorld().getFeature(
+				(int) getFirstExpression().getValue(executingObject)
+					, (int) getFirstExpression().getValue(executingObject));
 	}
 	
 }

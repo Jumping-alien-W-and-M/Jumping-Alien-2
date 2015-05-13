@@ -9,7 +9,6 @@ import jumpingalien.model.Program;
 import jumpingalien.model.Shark;
 import jumpingalien.part3.programs.IProgramFactory.Direction;
 import jumpingalien.part3.programs.SourceLocation;
-import jumpingalien.program.ProgramExecutor;
 import jumpingalien.program.Type;
 import jumpingalien.program.expression.Expression;
 import jumpingalien.util.Sprite;
@@ -24,17 +23,17 @@ public class SearchObject extends UnaryExpression {
 	}
 
 	@Override
-	public Object getValue() {		
-		Direction dir = (Direction) getExpression().getValue();
-		if(dir == Direction.RIGHT) return getValueRight();
-		else if(dir == Direction.LEFT) return getValueLeft();
-		else if(dir == Direction.UP) return getValueUp();
-		else if(dir == Direction.DOWN) return getValueDown();
+	public Object getValue(GameObject executingObject) {		
+		Direction dir = (Direction) getExpression().getValue(executingObject);
+		if(dir == Direction.RIGHT) return getValueRight(executingObject);
+		else if(dir == Direction.LEFT) return getValueLeft(executingObject);
+		else if(dir == Direction.UP) return getValueUp(executingObject);
+		else if(dir == Direction.DOWN) return getValueDown(executingObject);
 		else return null;
 	}
 	
-	private Object getValueRight(){
-		GameObject startobject = ProgramExecutor.getExecutingObject();		
+	private Object getValueRight(GameObject executingObject){
+		GameObject startobject = executingObject;		
 		
 		Sprite[] sprites = {JumpingAlienSprites.ALIEN_SPRITESET[0], JumpingAlienSprites.ALIEN_SPRITESET[1]};
 		Shark searchobject = new Shark(startobject.getX(), startobject.getY(), sprites, null);
@@ -54,8 +53,8 @@ public class SearchObject extends UnaryExpression {
 		return null;
 	}
 	
-	private Object getValueLeft(){
-		GameObject startobject = ProgramExecutor.getExecutingObject();		
+	private Object getValueLeft(GameObject executingObject){
+		GameObject startobject = executingObject;		
 		
 		Sprite[] sprites = {JumpingAlienSprites.ALIEN_SPRITESET[0], JumpingAlienSprites.ALIEN_SPRITESET[1]};
 		Shark searchobject = new Shark(startobject.getX(), startobject.getY(), sprites, null);
@@ -75,8 +74,8 @@ public class SearchObject extends UnaryExpression {
 		return null;
 	}
 	
-	private Object getValueUp(){
-		GameObject startobject = ProgramExecutor.getExecutingObject();		
+	private Object getValueUp(GameObject executingObject){
+		GameObject startobject = executingObject;		
 		
 		Sprite[] sprites = {JumpingAlienSprites.ALIEN_SPRITESET[0], JumpingAlienSprites.ALIEN_SPRITESET[1]};
 		Shark searchobject = new Shark(startobject.getX(), startobject.getY(), sprites, null);
@@ -96,8 +95,8 @@ public class SearchObject extends UnaryExpression {
 		return null;
 	}
 	
-	private Object getValueDown(){
-		GameObject startobject = ProgramExecutor.getExecutingObject();		
+	private Object getValueDown(GameObject executingObject){
+		GameObject startobject = executingObject;		
 		
 		Sprite[] sprites = {JumpingAlienSprites.ALIEN_SPRITESET[0], JumpingAlienSprites.ALIEN_SPRITESET[1]};
 		Shark searchobject = new Shark(startobject.getX(), startobject.getY(), sprites, null);

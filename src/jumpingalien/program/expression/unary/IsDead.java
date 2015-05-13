@@ -11,9 +11,9 @@ public class IsDead extends Checker {
 	}
 
 	@Override
-	public Boolean getValue() {
+	public Boolean getValue(GameObject executingObject) {
 		try{
-			return ((GameObject) getExpression().getValue()).getHitpoints() <= 0;
+			return ((GameObject) getExpression().getValue(executingObject)).getHitpoints() <= 0;
 		} catch(Exception exc) {
 			return false;
 		}

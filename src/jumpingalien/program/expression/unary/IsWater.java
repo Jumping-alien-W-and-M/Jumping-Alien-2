@@ -1,6 +1,7 @@
 package jumpingalien.program.expression.unary;
 
 import jumpingalien.model.Feature;
+import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.expression.Expression;
 
@@ -11,7 +12,7 @@ public class IsWater extends Checker {
 	}
 	
 	@Override
-	public Boolean getValue() {
-		return getExpression().getValue() == Feature.water;
+	public Boolean getValue(GameObject executingObject) {
+		return getExpression().getValue(executingObject) == Feature.water;
 	}
 }

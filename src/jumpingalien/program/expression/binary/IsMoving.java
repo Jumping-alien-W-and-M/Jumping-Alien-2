@@ -17,13 +17,13 @@ public class IsMoving extends BinaryExpression {
 	}
 	
 	@Override
-	public Boolean getValue() {
-		if (getFirstExpression().getValue() instanceof GameObject) {
-			switch ((Direction) getSecondExpression().getValue()) {
-				case LEFT: return (((GameObject) getFirstExpression().getValue()).getVx() < 0);
-				case RIGHT: return (((GameObject) getFirstExpression().getValue()).getVx() > 0);
-				case DOWN: return (((GameObject) getFirstExpression().getValue()).getVy() < 0);
-				case UP: return (((GameObject) getFirstExpression().getValue()).getVy() > 0);
+	public Boolean getValue(GameObject executingObject) {
+		if (getFirstExpression().getValue(executingObject) instanceof GameObject) {
+			switch ((Direction) getSecondExpression().getValue(executingObject)) {
+				case LEFT: return (((GameObject) getFirstExpression().getValue(executingObject)).getVx() < 0);
+				case RIGHT: return (((GameObject) getFirstExpression().getValue(executingObject)).getVx() > 0);
+				case DOWN: return (((GameObject) getFirstExpression().getValue(executingObject)).getVy() < 0);
+				case UP: return (((GameObject) getFirstExpression().getValue(executingObject)).getVy() > 0);
 				default: System.out.println("Direction wasn't valid somehow!"); break;
 			}
 		}

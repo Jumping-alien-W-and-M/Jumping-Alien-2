@@ -11,9 +11,9 @@ public class GetHeight extends Getter{
 	}
 
 	@Override
-	public Double getValue() {
+	public Double getValue(GameObject executingObject) {
 		try{
-			return (double) ((GameObject) getExpression().getValue()).getHeight();
+			return (double) ((GameObject) getExpression().getValue(executingObject)).getHeight();
 		} catch(Exception exc){
 			return 0.0;
 		}

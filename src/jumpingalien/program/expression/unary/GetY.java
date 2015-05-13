@@ -11,9 +11,9 @@ public class GetY extends Getter{
 	}
 
 	@Override
-	public Object getValue() {
+	public Object getValue(GameObject executingObject) {
 		try{
-			return (double) ((GameObject) getExpression().getValue()).getHitpoints();
+			return (double) ((GameObject) getExpression().getValue(executingObject)).getHitpoints();
 		} catch(Exception exc) {
 			return 0.0;
 		}

@@ -11,9 +11,9 @@ public class GetX extends Getter {
 	}
 
 	@Override
-	public Object getValue() {
+	public Object getValue(GameObject executingObject) {
 		try{
-			return (double) ((GameObject) getExpression().getValue()).getX();
+			return (double) ((GameObject) getExpression().getValue(executingObject)).getX();
 		} catch(Exception exc) {
 			return 0.0;
 		}

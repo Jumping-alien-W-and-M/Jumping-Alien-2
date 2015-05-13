@@ -1,5 +1,6 @@
 package jumpingalien.program.expression.unary;
 
+import jumpingalien.model.GameObject;
 import jumpingalien.model.Program;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.Type;
@@ -15,8 +16,8 @@ public class Not extends UnaryExpression {
 	}
 
 	@Override
-	public Boolean getValue() {
-		return ! ((boolean) getExpression().getValue());
+	public Boolean getValue(GameObject executingObject) {
+		return ! ((boolean) getExpression().getValue(executingObject));
 	}
 	
 	

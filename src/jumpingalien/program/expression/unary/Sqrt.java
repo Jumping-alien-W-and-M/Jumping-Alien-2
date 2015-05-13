@@ -1,5 +1,6 @@
 package jumpingalien.program.expression.unary;
 
+import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.expression.Expression;
 
@@ -10,7 +11,7 @@ public class Sqrt extends MathUnaryExpression{
 	}
 
 	@Override
-	public Double getValue() {
-		return Math.sqrt((double) getExpression().getValue());
+	public Double getValue(GameObject executingObject) {
+		return Math.sqrt((double) getExpression().getValue(executingObject));
 	}
 }

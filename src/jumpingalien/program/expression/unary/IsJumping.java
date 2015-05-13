@@ -1,5 +1,6 @@
 package jumpingalien.program.expression.unary;
 
+import jumpingalien.model.GameObject;
 import jumpingalien.model.Mazub;
 import jumpingalien.model.Shark;
 import jumpingalien.part3.programs.SourceLocation;
@@ -12,12 +13,12 @@ public class IsJumping extends Checker {
 	}
 
 	@Override
-	public Boolean getValue() {
-		if(getExpression().getValue() instanceof Mazub){
-			return ((Mazub) getExpression().getValue()).getJumping();
+	public Boolean getValue(GameObject executingObject) {
+		if(getExpression().getValue(executingObject) instanceof Mazub){
+			return ((Mazub) getExpression().getValue(executingObject)).getJumping();
 		}
-		else if(getExpression().getValue() instanceof Shark){
-			return((Shark) getExpression().getValue()).getIsJumping();
+		else if(getExpression().getValue(executingObject) instanceof Shark){
+			return((Shark) getExpression().getValue(executingObject)).getIsJumping();
 		}
 		else{
 			return false;

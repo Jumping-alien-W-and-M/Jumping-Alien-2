@@ -11,9 +11,9 @@ public class GetWidth extends Getter {
 	}
 
 	@Override
-	public Object getValue() {
+	public Object getValue(GameObject executingObject) {
 		try{
-			return (double) ((GameObject) getExpression().getValue()).getWidth();
+			return (double) ((GameObject) getExpression().getValue(executingObject)).getWidth();
 		} catch(Exception exc) {
 			return 0.0;
 		}

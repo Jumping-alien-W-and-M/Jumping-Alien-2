@@ -10,9 +10,9 @@ public class GetHitpoints extends Getter{
 		super(expr, sourceLocation);
 	}
 	
-	public Double getValue(){
+	public Double getValue(GameObject executingObject){
 		try{
-			return (double) ((GameObject) getExpression().getValue()).getHitpoints();
+			return (double) ((GameObject) getExpression().getValue(executingObject)).getHitpoints();
 		} catch(Exception exc) {
 			return 0.0;
 		}
