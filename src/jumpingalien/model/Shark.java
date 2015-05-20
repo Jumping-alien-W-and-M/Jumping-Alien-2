@@ -398,7 +398,6 @@ public class Shark extends Enemy {
 	@Override
 	public boolean canJump(){
 		List<List<List<Object>>> collisions = getCollisions();
-
 		if((collisions.get(3).get(1).contains(Feature.ground) || collisions.get(3).get(1).contains(Feature.water)
 			|| collisions.get(0).get(1).contains(Feature.water)
 				|| collisions.get(3).get(0).size() != 0) && (noObjectMovementBlocking(collisions.get(1).get(0))))
