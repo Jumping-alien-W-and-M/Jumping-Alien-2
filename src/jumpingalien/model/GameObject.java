@@ -61,7 +61,7 @@ public abstract class GameObject {
 	protected GameObject(double x, double y, Sprite[] images, double axi, double vxi, double vxmax, Program program) {
 		assert(isValidX(x));
 		assert(isValidX(y));
-		assert((program != null) || ((this instanceof Mazub) && !(this instanceof Buzam)));
+		assert((program == null) || !(this instanceof Mazub) || (this instanceof Buzam));
 		
 		setX(x);
 		setY(y);
