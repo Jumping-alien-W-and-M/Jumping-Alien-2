@@ -34,29 +34,4 @@ public class AdditionTest {
 		}
 	}
 
-	@Test
-	public void getValueTypingTest() {
-		Expression expr1 = new DoubleConstant(1.5, new SourceLocation(5, 6));
-		Expression expr2 = new DoubleConstant(2.5, new SourceLocation(5, 10));
-		Expression null_expr = new Null(new SourceLocation(5, 14));
-		
-		try {
-			new Addition(expr1, expr2, new SourceLocation(5, 6));
-			new Addition(expr2, expr1, new SourceLocation(5, 6));
-		} catch (IllegalArgumentException exc1) {
-			fail();
-		}
-		try {
-			new Addition(expr1, null_expr, new SourceLocation(5, 6));
-			fail();
-		} catch (IllegalArgumentException exc1) {
-			try {
-				new Addition(null_expr, expr1, new SourceLocation(5, 6));
-				fail();
-			} catch (IllegalArgumentException exc2) {
-				return;
-			}
-		}
-	}
-
 }
