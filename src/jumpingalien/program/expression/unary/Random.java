@@ -12,13 +12,8 @@ public class Random extends MathUnaryExpression {
 	@Override
 	public Double getValue(GameObject executingObject) {
 		double random = new java.util.Random().nextDouble();
-		try{
-			return (random * (double) getExpression().getValue(executingObject));
-		} catch(Exception exc){
-			executingObject.getProgram().setRunTimeError(true);
-			executingObject.getProgram().setStatementsLeft(0);
-			return 0.0;
-		}
+		return (random * (double) getExpression().getValue(executingObject));
+		
 	}
 	
 	

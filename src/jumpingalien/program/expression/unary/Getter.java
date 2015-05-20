@@ -11,6 +11,6 @@ public abstract class Getter extends UnaryExpression {
 		super(expr, sourceLocation);
 		
 		setType(Type.DOUBLE);
-		if(expr.getType() != Type.OBJECT) Program.printTypeCheckError(sourceLocation);
+		if(expr.getType() != Type.OBJECT) Program.printTypeCheckError(sourceLocation);	
 	}
 }

@@ -13,7 +13,7 @@ public class GetY extends Getter{
 	@Override
 	public Object getValue(GameObject executingObject) {
 		try{
-			return (double) ((GameObject) getExpression().getValue(executingObject)).getHitpoints();
+			return (double) ((GameObject) getExpression().getValue(executingObject)).getY();
 		} catch(Exception exc) {
 			executingObject.getProgram().setRunTimeError(true);
 			executingObject.getProgram().setStatementsLeft(0);

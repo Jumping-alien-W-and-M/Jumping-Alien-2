@@ -17,13 +17,7 @@ public class Not extends UnaryExpression {
 
 	@Override
 	public Boolean getValue(GameObject executingObject) {
-		try{
-			return ! ((boolean) getExpression().getValue(executingObject));
-		} catch(Exception exc){
-			executingObject.getProgram().setRunTimeError(true);
-			executingObject.getProgram().setStatementsLeft(0);
-			return false;
-		}
+			return ! ((boolean) getExpression().getValue(executingObject));	
 	}
 	
 	
