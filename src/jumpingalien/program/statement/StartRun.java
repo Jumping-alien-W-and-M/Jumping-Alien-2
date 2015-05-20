@@ -23,12 +23,9 @@ public class StartRun extends ActionStatement {
 	
 	@Override
 	public ExecutionState execute(GameObject executingObject) {
-		Object self = executingObject;
 		
-		if (self instanceof GameObject) {
-			if (direction.getValue(executingObject) == Direction.LEFT) ((GameObject) self).startMove("left");
-			if (direction.getValue(executingObject) == Direction.RIGHT) ((GameObject) self).startMove("right");
-		}
+		if (direction.getValue(executingObject) == Direction.LEFT) executingObject.startMove("left");
+		if (direction.getValue(executingObject) == Direction.RIGHT) executingObject.startMove("right");
 		
 		return ExecutionState.DONE;
 	}

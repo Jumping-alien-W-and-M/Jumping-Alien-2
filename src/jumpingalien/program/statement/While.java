@@ -2,7 +2,9 @@ package jumpingalien.program.statement;
 
 import be.kuleuven.cs.som.annotate.Basic;
 import jumpingalien.model.GameObject;
+import jumpingalien.model.Program;
 import jumpingalien.part3.programs.SourceLocation;
+import jumpingalien.program.Type;
 import jumpingalien.program.expression.Expression;
 
 public class While extends Statement {
@@ -11,6 +13,8 @@ public class While extends Statement {
 		super(sourceLocation);
 		this.condition = condition;
 		this.body = body;
+		
+		if(condition.getType() != Type.BOOL) Program.printTypeCheckError(sourceLocation);
 	}
 
 	@Basic

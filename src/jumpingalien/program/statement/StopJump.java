@@ -1,6 +1,8 @@
 package jumpingalien.program.statement;
 
 import jumpingalien.model.GameObject;
+import jumpingalien.model.Mazub;
+import jumpingalien.model.Shark;
 import jumpingalien.part3.programs.SourceLocation;
 
 public class StopJump extends ActionStatement {
@@ -10,8 +12,14 @@ public class StopJump extends ActionStatement {
 	
 	@Override
 	public ExecutionState execute(GameObject executingObject) {
-		Object self = executingObject;
-		if (self instanceof GameObject) ((GameObject) self).endJump();
+		
+		if (executingObject instanceof Mazub || executingObject instanceof Shark)
+			executingObject.endJump();
+		else {
+			executingObject.getProgram().setStatementsLeft(0);
+			executingObject.getProgram().setRunTimeError(false);
+			return ExecutionState.NOTDONE;
+		}
 		
 		return ExecutionState.DONE;
 	}

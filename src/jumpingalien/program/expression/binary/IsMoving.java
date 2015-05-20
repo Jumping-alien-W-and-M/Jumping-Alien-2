@@ -26,6 +26,9 @@ public class IsMoving extends BinaryExpression {
 				case UP: return (((GameObject) getFirstExpression().getValue(executingObject)).getVy() > 0);
 				default: System.out.println("Direction wasn't valid somehow!"); break;
 			}
+		} else {
+			executingObject.getProgram().setStatementsLeft(0);
+			executingObject.getProgram().setRunTimeError(false);
 		}
 		
 		return false;
