@@ -5,7 +5,7 @@ import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.expression.Expression;
 import jumpingalien.util.Util;
 
-public class LessThanOrEqualTo extends CompBinaryExpression {
+public class LessThanOrEqualTo extends OrderBinaryExpression {
 
 	public LessThanOrEqualTo(Expression left, Expression right, SourceLocation sourceLocation) {
 		super(left, right, sourceLocation);

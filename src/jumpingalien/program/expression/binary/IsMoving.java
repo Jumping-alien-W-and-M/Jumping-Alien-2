@@ -28,7 +28,7 @@ public class IsMoving extends BinaryExpression {
 			}
 		} else {
 			executingObject.getProgram().setStatementsLeft(0);
-			executingObject.getProgram().setRunTimeError(false);
+			executingObject.getProgram().setRunTimeError(true);
 		}
 		
 		return false;

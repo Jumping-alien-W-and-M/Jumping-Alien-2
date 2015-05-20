@@ -16,7 +16,7 @@ public class StopDuck extends ActionStatement {
 			((Mazub) executingObject).endDuck();
 		else {
 			executingObject.getProgram().setStatementsLeft(0);
-			executingObject.getProgram().setRunTimeError(false);
+			executingObject.getProgram().setRunTimeError(true);
 			return ExecutionState.NOTDONE;
 		}
 		return ExecutionState.DONE;

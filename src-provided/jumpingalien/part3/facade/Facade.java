@@ -189,7 +189,7 @@ public class Facade implements IFacadePart3 {
 	public void advanceTime(World world, double dt) {
 		try {
 			world.advanceTime(dt);
-		} catch (IllegalArgumentException exc) {
+		} catch (Exception exc) {
 			throw new ModelException(exc);
 		}
 	}

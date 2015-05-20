@@ -14,9 +14,11 @@ public class Division extends MathBinaryExpression {
 	@Override
 	public Double getValue(GameObject executingObject) {
 		
+		// Handles division by zero
 		if (Math.abs((double) getSecondExpression().getValue(executingObject)) < Util.DEFAULT_EPSILON) {
 			executingObject.getProgram().setStatementsLeft(0);
-			executingObject.getProgram().setRunTimeError(false);
+			executingObject.getProgram().setRunTimeError(true);
+			return 0.0;
 		}
 		
 		return (double) getFirstExpression().getValue(executingObject) 
