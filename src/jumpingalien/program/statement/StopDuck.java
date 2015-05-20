@@ -14,6 +14,11 @@ public class StopDuck extends ActionStatement {
 	public ExecutionState execute(GameObject executingObject) {
 		if(executingObject instanceof Mazub)
 			((Mazub) executingObject).endDuck();
+		else {
+			executingObject.getProgram().setStatementsLeft(0);
+			executingObject.getProgram().setRunTimeError(false);
+			return ExecutionState.NOTDONE;
+		}
 		return ExecutionState.DONE;
 	}		
 	

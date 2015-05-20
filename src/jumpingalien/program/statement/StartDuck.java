@@ -14,6 +14,11 @@ public class StartDuck extends ActionStatement {
 	public ExecutionState execute(GameObject executingObject) {
 		if (executingObject instanceof Mazub)
 			((Mazub) executingObject).startDuck();
+		else {
+			executingObject.getProgram().setStatementsLeft(0);
+			executingObject.getProgram().setRunTimeError(false);
+			return ExecutionState.NOTDONE;
+		}
 		return ExecutionState.DONE;
 	}
 }

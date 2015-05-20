@@ -23,12 +23,9 @@ public class StopRun extends ActionStatement {
 	
 	@Override
 	public ExecutionState execute(GameObject executingObject) {
-		Object self = executingObject;
 		
-		if (self instanceof GameObject) {
-			if (direction.getValue(executingObject) == Direction.LEFT) ((GameObject) self).endMove("left");
-			if (direction.getValue(executingObject) == Direction.RIGHT) ((GameObject) self).endMove("right");
-		}
+		if (direction.getValue(executingObject) == Direction.LEFT) executingObject.endMove("left");
+		if (direction.getValue(executingObject) == Direction.RIGHT) executingObject.endMove("right");
 		
 		return ExecutionState.DONE;
 	}
