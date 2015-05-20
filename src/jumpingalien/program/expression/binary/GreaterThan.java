@@ -4,7 +4,7 @@ import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.expression.Expression;
 
-public class GreaterThan extends CompBinaryExpression {
+public class GreaterThan extends OrderBinaryExpression {
 
 	public GreaterThan(Expression left, Expression right, SourceLocation sourceLocation) {
 		super(left, right, sourceLocation);

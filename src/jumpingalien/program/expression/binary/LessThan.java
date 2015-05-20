@@ -4,7 +4,7 @@ import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.expression.Expression;
 
-public class LessThan extends CompBinaryExpression {
+public class LessThan extends OrderBinaryExpression {
 
 	public LessThan(Expression left, Expression right, SourceLocation sourceLocation) {
 		super(left, right, sourceLocation);
