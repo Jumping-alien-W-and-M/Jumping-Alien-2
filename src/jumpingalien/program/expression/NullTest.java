@@ -1,13 +1,14 @@
-package jumpingalien.program;
+package jumpingalien.program.expression;
 
 import static org.junit.Assert.*;
+
 import jumpingalien.part3.programs.SourceLocation;
-import jumpingalien.program.expression.Null;
+import jumpingalien.program.Type;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class ParserObjectTest {
+public class NullTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -15,13 +16,11 @@ public class ParserObjectTest {
 
 	@Test
 	public void BasicConstructorTest() {
-		ParserObject Null;
 		SourceLocation source = new SourceLocation(5, 6);
 		
-		Null = new Null(null);
-		assertEquals(null, Null.getSourceLocation());
-		Null = new Null(source);
-		assertEquals(source, Null.getSourceLocation());
+		Null null_constant = new Null(source);
+		assertEquals(null, null_constant.getValue(null));
+		assertEquals(Type.OBJECT, null_constant.getType());
 	}
 
 }
