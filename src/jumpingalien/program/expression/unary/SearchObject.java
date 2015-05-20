@@ -43,8 +43,9 @@ public class SearchObject extends UnaryExpression {
 		while((searchobject.getX() + startobject.getWidth()) < startobject.getWorld().getWorldWidth()){
 			collisions = searchobject.getWorld().collisionDetect(searchobject, startobject.getWidth(), startobject.getHeight());
 			
-			if(collisions.get(2).get(0) != null)
+			if(collisions.get(2).get(0).size() != 0){
 				return collisions.get(2).get(0).get(0);
+			}
 			else if(collisions.get(2).get(1).contains(Feature.ground))
 				return Feature.ground;
 			
@@ -64,8 +65,12 @@ public class SearchObject extends UnaryExpression {
 		while(searchobject.getX() > 0){
 			collisions = searchobject.getWorld().collisionDetect(searchobject, startobject.getWidth(), startobject.getHeight());
 			
-			if(collisions.get(0).get(0) != null)
-				return collisions.get(0).get(0).get(0);
+			if(collisions.get(0).get(0).size() != 0
+				&& (! collisions.get(0).get(0).contains(startobject) || collisions.get(0).get(0).size() > 1)){
+				if(collisions.get(0).get(0).get(0) != startobject) return collisions.get(0).get(0).get(0);
+				else return collisions.get(0).get(0).get(1);
+			}
+			
 			else if(collisions.get(0).get(1).contains(Feature.ground))
 				return Feature.ground;
 			
@@ -85,7 +90,7 @@ public class SearchObject extends UnaryExpression {
 		while((searchobject.getY() + startobject.getHeight()) < startobject.getWorld().getWorldHeight()){
 			collisions = searchobject.getWorld().collisionDetect(searchobject, startobject.getWidth(), startobject.getHeight());
 			
-			if(collisions.get(1).get(0) != null)
+			if(collisions.get(1).get(0).size() != 0)
 				return collisions.get(1).get(0).get(0);
 			else if(collisions.get(1).get(1).contains(Feature.ground))
 				return Feature.ground;
@@ -106,8 +111,11 @@ public class SearchObject extends UnaryExpression {
 		while(searchobject.getY() > 0){
 			collisions = searchobject.getWorld().collisionDetect(searchobject, startobject.getWidth(), startobject.getHeight());
 			
-			if(collisions.get(3).get(0) != null)
-				return collisions.get(3).get(0).get(0);
+			if(collisions.get(3).get(0).size() != 0
+					&& (! collisions.get(3).get(0).contains(startobject) || collisions.get(3).get(0).size() > 1)){
+				if(collisions.get(3).get(0).get(0) != startobject) return collisions.get(3).get(0).get(0);
+				else return collisions.get(3).get(0).get(1);
+			}
 			else if(collisions.get(3).get(1).contains(Feature.ground))
 				return Feature.ground;
 			
