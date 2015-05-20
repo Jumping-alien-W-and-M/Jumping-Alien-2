@@ -1201,14 +1201,6 @@ public abstract class GameObject {
 		setVy(Math.min(0, getVy()));
 	}
 	
-	public void startDuck() {
-		
-	}
-	
-	public void endDuck() {
-		
-	}
-	
 	protected void executeProgram(double time) {
 		getProgram().setStatementsLeft((int) Math.ceil(time*1000));
 		

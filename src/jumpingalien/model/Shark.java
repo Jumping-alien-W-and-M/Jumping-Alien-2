@@ -147,6 +147,16 @@ public class Shark extends Enemy {
 	protected void advanceVy(double time) throws IllegalArgumentException {
 		if (!isValidDt(time))
 			throw new IllegalArgumentException();
+		if (getVy() < 0) {
+			List<List<List<Object>>> collisions = getCollisions();
+			boolean submerged = true;
+			for(int i = 0; i < 8; i++) {
+				if (collisions.get(i).get(1).contains(Feature.air)) submerged = false;
+			}
+			if (submerged) {
+				setIsJumping(false);
+			}
+		}
 		if((getAy() > 0 && !canRise()) || (getAy() < 0 && getAy() > -getMaxRiseAy() && !canDive())) {
 			setVy(0);
 			return;

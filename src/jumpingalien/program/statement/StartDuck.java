@@ -1,6 +1,7 @@
 package jumpingalien.program.statement;
 
 import jumpingalien.model.GameObject;
+import jumpingalien.model.Mazub;
 import jumpingalien.part3.programs.SourceLocation;
 
 public class StartDuck extends ActionStatement {
@@ -11,7 +12,8 @@ public class StartDuck extends ActionStatement {
 
 	@Override
 	public ExecutionState execute(GameObject executingObject) {
-		executingObject.startDuck();
+		if (executingObject instanceof Mazub)
+			((Mazub) executingObject).startDuck();
 		return ExecutionState.DONE;
 	}
 }

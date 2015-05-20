@@ -10,9 +10,7 @@ public class StartJump extends ActionStatement {
 	
 	@Override
 	public ExecutionState execute(GameObject executingObject) {
-		Object self = executingObject;
-		if (self instanceof GameObject) ((GameObject) self).startJump();
-		
+		executingObject.startJump();
 		return ExecutionState.DONE;
 	}
 }

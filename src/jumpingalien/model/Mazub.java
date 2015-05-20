@@ -678,7 +678,6 @@ public class Mazub extends GameObject {
 	 * @effect	This Mazub's maximal horizontal velocity will be set to 1.
 	 * 			| setVxmax(1)
 	 */
-	@Override
 	public void startDuck() {
 		setDucking(true);
 		setTryStand(false);
@@ -701,7 +700,6 @@ public class Mazub extends GameObject {
 	 * 			| if (!(canstand()))
 	 * 			|	then setTryStand(true)
 	 */
-	@Override
 	public void endDuck() {
 		if (canstand()) {
 			setDucking(false);
