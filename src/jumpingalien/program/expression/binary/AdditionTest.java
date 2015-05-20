@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.expression.DoubleConstant;
 import jumpingalien.program.expression.Expression;
-import jumpingalien.program.expression.Null;
 import jumpingalien.util.Util;
 
 import org.junit.Before;
