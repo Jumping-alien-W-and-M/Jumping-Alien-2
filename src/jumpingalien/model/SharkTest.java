@@ -44,5 +44,78 @@ public class SharkTest {
 		assert(shark.isValidAy(-0.2));
 		assert(shark.isValidAy(0.2));
 		assert(shark.isValidAy(0.1));
-	}	
+	}
+	
+	@Test
+	public void TestcanJumpSharkInWater(){
+		World world = new World(10, 20, 20, 200, 200, 19, 0);
+		world.setFeature(0, 0, 2);
+		world.addShark(shark);
+		shark.setY(9);
+		assert(shark.canJump());
+		shark.setY(5);
+		assert(shark.canJump());
+	}
+	
+	@Test
+	public void TestcanJumpSharkOnGround(){
+		World world = new World(10, 20, 20, 200, 200, 19, 0);
+		world.setFeature(0, 0, 1);
+		world.addShark(shark);
+		shark.setY(9);
+		assert(shark.canJump());
+	}
+	
+	@Test
+	public void TestcanJumpSharkOnOtherGameObject(){
+		World world = new World(10, 20, 20, 200, 200, 19, 0);
+		Shark shark1 = new Shark(0 , 0, sprites, null);
+		world.addShark(shark1);
+		world.addShark(shark);
+		shark.setY(shark1.getHeight() - 1);
+		assert(shark.canJump());
+	}
+	
+	@Test
+	public void TestcanJumpSharkUnderOtherGameObject(){
+		World world = new World(10, 20, 20, 200, 200, 19, 0);
+		Shark shark1 = new Shark(0 , 0, sprites, null);
+		world.addShark(shark1);
+		world.addShark(shark);
+		shark1.setY(shark.getHeight() - 1);
+		assert(! shark.canJump());
+	}
+	
+	@Test
+	public void TestcanJumpSharkInTheAir(){
+		World world = new World(10, 20, 20, 200, 200, 19, 0);
+		world.addShark(shark);
+		assert(! shark.canJump());
+	}
+	
+	@Test
+	public void TeststartJumpCanJump(){
+		World world = new World(10, 20, 20, 200, 200, 19, 0);
+		world.addShark(shark);
+		shark.setY(5);
+		world.setFeature(0, 0, 2);
+		shark.startJump();
+		
+		assert(shark.getIsJumping());
+		assertEquals(shark.getVy(), 2, Util.DEFAULT_EPSILON);
+		assertEquals(shark.getNonJumpingPeriods(), 0, Util.DEFAULT_EPSILON);
+		assert(shark.getJustJumped());		
+	}
+	
+	@Test
+	public void TeststartJumpCanNotJump(){
+		World world = new World(10, 20, 20, 200, 200, 19, 0);
+		world.addShark(shark);
+		shark.startJump();
+		
+		assert(shark.getIsJumping());
+		assertEquals(shark.getVy(), 2, Util.DEFAULT_EPSILON);
+		assertEquals(shark.getNonJumpingPeriods(), 0, Util.DEFAULT_EPSILON);
+		assert(! shark.getJustJumped());		
+	}
 }

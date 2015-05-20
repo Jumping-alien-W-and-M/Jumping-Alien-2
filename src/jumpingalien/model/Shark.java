@@ -300,25 +300,24 @@ public class Shark extends Enemy {
 	 * Starts a jump for this shark.
 	 * 
 	 * @effect	...
+	 * 			| setIsJumping(true)
+	 * @effect	...
 	 * 			| setVy(2)
 	 * @effect	...
 	 * 			| setNonJumpingPeriods(0)
 	 * @effect	...
-	 * 			| List<List<List<Object>>> collisions = getCollisions()
-	 *			| if (!(noObjectMovementBlocking(collisions.get(3).get(0))) 
-	 *			|	&& (collisions.get(3).get(1).contains(Feature.ground)))
+	 * 			| 	if (canJump()) 
 	 *			|		setJustJumped(true)
 	 */
-	@Model @Override
+	@Override
 	public void startJump(){
 		setIsJumping(true);
 		
 		setVy(2);
 
 		setNonJumpingPeriods(0);
-
-		List<List<List<Object>>> collisions = getCollisions();
-		if (!(noObjectMovementBlocking(collisions.get(3).get(0))) && (collisions.get(3).get(1).contains(Feature.ground)))
+		
+		if (canJump()) 
 			setJustJumped(true);
 	}
 	
@@ -399,10 +398,10 @@ public class Shark extends Enemy {
 	@Override
 	public boolean canJump(){
 		List<List<List<Object>>> collisions = getCollisions();
-		
-		if(collisions.get(3).get(1).contains(Feature.ground) || collisions.get(3).get(1).contains(Feature.water)
-				|| collisions.get(0).get(1).contains(Feature.ground) || collisions.get(0).get(1).contains(Feature.water)
-				|| collisions.get(3).get(0).size() != 0)
+
+		if((collisions.get(3).get(1).contains(Feature.ground) || collisions.get(3).get(1).contains(Feature.water)
+			|| collisions.get(0).get(1).contains(Feature.water)
+				|| collisions.get(3).get(0).size() != 0) && (noObjectMovementBlocking(collisions.get(1).get(0))))
 			return true;
 		
 		return false;
