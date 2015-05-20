@@ -4,6 +4,7 @@ import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.Type;
 import jumpingalien.program.expression.Expression;
+import jumpingalien.util.Util;
 
 public class NotEquals extends CompBinaryExpression {
 
@@ -13,9 +14,10 @@ public class NotEquals extends CompBinaryExpression {
 	
 	@Override
 	public Boolean getValue(GameObject executingObject) {
-		if (getFirstExpression().getType() == Type.DOUBLE)
-			return (Double.compare((double) getFirstExpression().getValue(executingObject),
-					(double) getSecondExpression().getValue(executingObject)) != 0);
+		if (getFirstExpression().getType() == Type.DOUBLE) {
+			double diff = (double) getFirstExpression().getValue(executingObject) - (double) getSecondExpression().getValue(executingObject);
+			return (diff < -Util.DEFAULT_EPSILON || diff > Util.DEFAULT_EPSILON);
+		}
 		if (getFirstExpression().getValue(executingObject) == null)
 			return (getSecondExpression().getValue(executingObject) != null);
 		return !getFirstExpression().getValue(executingObject).equals(getSecondExpression().getValue(executingObject));
