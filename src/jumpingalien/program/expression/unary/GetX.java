@@ -15,6 +15,8 @@ public class GetX extends Getter {
 		try{
 			return (double) ((GameObject) getExpression().getValue(executingObject)).getX();
 		} catch(Exception exc) {
+			executingObject.getProgram().setRunTimeError(true);
+			executingObject.getProgram().setStatementsLeft(0);
 			return 0.0;
 		}
 	}

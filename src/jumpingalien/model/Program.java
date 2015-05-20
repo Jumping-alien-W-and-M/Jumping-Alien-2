@@ -67,7 +67,13 @@ public class Program {
 	private final Map<String, Object> globalObjects = new HashMap<String, Object>();
 	private final Map<String, Direction> globalDirections = new HashMap<String, Direction>();
 
-
+	public boolean containsVariable(String name, Type type){
+		if (type == Type.DOUBLE) return globalDoubles.containsKey(name);
+		if (type == Type.BOOL) return globalBools.containsKey(name);
+		if (type == Type.OBJECT) return globalObjects.containsKey(name);
+		return globalDirections.containsKey(name);
+	}
+	
 	protected void initializeVariables() {
 		for(String key : globalDoubles.keySet()) globalDoubles.put(key, 0.0);
 		for(String key : globalBools.keySet()) globalBools.put(key, false);

@@ -37,6 +37,11 @@ public class Assignment extends Statement {
 	private final Expression expression;
 	
 	public ExecutionState execute(GameObject executingObject) {
+		if(executingObject.getProgram().containsVariable(getVariableName(), getVariableType())){
+			executingObject.getProgram().setRunTimeError(true);
+			executingObject.getProgram().setStatementsLeft(0);
+			return ExecutionState.NOTDONE;
+		}
 		executingObject.getProgram().setVariableValue(getVariableName(), 
 				getVariableType(), getExpression().getValue(executingObject));
 		return ExecutionState.DONE;

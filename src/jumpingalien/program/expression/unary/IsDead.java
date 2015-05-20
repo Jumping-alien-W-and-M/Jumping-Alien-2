@@ -15,6 +15,8 @@ public class IsDead extends Checker {
 		try{
 			return ((GameObject) getExpression().getValue(executingObject)).getHitpoints() <= 0;
 		} catch(Exception exc) {
+			executingObject.getProgram().setRunTimeError(true);
+			executingObject.getProgram().setStatementsLeft(0);
 			return false;
 		}
 	}

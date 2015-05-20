@@ -14,6 +14,8 @@ public class GetHitpoints extends Getter{
 		try{
 			return (double) ((GameObject) getExpression().getValue(executingObject)).getHitpoints();
 		} catch(Exception exc) {
+			executingObject.getProgram().setRunTimeError(true);
+			executingObject.getProgram().setStatementsLeft(0);
 			return 0.0;
 		}
 	}

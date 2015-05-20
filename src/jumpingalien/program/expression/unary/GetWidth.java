@@ -15,6 +15,8 @@ public class GetWidth extends Getter {
 		try{
 			return (double) ((GameObject) getExpression().getValue(executingObject)).getWidth();
 		} catch(Exception exc) {
+			executingObject.getProgram().setRunTimeError(true);
+			executingObject.getProgram().setStatementsLeft(0);
 			return 0.0;
 		}
 	}

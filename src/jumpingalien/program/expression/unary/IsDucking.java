@@ -16,6 +16,8 @@ public class IsDucking extends Checker {
 		try{
 			return ((Mazub) getExpression().getValue(executingObject)).getDucking();
 		} catch(Exception exc) {
+			executingObject.getProgram().setRunTimeError(true);
+			executingObject.getProgram().setStatementsLeft(0);
 			return false;
 		}
 	}

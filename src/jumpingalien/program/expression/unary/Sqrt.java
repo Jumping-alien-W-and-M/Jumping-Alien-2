@@ -12,6 +12,12 @@ public class Sqrt extends MathUnaryExpression{
 
 	@Override
 	public Double getValue(GameObject executingObject) {
-		return Math.sqrt((double) getExpression().getValue(executingObject));
+		try{
+			return Math.sqrt((double) getExpression().getValue(executingObject));
+		} catch(Exception exc){
+			executingObject.getProgram().setRunTimeError(true);
+			executingObject.getProgram().setStatementsLeft(0);
+			return 0.0;
+		}
 	}
 }

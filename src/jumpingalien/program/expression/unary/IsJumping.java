@@ -21,6 +21,8 @@ public class IsJumping extends Checker {
 			return((Shark) getExpression().getValue(executingObject)).getIsJumping();
 		}
 		else{
+			executingObject.getProgram().setRunTimeError(true);
+			executingObject.getProgram().setStatementsLeft(0);
 			return false;
 		}
 	}
