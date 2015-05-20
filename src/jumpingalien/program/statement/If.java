@@ -70,7 +70,7 @@ public class If extends Statement {
 			executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() - 1);
 		ExecutionState state = getCorrectBody().execute(executingObject);
 		
-		if (state == ExecutionState.DONE) setConditionValue(0);
+		if (state != ExecutionState.NOTDONE) setConditionValue(0);
 		
 		return state;
 	}

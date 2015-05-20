@@ -147,6 +147,26 @@ public class ForEach extends Statement {
 
 	private Object[] getCorrectObjects(GameObject executingObject) {
 		
+		ArrayList<Object> objects = getAllObjects(executingObject);
+		
+		Stream<Object> stream = objects.stream();
+		if (getWhere() != null) stream = stream.filter(object -> {
+			assign(object, executingObject);
+			return ((boolean) getWhere().getValue(executingObject));
+		});
+		if (getSort() != null) stream = stream.sorted((object1, object2) -> {
+			assign(object1, executingObject);
+			double value1 = (double) getWhere().getValue(executingObject);
+			assign(object2, executingObject);
+			double value2 = (double) getWhere().getValue(executingObject);
+			if (getSortDirection() == SortDirection.ASCENDING) return Double.compare(value1, value2);
+			return -Double.compare(value1, value2);
+		});
+		
+		return stream.toArray();
+	}
+
+	private ArrayList<Object> getAllObjects(GameObject executingObject) {
 		ArrayList<Object> objects = new ArrayList<Object>();
 		
 		if(getVariableKind() == Kind.MAZUB || getVariableKind() == Kind.ANY){
@@ -165,22 +185,7 @@ public class ForEach extends Statement {
 			objects.addAll(executingObject.getWorld().getPlants());
 		if(getVariableKind() == Kind.TERRAIN || getVariableKind() == Kind.ANY)
 			objects.addAll(executingObject.getWorld().getFeatures().values());
-		
-		Stream<Object> stream = objects.stream();
-		if (getWhere() != null) stream = stream.filter(object -> {
-			assign(object, executingObject);
-			return ((boolean) getWhere().getValue(executingObject));
-		});
-		if (getSort() != null) stream = stream.sorted((object1, object2) -> {
-			assign(object1, executingObject);
-			double value1 = (double) getWhere().getValue(executingObject);
-			assign(object2, executingObject);
-			double value2 = (double) getWhere().getValue(executingObject);
-			if (getSortDirection() == SortDirection.ASCENDING) return Double.compare(value1, value2);
-			return -Double.compare(value1, value2);
-		});
-		
-		return stream.toArray();
+		return objects;
 	}
 	
 	private void assign(Object object, GameObject executingObject) {

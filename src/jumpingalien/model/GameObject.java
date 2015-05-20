@@ -1202,9 +1202,14 @@ public abstract class GameObject {
 	}
 	
 	protected void executeProgram(double time) {
+		
+		if (getProgram().getRunTimeError()) return;
+		
 		getProgram().setStatementsLeft((int) Math.ceil(time*1000));
 		
 		while (getProgram().getMainStatement().execute(this) == ExecutionState.DONE) {
+			
+			if (getProgram().getRunTimeError()) return;
 			getProgram().initializeVariables();
 		}
 	}

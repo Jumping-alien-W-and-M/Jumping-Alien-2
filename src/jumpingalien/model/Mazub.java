@@ -245,11 +245,7 @@ public class Mazub extends GameObject {
 	@Override
 	protected void terminate() {
 		assert(getWorld() != null);
-		
-		if (this instanceof Buzam)
-			getWorld().setBuzam(null);
-		else
-			getWorld().setMazub(null);
+		getWorld().setMazub(null);
 	}
 	
 	/**
@@ -333,9 +329,6 @@ public class Mazub extends GameObject {
 	@Override 
 	protected void collisionHandleMazub(Mazub alien, int direction) {
 		assert(alien != null);
-		
-		if (this instanceof Buzam)
-			alien.collisionHandleMazub(this, mirrorDirection(direction));
 		
 		if (getTimeInvincible() == 0 && alien.getTimeInvincible() == 0) {
 			if (direction != 1) {

@@ -52,6 +52,16 @@ public class Program {
 	
 	private int statements_left = 0;
 	
+	public boolean getRunTimeError() {
+		return this.runtime_error;
+	}
+	
+	public void setRunTimeError(boolean runtime_error) {
+		this.runtime_error = runtime_error;
+	}
+	
+	private boolean runtime_error = false;
+	
 	private final Map<String, Double> globalDoubles = new HashMap<String, Double>();
 	private final Map<String, Boolean> globalBools = new HashMap<String, Boolean>();
 	private final Map<String, Object> globalObjects = new HashMap<String, Object>();
@@ -74,7 +84,7 @@ public class Program {
 	
 	public void setVariableValue(String name, Type type, Object value){
 		if (type == Type.DOUBLE) globalDoubles.put(name, (double) value);
-		else if(type == Type.BOOL) globalBools.put(name, (Boolean) value);
+		else if(type == Type.BOOL) globalBools.put(name, (boolean) value);
 		else if(type == Type.OBJECT) globalObjects.put(name, value);
 		else if(type == Type.DIRECTION) globalDirections.put(name, (Direction) value);
 	}
