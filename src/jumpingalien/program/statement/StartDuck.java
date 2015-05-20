@@ -16,7 +16,7 @@ public class StartDuck extends ActionStatement {
 			((Mazub) executingObject).startDuck();
 		else {
 			executingObject.getProgram().setStatementsLeft(0);
-			executingObject.getProgram().setRunTimeError(false);
+			executingObject.getProgram().setRunTimeError(true);
 			return ExecutionState.NOTDONE;
 		}
 		return ExecutionState.DONE;
