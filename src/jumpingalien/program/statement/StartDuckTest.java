@@ -7,7 +7,6 @@ import java.util.HashMap;
 import jumpingalien.common.sprites.JumpingAlienSprites;
 import jumpingalien.model.Buzam;
 import jumpingalien.model.Mazub;
-import jumpingalien.model.Plant;
 import jumpingalien.model.Program;
 import jumpingalien.model.World;
 import jumpingalien.part3.programs.SourceLocation;
@@ -18,7 +17,7 @@ import jumpingalien.util.Util;
 import org.junit.Before;
 import org.junit.Test;
 
-public class StopJumpTest {
+public class StartDuckTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -39,7 +38,6 @@ public class StopJumpTest {
 		SourceLocation source = new SourceLocation(5, 6);
 		
 		StartJump startjump = new StartJump(source);
-		StopJump stopjump = new StopJump(source);
 		
 		Program program = new Program(new Wait(new DoubleConstant(2.0, source), source), empty_variables);
 		Mazub mazub = new Mazub(900, 100, JumpingAlienSprites.ALIEN_SPRITESET, null);
@@ -54,53 +52,17 @@ public class StopJumpTest {
 		assertEquals(ExecutionState.DONE, startjump.execute(buzam));
 		assertEquals(8.0, buzam.getVy(), Util.DEFAULT_EPSILON);
 		
-		for(int i = 0; i < 5; i++) world.advanceTime(0.1);
-		assertEquals(3.0, buzam.getVy(), Util.DEFAULT_EPSILON);
+		for(int i = 0; i < 10; i++) world.advanceTime(0.1);
+		assertEquals(-2.0, buzam.getVy(), Util.DEFAULT_EPSILON);
 		program.setStatementsLeft(0);
 		assertEquals(ExecutionState.DONE, startjump.execute(buzam));
-		assertEquals(3.0, buzam.getVy(), Util.DEFAULT_EPSILON);
-		program.setStatementsLeft(0);
-		assertEquals(ExecutionState.DONE, stopjump.execute(buzam));
-		assertEquals(0.0, buzam.getVy(), Util.DEFAULT_EPSILON);
-		
-		for(int i = 0; i < 5; i++) world.advanceTime(0.1);
-		assertEquals(-5.0, buzam.getVy(), Util.DEFAULT_EPSILON);
-		program.setStatementsLeft(0);
-		assertEquals(ExecutionState.DONE, startjump.execute(buzam));
-		assertEquals(-5.0, buzam.getVy(), Util.DEFAULT_EPSILON);
-		program.setStatementsLeft(0);
-		assertEquals(ExecutionState.DONE, stopjump.execute(buzam));
-		assertEquals(-5.0, buzam.getVy(), Util.DEFAULT_EPSILON);
+		assertEquals(-2.0, buzam.getVy(), Util.DEFAULT_EPSILON);
 		
 		for(int i = 0; i < 10; i++) world.advanceTime(0.1);
 		assertEquals(0.0, buzam.getVy(), Util.DEFAULT_EPSILON);
 		program.setStatementsLeft(0);
 		assertEquals(ExecutionState.DONE, startjump.execute(buzam));
 		assertEquals(8.0, buzam.getVy(), Util.DEFAULT_EPSILON);
-		
-	}
-	
-	@Test
-	public void ExecuteFailTest() {
-		SourceLocation source = new SourceLocation(5, 6);
-		
-		StopJump stopjump = new StopJump(source);
-		
-		Program program = new Program(new Wait(new DoubleConstant(2.0, source), source), empty_variables);
-		Mazub mazub = new Mazub(900, 100, JumpingAlienSprites.ALIEN_SPRITESET, null);
-		world.setMazub(mazub);
-		Plant plant = new Plant(100, 100, JumpingAlienSprites.ALIEN_SPRITESET, program);
-		world.addPlant(plant);
-		
-		for(int i = 0; i < 30; i++) world.advanceTime(0.1);
-		
-		assertEquals(0.0, plant.getVy(), Util.DEFAULT_EPSILON);
-		program.setStatementsLeft(5);
-		assertEquals(ExecutionState.NOTDONE, stopjump.execute(plant));
-		assertEquals(0.0, plant.getVy(), Util.DEFAULT_EPSILON);
-		
-		assertEquals(0, program.getStatementsLeft());
-		assertEquals(true, program.getRunTimeError());
 		
 	}
 
