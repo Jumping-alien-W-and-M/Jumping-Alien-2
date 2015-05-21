@@ -5,14 +5,11 @@ import jumpingalien.common.sprites.JumpingAlienSprites;
 import jumpingalien.model.Shark;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.Type;
-import jumpingalien.program.expression.DoubleConstant;
 import jumpingalien.program.expression.Expression;
 import jumpingalien.program.expression.False;
 import jumpingalien.program.expression.True;
 import jumpingalien.util.Sprite;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class NotTest {

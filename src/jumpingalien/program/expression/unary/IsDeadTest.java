@@ -1,18 +1,11 @@
 package jumpingalien.program.expression.unary;
 
-import static org.junit.Assert.*;
 import jumpingalien.common.sprites.JumpingAlienSprites;
 import jumpingalien.model.Shark;
-import jumpingalien.model.World;
 import jumpingalien.part3.programs.SourceLocation;
-import jumpingalien.program.expression.DoubleConstant;
 import jumpingalien.program.expression.Expression;
 import jumpingalien.program.expression.Self;
-import jumpingalien.program.expression.binary.GetTile;
 import jumpingalien.util.Sprite;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class IsDeadTest {

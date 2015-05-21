@@ -3,6 +3,7 @@ package jumpingalien.program.expression.unary;
 import jumpingalien.model.GameObject;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.expression.Expression;
+import jumpingalien.util.Util;
 
 public class Sqrt extends MathUnaryExpression{
 	
@@ -12,12 +13,18 @@ public class Sqrt extends MathUnaryExpression{
 
 	@Override
 	public Double getValue(GameObject executingObject) {
-		try{
-			return Math.sqrt((double) getExpression().getValue(executingObject));
-		} catch(Exception exc){
-			executingObject.getProgram().setRunTimeError(true);
-			executingObject.getProgram().setStatementsLeft(0);
+		
+		double value = (double) getExpression().getValue(executingObject);
+		
+		// Handles values near zero and below
+		if (value <= Util.DEFAULT_EPSILON) {
+			if (value < -Util.DEFAULT_EPSILON) {
+				executingObject.getProgram().setStatementsLeft(0);
+				executingObject.getProgram().setRunTimeError(true);
+			}
 			return 0.0;
 		}
+		
+		return Math.sqrt(value);
 	}
 }

@@ -8,9 +8,6 @@ import jumpingalien.program.expression.Expression;
 import jumpingalien.program.expression.Self;
 import jumpingalien.util.Sprite;
 import jumpingalien.util.Util;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class GetYTest {

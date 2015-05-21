@@ -6,9 +6,6 @@ import jumpingalien.program.Type;
 import jumpingalien.program.expression.Expression;
 import jumpingalien.program.expression.Null;
 import jumpingalien.program.expression.True;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class GetterTest {

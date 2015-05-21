@@ -5,10 +5,7 @@ import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.Type;
 import jumpingalien.program.expression.DoubleConstant;
 import jumpingalien.program.expression.Expression;
-import jumpingalien.program.expression.Null;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class MathUnaryExpressionTest {

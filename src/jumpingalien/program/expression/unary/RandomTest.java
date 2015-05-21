@@ -1,6 +1,5 @@
 package jumpingalien.program.expression.unary;
 
-import static org.junit.Assert.*;
 import jumpingalien.common.sprites.JumpingAlienSprites;
 import jumpingalien.model.Shark;
 import jumpingalien.part3.programs.SourceLocation;
@@ -9,8 +8,6 @@ import jumpingalien.program.expression.Expression;
 import jumpingalien.util.Sprite;
 import jumpingalien.util.Util;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class RandomTest {

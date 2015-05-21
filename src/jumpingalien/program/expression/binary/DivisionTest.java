@@ -42,12 +42,16 @@ public class DivisionTest {
 			assertEquals(0, (new Division(expr1, expr2, source)).getValue(buzam), Util.DEFAULT_EPSILON);
 			DBZCheck(program);
 			assertEquals(0, (new Division(expr2, expr1, source)).getValue(buzam), Util.DEFAULT_EPSILON);
+			assertEquals(false, program.getRunTimeError());
 			assertEquals(-0.75, (new Division(expr1, expr3, source)).getValue(buzam), Util.DEFAULT_EPSILON);
+			assertEquals(false, program.getRunTimeError());
 			assertEquals(-1.333333333333333, (new Division(expr3, expr1, source)).getValue(buzam), Util.DEFAULT_EPSILON);
+			assertEquals(false, program.getRunTimeError());
 			assertEquals(0, (new Division(expr2, expr3, source)).getValue(buzam), Util.DEFAULT_EPSILON);
+			assertEquals(false, program.getRunTimeError());
 			assertEquals(0, (new Division(expr3, expr2, source)).getValue(buzam), Util.DEFAULT_EPSILON);
 			DBZCheck(program);
-		} catch (IllegalArgumentException exc) {
+		} catch (Exception exc) {
 			fail();
 		}
 	}
