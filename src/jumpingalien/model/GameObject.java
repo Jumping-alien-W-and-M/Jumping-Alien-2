@@ -1141,6 +1141,12 @@ public abstract class GameObject {
 			} else if (getAx() > 0) {
 				setPrevMove("right");
 			}
+		} else {
+			if ((direction == "left" && getAx() > 0) || (direction == "right" && getAx() < 0)) {
+				getProgram().setStatementsLeft(0);
+				getProgram().setRunTimeError(true);
+				return;
+			}
 		}
 			
 		if (direction == "left") {
@@ -1173,6 +1179,12 @@ public abstract class GameObject {
 	 * 			| }
 	 */
 	public void endMove(String direction) {
+		
+		if ((direction == "left" && getAx() > 0) || (direction == "right" && getAx() < 0)) {
+			getProgram().setStatementsLeft(0);
+			getProgram().setRunTimeError(true);
+			return;
+		}
 		
 		if (getPrevMove() == "") {
 			setVx(0);
