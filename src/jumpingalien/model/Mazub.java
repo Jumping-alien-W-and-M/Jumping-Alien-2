@@ -195,7 +195,7 @@ public class Mazub extends GameObject {
 	 * 			| (new.getJumping() == jumping)
 	 */
 	@Model
-	protected void setJumping(boolean jumping) {
+	public void setJumping(boolean jumping) {
 		this.jumping = jumping;
 	}
 	

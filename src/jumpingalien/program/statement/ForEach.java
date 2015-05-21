@@ -133,19 +133,21 @@ public class ForEach extends Statement {
 				executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() - 1);
 			
 			ExecutionState state = getBody().execute(executingObject);
-			if (state == ExecutionState.DONE) setInBody(false);
+			if (state == ExecutionState.DONE) {
+				if(current_index == getObjects().length)return ExecutionState.DONE;
+				setInBody(false);
+			}
 			if (state == ExecutionState.BREAK) {
 				setInBody(false);
 				setObjects(null);
 				return ExecutionState.DONE;
 			}
 		}
-		
 		return ExecutionState.NOTDONE;
 		
 	}
 
-	private Object[] getCorrectObjects(GameObject executingObject) {
+	public Object[] getCorrectObjects(GameObject executingObject) {
 		
 		ArrayList<Object> objects = getAllObjects(executingObject);
 		
@@ -156,9 +158,9 @@ public class ForEach extends Statement {
 		});
 		if (getSort() != null) stream = stream.sorted((object1, object2) -> {
 			assign(object1, executingObject);
-			double value1 = (double) getWhere().getValue(executingObject);
+			double value1 = (double) getSort().getValue(executingObject);
 			assign(object2, executingObject);
-			double value2 = (double) getWhere().getValue(executingObject);
+			double value2 = (double) getSort().getValue(executingObject);
 			if (getSortDirection() == SortDirection.ASCENDING) return Double.compare(value1, value2);
 			return -Double.compare(value1, value2);
 		});
