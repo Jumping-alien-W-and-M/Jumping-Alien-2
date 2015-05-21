@@ -24,8 +24,13 @@ public class StartRun extends ActionStatement {
 	@Override
 	public ExecutionState execute(GameObject executingObject) {
 		
-		if (direction.getValue(executingObject) == Direction.LEFT) executingObject.startMove("left");
-		if (direction.getValue(executingObject) == Direction.RIGHT) executingObject.startMove("right");
+		switch((Direction) direction.getValue(executingObject)) {
+		case LEFT: executingObject.startMove("left"); break;
+		case RIGHT: executingObject.startMove("right"); break;
+		default: 
+			executingObject.getProgram().setStatementsLeft(0);
+			executingObject.getProgram().setRunTimeError(true);
+		}
 		
 		return ExecutionState.DONE;
 	}

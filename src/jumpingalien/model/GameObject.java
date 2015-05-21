@@ -8,6 +8,7 @@ import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Model;
 import jumpingalien.program.statement.ExecutionState;
+import jumpingalien.program.statement.Sequence;
 import jumpingalien.util.Sprite;
 
 /**
@@ -1140,6 +1141,12 @@ public abstract class GameObject {
 			} else if (getAx() > 0) {
 				setPrevMove("right");
 			}
+		} else {
+			if ((direction == "left" && getAx() > 0) || (direction == "right" && getAx() < 0)) {
+				getProgram().setStatementsLeft(0);
+				getProgram().setRunTimeError(true);
+				return;
+			}
 		}
 			
 		if (direction == "left") {
@@ -1172,6 +1179,12 @@ public abstract class GameObject {
 	 * 			| }
 	 */
 	public void endMove(String direction) {
+		
+		if ((direction == "left" && getAx() > 0) || (direction == "right" && getAx() < 0)) {
+			getProgram().setStatementsLeft(0);
+			getProgram().setRunTimeError(true);
+			return;
+		}
 		
 		if (getPrevMove() == "") {
 			setVx(0);
@@ -1206,11 +1219,16 @@ public abstract class GameObject {
 		if (getProgram().getRunTimeError()) return;
 		
 		getProgram().setStatementsLeft((int) Math.ceil(time*1000));
+		if (!(getProgram().getMainStatement() instanceof Sequence))
+			getProgram().setStatementsLeft(getProgram().getStatementsLeft() - 1);
 		
 		while (getProgram().getMainStatement().execute(this) == ExecutionState.DONE) {
 			
 			if (getProgram().getRunTimeError()) return;
 			getProgram().initializeVariables();
+
+			if (!(getProgram().getMainStatement() instanceof Sequence))
+				getProgram().setStatementsLeft(getProgram().getStatementsLeft() - 1);
 		}
 	}
 	

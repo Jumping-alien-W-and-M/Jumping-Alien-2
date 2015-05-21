@@ -45,9 +45,9 @@ public class World {
 	 * @pre		...
 	 * 			| (y_target >= 0)
 	 * @pre		...
-	 * 			| (x_target <= tiles_x_amount)
+	 * 			| (x_target < tiles_x_amount)
 	 * @pre		...
-	 * 			| (y_target <= tiles_y_amount)
+	 * 			| (y_target < tiles_y_amount)
 	 * @post	...
 	 * 			| (new.getTileSize() == tile_size)
 	 * @post	...
@@ -75,8 +75,8 @@ public class World {
 		assert(tiles_y_amount > 0);
 		assert(x_target >= 0);
 		assert(y_target >= 0);
-		assert(x_target <= tiles_x_amount);
-		assert(y_target <= tiles_y_amount);
+		assert(x_target < tiles_x_amount);
+		assert(y_target < tiles_y_amount);
 		
 		this.tile_size = tile_size;
 		this.world_width = tiles_x_amount*getTileSize();
