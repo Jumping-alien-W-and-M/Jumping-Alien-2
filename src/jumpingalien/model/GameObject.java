@@ -1180,24 +1180,29 @@ public abstract class GameObject {
 	 */
 	public void endMove(String direction) {
 		
+		if (direction == getPrevMove()) {
+			setPrevMove("");
+			return;
+		}
+		
 		if ((direction == "left" && getAx() > 0) || (direction == "right" && getAx() < 0)) {
 			getProgram().setStatementsLeft(0);
 			getProgram().setRunTimeError(true);
 			return;
 		}
 		
-		if (getPrevMove() == "") {
-			setVx(0);
-			setAx(0);
-		} else {
-			if (getPrevMove() != direction) {
-				if (direction == "left")
-					startMove("right");
-				else
-					startMove("left");
-			}
+		setVx(0);
+		setAx(0);
+		
+		if (getPrevMove() != "") {
+			String prevmove = getPrevMove();
 			setPrevMove("");
+			if (prevmove == "left")
+				startMove("left");
+			else
+				startMove("right");
 		}
+		
 	}
 	
 	public void startJump() {

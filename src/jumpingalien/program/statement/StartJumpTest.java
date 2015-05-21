@@ -7,6 +7,7 @@ import java.util.HashMap;
 import jumpingalien.common.sprites.JumpingAlienSprites;
 import jumpingalien.model.Buzam;
 import jumpingalien.model.Mazub;
+import jumpingalien.model.Plant;
 import jumpingalien.model.Program;
 import jumpingalien.model.World;
 import jumpingalien.part3.programs.SourceLocation;
@@ -63,6 +64,30 @@ public class StartJumpTest {
 		program.setStatementsLeft(0);
 		assertEquals(ExecutionState.DONE, startjump.execute(buzam));
 		assertEquals(8.0, buzam.getVy(), Util.DEFAULT_EPSILON);
+		
+	}
+	
+	@Test
+	public void ExecuteFailTest() {
+		SourceLocation source = new SourceLocation(5, 6);
+		
+		StartJump startjump = new StartJump(source);
+		
+		Program program = new Program(new Wait(new DoubleConstant(2.0, source), source), empty_variables);
+		Mazub mazub = new Mazub(900, 100, JumpingAlienSprites.ALIEN_SPRITESET, null);
+		world.setMazub(mazub);
+		Plant plant = new Plant(100, 100, JumpingAlienSprites.ALIEN_SPRITESET, program);
+		world.addPlant(plant);
+		
+		for(int i = 0; i < 30; i++) world.advanceTime(0.1);
+		
+		assertEquals(0.0, plant.getVy(), Util.DEFAULT_EPSILON);
+		program.setStatementsLeft(5);
+		assertEquals(ExecutionState.NOTDONE, startjump.execute(plant));
+		assertEquals(0.0, plant.getVy(), Util.DEFAULT_EPSILON);
+		
+		assertEquals(0, program.getStatementsLeft());
+		assertEquals(true, program.getRunTimeError());
 		
 	}
 
