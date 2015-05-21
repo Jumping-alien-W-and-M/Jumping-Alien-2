@@ -8,6 +8,7 @@ import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
 import be.kuleuven.cs.som.annotate.Model;
 import jumpingalien.program.statement.ExecutionState;
+import jumpingalien.program.statement.Sequence;
 import jumpingalien.util.Sprite;
 
 /**
@@ -1206,11 +1207,16 @@ public abstract class GameObject {
 		if (getProgram().getRunTimeError()) return;
 		
 		getProgram().setStatementsLeft((int) Math.ceil(time*1000));
+		if (!(getProgram().getMainStatement() instanceof Sequence))
+			getProgram().setStatementsLeft(getProgram().getStatementsLeft() - 1);
 		
 		while (getProgram().getMainStatement().execute(this) == ExecutionState.DONE) {
 			
 			if (getProgram().getRunTimeError()) return;
 			getProgram().initializeVariables();
+
+			if (!(getProgram().getMainStatement() instanceof Sequence))
+				getProgram().setStatementsLeft(getProgram().getStatementsLeft() - 1);
 		}
 	}
 	
