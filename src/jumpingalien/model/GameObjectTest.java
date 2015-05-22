@@ -69,13 +69,22 @@ public class GameObjectTest {
 		buzam.setAx(-buzam.getAxi());
 		buzam.endMove("right");
 		assertEquals(0, program.getStatementsLeft());
-		assert(program.getRunTimeError());
-		
+		assert(program.getRunTimeError());		
 	}
 	
 	@Test
 	public void TestendMovePrevMoveIsNewMovement(){
+		player.setPrevMove("left");
+		player.setAx(player.getAxi());
+		player.endMove("right");
+		assertEquals(- player.getAxi(), player.getAx(), Util.DEFAULT_EPSILON);
+		assertEquals("", player.getPrevMove());
 		
+		player.setPrevMove("right");
+		player.setAx(- player.getAxi());
+		player.endMove("left");
+		assertEquals( player.getAxi(), player.getAx(), Util.DEFAULT_EPSILON);
+		assertEquals("", player.getPrevMove());		
 	}
 	
 	@Test
@@ -393,5 +402,78 @@ public class GameObjectTest {
 		plant.setVx(0);
 		assertEquals(plant.getCurrentSprite(), JumpingAlienSprites.ALIEN_SPRITESET[0]);
 	}
+	
+	@Test
+	public void TestsetXValidX(){
+		player.setX(5);
+		assertEquals(5, player.getX(), Util.DEFAULT_EPSILON);
+	}
+	
+	@Test
+	public void TestsetXInvalidX(){
+		try{
+			player.setX(-1);
+		} catch(IllegalArgumentException exc){
+			assert(true);
+			return;
+		}
+		assert(false);
+	}
+	
+	@Test
+	public void TestsetYValidY(){
+		player.setY(5);
+		assertEquals(5, player.getY(), Util.DEFAULT_EPSILON);
+	}
+	
+	@Test
+	public void TestsetYInvalidY(){
+		try{
+			player.setY(-1);
+		} catch(IllegalArgumentException exc){
+			assert(true);
+			return;
+		}
+		assert(false);
+	}
+	
+	@Test
+	public void TeststartMoveMovingAndPrevMoveIsEmpty(){
+		player.setAx(player.getAxi());
+		player.startMove("left");
+		assertEquals("right", player.getPrevMove());
+		assertEquals(-player.getAxi(), player.getAx(), Util.DEFAULT_EPSILON);
+		assertEquals(-player.getVxi(), player.getVx(), Util.DEFAULT_EPSILON);
+		
+		player.setPrevMove("");
+		player.setAx(0);
+		player.setAx(-player.getAxi());
+		player.startMove("right");
+		assertEquals("left", player.getPrevMove());
+		assertEquals(player.getAxi(), player.getAx(), Util.DEFAULT_EPSILON);
+		assertEquals(player.getVxi(), player.getVxi(), Util.DEFAULT_EPSILON);
+	}
+	
+	@Test
+	public void TeststartMoveConflictBetweendirectionAndgetAx(){
+		Skip skip = new Skip(new SourceLocation(5, 6));
+		HashMap<String, Type> variables = new HashMap<String, Type>();
+		Program program = new Program(skip, variables);
+		program.setStatementsLeft(5);
+		Buzam buzam = new Buzam(0, 0, JumpingAlienSprites.ALIEN_SPRITESET, program);
+		buzam.setAx(buzam.getAxi());
+		buzam.endMove("left");
+		assertEquals(0, program.getStatementsLeft());
+		assert(program.getRunTimeError());
+		
+		program.setStatementsLeft(5);
+		program.setRunTimeError(false);
+		buzam.setAx(-buzam.getAxi());
+		buzam.endMove("right");
+		assertEquals(0, program.getStatementsLeft());
+		assert(program.getRunTimeError());
+	}
+	
+	
 	
 }
