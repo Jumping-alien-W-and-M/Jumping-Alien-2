@@ -130,9 +130,6 @@ public class WhileTest {
 		assertEquals(true, buzam.getX() > pos);
 		
 		for(int i = 0; i < 20; i++) {
-			System.out.println(i);
-			if (i == 4)
-				System.out.println("test");
 			world.advanceTime(0.15);
 		}
 		

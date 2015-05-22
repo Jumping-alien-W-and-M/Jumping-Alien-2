@@ -1227,7 +1227,8 @@ public abstract class GameObject {
 		if (!(getProgram().getMainStatement() instanceof Sequence))
 			getProgram().setStatementsLeft(getProgram().getStatementsLeft() - 1);
 		
-		while (getProgram().getMainStatement().execute(this) == ExecutionState.DONE) {
+		while (getProgram().getMainStatement().execute(this) == ExecutionState.DONE
+				&& getProgram().getStatementsLeft() >= 0) {
 			
 			if (getProgram().getRunTimeError()) return;
 			getProgram().initializeVariables();
