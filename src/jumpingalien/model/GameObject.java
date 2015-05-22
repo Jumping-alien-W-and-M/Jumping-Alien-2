@@ -13,6 +13,13 @@ import jumpingalien.util.Sprite;
 
 /**
  * All the game objects that can appear in the game.
+ * 
+ * @invar	The x-position is valid.
+ * 			| isValidX(getX())
+ * @invar	The y-position is valid.
+ * 			| isValidY(getY())
+ * @invar	The horizontal velocity is valid.
+ * 			| isValidVx(getVx())
  */
 
 public abstract class GameObject {

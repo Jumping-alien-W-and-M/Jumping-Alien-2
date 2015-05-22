@@ -2,9 +2,7 @@ package jumpingalien.model;
 
 import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Immutable;
-import be.kuleuven.cs.som.annotate.Value;
 
-@Value
 public enum Feature {
 	
 	 air(0), ground(1), water(2), magma(3);

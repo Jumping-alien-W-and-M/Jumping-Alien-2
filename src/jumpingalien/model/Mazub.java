@@ -11,12 +11,6 @@ import be.kuleuven.cs.som.annotate.Model;
 /**
  * The main character, which the players controls.
  * 
- * @invar	The x-position is valid.
- * 			| isValidX(getX())
- * @invar	The y-position is valid.
- * 			| isValidY(getY())
- * @invar	The horizontal velocity is valid.
- * 			| isValidVx(getVx())
  * @invar	The amount of sprites of this Mazub is larger than or equal to 10 and divisible by 2.
  * 			| ((images.length >= 10) && (images.length%2 == 0))
  * 
