@@ -109,6 +109,12 @@ public class ForEach extends Statement {
 	@Override
 	public ExecutionState execute(GameObject executingObject) {
 		
+		if(!executingObject.getProgram().containsVariable(getVariableName(), Type.OBJECT)) {
+			executingObject.getProgram().setRunTimeError(true);
+			executingObject.getProgram().setStatementsLeft(0);
+			return ExecutionState.NOTDONE;
+		}
+		
 		executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() + 1);
 		
 		if (getObjects() == null) {
