@@ -2,8 +2,39 @@ package jumpingalien.model;
 
 import jumpingalien.util.Sprite;
 
+
+/**
+ * The main character, which the players controls.
+ * 
+ * @invar	The x-position is valid.
+ * 			| isValidX(getX())
+ * @invar	The y-position is valid.
+ * 			| isValidY(getY())
+ * @invar	The horizontal velocity is valid.
+ * 			| isValidVx(getVx())
+ * @invar	The amount of sprites of this Mazub is larger than or equal to 10 and divisible by 2.
+ * 			| ((images.length >= 10) && (images.length%2 == 0))
+  */
 public class Buzam extends Mazub {
 	
+	/**
+	 * Creates a new Buzam at a given position with a series of given sprites and a given program
+	 * or no program if there is non given.
+	 * 
+	 * @param x
+	 * 			The new Buzam x-position.
+	 * @param y
+	 * 			The new Buzam's y-position.
+	 * @param images
+	 * 			The new Buzam's array of sprites.
+	 * @param program
+	 * 			The new Buzam's program, null if this buzam has no program.
+	 * @effect	This new Buzam will be initialized as a Mazub with the given position, 
+	 * 			the given array of sprites, an the given program.
+	 * 			| super(x, y, images, program)
+	 * @effect	This Buzam's hitpoints will be set to 500.
+	 * 			| setHitpoints(500)
+	 */
 	public Buzam(double x, double y, Sprite[] images, Program program) {
 		super(x, y, images, program);
 		
@@ -11,13 +42,13 @@ public class Buzam extends Mazub {
 	}
 	
 	/**
-	 * Breaks the connection between this Mazub and its world.
+	 * Breaks the connection between this Buzam and its world.
 	 * 
-	 * @pre		This Mazub is currently part of a world.
+	 * @pre		This Buzam is currently part of a world.
 	 * 			| (getWorld() != null)
-	 * @post	The old world will no longer have a player.
-	 * 			| (new.(this.getWorld()).getMazub() == null)
-	 * @post	This Mazub will no longer be part of a world.
+	 * @post	The old world will no longer have a buzam.
+	 * 			| (new.(this.getWorld()).getBuzam() == null)
+	 * @post	This Buzam will no longer be part of a world.
 	 * 			| (new.getWorld() == null)
 	 */
 	@Override
@@ -27,28 +58,17 @@ public class Buzam extends Mazub {
 	}
 	
 	/**
-	 * Handles a collision of this Mazub with a given shark.
+	 * Handles a collision of this Buzam with a given Mazub, which in this game can only be the player.
 	 * 
-	 * @param shark
-	 * 			The shark this Mazub collides with.
+	 * @param alien
+	 * 			The Mazub this Buzam collides with.
 	 * @param direction
-	 * 			The direction in which this Mazub collides with the given shark. 0, 1, 2 and 3 correspond to respectively left, up,
+	 * 			The direction in which this Buzam collides with the given Mazub. 0, 1, 2 and 3 correspond to respectively left, up,
 	 * 			right and down.
-	 * @pre		The given shark exists.
-	 * 			| (shark != null)
-	 * @effect	If the given shark isn't dying and both this Mazub and the given shark are vulnerable,
-	 * 			both sides will lose 50 hitpoints and be invincible for 0.6 seconds, unless one of them touches
-	 * 			the other from the top side, in which case this game object remains unaffected.
-	 * 			| if (shark.getDeathTime() == 0 && getTimeInvincible() == 0 && shark.getTimeInvincible() == 0) {
-	 * 			|	if (direction != 1) {
-	 * 			|		shark.setHitpoints(shark.getHitpoints() - 50)
-	 * 			|		shark.setTimeInvincible(0.6)
-	 * 			|	}
-	 * 			|	if (direction != 3) {
-	 * 			|		setHitpoints(getHitpoints() - 50)
-	 * 			|		setTimeInvincible(0.6)
-	 * 			|	}
-	 * 			| }
+	 * @pre		The given Mazub exists.
+	 * 			| (alien != null)
+	 * @effect	...
+	 * 			| alien.collisionHandleMazub(this, mirrorDirection(direction));  
 	 */
 	@Override 
 	protected void collisionHandleMazub(Mazub alien, int direction) {
