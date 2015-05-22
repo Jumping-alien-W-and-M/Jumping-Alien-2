@@ -68,9 +68,12 @@ public class AssignmentTest {
 		program.setStatementsLeft(5);
 		Shark shark = new Shark(0, 0, sprites, program);
 		assertEquals(assignement.execute(shark), ExecutionState.NOTDONE);
-		assertEquals(program.getVariableValue("Test", Type.DOUBLE), null);
-		assertEquals(program.getStatementsLeft(), 0);
-		assert(program.getRunTimeError());
+		try {
+			program.getVariableValue("Test", Type.DOUBLE);
+			fail();
+		} catch(AssertionError error) {
+			return;
+		}
 	}
 	
 	

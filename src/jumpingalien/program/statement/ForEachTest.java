@@ -201,7 +201,6 @@ public class ForEachTest {
 		ForEach foreach = new ForEach("Test", Kind.ANY, null, null, SortDirection.ASCENDING, breakstatement, srceloc);
 		variables.put("Test", Type.OBJECT);
 		Program program = new Program(foreach, variables);
-		program.setVariableValue("Test1", Type.DOUBLE, 0.0);
 		program.setStatementsLeft(5);
 		Shark shark0 = new Shark(0, 0, sprites, program);
 		Mazub player = new Mazub(0, 0, JumpingAlienSprites.ALIEN_SPRITESET, null);
