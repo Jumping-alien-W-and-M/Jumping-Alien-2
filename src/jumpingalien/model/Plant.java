@@ -20,11 +20,13 @@ public class Plant extends GameObject {
 	 * Creates a new plant.
 	 * 
 	 * @param x
-	 * 			the x-position of the new plant
+	 * 			The x-position of the new plant
 	 * @param y
-	 * 			the y-position of the new plant
+	 * 			The y-position of the new plant
 	 * @param images
-	 * 			the new plant's array of sprites
+	 * 			The new plant's array of sprites
+	 * @param program
+	 * 			An optional program which controls the new plant's actions.
 	 * @effect	...
 	 * 			| super(x,y,images, 0, 0.5)
 	 * @effect	...
@@ -80,6 +82,9 @@ public class Plant extends GameObject {
 	 * @effect	...
 	 * 			| List<List<List<Object>>> collisions = getCollisions()
 	 *			| collisionHandle(collisions, dt)
+	 * @effect	...
+	 * 			| if (getProgram() != null)
+	 * 			|	then executeProgram(dt)
 	 * @throws IllegalArgumentException
 	 * 			If dt is not a valid time interval to advance the time with.
 	 * 			| !isValidDt(dt)
