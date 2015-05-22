@@ -22,6 +22,8 @@ public class Shark extends Enemy {
 	 * 			The y-position of the new shark.
 	 * @param images
 	 * 			The array of sprites of the new shark.
+	 * @param program
+	 * 			An optional program which controls the new shark's actions.
 	 * @effect	...
 	 * 			| super(x, y, images, 1.5, 0, 4, 1, 4, 100) 
 	 */
@@ -68,7 +70,7 @@ public class Shark extends Enemy {
 	private int non_jumping_periods = 5;
 	
 	/**
-	 * Returns wether or not this shark is jumping.
+	 * Returns whether or not this shark is jumping.
 	 */
 	@Basic 
 	public boolean getIsJumping(){
@@ -76,7 +78,7 @@ public class Shark extends Enemy {
 	}
 	
 	/**
-	 * Sets wether or not this Shark is jumping.
+	 * Sets whether or not this Shark is jumping.
 	 * 
 	 * @param is_jumping
 	 * 			Wether or not this shark is jumping.
@@ -131,17 +133,27 @@ public class Shark extends Enemy {
 	}
 	
 	/**
-	 *  Gets the new vertical speed of this shark.
+	 * Updates the vertical speed of this shark.
 	 *  
 	 * @param time
-	 *  		The time to calculate the vertical speed of this shark with.  
-	 * @result	...
+	 *  		The time to calculate the vertical speed of this shark with.
+	 * @effect	...
+	 *  		| if(getVy() < 0) {
+	 *			|	collisions = getCollisions()
+	 *			|	submerged = true
+	 *			|	for(int i = 0; i < 8; i++)
+	 *			|		if (collisions.get(i).get(1).contains(Feature.air))
+	 *			|			then submerged = false
+	 *			|	if(submerged)
+	 *			|		then setIsJumping(false)
+	 *			| }
+	 * @effect	...
 	 *  		| if((getAy() > 0 && !canRise()) || (getAy() < 0 && getAy() > -getMaxRiseAy() && !canDive()))
-	 *			|	result =  0
-	 * @result	...
-	 *			| result = super.advaceVy(time)
+	 *			|	setVy(0)
+	 * @effect	...
+	 *			| super.advanceVy(time)
 	 * @throws IllegArgumentException
-	 * 			| ! isValidDt(time)	
+	 * 			| !isValidDt(time)	
 	 */
 	@Override
 	protected void advanceVy(double time) throws IllegalArgumentException {

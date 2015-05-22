@@ -23,6 +23,8 @@ public class Slime extends Enemy {
 	 * 			The series of sprites of the new slime.
 	 * @param school
 	 * 			The school the new sprite should be part of.
+	 * @param program
+	 * 			An optional program which controls the new slime's actions.
 	 * @pre		...
 	 * 			| (school != null)
 	 * @effect	...
