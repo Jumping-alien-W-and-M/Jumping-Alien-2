@@ -59,10 +59,10 @@ public class WorldTest {
 							world = new World(10, 20, 20, 200, 200, 19, -5);
 						} catch( AssertionError err4){
 							try{
-								world = new World(10, 20, 20, 200, 200, 21, 0);
+								world = new World(10, 20, 20, 200, 200, 20, 0);
 							} catch(AssertionError err5){
 								try{
-									world = new World(10, 20, 20, 200, 200, 19, 21);
+									world = new World(10, 20, 20, 200, 200, 19, 20);
 								} catch(AssertionError err6){
 									assert(true);
 									return;
@@ -274,6 +274,48 @@ public class WorldTest {
 	public void TestsetMazubPlayerEqualTonull(){
 		world.setMazub(null);
 		assertEquals(world.getMazub(), null);
+	}
+	
+	@Test
+	public void TestsetMazubIllegalArgumentTonull() {
+		try {
+			world.setMazub(new Buzam(500, 100, JumpingAlienSprites.ALIEN_SPRITESET, null));
+			fail();
+		} catch(AssertionError error) {
+			
+		}
+		assertEquals(player, world.getMazub());
+	}
+	
+	@Test
+	public void TestsetBuzamPlayerNotEqualTonull(){
+		assertEquals(null, world.getBuzam());
+		Buzam buzam1 = new Buzam(500, 100, JumpingAlienSprites.ALIEN_SPRITESET, null);
+		world.setBuzam(buzam1);
+		assertEquals(buzam1, world.getBuzam());
+		assertEquals(world, buzam1.getWorld());
+
+		Buzam buzam2 = new Buzam(700, 100, JumpingAlienSprites.ALIEN_SPRITESET, null);
+		world.setBuzam(buzam2);
+		assertEquals(buzam2, world.getBuzam());
+		assertEquals(null, buzam1.getWorld());
+		assertEquals(world, buzam2.getWorld());
+	}
+	
+	@Test
+	public void TestsetBuzamPlayerEqualTonull() {
+		assertEquals(null, world.getBuzam());
+		
+		world.setBuzam(null);
+		assertEquals(null, world.getBuzam());
+		
+		Buzam buzam = new Buzam(500, 100, JumpingAlienSprites.ALIEN_SPRITESET, null);
+		world.setBuzam(buzam);
+		assertEquals(buzam, world.getBuzam());
+		
+		world.setBuzam(null);
+		assertEquals(null, buzam.getWorld());
+		assertEquals(null, world.getBuzam());
 	}
 	
 	@Test
@@ -578,6 +620,59 @@ public class WorldTest {
 		assertEquals(world.getFeature(150, 160), Feature.air);
 		world.setFeature(15, 16, 7);
 		assertEquals(world.getFeature(150, 160), Feature.air);
+	}
+	
+	@Test
+	public void TestcollisionDetectBuzambObjectsLeft(){
+		Buzam buzam = new Buzam(500, 0, JumpingAlienSprites.ALIEN_SPRITESET, null);
+		world.setBuzam(buzam);
+		
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}
+		buzam.setX(world.getWorldWidth() - 5);
+		Shark shark = new Shark(0, 0, sprites, null);
+		shark.setX(buzam.getX() - shark.getWidth() + 1);
+		world.addShark(shark);
+		Shark shark1 = new Shark(shark.getX(), 0, sprites, null);
+		world.addShark(shark1);
+		Plant plant = new Plant(0, 0 , sprites, null);
+		plant.setX(buzam.getX() - plant.getWidth() + 1);
+		world.addPlant(plant);
+		collisions.get(0).get(0).add(shark);
+		collisions.get(0).get(0).add(shark1);
+		collisions.get(0).get(0).add(plant);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(buzam, 0, 0);
+		for(int i = 0; i < 8; i++) {
+			assertEquals(collisions.get(i).get(0), collisionsresult.get(i).get(0));
+		}
+	}
+	
+	@Test
+	public void TestcollisionDetectBuzamMazubLeft(){
+		Buzam buzam = new Buzam(500, 0, JumpingAlienSprites.ALIEN_SPRITESET, null);
+		world.setBuzam(buzam);
+		
+		List<List<List<Object>>> collisions = new ArrayList<List<List<Object>>>();
+		for(int i = 0; i < 8; i++) {
+			List<List<Object>> inner_collisions = new ArrayList<List<Object>>();
+			for(int j = 0; j < 2; j++) {
+				inner_collisions.add(new ArrayList<Object>());
+			}
+			collisions.add(inner_collisions);
+		}
+		buzam.setX(world.getWorldWidth() - 5);
+		player.setX(buzam.getX() - player.getWidth() + 1);
+		collisions.get(0).get(0).add(player);
+		List<List<List<Object>>> collisionsresult = world.collisionDetect(buzam, 0, 0);
+		for(int i = 0; i < 8; i++) {
+			assertEquals(collisions.get(i).get(0), collisionsresult.get(i).get(0));
+		}
 	}
 	
 	@Test
