@@ -82,6 +82,8 @@ public class Program {
 	}
 	
 	public Object getVariableValue(String name, Type type) {
+		assert(containsVariable(name, type));
+		
 		if (type == Type.DOUBLE) return globalDoubles.get(name);
 		if (type == Type.BOOL) return globalBools.get(name);
 		if (type == Type.OBJECT) return globalObjects.get(name);
@@ -89,11 +91,7 @@ public class Program {
 	}
 	
 	public void setVariableValue(String name, Type type, Object value) {
-		if (!containsVariable(name, type)) {
-			setStatementsLeft(0);
-			setRunTimeError(true);
-			return;
-		}
+		assert(containsVariable(name, type));
 		
 		if (type == Type.DOUBLE) globalDoubles.put(name, (double) value);
 		else if(type == Type.BOOL) globalBools.put(name, (boolean) value);
