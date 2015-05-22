@@ -1147,9 +1147,9 @@ public abstract class GameObject {
 		assert(direction == "left" || direction == "right");
 		
 		if (getPrevMove() == "") {
-			if (getAx() < 0) {
+			if ((getAx() < 0) && (direction != "left")) {
 				setPrevMove("left");
-			} else if (getAx() > 0) {
+			} else if ((getAx() > 0) && (direction != "right")) {
 				setPrevMove("right");
 			}
 		} else {
