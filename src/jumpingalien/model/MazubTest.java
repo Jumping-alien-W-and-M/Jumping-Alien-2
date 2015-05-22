@@ -43,8 +43,77 @@ public class MazubTest {
 		assertEquals(player.getAx(), 0, Util.DEFAULT_EPSILON);
 		assertEquals(player.getAxi(), 0.9, Util.DEFAULT_EPSILON);
 		assertEquals(player.getAy(), 0, Util.DEFAULT_EPSILON);
+		assertEquals(player.getProgram(), null);
 
 		assertEquals(player.getLastMove(), 0, Util.DEFAULT_EPSILON);
+	}
+	
+	@Test
+	public void TestendDuckCanStand(){
+		player.startDuck();
+		player.endDuck();
+		assert(! player.getDucking());
+		assertEquals(3, player.getVxmax(), Util.DEFAULT_EPSILON);
+		assert(! player.getTryStand());
+	}
+	
+	@Test
+	public void TestendDuckCanNotStandObjectOnTop(){
+		player.startDuck();
+		Buzam buzam = new Buzam(0, player.getCurrentSprite().getHeight() + 1
+				, JumpingAlienSprites.ALIEN_SPRITESET, null);
+		world.setBuzam(buzam);
+		player.endDuck();
+		assert(player.getDucking());
+		assertEquals(1, player.getVxmax(), Util.DEFAULT_EPSILON);
+		assert(player.getTryStand());
+	}
+	
+	@Test
+	public void TestendDuckCanNotStandObjectRight(){
+		player.startDuck();
+		Buzam buzam = new Buzam(0, player.getCurrentSprite().getWidth() + 1
+				, JumpingAlienSprites.ALIEN_SPRITESET, null);
+		world.setBuzam(buzam);
+		player.endDuck();
+		assert(player.getDucking());
+		assertEquals(1, player.getVxmax(), Util.DEFAULT_EPSILON);
+		assert(player.getTryStand());
+	}
+
+	@Test
+	public void TeststartDuck(){
+		player.setTryStand(true);
+		player.startDuck();
+		assert(player.getDucking());
+		assertEquals(1, player.getVxmax(), Util.DEFAULT_EPSILON);
+		assert(! player.getTryStand());
+	}
+	
+	@Test
+	public void TeststartJumpCanJump(){
+		generateGroundLayer();
+		player.startJump();
+		assertEquals(8, player.getVy(), Util.DEFAULT_EPSILON);
+		assertEquals(-10, player.getAy(), Util.DEFAULT_EPSILON);
+		assert(player.getJumping());
+		assert(player.getJustJumped());
+	}
+	
+	@Test
+	public void TeststartJumpCanNotJump(){
+		player.startJump();
+		assertEquals(0, player.getVy(), Util.DEFAULT_EPSILON);
+		assertEquals(0, player.getAy(), Util.DEFAULT_EPSILON);
+		assert(! player.getJumping());
+		assert(! player.getJustJumped());
+	}
+	
+	@Test
+	public void TeststartMove(){
+		player.setAnimationTime(20);
+		player.startMove("left");
+		assertEquals(0, player.getAnimationTime(), Util.DEFAULT_EPSILON);
 	}
 	
 	@Test

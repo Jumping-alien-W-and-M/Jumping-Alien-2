@@ -33,8 +33,8 @@ public abstract class GameObject {
 	 * @param vxmax
 	 * 			The maximum horizontal velocity of the new game object.
 	 * @param program
-	 * 			The program this enemy is controlled by 
-	 * 			or null if this enemy should perform it's default behavior.
+	 * 			The program this game object is controlled by 
+	 * 			or null if this game object should perform it's default behavior.
 	 * @pre		...
 	 * 			| isValidx(x)
 	 * @pre		...
@@ -1230,7 +1230,30 @@ public abstract class GameObject {
 		setVy(Math.min(0, getVy()));
 	}
 	
+	/**
+	 * Executes the program of this game object.
+	 * 
+	 * @param time
+	 * 			The time the program gets to execute.
+	 * @pre		...
+	 * 			| getProgram() != null
+	 * @effect 	...
+	 * 			| if (getProgram().getRunTimeError()) return
+	 * @effect	...
+	 * 			| getProgram().setStatementsLeft((int) Math.ceil(time*1000))
+	 *			| if (!(getProgram().getMainStatement() instanceof Sequence))
+	 *			| 		getProgram().setStatementsLeft(getProgram().getStatementsLeft() - 1)
+	 *			|
+	 *			|	while (getProgram().getMainStatement().execute(this) == ExecutionState.DONE
+	 *			|				&& getProgram().getStatementsLeft() >= 0) 	 *		
+	 *			|		if (getProgram().getRunTimeError()) return;
+	 *  		|		getProgram().initializeVariables();
+	 *			|
+	 *			|		if (!(getProgram().getMainStatement() instanceof Sequence))
+	 *			|			getProgram().setStatementsLeft(getProgram().getStatementsLeft() - 1);
+	 */
 	protected void executeProgram(double time) {
+		assert(getProgram() != null);
 		
 		if (getProgram().getRunTimeError()) return;
 		

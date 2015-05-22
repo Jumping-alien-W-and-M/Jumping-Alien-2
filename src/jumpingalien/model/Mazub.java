@@ -33,9 +33,12 @@ public class Mazub extends GameObject {
 	 * 			The new Mazub's y-position.
 	 * @param images
 	 * 			The new Mazub's array of sprites.
+	 * @param program
+	 * 			The program this Mazub is controlled by 
+	 * 			or null if this Mazub should perform it's default behavior.
 	 * @effect	This new Mazub will be initialized as a game object with the given position, 
 	 * 			the given array of sprites, an initial horizontal acceleration of 0.9, an initial horizontal velocity of 1
-	 * 			and a maximal horizontal velocity of 3.
+	 * 			,a maximal horizontal velocity of 3 and the given program.
 	 * 			| super(x, y, images, 0.9, 1, 3)
 	 * @effect	This Mazub's last movement will be "standing still".
 	 * 			| setLastMove(0)
@@ -86,7 +89,7 @@ public class Mazub extends GameObject {
 	 * 			| (new.getTryStand() = try_stand)
 	 */
 	@Model
-	private void setTryStand(boolean try_stand) {
+	protected void setTryStand(boolean try_stand) {
 		this.try_stand = try_stand;
 	}
 	
@@ -237,10 +240,8 @@ public class Mazub extends GameObject {
 	 * 
 	 * @pre		This Mazub is currently part of a world.
 	 * 			| (getWorld() != null)
-	 * @post	The old world will no longer have a player.
-	 * 			| (new.(this.getWorld()).getMazub() == null)
-	 * @post	This Mazub will no longer be part of a world.
-	 * 			| (new.getWorld() == null)
+	 * @effect	Calls the setMazub method of this mazub's world with argument null.
+	 * 			| getWorld().setMazub(null)
 	 */
 	@Override
 	protected void terminate() {
@@ -254,24 +255,24 @@ public class Mazub extends GameObject {
 	 * @param dt
 	 * 			The amount of seconds to be advanced.
 	 * @effect	The given dt shall be split up into small timesteps to ensure this Mazub never moves more than one pixel at a time.
-	 * 			For every timestep, this Mazub shall call game object's advanceTimeStep method using this timestep,
-	 * 			and if it is still part of a world, this Mazub shall also call its advance advanceLastMove and advanceAnimationTime
-	 * 			methods, as well as endDuck if this Mazub has tried to stand up but couldn't at the time.
-	 * 			Finally, after all timesteps have been executed, if this Mazub is still part of a world, it will call its
-	 * 			collisionHandle method.
+	 * 			For every timestep, this Mazub shall call game object's advanceTimeStep method using timestep as argument,
+	 * 			and if this Mazub is still part of a world after that, 
+	 * 				it shall also call its advanceLastMove and advanceAnimationTime methods, 
+	 * 			as well as endDuck if this Mazub has tried to stand up but couldn't at the time.
+	 * 			Finally, after all timesteps have been executed, this Mazub will execute his program if there is one.
+	 * 			At last if this Mazub is still part of a world, it will call its collisionHandle method.
 	 * 			| timestep = getTimestep(dt, 0)
 	 * 			| for(time_passed = 0; time_passed < dt; time_passed += timestep) {
 	 *			| 	timestep = getTimestep(dt, time_passed)
 	 *			|	super.advanceTimeStep(timestep)
-	 *			|	if (getWorld() != null) {
-	 *			|		setLastMove(advanceLastMove(timestep))
-	 *			|		setAnimationTime(advanceAnimationTime(timestep))
-	 *			| 		if (getTryStand()) 
-	 *			|			then endDuck();
-	 *			|	}
-	 *			| }
-	 *			| if (getWorld() != null)
-	 *			|	then collisionHandle(getCollisions(), dt)
+	 *			|	if (getWorld() == null) return
+	 *			|	setLastMove(advanceLastMove(timestep))
+	 *			|	setAnimationTime(advanceAnimationTime(timestep))
+	 *			| 	if (getTryStand()) 
+	 *			|		then endDuck()
+	 *			|
+	 *			| if (getProgram() != null) executeProgram(dt);
+	 *			| collisionHandle(getCollisions(), dt)
 	 * @throws IllegalArgumentException
 	 * 			If dt isn't a valid time interval to advance the time with.
 	 * 			| !isValidDt(dt)
@@ -518,7 +519,7 @@ public class Mazub extends GameObject {
 	}
 	
 	/**
-	 * Gets the last move variable using the given dt.
+	 * Advances the last move variable using the given dt.
 	 * 
 	 * @param dt
 	 * 			The period of time which has to be advanced, in seconds.
@@ -584,27 +585,9 @@ public class Mazub extends GameObject {
 	 * Initiates horizontal movement of this Mazub.
 	 * 
 	 * @param direction
-	 * 			The direction in which this Mazub starts moving.
-	 * @pre		The given direction is equal to left or right.
-	 * 			| (direction == "left" || direction == "right")
-	 * @effect	If there is no previous movement currently stored but there is another movement going on right now,
-	 * 			this movement will be stored as the previous movement.
-	 * 			| if (getPrevMove() == "") {
-	 * 			|	if (getAx() < 0)
-	 * 			|		then setPrevMove("left")
-	 * 			|	else if (getAx() > 0)
-	 * 			|		then setPrevMove("right")
-	 * 			| }
-	 * @effect 	If the given direction is equal to left, vx will be equal to -vxi and ax will be equal to -axi.
-	 * 			| if (direction == "left") {
-	 * 			|	setVx(-getVxi())
-	 * 			|	setAx(-getAxi())
-	 * 			| }
-	 * @effect 	If the given direction is equal to right, vx will be equal to vxi and ax will be equal to axi.
-	 * 			| if (direction == "right") {
-	 * 			|	setVx(getVxi())
-	 * 			|	setAx(getAxi())
-	 * 			| }
+	 * 			The direction in which this Mazub starts moving
+	 * @effect	Calls the method startMove of the superclass gameobject.
+	 * 			| super.startMove(direction);
 	 * @effect	This Mazub's animation time will be set to 0.
 	 * 			| setAnimationTime(0)
 	 */
