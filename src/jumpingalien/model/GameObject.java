@@ -32,16 +32,23 @@ public abstract class GameObject {
 	 * 			The initial horizontal velocity of the new game object.
 	 * @param vxmax
 	 * 			The maximum horizontal velocity of the new game object.
+	 * @param program
+	 * 			The program this enemy is controlled by 
+	 * 			or null if this enemy should perform it's default behavior.
 	 * @pre		...
 	 * 			| isValidx(x)
 	 * @pre		...
 	 * 			| isValidy(y)
+	 * @pre		...
+	 * 			| (program == null) || !(this instanceof Mazub) || (this instanceof Buzam)
 	 * @post	...
 	 * 			| new.getImages() = images
 	 * @post	...
 	 * 			| new.getAxi() = axi
 	 * @post	...
 	 * 			| new.getVxi() = vxi
+	 * @post	...
+	 * 			| new.getProgram() = program
 	 * @effect	...
 	 * 			| setX(x)
 	 * @effect	...
@@ -581,6 +588,10 @@ public abstract class GameObject {
 	
 	private double time_invincible = 0;
 	
+	/**
+	 * Gets the program this game object is controlled by.
+	 */
+	@Basic
 	public Program getProgram() {
 		return this.program;
 	}
@@ -588,7 +599,7 @@ public abstract class GameObject {
 	private final Program program;
 	
 	/**
-	 * Gets the previous move of this Mazub. This is an empty string if only one movement is currently going on,
+	 * Gets the previous move of this game object. This is an empty string if only one movement is currently going on,
 	 * and the first invoked movement otherwise.
 	 */
 	@Basic
@@ -597,18 +608,18 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Sets the previous move of this Mazub.
+	 * Sets the previous move of this game object.
 	 * 
 	 * @param prev_move
-	 * 			The previous move of this Mazub. This should be an empty string if only one movement is currently going on,
+	 * 			The previous move of this game object. This should be an empty string if only one movement is currently going on,
 	 * 			and the first invoked movement otherwise.
 	 * @pre		The given previous move is either an empty string, "left" or "right".
 	 * 			| ((prev_move == "") || (prev_move == "left") || (prev_move == "right"))
-	 * @post	This Mazub's previous move will be equal to the given prev_move.
+	 * @post	This game object's previous move will be equal to the given prev_move.
 	 * 			| (new.getPrevMove() == prev_move)
 	 */
-	@Model
-	private void setPrevMove(String prev_move) {
+	@Model 
+	protected void setPrevMove(String prev_move) {
 		assert((prev_move == "") || (prev_move == "left") || (prev_move == "right"));
 		
 		this.prev_move = prev_move;
@@ -767,7 +778,7 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Advnaces the x-position of this game object over a given time interval.
+	 * Advances the x-position of this game object over a given time interval.
 	 * 
 	 * @param dt
 	 * 			The amount of seconds to be advanced.
@@ -1011,11 +1022,11 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Return the new time this mazub will be invincible for.
+	 * Return the new time this game object will be invincible for.
 	 * 
 	 * @param dt
 	 * 			The period of time wich should be advanced, in seconds.
-	 * @return	The current time this mazub will be invinceble for min the given dt 
+	 * @return	The current time this game object will be invinceble for min the given dt 
 	 * 			if this is bigger then 0 else 0 is returned.
 	 * 			| result = Math.max(0, getTimeInvincible()-dt)
 	 */
@@ -1159,14 +1170,14 @@ public abstract class GameObject {
 	}
 	
 	/**
-	 * Stops the horizontal movement of this Mazub.
+	 * Stops the horizontal movement of this game object.
 	 * 
-	 * @effect	If there is no previous movement, this Mazub's horizontal velocity and acceleration will be set to zero.
+	 * @effect	If there is no previous movement, this game object's horizontal velocity and acceleration will be set to zero.
 	 * 			| if (getPrevMove() == "") {
 	 * 			|	setVx(0)
 	 * 			|	setAx(0)
 	 * 			| }
-	 * @effect	If there is previous movement, this Mazub's new movement will be this previous movement and the previous
+	 * @effect	If there is previous movement, this game object's new movement will be this previous movement and the previous
 	 * 			movement will be removed.
 	 * 			| if (getPrevMove() != "") {
 	 * 			|	if (getPrevMove() != direction) {
@@ -1210,9 +1221,9 @@ public abstract class GameObject {
 	}
 
 	/**
-	 * Ends a jump for this Mazub.
+	 * Ends a jump for this game object.
 	 * 
-	 * @effect	This Mazub's vertical velocity will be set to 0 if it's positive.
+	 * @effect	This game objects's  vertical velocity will be set to 0 if it's positive.
 	 * 			| setVy(Math.min(0, getVy()))
 	 */
 	public void endJump() {

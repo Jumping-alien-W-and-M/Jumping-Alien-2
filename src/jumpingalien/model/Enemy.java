@@ -38,6 +38,9 @@ public abstract class Enemy extends GameObject {
 	 * 			The maximal time a random action for this enemy should take.
 	 * @param hitpoints
 	 * 			The amount of hitpoints this enemy should start with.
+	 * @param program
+	 * 			The program this enemy is controlled by 
+	 * 			or null if this enemy should perform it's default behavior.
 	 * @pre		...
 	 * 			| (max_action_time >= min_action_time)
 	 * @pre		...
@@ -47,7 +50,7 @@ public abstract class Enemy extends GameObject {
 	 * @post	...
 	 * 			| (new.getMaxActionTime() == max_action_time)
 	 * @effect	...
-	 * 			| super(x, y, images, axi, vxi, vxmax)
+	 * 			| super(x, y, images, axi, vxi, vxmax, program)
 	 * @effect	...
 	 * 			| setHitpoints(hitpoints)
 	 */
@@ -111,17 +114,17 @@ public abstract class Enemy extends GameObject {
 	 * 			The amount of seconds to be advanced.
 	 * @effect	...
 	 * 			| timestep = getTimestep(dt, 0)
-	 * 			| for(time_passed = 0; time_passed < dt; time_passed += timestep) {
-	 * 			|	if (getWorld() != null) {
+	 * 			| for(time_passed = 0; time_passed < dt; time_passed += timestep) 
 	 * 			|		timestep = getTimestep(dt, time_passed)
 	 * 			| 		super.advanceTimeStep(timestep)
-	 * 			|	}
-	 * 			|	if (getWorld() != null) {
-	 * 			|		advanceActionTime(timestep)
+	 * 			|	
+	 * 			|		if (getWorld() == null) return
+	 * 			| 		if (getProgram() == null) advanceActionTime(timestep)
 	 * 			| 		advanceDeathTime(timestep)
-	 * 			|	}
-	 * 			| }
+	 * 			| 		if (getWorld() == null) return
+	 * 			|
 	 * 			| collisionHandle(getCollisions(), dt)
+	 * 			| if ( (getProgram() != null) executeProgram(dt)
 	 * @throws IllegalArgumentException
 	 * 			If dt isn't a valid time interval to advance the time with.
 	 * 			| !isValidDt(dt)

@@ -1,7 +1,13 @@
 package jumpingalien.model;
 
 import static org.junit.Assert.*;
+
+import java.util.HashMap;
+
 import jumpingalien.common.sprites.JumpingAlienSprites;
+import jumpingalien.part3.programs.SourceLocation;
+import jumpingalien.program.Type;
+import jumpingalien.program.statement.Skip;
 import jumpingalien.util.Sprite;
 import jumpingalien.util.Util;
 
@@ -21,7 +27,56 @@ public class GameObjectTest {
 		world.setMazub((Mazub) player);
 	}
 
-
+	@Test
+	public void TestendJumpPositiveVerticalVelocity(){
+		player.setVy(2);
+		player.endJump();
+		assertEquals(0, player.getVy(), Util.DEFAULT_EPSILON);
+		player.endJump();
+		assertEquals(0, player.getVy(), Util.DEFAULT_EPSILON);
+	}
+	
+	@Test
+	public void TestendJumpNegativeVerticalVelocity(){
+		player.setVy(-2);
+		player.endJump();
+		assertEquals(-2, player.getVy(), Util.DEFAULT_EPSILON);
+	}
+	
+	@Test
+	public void TestendMovedirectionEqualsgetPrevMove(){
+		player.setPrevMove("left");
+		player.startMove("right");
+		player.endMove("left");
+		assertEquals(player.getPrevMove(), "");
+		assert(player.getAx() > 0);
+	}
+	
+	@Test
+	public void TestendMoveConflictBetweendirectionAndgetAx(){
+		Skip skip = new Skip(new SourceLocation(5, 6));
+		HashMap<String, Type> variables = new HashMap<String, Type>();
+		Program program = new Program(skip, variables);
+		program.setStatementsLeft(5);
+		Buzam buzam = new Buzam(0, 0, JumpingAlienSprites.ALIEN_SPRITESET, program);
+		buzam.setAx(buzam.getAxi());
+		buzam.endMove("left");
+		assertEquals(0, program.getStatementsLeft());
+		assert(program.getRunTimeError());
+		
+		program.setStatementsLeft(5);
+		program.setRunTimeError(false);
+		buzam.setAx(-buzam.getAxi());
+		buzam.endMove("right");
+		assertEquals(0, program.getStatementsLeft());
+		assert(program.getRunTimeError());
+		
+	}
+	
+	@Test
+	public void TestendMovePrevMoveIsNewMovement(){
+		
+	}
 	
 	@Test
 	public void TestIsValidXWithWorldNotEqualTonull() {		
