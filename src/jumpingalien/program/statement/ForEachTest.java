@@ -2,6 +2,7 @@ package jumpingalien.program.statement;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import jumpingalien.common.sprites.JumpingAlienSprites;
@@ -154,8 +155,44 @@ public class ForEachTest {
 	
 	@Test
 	public void TestExecuteBodyInstanceOfSequenceDone(){
-		
+		Assignment assignement = new Assignment("Test1", Type.DOUBLE, doubleconstant, srceloc);
+		ArrayList<Statement> elements = new ArrayList<Statement>();
+		elements.add(print);
+		elements.add(assignement);
+		Sequence seq = new Sequence(elements, srceloc);
+		ForEach foreach = new ForEach("Test", Kind.ANY, null, null, SortDirection.ASCENDING, seq, srceloc);
+		variables.put("Test", Type.OBJECT);
+		variables.put("Test1", Type.DOUBLE);
+		Program program = new Program(foreach, variables);
+		program.setVariableValue("Test1", Type.DOUBLE, 0.0);
+		program.setStatementsLeft(2);
+		Shark shark = new Shark(0, 0, sprites, program);
+		world.addShark(shark);
+		assertEquals(ExecutionState.DONE, foreach.execute(shark));
+		assertEquals(1, foreach.getCurrentIndex());
+		assertEquals(4.0 , program.getVariableValue("Test1", Type.DOUBLE));
 	}
+	
+	@Test
+	public void TestExecuteBodyInstanceOfSequenceNotDone(){
+		Assignment assignement = new Assignment("Test1", Type.DOUBLE, doubleconstant, srceloc);
+		ArrayList<Statement> elements = new ArrayList<Statement>();
+		elements.add(print);
+		elements.add(assignement);
+		Sequence seq = new Sequence(elements, srceloc);
+		ForEach foreach = new ForEach("Test", Kind.ANY, null, null, SortDirection.ASCENDING, seq, srceloc);
+		variables.put("Test", Type.OBJECT);
+		variables.put("Test1", Type.DOUBLE);
+		Program program = new Program(foreach, variables);
+		program.setVariableValue("Test1", Type.DOUBLE, 0.0);
+		program.setStatementsLeft(1);
+		Shark shark = new Shark(0, 0, sprites, program);
+		world.addShark(shark);
+		assertEquals(ExecutionState.NOTDONE, foreach.execute(shark));
+		assertEquals(1, foreach.getCurrentIndex());
+		assertEquals(0.0 , program.getVariableValue("Test1", Type.DOUBLE));
+		assert(foreach.getInBody());
+	}	
 	
 	@Test
 	public void TestExecuteBreak(){
@@ -172,5 +209,22 @@ public class ForEachTest {
 		assertEquals(ExecutionState.DONE, foreach.execute(shark0));
 		assertEquals(1, foreach.getCurrentIndex());
 		assertEquals(4, program.getStatementsLeft());
+	}
+	
+	@Test
+	public void TestExecuteMultipleObjects(){
+		Assignment assignement = new Assignment("Test1", Type.DOUBLE, doubleconstant, srceloc);
+		ForEach foreach = new ForEach("Test", Kind.ANY, null, null, SortDirection.ASCENDING, assignement, srceloc);
+		variables.put("Test", Type.OBJECT);
+		variables.put("Test1", Type.DOUBLE);
+		Program program = new Program(foreach, variables);
+		program.setStatementsLeft(8);
+		Shark shark0 = new Shark(0, 0, sprites, program);
+		Mazub player = new Mazub(0, 0, JumpingAlienSprites.ALIEN_SPRITESET, null);
+		world.addShark(shark0);
+		world.setMazub(player);
+		assertEquals(ExecutionState.DONE, foreach.execute(shark0));
+		assertEquals(2, foreach.getCurrentIndex());
+		assertEquals(5, program.getStatementsLeft());
 	}
 }
