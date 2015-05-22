@@ -10,6 +10,9 @@ import jumpingalien.program.expression.Expression;
 public class If extends Statement {
 	public If(Expression condition, Statement ifBody, Statement elseBody, SourceLocation sourceLocation){
 		super(sourceLocation);
+		
+		assert(ifBody != null);
+		
 		this.condition = condition;
 		this.ifBody = ifBody;
 		this.elseBody = elseBody;
@@ -59,12 +62,12 @@ public class If extends Statement {
 		if (getConditionValue() == 0) setConditionValue((boolean) getCondition().getValue(executingObject) ? 1 : 2);
 		else executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() + 1);
 		
-		if (executingObject.getProgram().getStatementsLeft() <= 0) return ExecutionState.NOTDONE;
-		
 		if (getCorrectBody() == null) {
 			setConditionValue(0);
 			return ExecutionState.DONE;
 		}
+		
+		if (executingObject.getProgram().getStatementsLeft() <= 0) return ExecutionState.NOTDONE;
 		
 		if (!(getCorrectBody() instanceof Sequence))
 			executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() - 1);

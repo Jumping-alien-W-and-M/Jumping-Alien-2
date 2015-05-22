@@ -6,8 +6,6 @@ import jumpingalien.model.Shark;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.util.Sprite;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class BreakTest {

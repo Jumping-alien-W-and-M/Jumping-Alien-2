@@ -17,7 +17,7 @@ import jumpingalien.program.expression.DoubleConstant;
 import org.junit.Before;
 import org.junit.Test;
 
-public class StartDuckTest {
+public class StopDuckTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -38,15 +38,28 @@ public class StartDuckTest {
 		SourceLocation source = new SourceLocation(5, 6);
 		
 		StartDuck startduck = new StartDuck(source);
+		StopDuck stopduck = new StopDuck(source);
 		
 		Program program = new Program(new Wait(new DoubleConstant(2.0, source), source), empty_variables);
 		buzam = new Buzam(100, 100, JumpingAlienSprites.ALIEN_SPRITESET, program);
 		world.setBuzam(buzam);
 		
-		assertEquals(false, buzam.getDucking());
+		for(int i = 0; i < 5; i++) {
+			assertEquals(false, buzam.getDucking());
+			program.setStatementsLeft(0);
+			assertEquals(ExecutionState.DONE, startduck.execute(buzam));
+			assertEquals(true, buzam.getDucking());
+			program.setStatementsLeft(0);
+			assertEquals(ExecutionState.DONE, startduck.execute(buzam));
+			assertEquals(true, buzam.getDucking());
+			program.setStatementsLeft(0);
+			assertEquals(ExecutionState.DONE, stopduck.execute(buzam));
+			assertEquals(false, buzam.getDucking());
+		}
+		
 		program.setStatementsLeft(0);
-		assertEquals(ExecutionState.DONE, startduck.execute(buzam));
-		assertEquals(true, buzam.getDucking());
+		assertEquals(ExecutionState.DONE, stopduck.execute(buzam));
+		assertEquals(false, buzam.getDucking());
 		
 	}
 	
@@ -54,7 +67,7 @@ public class StartDuckTest {
 	public void ExecuteFailTest() {
 		SourceLocation source = new SourceLocation(5, 6);
 		
-		StartDuck startduck = new StartDuck(source);
+		StopDuck stopduck = new StopDuck(source);
 		
 		Program program = new Program(new Wait(new DoubleConstant(2.0, source), source), empty_variables);
 		Plant plant = new Plant(100, 100, JumpingAlienSprites.ALIEN_SPRITESET, program);
@@ -62,7 +75,7 @@ public class StartDuckTest {
 		
 		program.setStatementsLeft(5);
 		assertEquals(false, program.getRunTimeError());
-		assertEquals(ExecutionState.NOTDONE, startduck.execute(plant));
+		assertEquals(ExecutionState.NOTDONE, stopduck.execute(plant));
 		assertEquals(0, program.getStatementsLeft());
 		assertEquals(true, program.getRunTimeError());
 		

@@ -20,10 +20,6 @@ public class Sequence extends Statement {
 		return new ArrayList<Statement>(statements);
 	}
 	
-	public void removeStatement(Statement statement) {
-		statements.remove(statement);
-	}
-	
 	private final List<Statement> statements;
 	
 	@Basic
@@ -43,7 +39,10 @@ public class Sequence extends Statement {
 			if (!(getStatements().get(getCurrentStatement()) instanceof Sequence))
 				executingObject.getProgram().setStatementsLeft(executingObject.getProgram().getStatementsLeft() - 1);
 			ExecutionState state = getStatements().get(getCurrentStatement()).execute(executingObject);
-			if (state == ExecutionState.BREAK) return ExecutionState.BREAK;
+			if (state == ExecutionState.BREAK) {
+				setCurrentStatement(0);
+				return ExecutionState.BREAK;
+			}
 			if (state == ExecutionState.DONE) {
 				setCurrentStatement(getCurrentStatement() + 1);
 				if (getCurrentStatement() == getStatements().size()) {

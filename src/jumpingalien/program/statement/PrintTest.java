@@ -7,17 +7,18 @@ import java.util.HashMap;
 import jumpingalien.common.sprites.JumpingAlienSprites;
 import jumpingalien.model.Buzam;
 import jumpingalien.model.Mazub;
-import jumpingalien.model.Plant;
 import jumpingalien.model.Program;
 import jumpingalien.model.World;
+import jumpingalien.part3.programs.IProgramFactory.Direction;
 import jumpingalien.part3.programs.SourceLocation;
 import jumpingalien.program.Type;
+import jumpingalien.program.expression.DirectionConstant;
 import jumpingalien.program.expression.DoubleConstant;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class StartDuckTest {
+public class PrintTest {
 
 	@Before
 	public void setUp() throws Exception {
@@ -32,40 +33,29 @@ public class StartDuckTest {
 	private World world;
 	private Buzam buzam;
 	private static final HashMap<String, Type> empty_variables = new HashMap<String, Type>();
-	
+
+	@Test
+	public void BasicConstructorTest() {
+		SourceLocation source = new SourceLocation(5, 6);
+		
+		Print print = new Print(new DirectionConstant(Direction.LEFT, source), source);
+		
+		assertEquals(ExecutionState.DONE, print.execute(buzam));
+	}
+
 	@Test
 	public void ExecuteTest() {
 		SourceLocation source = new SourceLocation(5, 6);
 		
-		StartDuck startduck = new StartDuck(source);
+		DirectionConstant direction = new DirectionConstant(Direction.LEFT, source);
+		Print print = new Print(direction, source);
 		
 		Program program = new Program(new Wait(new DoubleConstant(2.0, source), source), empty_variables);
 		buzam = new Buzam(100, 100, JumpingAlienSprites.ALIEN_SPRITESET, program);
 		world.setBuzam(buzam);
 		
-		assertEquals(false, buzam.getDucking());
 		program.setStatementsLeft(0);
-		assertEquals(ExecutionState.DONE, startduck.execute(buzam));
-		assertEquals(true, buzam.getDucking());
-		
-	}
-	
-	@Test
-	public void ExecuteFailTest() {
-		SourceLocation source = new SourceLocation(5, 6);
-		
-		StartDuck startduck = new StartDuck(source);
-		
-		Program program = new Program(new Wait(new DoubleConstant(2.0, source), source), empty_variables);
-		Plant plant = new Plant(100, 100, JumpingAlienSprites.ALIEN_SPRITESET, program);
-		world.addPlant(plant);
-		
-		program.setStatementsLeft(5);
-		assertEquals(false, program.getRunTimeError());
-		assertEquals(ExecutionState.NOTDONE, startduck.execute(plant));
-		assertEquals(0, program.getStatementsLeft());
-		assertEquals(true, program.getRunTimeError());
-		
+		assertEquals(direction, print.getValue());
 	}
 
 }

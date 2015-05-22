@@ -2,8 +2,6 @@ package jumpingalien.program.statement;
 
 import static org.junit.Assert.*;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import jumpingalien.common.sprites.JumpingAlienSprites;
@@ -13,13 +11,11 @@ import jumpingalien.part3.programs.IProgramFactory.Kind;
 import jumpingalien.part3.programs.IProgramFactory.SortDirection;
 import jumpingalien.program.*;
 import jumpingalien.program.expression.*;
-import jumpingalien.program.expression.unary.GetHeight;
 import jumpingalien.program.expression.unary.GetHitpoints;
 import jumpingalien.program.expression.unary.IsJumping;
 import jumpingalien.util.Sprite;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ForEachTest {
