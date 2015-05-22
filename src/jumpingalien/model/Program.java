@@ -28,7 +28,7 @@ public class Program {
 			else globalDirections.put(key, Direction.LEFT);
 		}
 		
-		if (!isValidProgram()) {
+		if (!isValidStatement(getMainStatement(), false, true)) {
 			System.out.println("The given program is not valid!");
 			
 			throw new IllegalArgumentException();
@@ -108,11 +108,7 @@ public class Program {
 		throw new IllegalArgumentException();
 	}
 	
-	public boolean isValidProgram() {
-		return isValidStatement(getMainStatement(), false, true);
-	}
-	
-	public boolean isValidStatement(Statement statement, boolean canHaveBreak, boolean canHaveAction) {
+	public static boolean isValidStatement(Statement statement, boolean canHaveBreak, boolean canHaveAction) {
 		
 		if (statement instanceof Sequence) {
 			for(Statement next_statement : ((Sequence) statement).getStatements()) {

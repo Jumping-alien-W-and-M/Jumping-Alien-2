@@ -365,7 +365,7 @@ public class Facade implements IFacadePart3 {
 
 	@Override
 	public boolean isWellFormed(Program program) {
-		return program.isValidProgram();
+		return program.isValidStatement(program.getMainStatement(), false, true);
 	}
 
 	@Override
