@@ -264,15 +264,14 @@ public class ProgramTest {
 		
 		try {
 			program.getVariableValue("notnumber", Type.DOUBLE);
-			fail();
 		} catch(AssertionError error1) {
 			try {
 				program.getVariableValue("number", Type.BOOL);
-				fail();
 			} catch(AssertionError error2) {
 				return;
 			}
 		}
+		fail();
 	}
 
 }

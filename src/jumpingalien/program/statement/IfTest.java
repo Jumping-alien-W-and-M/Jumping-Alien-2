@@ -75,10 +75,10 @@ public class IfTest {
 											new DoubleConstant(200.0, source), source);
 		try {
 			new If(condition, null, null, source);
-			fail();
 		} catch(AssertionError error) {
 			return;
 		}
+		fail();
 	}
 
 	@Test

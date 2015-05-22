@@ -70,10 +70,10 @@ public class AssignmentTest {
 		assertEquals(assignement.execute(shark), ExecutionState.NOTDONE);
 		try {
 			program.getVariableValue("Test", Type.DOUBLE);
-			fail();
 		} catch(AssertionError error) {
 			return;
 		}
+		fail();
 	}
 	
 	

@@ -277,14 +277,14 @@ public class WorldTest {
 	}
 	
 	@Test
-	public void TestsetMazubIllegalArgumentTonull() {
+	public void TestsetBuzamIllegalArgumentTonull() {
 		try {
 			world.setMazub(new Buzam(500, 100, JumpingAlienSprites.ALIEN_SPRITESET, null));
-			fail();
 		} catch(AssertionError error) {
-			
+			assertEquals(player, world.getMazub());
+			return;
 		}
-		assertEquals(player, world.getMazub());
+		fail();
 	}
 	
 	@Test
