@@ -24,6 +24,12 @@ public class ReadVariable extends Expression {
 	
 	@Override
 	public Object getValue(GameObject executingObject) {
+		if (!executingObject.getProgram().containsVariable(getVariableName(), getType())) {
+			executingObject.getProgram().setStatementsLeft(0);
+			executingObject.getProgram().setRunTimeError(true);
+			return 0.0;
+		}
+		
 		return executingObject.getProgram().getVariableValue(getVariableName(), getType());
 	}
 	

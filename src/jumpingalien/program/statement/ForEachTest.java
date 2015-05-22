@@ -92,7 +92,8 @@ public class ForEachTest {
 	}
 	
 	@Test
-	public void TestExecuteLoopIsDone(){
+	public void TestExecuteLoopIsDone() {
+		variables.put("Test", Type.OBJECT);
 		Program program = new Program(print, variables);
 		Shark shark = new Shark(0, 0, sprites, program);
 		world.addShark(shark);
